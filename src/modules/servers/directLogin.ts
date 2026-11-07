@@ -8,7 +8,8 @@ import type { Servers } from './state';
 /**
  * The installer's direct login (readme.md): a client served beside a `server.json` saying
  * `directLogin: true` opens straight on the login of the first world in the `serverlist.md`
- * beside it. Anything else (no file, off, malformed) leaves the worlds list as it was.
+ * beside it; `directWorld: true` opens on that world's server list instead. Anything else
+ * (no file, off, malformed) leaves the worlds list as it was.
  */
 
 const MAX_BYTES = 64 * 1024;
@@ -38,10 +39,17 @@ function parseJson(text: string | null): unknown {
   }
 }
 
+/** The world to open straight on and whether its server list is skipped too, or null. */
+export async function readDirectWorld(read = besideThePage): Promise<{ world: ServerProfile; skipsServers: boolean } | null> {
+  const manifest = parseServerManifest(parseJson(await read('server.json')));
+  if (!manifest?.directLogin && !manifest?.directWorld) return null;
+  const world = parseServerList((await read('serverlist.md')) ?? '')[0];
+  return world ? { world, skipsServers: manifest.directLogin } : null;
+}
+
 /** The world to open straight on, or null. */
 export async function readDirectLogin(read = besideThePage): Promise<ServerProfile | null> {
-  if (!parseServerManifest(parseJson(await read('server.json')))?.directLogin) return null;
-  return parseServerList((await read('serverlist.md')) ?? '')[0] ?? null;
+  return (await readDirectWorld(read))?.world ?? null;
 }
 
 /** `?direct` (also `?direct=1`): this launch opens on a full-download screen, then the server select. `?direct=0|off|false|no` is no. */
@@ -54,6 +62,9 @@ export function directRequested(search: string = typeof location === 'undefined'
 export const DirectLogin = new (class {
   checked = false;
 
+  /** `directLogin` (not `directWorld`): the server list is skipped as well, the login takes the first channel. */
+  skips = false;
+
   /** `?direct`: the preloader page is `DirectLoadPage` (`ui/pages/preloader/directLoad.tsx`); no world is pinned. */
   readonly auto = directRequested();
 
@@ -61,16 +72,23 @@ export const DirectLogin = new (class {
     makeAutoObservable(this);
   }
 
+  /** A world is pinned: Start goes straight into it, no worlds list. */
   get on(): boolean {
     return ServerConfig.pinned !== null;
+  }
+
+  /** The pinned world's login opens in place of its server list (`directLogin` only). */
+  get skipsServers(): boolean {
+    return this.on && this.skips;
   }
 })();
 
 /** Called once from `app/boot.tsx`. */
 export async function checkDirectLogin(read = besideThePage): Promise<void> {
-  const world = await readDirectLogin(read);
+  const direct = await readDirectWorld(read);
   runInAction(() => {
-    if (world) ServerConfig.pin(world);
+    if (direct) ServerConfig.pin(direct.world);
+    DirectLogin.skips = direct?.skipsServers ?? false;
     DirectLogin.checked = true;
   });
 }

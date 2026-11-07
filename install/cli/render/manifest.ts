@@ -71,6 +71,8 @@ export function serverManifest(c: Config, modules: readonly ModuleEntry[] = []):
     loginTokens: true,
     // The client served beside this file skips the worlds list (src/modules/servers/directLogin.ts).
     directLogin: c.directLogin,
+    // Only the worlds list: Start opens this server's game server list.
+    directWorld: c.directWorld,
     // The modules folder (`<state>/modules`, state.ts): streamed to every player (docs/module_streaming.md).
     modules,
   };

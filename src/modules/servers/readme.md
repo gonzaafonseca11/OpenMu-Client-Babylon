@@ -136,6 +136,9 @@ connect server's own list (`Servers.serverList`) is filled by `session/net.ts`.
   (`directChannel`, what the picker shows first). Cancel, logout, Select Server and a lost
   connection all pass through `playOnline`, so they come back to the login. Exit Game still shows
   the preloader.
+- `directWorld: true` pins the world the same way (Start goes straight in, no worlds list) but
+  keeps its server list: `DirectLogin.skipsServers` is what the session reads, `DirectLogin.on`
+  only the preloader. `directLogin` wins when both are on.
 - `?direct` in the URL (`directRequested`, `DirectLogin.auto`) is another switch: it pins no world and only swaps
   the preloader page for `DirectLoadPage` (pages/readme.md), where lighter assets are on. `?direct=0` is off.
 

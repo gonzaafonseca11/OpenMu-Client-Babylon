@@ -51,6 +51,7 @@ describe('parseServerManifest', () => {
       modulesOff: [],
       loginTokens: false,
       directLogin: false,
+      directWorld: false,
       modules: [],
       modulesDropped: [],
     });
@@ -102,6 +103,7 @@ describe('parseServerManifest', () => {
       modulesOff: [],
       loginTokens: false,
       directLogin: false,
+      directWorld: false,
       modules: [],
       modulesDropped: [],
     });
@@ -142,6 +144,12 @@ describe('parseServerManifest', () => {
     expect(parseServerManifest({ version: 1, settings: {}, directLogin: true })?.directLogin).toBe(true);
     expect(parseServerManifest({ version: 1, settings: {} })?.directLogin).toBe(false);
     expect(parseServerManifest({ version: 1, settings: {}, directLogin: 'on' })).toBeNull();
+  });
+
+  it('reads whether the client beside it skips only the worlds list, off when it does not say', () => {
+    expect(parseServerManifest({ version: 1, settings: {}, directWorld: true })?.directWorld).toBe(true);
+    expect(parseServerManifest({ version: 1, settings: {} })?.directWorld).toBe(false);
+    expect(parseServerManifest({ version: 1, settings: {}, directWorld: 1 })).toBeNull();
   });
 
   describe('modules (streamed, phase 5)', () => {

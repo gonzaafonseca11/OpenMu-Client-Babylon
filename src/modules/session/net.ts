@@ -30,7 +30,7 @@ let serverListRequested = false;
 export function installNet(): void {
   EventBus.on('Hello', () => {
     // A direct login picks from a fresh list on every connect.
-    if (serverListRequested && !DirectLogin.on) return;
+    if (serverListRequested && !DirectLogin.skipsServers) return;
     serverListRequested = true;
     Servers.updateServerListRequest();
   });
@@ -59,7 +59,7 @@ export function installNet(): void {
     runInAction(() => {
       AppState.uiState = UIState.Login;
       // A direct login held the form while it waited for this.
-      if (DirectLogin.on) Session.loginProcessing = false;
+      if (DirectLogin.skipsServers) Session.loginProcessing = false;
     });
   });
 

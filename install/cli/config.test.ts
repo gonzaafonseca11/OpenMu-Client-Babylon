@@ -43,6 +43,8 @@ describe('config file', () => {
     expect(configToEnv({ ...config, directLogin: true }).MU_DIRECT_LOGIN).toBe('on');
     expect(envToConfig({ MU_DIRECT_LOGIN: 'on' }).directLogin).toBe(true);
     expect(envToConfig({}).directLogin).toBe(false);
+    expect(configToEnv({ ...config, directWorld: true }).MU_DIRECT_WORLD).toBe('on');
+    expect(envToConfig({}).directWorld).toBe(false);
   });
 
   it('stores the MU Helper restart as MU_HELPER_AFTER_RECONNECT, off unless set', () => {

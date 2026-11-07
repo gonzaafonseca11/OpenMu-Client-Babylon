@@ -168,6 +168,10 @@ everything the stack reads is rendered from `mu.env`, so `mu config` can change 
   `serverlist.md` beside it; a client loaded from another site ignores it, and a missing or broken
   file means the worlds list as before. Changing it needs no rebuild.
 
+  `directWorld` (`mu config` > Server list entry, `MU_DIRECT_WORLD`, default off, asked only with
+  `directLogin` off) hides only the worlds list: Start opens this server's game server list, and
+  Cancel, logout and a lost connection come back to it. Read like `directLogin`, no rebuild.
+
   `channelNames` (`mu config` > Server list entry, `MU_CHANNEL_NAMES`, empty by default) names the
   game servers players pick from, comma separated in server order (`No PvP, Bardo PvP`); they go
   into this world's `serverlist.md` as the channels of its one group. Empty leaves them unnamed.

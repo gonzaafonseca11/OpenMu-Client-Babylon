@@ -117,8 +117,8 @@ export const Session = new (class {
 
   playOnline() {
     // Direct login (`servers/directLogin.ts`): no server list; the login waits for the first channel.
-    AppState.uiState = DirectLogin.on ? UIState.Login : UIState.Servers;
-    if (DirectLogin.on) this.loginProcessing = true;
+    AppState.uiState = DirectLogin.skipsServers ? UIState.Login : UIState.Servers;
+    if (DirectLogin.skipsServers) this.loginProcessing = true;
     // The login fields belong to the world being entered, and which world that
     // is was decided on the screen this was called from.
     this.loadAccount();
@@ -183,7 +183,7 @@ export const Session = new (class {
 
   /** Direct login: on the login with no game server yet, so the connect server's list picks one. */
   get awaitingDirectChannel(): boolean {
-    return DirectLogin.on && !this.gsSocket && AppState.uiState === UIState.Login;
+    return DirectLogin.skipsServers && !this.gsSocket && AppState.uiState === UIState.Login;
   }
 
   /**

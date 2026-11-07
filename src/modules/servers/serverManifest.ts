@@ -56,6 +56,8 @@ type ServerManifest = {
   readonly loginTokens: boolean;
   /** The client served beside this file opens straight on this world's login (`directLogin.ts`); read at boot only. */
   readonly directLogin: boolean;
+  /** Like `directLogin`, but only the worlds list is skipped: Start opens this world's server list; read at boot only. */
+  readonly directWorld: boolean;
   /** The modules the world streams (phase 5); malformed entries are left out and named in `modulesDropped`. */
   readonly modules: readonly StreamedModuleEntry[];
   /** The entries left out of `modules`, by id (`#<index>` when the id itself is bad), for the notice. */
@@ -159,7 +161,7 @@ function parseModules(raw: unknown): Pick<ServerManifest, 'modules' | 'modulesDr
 
 /**
  * A `server.json` body, or null. It must be an object with `version` 1 and a `settings` object
- * whose known keys have their type, and may carry `modulesOff`, `loginTokens`, `directLogin` and `modules`; a wrong
+ * whose known keys have their type, and may carry `modulesOff`, `loginTokens`, `directLogin`, `directWorld` and `modules`; a wrong
  * type rejects the whole document, except in `modules`, where only the bad entry goes. Unknown keys are skipped: a newer server may know settings this client does not.
  */
 export function parseServerManifest(raw: unknown): ServerManifest | null {
@@ -183,12 +185,16 @@ export function parseServerManifest(raw: unknown): ServerManifest | null {
   const directLogin = raw.directLogin ?? false;
   if (typeof directLogin !== 'boolean') return null;
 
+  const directWorld = raw.directWorld ?? false;
+  if (typeof directWorld !== 'boolean') return null;
+
   return {
     version: SERVER_MANIFEST_VERSION,
     settings: settings as ServerSettings,
     modulesOff,
     loginTokens,
     directLogin,
+    directWorld,
     ...parseModules(raw.modules),
   };
 }

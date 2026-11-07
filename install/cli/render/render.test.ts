@@ -102,7 +102,7 @@ describe('client build', () => {
 
 describe('server.json', () => {
   it('holds the original behaviour by default, and offers login tokens: the plugin is in every image', () => {
-    expect(JSON.parse(serverManifest(domain))).toEqual({ version: 1, settings: ORIGINAL_SETTINGS, modulesOff: [], loginTokens: true, directLogin: false, modules: [] });
+    expect(JSON.parse(serverManifest(domain))).toEqual({ version: 1, settings: ORIGINAL_SETTINGS, modulesOff: [], loginTokens: true, directLogin: false, directWorld: false, modules: [] });
     expect(parseServerManifest(JSON.parse(serverManifest(domain)))?.loginTokens).toBe(true);
   });
 
@@ -127,6 +127,7 @@ describe('server.json', () => {
     expect(JSON.parse(serverManifest({ ...domain, directLogin: true })).directLogin).toBe(true);
     expect(parseServerManifest(JSON.parse(serverManifest({ ...domain, directLogin: true })))?.directLogin).toBe(true);
     expect(parseServerManifest(JSON.parse(serverManifest(domain)))?.directLogin).toBe(false);
+    expect(parseServerManifest(JSON.parse(serverManifest({ ...domain, directWorld: true })))?.directWorld).toBe(true);
   });
 
   // The client is the reader: what the installer writes must pass its strict check.

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { checkDirectLogin, DirectLogin, directChannel, readDirectLogin } from './directLogin';
+import { checkDirectLogin, DirectLogin, directChannel, readDirectLogin, readDirectWorld } from './directLogin';
 import { ServerConfig } from './serverConfig';
 
 const LIST = '# Server list\n\n[S6EP3:My MU:Season 6 Episode 3, played in the browser:en](example.com)\n';
@@ -34,6 +34,17 @@ describe('readDirectLogin', () => {
     // On, but no world to open on: the worlds list as before.
     expect(await readDirectLogin(served({ 'server.json': on }))).toBeNull();
   });
+
+  it('pins the world for directWorld too, keeping its server list', async () => {
+    const world = '{"version":1,"settings":{},"directWorld":true}';
+    expect(await readDirectWorld(served({ 'server.json': world, 'serverlist.md': LIST }))).toMatchObject({
+      world: { id: 'list:example.com' },
+      skipsServers: false,
+    });
+    const login = '{"version":1,"settings":{},"directLogin":true,"directWorld":true}';
+    expect((await readDirectWorld(served({ 'server.json': login, 'serverlist.md': LIST })))?.skipsServers).toBe(true);
+    expect(await readDirectWorld(served({ 'server.json': '{"version":1,"settings":{},"directWorld":"on"}', 'serverlist.md': LIST }))).toBeNull();
+  });
 });
 
 describe('directChannel', () => {
@@ -63,6 +74,7 @@ describe('checkDirectLogin', () => {
     await checkDirectLogin(served({ 'server.json': '{"version":1,"settings":{},"directLogin":true}', 'serverlist.md': LIST }));
     expect(DirectLogin.checked).toBe(true);
     expect(DirectLogin.on).toBe(true);
+    expect(DirectLogin.skipsServers).toBe(true);
     expect(ServerConfig.all.map(w => w.id)).toEqual(['list:example.com']);
     expect(ServerConfig.active.id).toBe('list:example.com');
     expect(ServerConfig.activeId).toBe('list:example.com');

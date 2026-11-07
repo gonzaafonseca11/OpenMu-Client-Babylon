@@ -16,6 +16,8 @@ export type Config = {
   channelNames: string;
   /** The client served here opens straight on this server's login, no worlds list (`server.json` `directLogin`). */
   directLogin: boolean;
+  /** Like `directLogin`, but only the worlds list goes: Start opens this server's game server list (`server.json` `directWorld`). */
+  directWorld: boolean;
   postgresPassword: string;
   adminUser: string;
   /** bcrypt of the admin panel password; the password itself is never stored. */
@@ -70,6 +72,7 @@ const KEYS: Record<keyof Config, string> = {
   serverLanguage: 'MU_SERVER_LANGUAGE',
   channelNames: 'MU_CHANNEL_NAMES',
   directLogin: 'MU_DIRECT_LOGIN',
+  directWorld: 'MU_DIRECT_WORLD',
   postgresPassword: 'POSTGRES_PASSWORD',
   adminUser: 'MU_ADMIN_USER',
   adminHash: 'MU_ADMIN_HASH',
@@ -110,6 +113,7 @@ export const DEFAULTS: Config = {
   serverLanguage: 'en',
   channelNames: '',
   directLogin: false,
+  directWorld: false,
   postgresPassword: '',
   adminUser: 'admin',
   adminHash: '',
