@@ -283,7 +283,7 @@
 }
 
 .ws-main {
-  --logo-h: clamp(100px, 23vh, 240px);
+  --logo-h: clamp(140px, 34vh, 340px);
   position: relative;
   z-index: 2;
   height: 100%;
@@ -300,7 +300,9 @@
   z-index: 3;
   flex: none;
   height: var(--logo-h);
-  aspect-ratio: 680 / 522;
+  aspect-ratio: 706 / 720;
+  // A little air above the cap of the Mu Bardo art.
+  margin-top: calc(0.04 * var(--logo-h));
   margin-bottom: calc(-0.07 * var(--logo-h));
   pointer-events: none;
   // Hidden while the load runs: only the hunter and the bar are on screen.

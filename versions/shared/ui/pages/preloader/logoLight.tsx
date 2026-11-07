@@ -17,7 +17,7 @@ export const LogoLight = () => (
     <img
       className="ws-logo-art"
       src={LOGO_ART}
-      alt="OpenMU Babylon"
+      alt="Mu Bardo"
       draggable={false}
     />
     <img className="ws-logo-bloom" src={GLOW_ART} alt="" draggable={false} />
