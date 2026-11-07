@@ -35,7 +35,8 @@ export async function backup(stack: Stack, label = ''): Promise<string> {
   if (roles.code !== 0) throw new Error(`pg_dumpall failed: ${roles.err}`);
   writeFileSync(join(dir, ROLES), withoutPostgresRole(roles.out));
 
-  const copy = await stack.once('register', ['bun', 'tools/sqliteBackup.ts', '/data', '/backup'], { binds: [`${join(dir, DATA)}:/backup`] });
+  // As root: the backup folder is root's (0700), the image runs as bun.
+  const copy = await stack.once('register', ['bun', 'tools/sqliteBackup.ts', '/data', '/backup'], { binds: [`${join(dir, DATA)}:/backup`], user: '0' });
   if (copy.code !== 0) throw new Error(`SQLite backup failed: ${copy.err}`);
 
   if (mailOn(stack.config)) {
@@ -66,8 +67,10 @@ export async function restore(stack: Stack, dir: string): Promise<void> {
   });
   if ((await load.exited) !== 0) throw new Error(`pg_restore failed: ${await new Response(load.stderr).text()}`);
 
-  const put = await stack.once('register', ['sh', '-c', 'find /data -name "*.sqlite*" -delete && cp -r /backup/. /data/'], {
+  // As root to read the 0700 backup folder; the files go back to bun, who writes them.
+  const put = await stack.once('register', ['sh', '-c', 'find /data -name "*.sqlite*" -delete && cp -r /backup/. /data/ && chown -R bun:bun /data'], {
     binds: [`${join(dir, DATA)}:/backup:ro`],
+    user: '0',
   });
   if (put.code !== 0) throw new Error(`Restoring the SQLite files failed: ${put.err}`);
 

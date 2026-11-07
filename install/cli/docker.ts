@@ -40,9 +40,10 @@ export class Stack {
   }
 
   /** A one-off container of a service's image, with its env and volumes (and any extra binds). */
-  once(service: string, cmd: string[], opts: { input?: string; binds?: string[] } = {}): Promise<Result> {
+  once(service: string, cmd: string[], opts: { input?: string; binds?: string[]; user?: string } = {}): Promise<Result> {
     const binds = (opts.binds ?? []).flatMap(b => ['-v', b]);
-    return this.compose(['run', '--rm', '--no-deps', '-T', ...binds, service, ...cmd], opts.input);
+    const user = opts.user ? ['--user', opts.user] : [];
+    return this.compose(['run', '--rm', '--no-deps', '-T', ...user, ...binds, service, ...cmd], opts.input);
   }
 
   logs(service?: string): Promise<number> {
