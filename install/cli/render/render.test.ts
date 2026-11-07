@@ -95,6 +95,8 @@ describe('client build', () => {
   it('lists this server as the only world', () => {
     expect(serverList(domain)).toContain('[S6EP3:My MU:Season 6 Episode 3, played in the browser:en](example.com)');
     expect(serverList(ip)).toContain('](127.0.0.1:44405@ws://203.0.113.7:3000)');
+    expect(serverList(domain)).not.toContain('- 0:');
+    expect(serverList({ ...domain, channelNames: ' No PvP, Bardo PvP ,' })).toMatch(/\(example\.com\)\n- 0:\n {2}- 0: No PvP\n {2}- 1: Bardo PvP\n$/);
   });
 });
 

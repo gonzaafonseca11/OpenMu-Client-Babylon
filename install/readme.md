@@ -168,6 +168,10 @@ everything the stack reads is rendered from `mu.env`, so `mu config` can change 
   `serverlist.md` beside it; a client loaded from another site ignores it, and a missing or broken
   file means the worlds list as before. Changing it needs no rebuild.
 
+  `channelNames` (`mu config` > Server list entry, `MU_CHANNEL_NAMES`, empty by default) names the
+  game servers players pick from, comma separated in server order (`No PvP, Bardo PvP`); they go
+  into this world's `serverlist.md` as the channels of its one group. Empty leaves them unnamed.
+
   `modules` (the `modules` folder of the state folder, empty by default) lists the modules this world
   streams to its players ([docs/module_streaming.md](../docs/module_streaming.md)). Put each module's
   built file there as `<name>.js` with a `<name>.json` beside it: `{ "id": "example", "version":

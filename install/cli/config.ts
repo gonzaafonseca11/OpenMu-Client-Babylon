@@ -12,6 +12,8 @@ export type Config = {
   serverName: string;
   serverDescription: string;
   serverLanguage: string;
+  /** Names of the game servers players pick from, comma separated in server order (serverlist.md channels); empty: unnamed. */
+  channelNames: string;
   /** The client served here opens straight on this server's login, no worlds list (`server.json` `directLogin`). */
   directLogin: boolean;
   postgresPassword: string;
@@ -66,6 +68,7 @@ const KEYS: Record<keyof Config, string> = {
   serverName: 'MU_SERVER_NAME',
   serverDescription: 'MU_SERVER_DESCRIPTION',
   serverLanguage: 'MU_SERVER_LANGUAGE',
+  channelNames: 'MU_CHANNEL_NAMES',
   directLogin: 'MU_DIRECT_LOGIN',
   postgresPassword: 'POSTGRES_PASSWORD',
   adminUser: 'MU_ADMIN_USER',
@@ -105,6 +108,7 @@ export const DEFAULTS: Config = {
   serverName: 'My MU',
   serverDescription: 'Season 6 Episode 3, played in the browser',
   serverLanguage: 'en',
+  channelNames: '',
   directLogin: false,
   postgresPassword: '',
   adminUser: 'admin',

@@ -43,6 +43,7 @@ export async function ask(c: Config, group: Group): Promise<Config> {
       next.serverName = await ui.text('Server name', { initial: c.serverName, validate: check.listField });
       next.serverDescription = await ui.text('Description', { initial: c.serverDescription, validate: check.listField });
       next.serverLanguage = await ui.text('Language code', { initial: c.serverLanguage, validate: v => (/^[a-z]{2}$/.test(v) ? undefined : 'Two letters, like en or es.') });
+      next.channelNames = await ui.text('Game server names players pick from (comma separated, in server order; blank for none)', { initial: c.channelNames, validate: v => (v.trim() ? v.split(',').map(n => check.listField(n)).find(Boolean) : undefined) });
       next.directLogin = await ui.confirm("Open straight on this server's login (hide the worlds list)?", c.directLogin);
       break;
     case 'passwords':
