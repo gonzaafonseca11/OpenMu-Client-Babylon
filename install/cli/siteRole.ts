@@ -7,7 +7,7 @@ import { SITE_DB_ROLE } from './stack';
 const ACCOUNT_COLUMNS = ['Id', 'LoginName', 'PasswordHash', 'State', 'IsBot', 'IsTemplate', 'ChatBanUntil'];
 const TABLES = ['data."Character"', 'data."StatAttribute"', 'config."AttributeDefinition"', 'config."CharacterClass"', 'config."GameMapDefinition"',
   // The GM panel's item maker reads the item definitions and the bag it fills.
-  'config."ItemDefinition"', 'config."ItemDefinitionItemOptionDefinition"', 'config."IncreasableItemOption"', 'config."ItemOptionType"',
+  'config."ItemDefinition"', 'config."ItemDefinitionCharacterClass"', 'config."ItemDefinitionItemOptionDefinition"', 'config."IncreasableItemOption"', 'config."ItemOptionType"',
   'config."ItemOptionOfLevel"', 'config."PowerUpDefinition"', 'data."Item"', 'data."ItemOptionLink"'];
 /** The only rows the site may add: a GM's item and its options (site/server/gm.ts). Never update or delete. */
 const INSERT_TABLES = ['data."Item"', 'data."ItemOptionLink"'];

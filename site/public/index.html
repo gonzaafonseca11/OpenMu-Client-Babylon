@@ -110,9 +110,41 @@
       <h1>Panel GM: crear ítem</h1>
       <p class="hint">El ítem va directo al inventario. El personaje tiene que estar <b>desconectado</b>.</p>
       <form id="gm-form" class="gm-form">
-        <label>Personaje <select name="character" id="gm-character" required></select></label>
-        <label>Buscar ítem <input id="gm-search" placeholder="Ej: Ring of Magic" autocomplete="off"></label>
-        <select id="gm-results" size="6" aria-label="Resultados"></select>
+        <label>Personaje <input name="character" maxlength="10" placeholder="Nombre del personaje" autocomplete="off" required></label>
+        <label>Clase
+          <select id="gm-family">
+            <option value="-1">Todas</option>
+            <option value="0">Dark Wizard / Soul Master / Grand Master</option>
+            <option value="1">Dark Knight / Blade Knight / Blade Master</option>
+            <option value="2">Elf / Muse Elf / High Elf</option>
+            <option value="3">Magic Gladiator / Duel Master</option>
+            <option value="4">Dark Lord / Lord Emperor</option>
+            <option value="5">Summoner / Bloody Summoner / Dimension Master</option>
+            <option value="6">Rage Fighter / Fist Master</option>
+          </select>
+        </label>
+        <label>Tipo de ítem
+          <select id="gm-group">
+            <option value="">Elegí un tipo...</option>
+            <option value="0">Espadas</option>
+            <option value="1">Hachas</option>
+            <option value="2">Mazas y cetros</option>
+            <option value="3">Lanzas</option>
+            <option value="4">Arcos y ballestas</option>
+            <option value="5">Bastones y libros</option>
+            <option value="6">Escudos</option>
+            <option value="7">Cascos</option>
+            <option value="8">Armaduras (pecheras)</option>
+            <option value="9">Pantalones</option>
+            <option value="10">Guantes</option>
+            <option value="11">Botas</option>
+            <option value="12">Alas y orbes</option>
+            <option value="13">Anillos, pendientes y mascotas</option>
+            <option value="14">Joyas y pociones</option>
+            <option value="15">Pergaminos</option>
+          </select>
+        </label>
+        <select id="gm-results" size="8" aria-label="Ítems" hidden></select>
         <div id="gm-item" hidden>
           <h2 id="gm-item-name"></h2>
           <label>Nivel <select name="level" id="gm-level"></select></label>

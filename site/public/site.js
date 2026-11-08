@@ -1,6 +1,6 @@
 // The site's page script: tabs by hash, rankings, news, the chat and the account panel.
 // Data goes in as text, never as HTML.
-/* global document, window, location, fetch, FormData, setInterval, clearInterval, setTimeout, clearTimeout */
+/* global document, window, location, fetch, FormData, setInterval, clearInterval */
 const $ = sel => document.querySelector(sel);
 const fmt = n => Number(n).toLocaleString('es-AR');
 const when = at => new Date(at).toLocaleString('es-AR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
@@ -190,27 +190,21 @@ async function showAccount() {
 
 let gmItem = null;
 
-async function showGm() {
-  await loadMe();
-  if (!me?.moderator) return;
-  const { ok, body } = await api('/api/gm/characters');
+async function gmBrowse() {
+  const group = $('#gm-group').value;
+  const list = $('#gm-results');
+  $('#gm-item').hidden = true;
+  gmItem = null;
+  list.hidden = group === '';
+  if (group === '') return;
+  const { ok, body } = await api(`/api/gm/items?group=${group}&family=${$('#gm-family').value}`);
   if (!ok) return;
-  const select = $('#gm-character');
-  const keep = select.value;
-  select.replaceChildren(...body.map(c => el('option', { value: c.name }, c.online ? `${c.name} (conectado)` : c.name)));
-  if (keep) select.value = keep;
-}
-
-async function gmSearch() {
-  const q = $('#gm-search').value.trim();
-  if (q.length < 2) return $('#gm-results').replaceChildren();
-  const { ok, body } = await api(`/api/gm/items?q=${encodeURIComponent(q)}`);
-  if (!ok) return;
-  $('#gm-results').replaceChildren(...body.map(i => {
-    const o = el('option', { value: i.id }, `${i.name} (${i.group}, ${i.number})`);
+  list.replaceChildren(...body.map(i => {
+    const o = el('option', { value: i.id }, i.name);
     o.item = i;
     return o;
   }));
+  if (!body.length) list.replaceChildren(el('option', { disabled: '' }, 'No hay ítems de este tipo para esa clase.'));
 }
 
 function checkbox(name, value, label, checked = false) {
@@ -264,7 +258,6 @@ async function gmGive(e) {
   button.disabled = false;
   if (!ok) $('#gm-error').textContent = body.error || 'No se pudo crear.';
   else $('#gm-ok').textContent = `Listo: ${body.name} +${form.get('level')} quedó en el inventario de ${form.get('character')}.`;
-  showGm();
 }
 
 /* ----------------------------------------------------------------- tabs */
@@ -280,7 +273,6 @@ function showTab() {
   if (panel === 'comunidad') showCommunity();
   else stopChat();
   if (panel === 'inicio') loadNews();
-  if (panel === 'gm') showGm();
   $('#gm-tab').hidden = !me?.moderator;
 }
 
@@ -311,11 +303,8 @@ document.addEventListener('DOMContentLoaded', () => {
     showAccount();
   });
 
-  let searchTimer = 0;
-  $('#gm-search').addEventListener('input', () => {
-    clearTimeout(searchTimer);
-    searchTimer = setTimeout(gmSearch, 250);
-  });
+  $('#gm-group').addEventListener('change', gmBrowse);
+  $('#gm-family').addEventListener('change', gmBrowse);
   $('#gm-results').addEventListener('change', gmPick);
   $('#gm-form').addEventListener('submit', gmGive);
   $('#gm-all-exc').addEventListener('click', () => {

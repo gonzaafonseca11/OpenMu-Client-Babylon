@@ -64,13 +64,21 @@ export function optionLabel(kind: OptionKind, attribute: string | null, number: 
   return `Adicional: ${what}`;
 }
 
-export async function searchItems(sql: Sql, q: string): Promise<ItemChoice[]> {
+/**
+ * Items of one group (sword, armor, gloves...) a class family may use. A family is a class number
+ * divided by 4 (Dark Wizard 0, Soul Master 2, Grand Master 3 are family 0); -1 is any class.
+ * An item with no class listed (rings, jewels) fits every class.
+ */
+export async function browseItems(sql: Sql, group: number, family: number): Promise<ItemChoice[]> {
   const rows = await sql`
-    SELECT "Id" AS id, "Name" AS name, "Group" AS g, "Number" AS n, "MaximumItemLevel" AS max, "Width" AS w, "Height" AS h,
-           "SkillId" IS NOT NULL AS skill, "Durability" AS dur
-    FROM config."ItemDefinition"
-    WHERE "Name" ILIKE ${`%${q.replace(/[%_\\]/g, ch => `\\${ch}`)}%`}
-    ORDER BY "Name" LIMIT 40
+    SELECT d."Id" AS id, d."Name" AS name, d."Group" AS g, d."Number" AS n, d."MaximumItemLevel" AS max, d."Width" AS w, d."Height" AS h,
+           d."SkillId" IS NOT NULL AS skill, d."Durability" AS dur
+    FROM config."ItemDefinition" d
+    WHERE d."Group" = ${group} AND (${family} < 0
+      OR NOT EXISTS (SELECT 1 FROM config."ItemDefinitionCharacterClass" q WHERE q."ItemDefinitionId" = d."Id")
+      OR EXISTS (SELECT 1 FROM config."ItemDefinitionCharacterClass" q JOIN config."CharacterClass" c ON c."Id" = q."CharacterClassId"
+                 WHERE q."ItemDefinitionId" = d."Id" AND c."Number" / 4 = ${family}))
+    ORDER BY d."DropLevel", d."Number"
   `;
   return rows.map(r => ({ id: String(r.id), name: String(r.name), group: Number(r.g), number: Number(r.n), maxLevel: Number(r.max), width: Number(r.w), height: Number(r.h), hasSkill: Boolean(r.skill), durability: Number(r.dur) }));
 }
@@ -111,7 +119,7 @@ export async function giveItem(sql: Sql, req: GiveRequest): Promise<{ slot: numb
 
   return sql.begin('read write', async tx => {
     const [ch] = await tx`SELECT "InventoryId" AS inv FROM data."Character" WHERE lower("Name") = lower(${req.character}) FOR UPDATE`;
-    if (!ch?.inv) return { error: 'No encontré ese personaje.' };
+    if (!ch?.inv) return { error: `El personaje "${req.character}" no existe. Revisá cómo está escrito.` };
     const placed = await tx`
       SELECT i."ItemSlot" AS slot, d."Width" AS w, d."Height" AS h FROM data."Item" i
       JOIN config."ItemDefinition" d ON d."Id" = i."DefinitionId"

@@ -1,4 +1,4 @@
-# site
+﻿# site
 
 The world's own website, on its bare domain (`https://<domain>`, IP mode: port 8082): the PK and
 reset rankings anyone can read, a player's characters behind a login with their game account, and
@@ -46,7 +46,7 @@ logged-in players (Game Masters delete lines).
 
 ## GM panel
 
-Game Master accounts (State 2 or 3) see a "Panel GM" tab: search an item, pick level, skill, luck,
+Game Master accounts (State 2 or 3) see a "Panel GM" tab: pick a class and an item type, then an item, its level, skill, luck,
 the extra option, excellent and wing options, and it is inserted into an offline character's bag
 (`server/gm.ts`). The site asks OpenMU's `/api/status` (`OPENMU_API_URL`) who is online first and
 refuses a connected character, since OpenMU would overwrite the bag on its next save. The role may

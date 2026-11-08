@@ -7,7 +7,7 @@ import { accountCharacters, accountHash, characterNames, findAccount, pkRanking,
 import { clearedCookie, cookieValue, fingerprint, issue, read, sessionCookie } from './session';
 import { openCommunity } from './community';
 import { chatBanned, chatMessage, chatTooFast, isBanned, isModerator, newsPost } from './rules';
-import { giveItem, itemOptions, onlinePlayers, searchItems } from './gm';
+import { browseItems, giveItem, itemOptions, onlinePlayers } from './gm';
 
 /**
  * The world's own website (site/readme.md): rankings anyone can read, and a player's characters
@@ -144,19 +144,20 @@ async function gmRequest(path: string, req: Request, url: URL): Promise<Response
   const account = await sessionAccount(req);
   if (!account) return notLoggedIn();
   if (!account.moderator) return notAllowed();
-  if (req.method === 'GET' && path === '/api/gm/items') return json(await searchItems(sql, (url.searchParams.get('q') ?? '').slice(0, 40)));
+  if (req.method === 'GET' && path === '/api/gm/items') {
+    const group = Number(url.searchParams.get('group'));
+    const family = Number(url.searchParams.get('family') ?? -1);
+    if (!Number.isInteger(group) || !Number.isInteger(family)) return json({ error: 'Pedido inválido.' }, 400);
+    return json(await browseItems(sql, group, family));
+  }
   if (req.method === 'GET' && path === '/api/gm/options') {
     const id = url.searchParams.get('id') ?? '';
     return /^[0-9a-f-]{36}$/.test(id) ? json(await itemOptions(sql, id)) : json({ error: 'Pedido inválido.' }, 400);
   }
-  if (req.method === 'GET' && path === '/api/gm/characters') {
-    const online = (OPENMU_API_URL && (await onlinePlayers(OPENMU_API_URL))) || [];
-    const rows = await sql`SELECT "Name" AS name FROM data."Character" ORDER BY "Name"`;
-    return json(rows.map(r => ({ name: String(r.name), online: online.some(n => n.toLowerCase() === String(r.name).toLowerCase()) })));
-  }
   if (req.method === 'POST' && path === '/api/gm/give') {
     const body = await readJson(req);
-    if (!body || typeof body.character !== 'string' || typeof body.definitionId !== 'string' || !Array.isArray(body.options)) return json({ error: 'Pedido inválido.' }, 400);
+    if (typeof body?.character === 'string') body.character = body.character.trim();
+    if (!body || typeof body.character !== 'string' || !body.character || body.character.length > 10 || typeof body.definitionId !== 'string' || !Array.isArray(body.options)) return json({ error: 'Pedido inválido.' }, 400);
     const online = OPENMU_API_URL ? await onlinePlayers(OPENMU_API_URL) : null;
     if (!online) return json({ error: 'No pude ver quién está conectado. Probá de nuevo en un rato.' }, 503);
     if (online.some(n => n.toLowerCase() === String(body.character).toLowerCase())) return json({ error: `${body.character} está conectado. Salí del juego con ese personaje y probá de nuevo.` }, 409);
