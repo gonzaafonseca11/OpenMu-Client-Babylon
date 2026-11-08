@@ -251,3 +251,6 @@ label.check { display: flex; gap: 8px; align-items: center; font-weight: 400; co
 .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
 .stats-grid label[hidden], .stats-form[hidden] { display: none; }
 .email-form { margin-top: 28px; }
+
+/* Whatever a rule's display, an element the script hides stays hidden. */
+[hidden] { display: none !important; }
