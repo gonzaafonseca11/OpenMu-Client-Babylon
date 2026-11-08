@@ -71,10 +71,21 @@ export async function findAccount(sql: Sql, login: string): Promise<LoginRow | n
   return row ? { id: String(row.id), hash: String(row.hash), state: Number(row.state) } : null;
 }
 
-/** The account's password hash, for checking a session still matches it. */
-export async function accountHash(sql: Sql, id: string): Promise<{ login: string; hash: string; state: number } | null> {
-  const [row] = await sql`SELECT "LoginName" AS login, "PasswordHash" AS hash, "State" AS state FROM data."Account" WHERE "Id" = ${id}`;
-  return row ? { login: String(row.login), hash: String(row.hash), state: Number(row.state) } : null;
+export type SessionRow = { login: string; hash: string; state: number; chatBanUntil: Date | null };
+
+/** The account behind a session: its password hash (the session must still match it), state and chat ban. */
+export async function accountHash(sql: Sql, id: string): Promise<SessionRow | null> {
+  const [row] = await sql`
+    SELECT "LoginName" AS login, "PasswordHash" AS hash, "State" AS state, "ChatBanUntil" AS ban
+    FROM data."Account" WHERE "Id" = ${id}
+  `;
+  return row ? { login: String(row.login), hash: String(row.hash), state: Number(row.state), chatBanUntil: (row.ban as Date | null) ?? null } : null;
+}
+
+/** The account's character names, for "talk as" in the chat. */
+export async function characterNames(sql: Sql, accountId: string): Promise<string[]> {
+  const rows = await sql`SELECT "Name" AS name FROM data."Character" WHERE "AccountId" = ${accountId} ORDER BY "CharacterSlot"`;
+  return rows.map(r => String(r.name));
 }
 
 export async function accountCharacters(sql: Sql, accountId: string): Promise<OwnCharacter[]> {

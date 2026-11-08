@@ -3,8 +3,8 @@ import type { Config } from './config';
 import type { Stack } from './docker';
 import { SITE_DB_ROLE } from './stack';
 
-/** Account columns the site needs: its login check and the GM/ban filter. Never e-mail, vault or security code. */
-const ACCOUNT_COLUMNS = ['Id', 'LoginName', 'PasswordHash', 'State', 'IsBot', 'IsTemplate'];
+/** Account columns the site needs: its login check, the GM/ban filter and the chat ban. Never e-mail, vault or security code. */
+const ACCOUNT_COLUMNS = ['Id', 'LoginName', 'PasswordHash', 'State', 'IsBot', 'IsTemplate', 'ChatBanUntil'];
 const TABLES = ['data."Character"', 'data."StatAttribute"', 'config."AttributeDefinition"', 'config."CharacterClass"', 'config."GameMapDefinition"'];
 
 /** Idempotent: creates the role when missing, sets its password and its grants every time. */

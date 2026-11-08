@@ -17,3 +17,6 @@ Data-v097d/**/*.gz
 # .NET build output of the OpenMU plugins
 openmu/plugins/bin/
 openmu/plugins/obj/
+
+# The website's local SQLite when run outside the stack (site/readme.md)
+site/.data/

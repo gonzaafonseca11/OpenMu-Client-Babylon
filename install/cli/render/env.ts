@@ -99,6 +99,7 @@ export function serviceEnv(c: Config): Partial<Record<Service, Env>> {
       HOSTNAME: '0.0.0.0',
       DATABASE_URL: siteDatabaseUrl(c),
       SITE_SESSION_SECRET: c.siteSessionSecret,
+      SITE_DB_PATH: DATA.site,
       SITE_SECURE_COOKIE: onOff(c.mode === 'domain'),
       SITE_NAME: c.serverName,
       SITE_PLAY_URL: origin,

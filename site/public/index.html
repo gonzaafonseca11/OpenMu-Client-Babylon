@@ -6,8 +6,8 @@
   <title>{{NAME}}</title>
   <meta name="description" content="{{NAME}}: MU Online de resets en el navegador. Rankings, tu cuenta y tus personajes.">
   <link rel="icon" href="/logo.webp" type="image/webp">
-  <link rel="stylesheet" href="/site.css">
-  <script src="/site.js" defer></script>
+  <link rel="stylesheet" href="/site.css?v={{VERSION}}">
+  <script src="/site.js?v={{VERSION}}" defer></script>
 </head>
 <body>
   <header class="top">
@@ -16,6 +16,7 @@
       <a href="#inicio" data-tab="inicio">Inicio</a>
       <a href="#pk" data-tab="pk">Ranking PK</a>
       <a href="#resets" data-tab="resets">Ranking Resets</a>
+      <a href="#comunidad" data-tab="comunidad">Comunidad</a>
       <a href="#cuenta" data-tab="cuenta">Mi cuenta</a>
     </nav>
   </header>
@@ -33,6 +34,44 @@
         <li><b>Experiencia</b> x100</li>
         <li><b>No PvP</b> y <b>Bardo PvP</b></li>
       </ul>
+      <div class="home-news" id="home-news" hidden>
+        <h2>Últimas noticias</h2>
+        <div class="news-list" data-news-list="home"></div>
+        <a class="more" href="#comunidad">Ver todas y el chat de la comunidad</a>
+      </div>
+    </section>
+
+    <section id="comunidad" class="panel" hidden>
+      <h1>Comunidad</h1>
+      <p class="hint">Las novedades del servidor y el chat de los jugadores.</p>
+
+      <div class="community">
+        <div class="news-col">
+          <h2>Noticias</h2>
+          <form id="news-form" class="news-form" hidden>
+            <input name="title" maxlength="120" placeholder="Título de la noticia" required>
+            <textarea name="body" maxlength="4000" rows="4" placeholder="Texto de la noticia" required></textarea>
+            <button class="btn btn-play" type="submit">Publicar noticia</button>
+            <p class="error" id="news-error" role="alert"></p>
+          </form>
+          <div class="news-list" data-news-list="all"></div>
+        </div>
+
+        <div class="chat-col">
+          <h2>Chat</h2>
+          <p class="hint" id="chat-login">Para leer y escribir en el chat, <a href="#cuenta">entrá con tu cuenta</a>.</p>
+          <div id="chat" hidden>
+            <div class="chat-log" id="chat-log" aria-live="polite"></div>
+            <form id="chat-form" class="chat-form">
+              <select name="character" aria-label="Hablar como"></select>
+              <input name="body" maxlength="300" placeholder="Escribí un mensaje..." autocomplete="off" required>
+              <button class="btn btn-play" type="submit">Enviar</button>
+            </form>
+            <p class="error" id="chat-error" role="alert"></p>
+            <p class="hint small">Respeto ante todo. El staff puede borrar mensajes y bloquear el chat.</p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section id="pk" class="panel" hidden>

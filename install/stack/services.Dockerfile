@@ -4,5 +4,5 @@ WORKDIR /app
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile --production --ignore-scripts
 COPY . .
-RUN mkdir -p /data/proxy /data/register /data/cashshop /data/marketplace /data/ops && chown -R bun:bun /data
+RUN mkdir -p /data/proxy /data/register /data/cashshop /data/marketplace /data/ops /data/site && chown -R bun:bun /data
 USER bun

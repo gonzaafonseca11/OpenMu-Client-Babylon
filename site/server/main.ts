@@ -3,8 +3,10 @@ import bcrypt from 'bcryptjs';
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
 import { BurstLimit, bucketFor, clientIp } from '../../src/core/rateLimit';
-import { accountCharacters, accountHash, findAccount, pkRanking, resetRanking, type RankedCharacter } from './queries';
+import { accountCharacters, accountHash, characterNames, findAccount, pkRanking, resetRanking, type RankedCharacter } from './queries';
 import { clearedCookie, cookieValue, fingerprint, issue, read, sessionCookie } from './session';
+import { openCommunity } from './community';
+import { chatBanned, chatMessage, chatTooFast, isBanned, isModerator, newsPost } from './rules';
 
 /**
  * The world's own website (site/readme.md): rankings anyone can read, and a player's characters
@@ -20,6 +22,8 @@ const SECURE_COOKIE = (process.env.SITE_SECURE_COOKIE || 'on') !== 'off';
 const NAME = process.env.SITE_NAME || 'MU';
 const PLAY_URL = process.env.SITE_PLAY_URL || '/';
 const REGISTER_URL = process.env.SITE_REGISTER_URL || '';
+/** The site's own SQLite file: the community chat and the news. */
+const SITE_DB_PATH = process.env.SITE_DB_PATH || join(import.meta.dir, '..', '.data', 'site.sqlite');
 
 /** Login attempts per network in ten minutes: enough for typos, too few to guess passwords. */
 const LOGIN_LIMIT = Number(process.env.LOGIN_LIMIT || 10);
@@ -28,6 +32,7 @@ const LOGIN_WINDOW_MS = 10 * 60 * 1000;
 const RANKING_TTL_MS = 60 * 1000;
 
 const sql = postgres(DATABASE_URL, { max: 4, idle_timeout: 60 });
+const community = openCommunity(SITE_DB_PATH);
 const logins = new BurstLimit(LOGIN_LIMIT, LOGIN_WINDOW_MS);
 /** Compared against when the account does not exist, so a missing name answers as slowly as a wrong password. */
 const DUMMY_HASH = bcrypt.hashSync('not-a-password', 10);
@@ -38,7 +43,9 @@ const PUBLIC = join(import.meta.dir, '..', 'public');
 const INDEX = readFileSync(join(PUBLIC, 'index.html'), 'utf8')
   .replaceAll('{{NAME}}', escapeHtml(NAME))
   .replaceAll('{{PLAY_URL}}', escapeHtml(PLAY_URL))
-  .replaceAll('{{REGISTER_URL}}', escapeHtml(REGISTER_URL || PLAY_URL));
+  .replaceAll('{{REGISTER_URL}}', escapeHtml(REGISTER_URL || PLAY_URL))
+  // A new start is a new deploy: the page asks for its script and style afresh.
+  .replaceAll('{{VERSION}}', Date.now().toString(36));
 
 const STATIC: Record<string, { file: string; type: string }> = {
   '/site.css': { file: join(PUBLIC, 'site.css'), type: 'text/css; charset=utf-8' },
@@ -68,13 +75,64 @@ async function cached(key: string, load: () => Promise<RankedCharacter[]>): Prom
   return rows;
 }
 
-/** The logged-in account, when the session is valid and its password has not changed since. */
-async function sessionAccount(req: Request): Promise<{ id: string; login: string } | null> {
+type SessionAccount = { id: string; login: string; moderator: boolean; chatBanned: boolean };
+
+/** The logged-in account, when the session is valid, its password has not changed since and it is not banned. */
+async function sessionAccount(req: Request): Promise<SessionAccount | null> {
   const session = read(SECRET, cookieValue(req.headers.get('cookie')));
   if (!session) return null;
   const account = await accountHash(sql, session.accountId);
-  if (!account || account.state >= 4 || fingerprint(account.hash) !== session.fingerprint) return null;
-  return { id: session.accountId, login: account.login };
+  if (!account || isBanned(account.state) || fingerprint(account.hash) !== session.fingerprint) return null;
+  return { id: session.accountId, login: account.login, moderator: isModerator(account.state), chatBanned: chatBanned(account.chatBanUntil) };
+}
+
+async function readJson(req: Request): Promise<Record<string, unknown> | null> {
+  try {
+    const body = await req.json();
+    return body && typeof body === 'object' ? (body as Record<string, unknown>) : null;
+  } catch {
+    return null;
+  }
+}
+
+const notLoggedIn = () => json({ error: 'Entrá con tu cuenta primero.' }, 401);
+const notAllowed = () => json({ error: 'Solo el staff puede hacer esto.' }, 403);
+
+/** The community's POSTs: chat lines, and for moderators news and hiding either. */
+async function communityPost(path: string, req: Request): Promise<Response | null> {
+  if (!['/api/chat', '/api/chat/delete', '/api/news', '/api/news/delete'].includes(path)) return null;
+  const account = await sessionAccount(req);
+  if (!account) return notLoggedIn();
+  const body = await readJson(req);
+  if (!body) return json({ error: 'Pedido inválido.' }, 400);
+
+  if (path === '/api/chat') {
+    if (account.chatBanned) return json({ error: 'Tenés el chat bloqueado por un rato.' }, 403);
+    const message = chatMessage(body.body);
+    if ('error' in message) return json(message, 400);
+    const names = await characterNames(sql, account.id);
+    const author = names.find(n => n.toLowerCase() === String(body.character ?? '').toLowerCase());
+    if (!author) return json({ error: 'Elegí uno de tus personajes para hablar.' }, 400);
+    if (chatTooFast(community.recentChat(account.id), Date.now())) return json({ error: 'Más despacio: esperá unos segundos.' }, 429);
+    return json({ id: community.postChat(account.id, author, message.text) });
+  }
+
+  if (!account.moderator) return notAllowed();
+  const id = Number(body.id);
+  if (path === '/api/chat/delete' && Number.isInteger(id)) {
+    community.hideChat(id);
+    return json({ ok: true });
+  }
+  if (path === '/api/news/delete' && Number.isInteger(id)) {
+    community.hideNews(id);
+    return json({ ok: true });
+  }
+  if (path === '/api/news') {
+    const post = newsPost(body.title, body.body);
+    if ('error' in post) return json(post, 400);
+    return json({ id: community.postNews(account.id, post.title, post.body) });
+  }
+  return json({ error: 'Pedido inválido.' }, 400);
 }
 
 async function login(req: Request, ip: string): Promise<Response> {
@@ -118,12 +176,19 @@ Bun.serve({
       if (req.method === 'GET' && path === '/api/me') {
         const account = await sessionAccount(req);
         if (!account) return json({ error: 'No iniciaste sesión.' }, 401);
-        return json({ login: account.login, characters: await accountCharacters(sql, account.id) });
+        return json({ login: account.login, moderator: account.moderator, chatBanned: account.chatBanned, characters: await accountCharacters(sql, account.id) });
+      }
+      if (req.method === 'GET' && path === '/api/news') return json(community.news());
+      if (req.method === 'GET' && path === '/api/chat') {
+        if (!(await sessionAccount(req))) return notLoggedIn();
+        return json(community.chat(Math.max(0, Number(url.searchParams.get('after')) || 0)));
       }
       // JSON only: a cross-site form cannot send it, and the cookie is SameSite=Strict besides.
       if (req.method === 'POST' && req.headers.get('content-type')?.startsWith('application/json')) {
         if (path === '/api/login') return await login(req, clientIp(req, server));
         if (path === '/api/logout') return json({ ok: true }, 200, { 'Set-Cookie': clearedCookie(SECURE_COOKIE) });
+        const answer = await communityPost(path, req);
+        if (answer) return answer;
       }
       return json({ error: 'No encontrado.' }, 404);
     } catch (err) {

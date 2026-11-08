@@ -60,5 +60,6 @@ export const DATA = {
   cashshop: '/data/cashshop/shop.sqlite',
   marketplace: '/data/marketplace/market.sqlite',
   ops: '/data/ops/ops.sqlite',
+  site: '/data/site/site.sqlite',
   openmuLogs: '/openmu-logs',
 } as const;
