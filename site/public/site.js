@@ -254,9 +254,11 @@ async function gmGive(e) {
   $('#gm-ok').textContent = '';
   const button = e.target.querySelector('button[type=submit]');
   button.disabled = true;
-  const { ok, body } = await post('/api/gm/give', { character: form.get('character'), definitionId: gmItem.id, level: Number(form.get('level')), skill: form.get('skill') === 'on', options });
+  const isSet = $('#gm-group').value === 'sets';
+  const { ok, body } = await post(isSet ? '/api/gm/give-set' : '/api/gm/give', { character: form.get('character'), definitionId: gmItem.id, level: Number(form.get('level')), skill: form.get('skill') === 'on', options });
   button.disabled = false;
   if (!ok) $('#gm-error').textContent = body.error || 'No se pudo crear.';
+  else if (isSet) $('#gm-ok').textContent = `Listo: ${body.given.join(', ')} +${form.get('level')} quedaron en el inventario de ${form.get('character')}.`;
   else $('#gm-ok').textContent = `Listo: ${body.name} +${form.get('level')} quedó en el inventario de ${form.get('character')}.`;
 }
 

@@ -69,18 +69,62 @@ export function optionLabel(kind: OptionKind, attribute: string | null, number: 
  * divided by 4 (Dark Wizard 0, Soul Master 2, Grand Master 3 are family 0); -1 is any class.
  * An item with no class listed (rings, jewels) fits every class.
  */
-export async function browseItems(sql: Sql, group: number, family: number): Promise<ItemChoice[]> {
+/** What the panel's "type" list asks for: an item group, wings or orbs (both group 12), or full armor sets. */
+export type Browse = number | 'wings' | 'orbs' | 'sets';
+
+export function parseBrowse(value: string | null): Browse | null {
+  if (value === 'wings' || value === 'orbs' || value === 'sets') return value;
+  const n = Number(value);
+  return value !== null && value !== '' && Number.isInteger(n) && n >= 0 && n <= 15 ? n : null;
+}
+
+/** A set is named by its armor: "Venom Mist Armor" is the "Venom Mist" set. */
+export const setName = (armor: string) => armor.replace(/\s+(Armor|Robe|Suit)$/i, '');
+
+export async function browseItems(sql: Sql, browse: Browse, family: number): Promise<ItemChoice[]> {
+  const group = browse === 'sets' ? 8 : typeof browse === 'number' ? browse : 12;
+  // Wings are the group 12 items worn in a slot; orbs, jewels and the rest have none.
+  const slot = browse === 'wings' ? sql`AND d."ItemSlotId" IS NOT NULL` : browse === 'orbs' ? sql`AND d."ItemSlotId" IS NULL` : sql``;
   const rows = await sql`
     SELECT d."Id" AS id, d."Name" AS name, d."Group" AS g, d."Number" AS n, d."MaximumItemLevel" AS max, d."Width" AS w, d."Height" AS h,
            d."SkillId" IS NOT NULL AS skill, d."Durability" AS dur
     FROM config."ItemDefinition" d
-    WHERE d."Group" = ${group} AND (${family} < 0
+    WHERE d."Group" = ${group} ${slot} AND (${family} < 0
       OR NOT EXISTS (SELECT 1 FROM config."ItemDefinitionCharacterClass" q WHERE q."ItemDefinitionId" = d."Id")
       OR EXISTS (SELECT 1 FROM config."ItemDefinitionCharacterClass" q JOIN config."CharacterClass" c ON c."Id" = q."CharacterClassId"
                  WHERE q."ItemDefinitionId" = d."Id" AND c."Number" / 4 = ${family}))
     ORDER BY d."DropLevel", d."Number"
   `;
-  return rows.map(r => ({ id: String(r.id), name: String(r.name), group: Number(r.g), number: Number(r.n), maxLevel: Number(r.max), width: Number(r.w), height: Number(r.h), hasSkill: Boolean(r.skill), durability: Number(r.dur) }));
+  return rows.map(r => ({ id: String(r.id), name: browse === 'sets' ? `Set ${setName(String(r.name))}` : String(r.name), group: Number(r.g), number: Number(r.n), maxLevel: Number(r.max), width: Number(r.w), height: Number(r.h), hasSkill: Boolean(r.skill), durability: Number(r.dur) }));
+}
+
+/** The same choice on another piece: options match by kind and number (excellent 1-6, luck, the extra option). */
+export function matchOptions(from: readonly ItemOption[], picked: readonly Picked[], to: readonly ItemOption[]): Picked[] {
+  return picked.flatMap(p => {
+    const o = from.find(x => x.id === p.id);
+    const twin = o && to.find(x => x.kind === o.kind && x.number === o.number);
+    return twin ? [{ id: twin.id, level: Math.min(p.level, twin.maxLevel) }] : [];
+  });
+}
+
+/**
+ * A full armor set: the helm, armor, pants, gloves and boots (groups 7-11) that share the armor's
+ * number, each with the options picked on the armor. Stops at the first piece that does not fit.
+ */
+export async function giveSet(sql: Sql, req: GiveRequest): Promise<{ given: string[] } | { error: string }> {
+  const [armor] = await sql`SELECT "Number" AS n, "GameConfigurationId" AS cfg FROM config."ItemDefinition" WHERE "Id" = ${req.definitionId} AND "Group" = 8`;
+  if (!armor) return { error: 'Ese set no existe.' };
+  const pieces = await sql`SELECT "Id" AS id FROM config."ItemDefinition" WHERE "Number" = ${armor.n} AND "GameConfigurationId" = ${armor.cfg} AND "Group" BETWEEN 7 AND 11 ORDER BY "Group"`;
+  const armorOptions = await itemOptions(sql, req.definitionId);
+  const given: string[] = [];
+  for (const piece of pieces) {
+    const id = String(piece.id);
+    const options = id === req.definitionId ? req.options : matchOptions(armorOptions, req.options, await itemOptions(sql, id));
+    const result = await giveItem(sql, { ...req, definitionId: id, options });
+    if ('error' in result) return { error: given.length ? `${result.error} Ya entregué: ${given.join(', ')}.` : result.error };
+    given.push(result.name);
+  }
+  return { given };
 }
 
 export async function itemOptions(sql: Sql, definitionId: string): Promise<ItemOption[]> {

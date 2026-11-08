@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { checkOptions, checkStats, durabilityFor, experienceForLevel, optionLabel, type ItemOption } from './gm';
+import { checkOptions, checkStats, durabilityFor, experienceForLevel, matchOptions, optionLabel, parseBrowse, setName, type ItemOption } from './gm';
 
 const opts: ItemOption[] = [
   { id: 'e1', kind: 'excellent', number: 1, label: 'Zen', maxLevel: 4 },
@@ -36,6 +36,25 @@ describe('GM item maker', () => {
     expect(checkStats({ ...ok, strength: 32501 }, false)).toHaveProperty('error');
     expect(checkStats({ ...ok, level: 0 }, false)).toHaveProperty('error');
     expect(checkStats({ ...ok, zen: 1.5 }, false)).toHaveProperty('error');
+  });
+
+  it('reads the type list and names sets by their armor', () => {
+    expect(parseBrowse('sets')).toBe('sets');
+    expect(parseBrowse('7')).toBe(7);
+    expect(parseBrowse('99')).toBeNull();
+    expect(parseBrowse('')).toBeNull();
+    expect(setName('Venom Mist Armor')).toBe('Venom Mist');
+  });
+
+  it('carries the picked options to another piece of the set', () => {
+    const helm: ItemOption[] = [
+      { id: 'h1', kind: 'excellent', number: 1, label: 'Zen', maxLevel: 4 },
+      { id: 'hl', kind: 'luck', number: 0, label: 'Luck', maxLevel: 4 },
+      { id: 'ho', kind: 'option', number: 0, label: 'Adicional', maxLevel: 4 },
+    ];
+    expect(matchOptions(opts, [{ id: 'e1', level: 0 }, { id: 'luck', level: 0 }, { id: 'o1', level: 4 }], helm)).toEqual([
+      { id: 'h1', level: 0 }, { id: 'hl', level: 0 }, { id: 'ho', level: 4 },
+    ]);
   });
 
   it('names options in Spanish', () => {
