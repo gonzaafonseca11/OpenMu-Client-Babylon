@@ -235,6 +235,18 @@ async function gmPick() {
     box.replaceChildren(legend, ...of(kind).map(o => checkbox('opt', o.id, o.label, true)));
     box.hidden = !of(kind).length;
   }
+  // Fenrir: one kind per horn (Gold is several option lines with one number).
+  const fenrir = $('#gm-fenrir');
+  const kinds = [...new Map(of('fenrir').map(o => [o.number, o.label])).entries()];
+  const radio = (value, label, checked) => {
+    const input = el('input', { type: 'radio', name: 'fenrir', value });
+    input.checked = checked;
+    return el('label', { class: 'check' }, input, ` ${label}`);
+  };
+  fenrir.replaceChildren(fenrir.querySelector('legend'), radio('', 'Rojo: sin opción', !kinds.length), ...kinds.map(([n, label], i) => radio(String(n), label, i === kinds.length - 1)));
+  fenrir.hidden = !kinds.length;
+  gmItem.fenrirLines = of('fenrir');
+
   const extra = $('#gm-option');
   const lines = of('option');
   const pick = el('select', { name: 'optionId' }, el('option', { value: '' }, 'Ninguna'), ...lines.map(o => el('option', { value: o.id }, o.label)));
@@ -259,6 +271,8 @@ async function gmGive(e) {
   const form = new FormData(e.target);
   const options = form.getAll('opt').map(id => ({ id, level: 0 }));
   if (form.get('optionId')) options.push({ id: form.get('optionId'), level: Number(form.get('optionLevel')) });
+  const horn = form.get('fenrir');
+  if (horn) for (const o of gmItem.fenrirLines ?? []) if (String(o.number) === horn) options.push({ id: o.id, level: 0 });
   $('#gm-error').textContent = '';
   $('#gm-ok').textContent = '';
   const button = e.target.querySelector('button[type=submit]');

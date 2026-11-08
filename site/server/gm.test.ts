@@ -58,6 +58,17 @@ describe('GM item maker', () => {
     ]);
   });
 
+  it('takes one Fenrir kind, with all its lines', () => {
+    const horn: ItemOption[] = [
+      { id: 'b', kind: 'fenrir', number: 1, label: 'Negro', maxLevel: 1 },
+      { id: 'g1', kind: 'fenrir', number: 4, label: 'Dorado', maxLevel: 1 },
+      { id: 'g2', kind: 'fenrir', number: 4, label: 'Dorado', maxLevel: 1 },
+    ];
+    expect(checkOptions(horn, [{ id: 'g1', level: 0 }, { id: 'g2', level: 0 }])).toHaveProperty('links');
+    expect(checkOptions(horn, [{ id: 'b', level: 0 }, { id: 'g1', level: 0 }])).toHaveProperty('error');
+    expect(optionLabel('fenrir', null, 2)).toMatch(/Azul/);
+  });
+
   it('names options in Spanish', () => {
     expect(optionLabel('excellent', 'Maximum Health', 6)).toBe('Vida máxima +4%');
     expect(optionLabel('luck', null, 0)).toMatch(/Luck/);

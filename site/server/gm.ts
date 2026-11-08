@@ -13,7 +13,13 @@ export const OPTION_KINDS = {
   'Luck (Critical Damage Chance 5%)': 'luck',
   Option: 'option',
   'Wing Option': 'wing',
+  'Black Fenrir Option': 'fenrir',
+  'Blue Fenrir Option': 'fenrir',
+  'Gold Fenrir Option': 'fenrir',
 } as const;
+
+/** The Horn of Fenrir's kinds, by option number: one kind per horn, Gold being several lines. */
+export const FENRIR = { 1: 'Negro (Destroy): +daño', 2: 'Azul (Protect): -daño recibido', 4: 'Dorado (Illusion): +daño, +vida, +maná' } as const;
 export type OptionKind = (typeof OPTION_KINDS)[keyof typeof OPTION_KINDS];
 
 export type ItemOption = { id: string; kind: OptionKind; number: number; label: string; maxLevel: number };
@@ -39,6 +45,7 @@ export function checkOptions(available: readonly ItemOption[], picked: readonly 
     links.push({ option, level });
   }
   if (links.filter(l => l.option.kind === 'option').length > 1) return { error: 'Elegí una sola opción adicional.' };
+  if (new Set(links.filter(l => l.option.kind === 'fenrir').map(l => l.option.number)).size > 1) return { error: 'Elegí un solo tipo de Fenrir.' };
   return { links };
 }
 
@@ -61,6 +68,7 @@ export function optionLabel(kind: OptionKind, attribute: string | null, number: 
   const what = attribute ?? `#${number}`;
   if (kind === 'excellent') return LABELS[what] ?? what;
   if (kind === 'wing') return `Ala: ${what}`;
+  if (kind === 'fenrir') return FENRIR[number as keyof typeof FENRIR] ?? `Fenrir #${number}`;
   return `Adicional: ${what}`;
 }
 
