@@ -1,6 +1,6 @@
 import { convertBux } from '../../terrain/mapFileEncryption';
 import { onLanguageChanged } from '@/i18n';
-import { decodeLocalText, downloadLocalDataFile } from './localData';
+import { decodeLocalText, downloadEnglishDataFile, downloadLocalDataFile } from './localData';
 
 /**
  * `Local/<lang>/MoveReq_<lang>.bmd`, the Move window rows, decoded like
@@ -29,6 +29,7 @@ export type MoveReqEntry = {
 };
 
 let pending: Promise<readonly MoveReqEntry[]> | null = null;
+let pendingEnglish: Promise<readonly MoveReqEntry[]> | null = null;
 
 function readName(bytes: Uint8Array, offset: number): string {
   return decodeLocalText(bytes, offset, NAME_LENGTH);
@@ -60,8 +61,21 @@ function parse(bytes: Uint8Array): MoveReqEntry[] {
   return entries;
 }
 
-/** The move list, in file order (the order the window shows). Cached after the first call. */
-export function loadMoveReqList(): Promise<readonly MoveReqEntry[]> {
+/**
+ * The move list, in file order (the order the window shows). Cached after the first call.
+ * `english`: the English file whatever the language (a world's `englishMapNames`); the rows are the same.
+ */
+export function loadMoveReqList(english = false): Promise<readonly MoveReqEntry[]> {
+  if (english) {
+    pendingEnglish ??= downloadEnglishDataFile(FILE).then(
+      bytes => (bytes.length ? parse(bytes) : loadMoveReqList()),
+      err => {
+        pendingEnglish = null;
+        throw err;
+      }
+    );
+    return pendingEnglish;
+  }
   if (!pending) {
     pending = downloadLocalDataFile(FILE).then(parse, err => {
       pending = null;

@@ -89,6 +89,12 @@ describe('parseServerManifest', () => {
     expect(parseServerManifest({ version: 1, settings: { jewelBundling: 'yes' } })).toBeNull();
   });
 
+  it('reads englishMapNames, off on the original', () => {
+    expect(ORIGINAL_SETTINGS.englishMapNames).toBe(false);
+    expect(parseServerManifest({ version: 1, settings: { englishMapNames: true } })?.settings.englishMapNames).toBe(true);
+    expect(parseServerManifest({ version: 1, settings: { englishMapNames: 'yes' } })).toBeNull();
+  });
+
   it('gives a setting the document leaves out its original value', () => {
     expect(parseServerManifest({ version: 1, settings: {} })?.settings).toEqual(ORIGINAL_SETTINGS);
   });

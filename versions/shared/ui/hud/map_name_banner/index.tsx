@@ -1,6 +1,7 @@
 import './style.less';
 import { useEffect, useRef, useState } from 'react';
 import { i18n } from '@/i18n';
+import { serverSetting } from '@/modules/servers/serverManifest';
 import { Loading } from '@/controllers/loading';
 import { useEventBus } from '@/controllers/interface/hooks';
 import { useMuSprite } from '@/controllers/interface/components/mu_sprite';
@@ -37,7 +38,8 @@ const FADE_OUT_MS = (1 / ALPHA_PER_SECOND) * 1000;
  * the English picture instead of showing no banner at all.
  */
 function bannerPaths(file: string): string[] {
-  const folder = i18n.dataPack?.folder ?? 'Eng';
+  // A world's `englishMapNames`: the English picture whatever the language.
+  const folder = serverSetting('englishMapNames') ? 'Eng' : (i18n.dataPack?.folder ?? 'Eng');
   const paths = [`Data/Local/${folder}/ImgsMapName/${file}`];
   if (folder !== 'Eng') paths.push(`Data/Local/Eng/ImgsMapName/${file}`);
   return paths;

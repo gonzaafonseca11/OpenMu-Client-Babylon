@@ -173,6 +173,15 @@ export async function downloadPackDataFile(base: string): Promise<Uint8Array> {
  * is cached: the tables that use this hold their own decoded copy and re-read
  * it when the language changes.
  */
+/** The English table (`Local/Eng/<Base>_eng.bmd`) whatever the language, or empty. */
+export async function downloadEnglishDataFile(base: string): Promise<Uint8Array> {
+  for (const path of [`Local/Eng/${base}_eng.bmd`, `Local/Eng/${base.toLowerCase()}_eng.bmd`]) {
+    const bytes = await optional(path);
+    if (bytes.length) return bytes;
+  }
+  return MISSING;
+}
+
 export async function downloadLocalDataFile(
   base: string,
   neutral?: string

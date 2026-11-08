@@ -52,6 +52,8 @@ export type Config = {
   jewelBundling: boolean;
   /** The client build also writes lighter copies (WebP, Opus) beside the originals, and `server.json` tells players to read them (off = the originals only). */
   liteAssets: boolean;
+  /** `server.json`: map names in English whatever the player's language (off = the original, from the language pack). */
+  englishMapNames: boolean;
   /** Optional client modules this world turns off, comma separated (`server.json` `modulesOff`). */
   modulesOff: string;
   /** The owner's ed25519 public key (base64url) baked into the client: modules it signed run in the page. Empty: none. */
@@ -99,6 +101,7 @@ const KEYS: Record<keyof Config, string> = {
   jewelryUpgrade: 'MU_JEWELRY_UPGRADE',
   jewelBundling: 'MU_JEWEL_BUNDLING',
   liteAssets: 'MU_LITE_ASSETS',
+  englishMapNames: 'MU_ENGLISH_MAP_NAMES',
   modulesOff: 'MU_MODULES_OFF',
   moduleSigningKey: 'MU_MODULE_SIGNING_KEY',
   mail: 'MU_MAIL',
@@ -142,6 +145,7 @@ export const DEFAULTS: Config = {
   jewelryUpgrade: false,
   jewelBundling: false,
   liteAssets: false,
+  englishMapNames: false,
   modulesOff: '',
   moduleSigningKey: '',
   mail: false,

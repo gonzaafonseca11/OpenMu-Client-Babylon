@@ -151,6 +151,10 @@ everything the stack reads is rendered from `mu.env`, so `mu config` can change 
   downloads, slightly lower quality. The originals stay served, and a player can keep them (Options >
   Fidelity, or Classic). Changing it rebuilds the client.
 
+  `englishMapNames` (`mu config` > Features, `MU_ENGLISH_MAP_NAMES`, default off) shows the map
+  names in English whatever the player's language: the banner on entering a map takes the `Eng`
+  picture and the Move window the `MoveReq_eng.bmd` rows. Everything else stays in the language.
+
   `modulesOff` (`mu config` > Features, `MU_MODULES_OFF` in `mu.env`, comma separated, default
   none) lists the optional client modules this world does without: their windows hide for its
   players. `band` is added by itself when the band relay is off. The ids are the folders of

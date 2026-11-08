@@ -30,6 +30,8 @@ type ServerSettings = {
   readonly jewelBundling: boolean;
   /** The client served here has lighter copies of its files (ours: WebP, Opus; `tools/liteAssets.ts`); the original reads the originals. */
   readonly liteAssets: boolean;
+  /** Map names in English whatever the language (ours: the original takes them from the language pack): the entry banner and the Move window. */
+  readonly englishMapNames: boolean;
 };
 
 /** One module the world streams to its players (docs/module_streaming.md, phase 5). */
@@ -79,6 +81,7 @@ export const ORIGINAL_SETTINGS: ServerSettings = {
   jewelryUpgrade: false,
   jewelBundling: false,
   liteAssets: false,
+  englishMapNames: false,
 };
 
 const ORIGINAL: InForce = { settings: ORIGINAL_SETTINGS, loginTokens: false };
@@ -102,6 +105,7 @@ const SETTING_TYPES: { readonly [K in keyof ServerSettings]: 'boolean' } = {
   jewelryUpgrade: 'boolean',
   jewelBundling: 'boolean',
   liteAssets: 'boolean',
+  englishMapNames: 'boolean',
 };
 
 const CACHE_KEY = 'mu_server_manifests';

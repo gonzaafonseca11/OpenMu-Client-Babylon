@@ -16,6 +16,7 @@ import { EventBus } from '@/core/eventBus';
 import { ENUM_WORLD } from '@/core/types';
 import { playUiSound, uiClick } from '@/controllers/sound/sfx';
 import { loadMoveReqList, type MoveReqEntry } from '@/controllers/assets/mu';
+import { serverSetting } from '@/modules/servers/serverManifest';
 import { WarpFavourites } from '@/modules/warp/warpFavourites';
 import { MuSpriteFrame } from '@/controllers/interface/components/mu_sprite';
 import { MuText } from '@/controllers/interface/components/mu_text';
@@ -248,7 +249,7 @@ export const MoveCommandWindow = observer(() => {
     // `OpenningProcess`: back to the top every time it opens.
     setFirst(0);
     let cancelled = false;
-    loadMoveReqList().then(
+    loadMoveReqList(serverSetting('englishMapNames')).then(
       list => {
         if (!cancelled) setEntries(list);
       },

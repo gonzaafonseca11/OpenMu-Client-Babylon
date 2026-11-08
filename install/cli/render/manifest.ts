@@ -65,6 +65,7 @@ export function serverManifest(c: Config, modules: readonly ModuleEntry[] = []):
       jewelryUpgrade: c.jewelryUpgrade,
       jewelBundling: c.jewelBundling,
       liteAssets: c.liteAssets,
+      englishMapNames: c.englishMapNames,
     },
     modulesOff: manifestModulesOff(c),
     // Our OpenMU plugin issues them, and it is in every OpenMU image the installer builds (openmu/Dockerfile).
