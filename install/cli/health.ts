@@ -23,6 +23,7 @@ const TCP: [string, string, number[]][] = [
   ['OpenMU admin panel', HOSTS.openmu, [PORTS.admin]],
   ['Proxy (websocket)', HOSTS.openmu, [PORTS.proxy]],
   ['Register', HOSTS.register, [PORTS.register]],
+  ['Website', HOSTS.site, [PORTS.site]],
 ];
 
 const HTTP: [string, string][] = [

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{NAME}}</title>
+  <meta name="description" content="{{NAME}}: MU Online de resets en el navegador. Rankings, tu cuenta y tus personajes.">
+  <link rel="icon" href="/logo.webp" type="image/webp">
+  <link rel="stylesheet" href="/site.css">
+  <script src="/site.js" defer></script>
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="#inicio"><img src="/logo.webp" alt="" width="44" height="44"><span>{{NAME}}</span></a>
+    <nav class="tabs" aria-label="Secciones">
+      <a href="#inicio" data-tab="inicio">Inicio</a>
+      <a href="#pk" data-tab="pk">Ranking PK</a>
+      <a href="#resets" data-tab="resets">Ranking Resets</a>
+      <a href="#cuenta" data-tab="cuenta">Mi cuenta</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="inicio" class="panel hero">
+      <img class="hero-logo" src="/logo.webp" alt="{{NAME}}" width="420" height="428">
+      <p class="tagline">MU Online de resets, directo en el navegador. Sin descargar nada.</p>
+      <div class="actions">
+        <a class="btn btn-play" href="{{PLAY_URL}}">JUGAR</a>
+        <a class="btn btn-ghost" href="{{REGISTER_URL}}">Crear cuenta</a>
+      </div>
+      <ul class="facts">
+        <li><b>Resets</b> en nivel 400</li>
+        <li><b>Experiencia</b> x100</li>
+        <li><b>No PvP</b> y <b>Bardo PvP</b></li>
+      </ul>
+    </section>
+
+    <section id="pk" class="panel" hidden>
+      <h1>Ranking PK</h1>
+      <p class="hint">Los 50 personajes con más kills. Se actualiza cada minuto.</p>
+      <div class="table-wrap"><table class="ranking" data-ranking="pk" data-score="kills" data-score-label="Kills"></table></div>
+    </section>
+
+    <section id="resets" class="panel" hidden>
+      <h1>Ranking Resets</h1>
+      <p class="hint">Los 50 personajes con más resets. Se actualiza cada minuto.</p>
+      <div class="table-wrap"><table class="ranking" data-ranking="resets" data-score="resets" data-score-label="Resets"></table></div>
+    </section>
+
+    <section id="cuenta" class="panel" hidden>
+      <div class="login-box" id="login-box" hidden>
+        <h1>Mi cuenta</h1>
+        <p class="hint">Entrá con la misma cuenta que usás en el juego.</p>
+        <form id="login-form" autocomplete="on">
+          <label>Usuario <input name="username" maxlength="10" autocomplete="username" required></label>
+          <label>Contraseña <input name="password" type="password" maxlength="20" autocomplete="current-password" required></label>
+          <button class="btn btn-play" type="submit">Entrar</button>
+          <p class="error" id="login-error" role="alert"></p>
+        </form>
+      </div>
+      <div id="account" hidden>
+        <div class="account-head">
+          <h1>Hola, <span id="account-name"></span></h1>
+          <button class="btn btn-ghost" id="logout" type="button">Salir</button>
+        </div>
+        <div id="characters" class="cards"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">{{NAME}} · Hecho con OpenMU y OpenMU Babylon</footer>
+</body>
+</html>

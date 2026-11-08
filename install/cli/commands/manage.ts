@@ -12,6 +12,7 @@ import { saveState } from '../state';
 import { ui, pc } from '../ui';
 import { buildAll, logFile, preflight } from './install';
 import { ensureDkim, printMailDns } from './mail';
+import { ensureSiteRole } from '../siteRole';
 import { GROUPS, ask } from './questions';
 
 /** Changes that are baked into the client or OpenMU image need a rebuild; the rest only a restart. */
@@ -37,6 +38,7 @@ export async function configure(c: Config, p: Paths): Promise<void> {
   if (mailOn(next)) await ui.task('Checking the mail server\'s DKIM key', () => ensureDkim(stack));
   await ui.task('Applying', async () => {
     await stack.up();
+    await ensureSiteRole(stack);
     await stack.compose(['restart', 'web']);
   });
   if (mailOn(next) && !mailOn(c)) printMailDns(next, p);
@@ -68,6 +70,7 @@ export async function update(c: Config, p: Paths): Promise<void> {
     saveState(c, p);
     await buildAll(stack, logFile(p, 'update'));
     await ui.task('Restarting', () => stack.up());
+    await ui.task("Setting up the website's read-only database role", () => ensureSiteRole(stack));
     const failed = (await checks(stack)).filter(r => !r.ok);
     if (failed.length) throw new Error(`Not answering after the update: ${failed.map(f => f.name).join(', ')}`);
     ui.outro('Updated.');

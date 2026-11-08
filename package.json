@@ -17,6 +17,7 @@
     "dev:register": "vite --config register/vite.config.ts",
     "build:register": "APP_ENV=prod vite build --config register/vite.config.ts",
     "register-api": "bun run --watch register/server/main.ts",
+    "site": "bun run --watch site/server/main.ts",
     "cashshop-gate": "bun run cashshop/server/gateCli.ts",
     "ops": "bun run ops/server/opsCli.ts",
     "ops-ingest": "bun run ops/server/opsCli.ts ingest",

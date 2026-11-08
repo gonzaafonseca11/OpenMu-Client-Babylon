@@ -1,6 +1,6 @@
 // Per-service environment, rendered from the config. Secrets go only to the services that use them.
 import { clientOrigin, type Config } from '../config';
-import { ALL_GAME_PORTS, DATA, GAME_PORTS, HOSTS, PORTS, WEB_IP, type Service } from '../stack';
+import { ALL_GAME_PORTS, DATA, GAME_PORTS, HOSTS, PORTS, SITE_DB_ROLE, WEB_IP, type Service } from '../stack';
 import { moduleSigningKey } from '../validate';
 import { mailHost, mailserverEnv, webmailEnv } from './mail';
 
@@ -9,6 +9,16 @@ const onOff = (v: boolean) => (v ? 'on' : 'off');
 
 export function databaseUrl(c: Config): string {
   return `postgres://postgres:${encodeURIComponent(c.postgresPassword)}@${HOSTS.database}:5432/openmu`;
+}
+
+/** The website's connection: its own role, which may only read (siteRole.ts). */
+export function siteDatabaseUrl(c: Config): string {
+  return `postgres://${SITE_DB_ROLE}:${encodeURIComponent(c.siteDbSecret)}@${HOSTS.database}:5432/openmu`;
+}
+
+/** Where the website's "Create account" button goes. */
+function registerOrigin(c: Config): string {
+  return c.mode === 'domain' ? `https://register.${c.domain}` : `http://${c.publicIp}:${PORTS.registerSite}`;
 }
 
 /** The OpenMU ports the proxy may dial: connect server and game servers of both port schemes, on loopback only. */
@@ -82,6 +92,17 @@ export function serviceEnv(c: Config): Partial<Record<Service, Env>> {
       MARKETPLACE_LISTING_FEE: String(c.marketFee),
       MARKETPLACE_COMMISSION_PERCENT: String(c.marketCommission),
       PRESENCE_URL: presence,
+      TRUSTED_PROXIES: WEB_IP,
+    },
+    site: {
+      PORT: String(PORTS.site),
+      HOSTNAME: '0.0.0.0',
+      DATABASE_URL: siteDatabaseUrl(c),
+      SITE_SESSION_SECRET: c.siteSessionSecret,
+      SITE_SECURE_COOKIE: onOff(c.mode === 'domain'),
+      SITE_NAME: c.serverName,
+      SITE_PLAY_URL: origin,
+      SITE_REGISTER_URL: registerOrigin(c),
       TRUSTED_PROXIES: WEB_IP,
     },
     ops: {

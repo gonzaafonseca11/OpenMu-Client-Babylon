@@ -25,6 +25,9 @@ export type Config = {
   escrowSecret: string;
   marketTicketSecret: string;
   shopTicketSecret: string;
+  /** The website's read-only database role password, and the key its login sessions are signed with; made when missing (state.ts). */
+  siteDbSecret: string;
+  siteSessionSecret: string;
   band: boolean;
   ping: boolean;
   weather: boolean;
@@ -79,6 +82,8 @@ const KEYS: Record<keyof Config, string> = {
   escrowSecret: 'MARKETPLACE_ESCROW_SECRET',
   marketTicketSecret: 'MARKETPLACE_TICKET_SECRET',
   shopTicketSecret: 'CASHSHOP_TICKET_SECRET',
+  siteDbSecret: 'MU_SITE_DB_SECRET',
+  siteSessionSecret: 'MU_SITE_SESSION_SECRET',
   band: 'MU_BAND',
   ping: 'MU_PING',
   weather: 'MU_WEATHER',
@@ -120,6 +125,8 @@ export const DEFAULTS: Config = {
   escrowSecret: '',
   marketTicketSecret: '',
   shopTicketSecret: '',
+  siteDbSecret: '',
+  siteSessionSecret: '',
   band: true,
   ping: true,
   weather: true,

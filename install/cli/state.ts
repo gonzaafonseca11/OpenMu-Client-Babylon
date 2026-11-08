@@ -9,6 +9,7 @@ import { serviceEnv, stackEnv } from './render/env';
 import { moduleEntries, serverManifest, type ModuleEntry } from './render/manifest';
 import { ui } from './ui';
 import { serverList } from './render/serverList';
+import { newSecret } from './validate';
 
 export function loadConfig(p: Paths): Config | null {
   const file = files(p).config;
@@ -46,6 +47,9 @@ function readModules(dir: string): ModuleEntry[] {
 /** Saves the config and renders the service env files, the Caddyfile, the server list and server.json from it. */
 export function saveState(c: Config, p: Paths): void {
   const f = files(p);
+  // Added after the first installs: a config from before has none, so they are made here, once.
+  c.siteDbSecret ||= newSecret();
+  c.siteSessionSecret ||= newSecret();
   write(f.config, toEnvFile(configToEnv(c)), true);
   write(f.stackEnv, toEnvFile(stackEnv(c, p)), true);
   for (const [service, env] of Object.entries(serviceEnv(c))) write(f.serviceEnv(service), toEnvFile(env), true);

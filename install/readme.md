@@ -29,6 +29,7 @@ checked out at the release tag) with `stack/compose.yml` layered over it.
 | openmu-startup | `munique/openmu:<release>` + `../openmu` (our plugins) | not published; advertises loopback |
 | proxy | `stack/services.Dockerfile` | shares OpenMU's network namespace; band, ping, weather, presence, tracker |
 | register, cashshop, marketplace, ops | same image, other command | |
+| site | same image, `site/server/main.ts` | the website on the bare domain (8082 in IP mode); reads the database as `mu_site`, a SELECT-only role `siteRole.ts` sets up after every start ([site/readme.md](../site/readme.md)) |
 | web | `stack/web.Dockerfile` (client + register site) on Caddy | the only published ports |
 | mailserver, webmail | `mailserver/docker-mailserver:16.0.1`, `roundcube/roundcubemail:1.7.4-apache` | optional, profile `mail` ([Mail server](#mail-server)) |
 

@@ -15,6 +15,7 @@ import { ui, pc } from '../ui';
 import { newSecret } from '../validate';
 import { adminMailbox, mailHost, mailOn } from '../render/mail';
 import { ensureDkim, printMailDns } from './mail';
+import { ensureSiteRole } from '../siteRole';
 import { ask, askGm, type Group } from './questions';
 
 export async function preflight(): Promise<void> {
@@ -66,6 +67,7 @@ export async function finish(stack: Stack): Promise<void> {
   const c = stack.config;
   if (mailOn(c)) await ui.task('Making the mail server\'s DKIM key', () => ensureDkim(stack));
   await ui.task('Starting everything', () => stack.up());
+  await ui.task("Setting up the website's read-only database role", () => ensureSiteRole(stack));
   const results = await ui.task('Checking every service', async () => {
     const until = Date.now() + 120_000;
     let r = await checks(stack);

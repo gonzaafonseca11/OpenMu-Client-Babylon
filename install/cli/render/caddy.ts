@@ -50,6 +50,9 @@ function registerSite(): string {
 const block = (address: string, body: string) => `${address} {\n${body}\n}\n`;
 const proxyTo = (port: number) => `\treverse_proxy ${HOSTS.openmu}:${port}`;
 
+/** The world's website (site/), on the bare domain; `www.` points at it too. */
+const siteBody = `\treverse_proxy ${HOSTS.site}:${PORTS.site}`;
+
 /** OpenMU's admin panel has no login of its own in the releases we run; Caddy asks for one. */
 const adminSite = (c: Config) => `\tbasic_auth {\n\t\t${c.adminUser} ${c.adminHash}\n\t}\n${proxyTo(PORTS.admin)}`;
 
@@ -59,7 +62,8 @@ export function caddyfile(c: Config): string {
     return [
       // Let's Encrypt needs no e-mail; without one Caddy just sends no expiry warnings.
       ...(c.email ? [`{\n\temail ${c.email}\n}\n`] : []),
-      block(d, `\tredir https://play.${d}{uri}`),
+      block(d, siteBody),
+      block(`www.${d}`, `\tredir https://${d}{uri}`),
       block(`play.${d}`, clientSite(`https://register.${d}`)),
       block(`api.${d}`, apiRoutes()),
       block(`ws.${d}`, proxySite()),
@@ -75,11 +79,12 @@ export function caddyfile(c: Config): string {
     block(`:${PORTS.proxy}`, proxySite()),
     block(`:${PORTS.registerSite}`, registerSite()),
     block(`:${PORTS.admin}`, adminSite(c)),
+    block(`:${PORTS.siteWeb}`, siteBody),
   ].join('\n');
 }
 
 /** Ports the firewall opens. SSH stays open so the installer never locks you out. */
 export function publicPorts(c: Config): number[] {
-  if (c.mode !== 'domain') return [22, 80, PORTS.proxy, PORTS.registerSite, PORTS.admin];
+  if (c.mode !== 'domain') return [22, 80, PORTS.proxy, PORTS.registerSite, PORTS.admin, PORTS.siteWeb];
   return [22, 80, 443, ...(mailOn(c) ? MAIL_PORTS : [])];
 }
