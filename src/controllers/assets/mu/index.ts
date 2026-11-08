@@ -4,7 +4,7 @@ export { localisedBuffName } from './buffNameFile';
 export { downloadDataFile, hasDataFile, resolveDataUrl } from './dataFolder';
 export { findEntranceGateAt, loadGates } from './gates';
 export type { Gate } from './gates';
-export { localisedItemName } from './itemNameFile';
+export { localisedItemName, setWorldEnglishItemNames } from './itemNameFile';
 export { itemSetTables, loadItemSetTables } from './itemSetFile';
 export type { ItemSet, ItemSetTables, SetOption } from './itemSetFile';
 export { itemOptionTables, loadItemOptionTables } from './itemOptionFiles';

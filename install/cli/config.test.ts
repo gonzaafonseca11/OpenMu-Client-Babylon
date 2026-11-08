@@ -47,6 +47,8 @@ describe('config file', () => {
     expect(envToConfig({}).directWorld).toBe(false);
     expect(configToEnv({ ...config, englishMapNames: true }).MU_ENGLISH_MAP_NAMES).toBe('on');
     expect(envToConfig({}).englishMapNames).toBe(false);
+    expect(configToEnv({ ...config, englishItemNames: true }).MU_ENGLISH_ITEM_NAMES).toBe('on');
+    expect(envToConfig({}).englishItemNames).toBe(false);
   });
 
   it('stores the MU Helper restart as MU_HELPER_AFTER_RECONNECT, off unless set', () => {

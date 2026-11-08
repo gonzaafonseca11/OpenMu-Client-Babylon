@@ -24,6 +24,13 @@ const names = observable.box<ReadonlyMap<number, string>>(new Map(), {
   deep: false,
 });
 
+/** The world's `englishItemNames` (server.json), set by the servers module: English for everyone. */
+const worldEnglish = observable.box(false);
+
+export function setWorldEnglishItemNames(on: boolean): void {
+  if (worldEnglish.get() !== on) runInAction(() => worldEnglish.set(on));
+}
+
 let pending: Promise<void> | null = null;
 
 function set(map: ReadonlyMap<number, string>): void {
@@ -88,7 +95,7 @@ export function localisedItemName(
   // a price list reads the item files instead, with the rest of the interface
   // still in their own language. Observable, so every open window redraws the
   // moment it is switched.
-  if (GameOptions.englishItemNames) return undefined;
+  if (GameOptions.englishItemNames || worldEnglish.get()) return undefined;
   // A name the pack itself gets wrong, replaced before the table is read.
   return (
     i18n.itemNameFixes?.[`${group}/${index}`] ??

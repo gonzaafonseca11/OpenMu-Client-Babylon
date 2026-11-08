@@ -155,6 +155,9 @@ everything the stack reads is rendered from `mu.env`, so `mu config` can change 
   names in English whatever the player's language: the banner on entering a map takes the `Eng`
   picture and the Move window the `MoveReq_eng.bmd` rows. Everything else stays in the language.
 
+  `englishItemNames` (`mu config` > Features, `MU_ENGLISH_ITEM_NAMES`, default off) shows item
+  names in English for every player, as the player option "Item names in English" does for one.
+
   `modulesOff` (`mu config` > Features, `MU_MODULES_OFF` in `mu.env`, comma separated, default
   none) lists the optional client modules this world does without: their windows hide for its
   players. `band` is added by itself when the band relay is off. The ids are the folders of
