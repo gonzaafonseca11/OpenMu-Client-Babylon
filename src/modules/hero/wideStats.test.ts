@@ -49,7 +49,8 @@ function shortPools(value: number) {
   maxMana.Ability = value;
   emit('MaximumManaAndAbility', maxMana);
   const level = CharacterLevelUpdatePacket.createPacket();
-  level.Level = 300;
+  // Low enough that the class floors (widePools.ts) stay under the values sent.
+  level.Level = 10;
   level.MaximumHealth = value;
   level.MaximumMana = value;
   level.MaximumShield = value;

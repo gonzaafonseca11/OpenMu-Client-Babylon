@@ -149,7 +149,7 @@ export async function itemOptions(sql: Sql, definitionId: string): Promise<ItemO
     const kind = OPTION_KINDS[String(r.type) as keyof typeof OPTION_KINDS];
     if (!kind) return [];
     const attr = r.attr == null ? null : String(r.attr);
-    return [{ id: String(r.id), kind, number: Number(r.number), label: optionLabel(kind, attr, Number(r.number)), maxLevel: Math.min(Number(r.max) || 4, 4) }];
+    return [{ id: String(r.id), kind, number: Number(r.number), label: optionLabel(kind, attr, Number(r.number)), maxLevel: Math.min(Number(r.max) || 1, 4) }];
   });
 }
 

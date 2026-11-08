@@ -238,11 +238,17 @@ async function gmPick() {
   const extra = $('#gm-option');
   const lines = of('option');
   const pick = el('select', { name: 'optionId' }, el('option', { value: '' }, 'Ninguna'), ...lines.map(o => el('option', { value: o.id }, o.label)));
-  const lvl = el('select', { name: 'optionLevel' }, ...[1, 2, 3, 4].map(l => el('option', { value: String(l) }, `Nivel ${l}`)));
-  if (lines.length) {
-    pick.value = lines[0].id;
-    lvl.value = String(lines[0].maxLevel);
-  }
+  const lvl = el('select', { name: 'optionLevel' });
+  // Each line has its own top level (jewelry options have only level 1 on this server).
+  const fillLevels = () => {
+    const line = lines.find(o => o.id === pick.value);
+    const top = line ? line.maxLevel : 1;
+    lvl.replaceChildren(...Array.from({ length: top }, (_, i) => el('option', { value: String(i + 1) }, `Nivel ${i + 1}`)));
+    lvl.value = String(top);
+  };
+  pick.addEventListener('change', fillLevels);
+  if (lines.length) pick.value = lines[0].id;
+  fillLevels();
   extra.replaceChildren(extra.querySelector('legend'), pick, lvl);
   extra.hidden = !lines.length;
 }
