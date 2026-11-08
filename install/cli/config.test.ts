@@ -101,6 +101,11 @@ describe('config file', () => {
     expect(envToConfig({}).mailAdminHash).toBe('');
   });
 
+  it('stores the signups per network per day as MU_SIGNUPS_PER_DAY, 1 unless set', () => {
+    expect(configToEnv({ ...config, signupsPerDay: 4 }).MU_SIGNUPS_PER_DAY).toBe('4');
+    expect(envToConfig({}).signupsPerDay).toBe(1);
+  });
+
   it('fills what an older file does not have from the defaults', () => {
     expect(envToConfig({ MU_DOMAIN: 'old.net' })).toEqual({ ...DEFAULTS, domain: 'old.net' });
   });

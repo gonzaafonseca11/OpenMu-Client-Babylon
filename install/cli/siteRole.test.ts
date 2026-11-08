@@ -38,5 +38,6 @@ describe('website', () => {
     expect(env?.SITE_PLAY_URL).toBe('https://play.example.com');
     expect(env?.SITE_REGISTER_URL).toBe('https://register.example.com');
     expect(serviceEnv({ ...domain, mode: 'ip', publicIp: '203.0.113.7' }).site?.SITE_SECURE_COOKIE).toBe('off');
+    expect(serviceEnv({ ...domain, signupsPerDay: 4 }).register?.RATE_LIMIT).toBe('4');
   });
 });

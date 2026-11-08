@@ -34,6 +34,8 @@ export type Config = {
   shopDelivery: boolean;
   marketFee: number;
   marketCommission: number;
+  /** Accounts the register page creates per network per day (anti-bot; 1 is the original). */
+  signupsPerDay: number;
   /** The world's `server.json` setting: hold the hit request until the blow lands (off = the original). */
   heldHitRequest: boolean;
   /** `server.json`: on "account already connected", send the login again a few times (off = the original). */
@@ -92,6 +94,7 @@ const KEYS: Record<keyof Config, string> = {
   shopDelivery: 'MU_SHOP_DELIVERY',
   marketFee: 'MU_MARKET_FEE',
   marketCommission: 'MU_MARKET_COMMISSION',
+  signupsPerDay: 'MU_SIGNUPS_PER_DAY',
   heldHitRequest: 'MU_HELD_HIT_REQUEST',
   retryLoginWhenConnected: 'MU_RETRY_LOGIN_WHEN_CONNECTED',
   muHelperAfterReconnect: 'MU_HELPER_AFTER_RECONNECT',
@@ -136,6 +139,7 @@ export const DEFAULTS: Config = {
   shopDelivery: false,
   marketFee: 0,
   marketCommission: 0,
+  signupsPerDay: 1,
   heldHitRequest: false,
   retryLoginWhenConnected: false,
   muHelperAfterReconnect: false,

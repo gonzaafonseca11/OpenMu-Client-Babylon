@@ -65,6 +65,7 @@ export function serviceEnv(c: Config): Partial<Record<Service, Env>> {
       DATABASE_URL: db,
       CORS_ORIGIN: origin,
       RATE_DB_PATH: DATA.register,
+      RATE_LIMIT: String(Math.max(1, c.signupsPerDay)),
       TRUSTED_PROXIES: WEB_IP,
     },
     cashshop: {
