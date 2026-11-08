@@ -1,6 +1,6 @@
 // The site's page script: tabs by hash, rankings, news, the chat and the account panel.
 // Data goes in as text, never as HTML.
-/* global document, window, location, fetch, FormData, setInterval, clearInterval */
+/* global document, window, location, fetch, FormData, setInterval, clearInterval, setTimeout, clearTimeout */
 const $ = sel => document.querySelector(sel);
 const fmt = n => Number(n).toLocaleString('es-AR');
 const when = at => new Date(at).toLocaleString('es-AR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
@@ -179,10 +179,92 @@ async function showAccount() {
   await loadMe();
   $('#login-box').hidden = !!me;
   $('#account').hidden = !me;
+  $('#gm-tab').hidden = !me?.moderator;
   if (!me) return;
   $('#account-name').textContent = me.login;
   const cards = me.characters.map(characterCard);
   $('#characters').replaceChildren(...(cards.length ? cards : [el('p', { class: 'hint' }, 'Todavía no creaste personajes. ¡Entrá al juego y creá uno!')]));
+}
+
+/* ------------------------------------------------------------- GM panel */
+
+let gmItem = null;
+
+async function showGm() {
+  await loadMe();
+  if (!me?.moderator) return;
+  const { ok, body } = await api('/api/gm/characters');
+  if (!ok) return;
+  const select = $('#gm-character');
+  const keep = select.value;
+  select.replaceChildren(...body.map(c => el('option', { value: c.name }, c.online ? `${c.name} (conectado)` : c.name)));
+  if (keep) select.value = keep;
+}
+
+async function gmSearch() {
+  const q = $('#gm-search').value.trim();
+  if (q.length < 2) return $('#gm-results').replaceChildren();
+  const { ok, body } = await api(`/api/gm/items?q=${encodeURIComponent(q)}`);
+  if (!ok) return;
+  $('#gm-results').replaceChildren(...body.map(i => {
+    const o = el('option', { value: i.id }, `${i.name} (${i.group}, ${i.number})`);
+    o.item = i;
+    return o;
+  }));
+}
+
+function checkbox(name, value, label, checked = false) {
+  const input = el('input', { type: 'checkbox', name, value });
+  input.checked = checked;
+  return el('label', { class: 'check' }, input, ` ${label}`);
+}
+
+async function gmPick() {
+  const option = $('#gm-results').selectedOptions[0];
+  if (!option) return;
+  gmItem = option.item;
+  const { ok, body } = await api(`/api/gm/options?id=${gmItem.id}`);
+  if (!ok) return;
+  $('#gm-item').hidden = false;
+  $('#gm-item-name').textContent = gmItem.name;
+  $('#gm-level').replaceChildren(...Array.from({ length: gmItem.maxLevel + 1 }, (_, l) => el('option', { value: String(l) }, `+${l}`)));
+  $('#gm-level').value = String(gmItem.maxLevel);
+  $('#gm-skill-row').hidden = !gmItem.hasSkill;
+  $('#gm-skill-row input').checked = gmItem.hasSkill;
+  const of = kind => body.filter(o => o.kind === kind);
+  for (const kind of ['luck', 'excellent', 'wing']) {
+    const box = $(`#gm-${kind}`);
+    const legend = box.querySelector('legend');
+    box.replaceChildren(legend, ...of(kind).map(o => checkbox('opt', o.id, o.label, true)));
+    box.hidden = !of(kind).length;
+  }
+  const extra = $('#gm-option');
+  const lines = of('option');
+  const pick = el('select', { name: 'optionId' }, el('option', { value: '' }, 'Ninguna'), ...lines.map(o => el('option', { value: o.id }, o.label)));
+  const lvl = el('select', { name: 'optionLevel' }, ...[1, 2, 3, 4].map(l => el('option', { value: String(l) }, `Nivel ${l}`)));
+  if (lines.length) {
+    pick.value = lines[0].id;
+    lvl.value = String(lines[0].maxLevel);
+  }
+  extra.replaceChildren(extra.querySelector('legend'), pick, lvl);
+  extra.hidden = !lines.length;
+}
+
+async function gmGive(e) {
+  e.preventDefault();
+  if (!gmItem) return;
+  const form = new FormData(e.target);
+  const options = form.getAll('opt').map(id => ({ id, level: 0 }));
+  if (form.get('optionId')) options.push({ id: form.get('optionId'), level: Number(form.get('optionLevel')) });
+  $('#gm-error').textContent = '';
+  $('#gm-ok').textContent = '';
+  const button = e.target.querySelector('button[type=submit]');
+  button.disabled = true;
+  const { ok, body } = await post('/api/gm/give', { character: form.get('character'), definitionId: gmItem.id, level: Number(form.get('level')), skill: form.get('skill') === 'on', options });
+  button.disabled = false;
+  if (!ok) $('#gm-error').textContent = body.error || 'No se pudo crear.';
+  else $('#gm-ok').textContent = `Listo: ${body.name} +${form.get('level')} quedó en el inventario de ${form.get('character')}.`;
+  showGm();
 }
 
 /* ----------------------------------------------------------------- tabs */
@@ -198,6 +280,8 @@ function showTab() {
   if (panel === 'comunidad') showCommunity();
   else stopChat();
   if (panel === 'inicio') loadNews();
+  if (panel === 'gm') showGm();
+  $('#gm-tab').hidden = !me?.moderator;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -225,6 +309,19 @@ document.addEventListener('DOMContentLoaded', () => {
     me = null;
     stopChat();
     showAccount();
+  });
+
+  let searchTimer = 0;
+  $('#gm-search').addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(gmSearch, 250);
+  });
+  $('#gm-results').addEventListener('change', gmPick);
+  $('#gm-form').addEventListener('submit', gmGive);
+  $('#gm-all-exc').addEventListener('click', () => {
+    const boxes = [...document.querySelectorAll('#gm-excellent input')];
+    const all = boxes.every(b => b.checked);
+    for (const b of boxes) b.checked = !all;
   });
 
   $('#chat-form').addEventListener('submit', async e => {

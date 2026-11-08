@@ -234,3 +234,14 @@ input:disabled { opacity: 0.6; }
   .tabs a { padding: 6px 9px; font-size: 14px; }
   h1 { font-size: 24px; }
 }
+
+/* GM panel */
+.gm-form { display: grid; gap: 14px; max-width: 560px; }
+.gm-form select, .gm-form fieldset { background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 8px; font: inherit; }
+.gm-form fieldset { display: grid; gap: 6px; }
+.gm-form legend { color: var(--muted); font-weight: 600; padding: 0 6px; }
+.gm-form #gm-item { display: grid; gap: 12px; }
+.gm-form #gm-item[hidden] { display: none; }
+label.check { display: flex; gap: 8px; align-items: center; font-weight: 400; color: var(--text); }
+.link { background: none; border: 0; color: var(--gold); cursor: pointer; font: inherit; text-decoration: underline; }
+.ok { color: #6fd36f; margin: 0; }

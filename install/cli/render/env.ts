@@ -104,6 +104,7 @@ export function serviceEnv(c: Config): Partial<Record<Service, Env>> {
       SITE_NAME: c.serverName,
       SITE_PLAY_URL: origin,
       SITE_REGISTER_URL: registerOrigin(c),
+      OPENMU_API_URL: `http://${HOSTS.openmu}:${PORTS.admin}`,
       TRUSTED_PROXIES: WEB_IP,
     },
     ops: {

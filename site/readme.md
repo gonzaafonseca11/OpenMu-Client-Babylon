@@ -43,3 +43,11 @@ logged-in players (Game Masters delete lines).
 ## Run it locally
 
 `bun run site` with `DATABASE_URL` pointing at an OpenMU database and `SITE_SECURE_COOKIE=off`.
+
+## GM panel
+
+Game Master accounts (State 2 or 3) see a "Panel GM" tab: search an item, pick level, skill, luck,
+the extra option, excellent and wing options, and it is inserted into an offline character's bag
+(`server/gm.ts`). The site asks OpenMU's `/api/status` (`OPENMU_API_URL`) who is online first and
+refuses a connected character, since OpenMU would overwrite the bag on its next save. The role may
+INSERT only into `data."Item"` and `data."ItemOptionLink"` (`install/cli/siteRole.ts`).

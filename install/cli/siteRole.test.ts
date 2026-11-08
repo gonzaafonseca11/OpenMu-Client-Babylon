@@ -7,13 +7,15 @@ import { siteRoleSql } from './siteRole';
 const domain = { ...DEFAULTS, domain: 'example.com', siteDbSecret: 'abc_DEF-123', siteSessionSecret: 'sess' };
 
 describe('website', () => {
-  it('gives its role reads only, and only seven account columns', () => {
+  it('gives its role reads, GM item inserts only, and only seven account columns', () => {
     const sqlText = siteRoleSql(domain);
     expect(sqlText).toContain("PASSWORD 'abc_DEF-123'");
     expect(sqlText).toContain('default_transaction_read_only = on');
     expect(sqlText).toContain('GRANT SELECT ("Id", "LoginName", "PasswordHash", "State", "IsBot", "IsTemplate", "ChatBanUntil") ON data."Account"');
     expect(sqlText).not.toContain('"EMail"');
-    expect(sqlText).not.toMatch(/GRANT (INSERT|UPDATE|DELETE|ALL)/);
+    expect(sqlText).not.toMatch(/GRANT (DELETE|ALL)/);
+    expect(sqlText).toContain('GRANT INSERT ON data."Item", data."ItemOptionLink" TO mu_site;');
+    expect(sqlText.match(/GRANT (INSERT|UPDATE)[^;]*;/g)).toHaveLength(2);
   });
 
   it('refuses a secret that could break out of the quotes', () => {

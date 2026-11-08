@@ -7,6 +7,7 @@ import { accountCharacters, accountHash, characterNames, findAccount, pkRanking,
 import { clearedCookie, cookieValue, fingerprint, issue, read, sessionCookie } from './session';
 import { openCommunity } from './community';
 import { chatBanned, chatMessage, chatTooFast, isBanned, isModerator, newsPost } from './rules';
+import { giveItem, itemOptions, onlinePlayers, searchItems } from './gm';
 
 /**
  * The world's own website (site/readme.md): rankings anyone can read, and a player's characters
@@ -23,7 +24,9 @@ const NAME = process.env.SITE_NAME || 'MU';
 const PLAY_URL = process.env.SITE_PLAY_URL || '/';
 const REGISTER_URL = process.env.SITE_REGISTER_URL || '';
 /** The site's own SQLite file: the community chat and the news. */
-const SITE_DB_PATH = process.env.SITE_DB_PATH || join(import.meta.dir, '..', '.data', 'site.sqlite');
+/** OpenMU's web API, asked who is online before the GM panel writes. Empty: the panel writes nothing. */
+const OPENMU_API_URL = process.env.OPENMU_API_URL || '';
+const SITE_DB_PATH =process.env.SITE_DB_PATH || join(import.meta.dir, '..', '.data', 'site.sqlite');
 
 /** Login attempts per network in ten minutes: enough for typos, too few to guess passwords. */
 const LOGIN_LIMIT = Number(process.env.LOGIN_LIMIT || 10);
@@ -135,6 +138,42 @@ async function communityPost(path: string, req: Request): Promise<Response | nul
   return json({ error: 'Pedido inválido.' }, 400);
 }
 
+/** The GM panel (site/readme.md): Game Master accounts only. */
+async function gmRequest(path: string, req: Request, url: URL): Promise<Response | null> {
+  if (!path.startsWith('/api/gm/')) return null;
+  const account = await sessionAccount(req);
+  if (!account) return notLoggedIn();
+  if (!account.moderator) return notAllowed();
+  if (req.method === 'GET' && path === '/api/gm/items') return json(await searchItems(sql, (url.searchParams.get('q') ?? '').slice(0, 40)));
+  if (req.method === 'GET' && path === '/api/gm/options') {
+    const id = url.searchParams.get('id') ?? '';
+    return /^[0-9a-f-]{36}$/.test(id) ? json(await itemOptions(sql, id)) : json({ error: 'Pedido inválido.' }, 400);
+  }
+  if (req.method === 'GET' && path === '/api/gm/characters') {
+    const online = (OPENMU_API_URL && (await onlinePlayers(OPENMU_API_URL))) || [];
+    const rows = await sql`SELECT "Name" AS name FROM data."Character" ORDER BY "Name"`;
+    return json(rows.map(r => ({ name: String(r.name), online: online.some(n => n.toLowerCase() === String(r.name).toLowerCase()) })));
+  }
+  if (req.method === 'POST' && path === '/api/gm/give') {
+    const body = await readJson(req);
+    if (!body || typeof body.character !== 'string' || typeof body.definitionId !== 'string' || !Array.isArray(body.options)) return json({ error: 'Pedido inválido.' }, 400);
+    const online = OPENMU_API_URL ? await onlinePlayers(OPENMU_API_URL) : null;
+    if (!online) return json({ error: 'No pude ver quién está conectado. Probá de nuevo en un rato.' }, 503);
+    if (online.some(n => n.toLowerCase() === String(body.character).toLowerCase())) return json({ error: `${body.character} está conectado. Salí del juego con ese personaje y probá de nuevo.` }, 409);
+    const result = await giveItem(sql, {
+      character: body.character,
+      definitionId: body.definitionId,
+      level: Number(body.level),
+      skill: body.skill === true,
+      options: body.options.map(o => ({ id: String((o as Record<string, unknown>)?.id ?? ''), level: Number((o as Record<string, unknown>)?.level ?? 0) })),
+    });
+    if ('error' in result) return json(result, 400);
+    process.stdout.write(`gm ${account.login} gave ${result.name} +${body.level} to ${body.character} (slot ${result.slot})\n`);
+    return json(result);
+  }
+  return json({ error: 'No encontrado.' }, 404);
+}
+
 async function login(req: Request, ip: string): Promise<Response> {
   if (!SECRET) return json({ error: 'El inicio de sesión no está disponible.' }, 503);
   if (logins.hammering(bucketFor(ip))) return json({ error: 'Demasiados intentos. Esperá unos minutos.' }, 429);
@@ -179,6 +218,10 @@ Bun.serve({
         return json({ login: account.login, moderator: account.moderator, chatBanned: account.chatBanned, characters: await accountCharacters(sql, account.id) });
       }
       if (req.method === 'GET' && path === '/api/news') return json(community.news());
+      if (req.method === 'GET' || req.headers.get('content-type')?.startsWith('application/json')) {
+        const gm = await gmRequest(path, req, url);
+        if (gm) return gm;
+      }
       if (req.method === 'GET' && path === '/api/chat') {
         if (!(await sessionAccount(req))) return notLoggedIn();
         return json(community.chat(Math.max(0, Number(url.searchParams.get('after')) || 0)));

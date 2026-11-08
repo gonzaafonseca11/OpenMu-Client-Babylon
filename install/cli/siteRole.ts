@@ -5,7 +5,12 @@ import { SITE_DB_ROLE } from './stack';
 
 /** Account columns the site needs: its login check, the GM/ban filter and the chat ban. Never e-mail, vault or security code. */
 const ACCOUNT_COLUMNS = ['Id', 'LoginName', 'PasswordHash', 'State', 'IsBot', 'IsTemplate', 'ChatBanUntil'];
-const TABLES = ['data."Character"', 'data."StatAttribute"', 'config."AttributeDefinition"', 'config."CharacterClass"', 'config."GameMapDefinition"'];
+const TABLES = ['data."Character"', 'data."StatAttribute"', 'config."AttributeDefinition"', 'config."CharacterClass"', 'config."GameMapDefinition"',
+  // The GM panel's item maker reads the item definitions and the bag it fills.
+  'config."ItemDefinition"', 'config."ItemDefinitionItemOptionDefinition"', 'config."IncreasableItemOption"', 'config."ItemOptionType"',
+  'config."ItemOptionOfLevel"', 'config."PowerUpDefinition"', 'data."Item"', 'data."ItemOptionLink"'];
+/** The only rows the site may add: a GM's item and its options (site/server/gm.ts). Never update or delete. */
+const INSERT_TABLES = ['data."Item"', 'data."ItemOptionLink"'];
 
 /** Idempotent: creates the role when missing, sets its password and its grants every time. */
 export function siteRoleSql(c: Config): string {
@@ -20,6 +25,9 @@ export function siteRoleSql(c: Config): string {
     `GRANT USAGE ON SCHEMA data, config TO ${role};`,
     `GRANT SELECT (${ACCOUNT_COLUMNS.map(col => `"${col}"`).join(', ')}) ON data."Account" TO ${role};`,
     `GRANT SELECT ON ${TABLES.join(', ')} TO ${role};`,
+    `GRANT INSERT ON ${INSERT_TABLES.join(', ')} TO ${role};`,
+    // FOR UPDATE on the character row while its bag is filled.
+    `GRANT UPDATE ("InventoryId") ON data."Character" TO ${role};`,
     '',
   ].join('\n');
 }

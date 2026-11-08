@@ -18,6 +18,7 @@
       <a href="#resets" data-tab="resets">Ranking Resets</a>
       <a href="#comunidad" data-tab="comunidad">Comunidad</a>
       <a href="#cuenta" data-tab="cuenta">Mi cuenta</a>
+      <a href="#gm" data-tab="gm" id="gm-tab" hidden>Panel GM</a>
     </nav>
   </header>
 
@@ -104,6 +105,27 @@
         </div>
         <div id="characters" class="cards"></div>
       </div>
+    </section>
+    <section id="gm" class="panel" hidden>
+      <h1>Panel GM: crear ítem</h1>
+      <p class="hint">El ítem va directo al inventario. El personaje tiene que estar <b>desconectado</b>.</p>
+      <form id="gm-form" class="gm-form">
+        <label>Personaje <select name="character" id="gm-character" required></select></label>
+        <label>Buscar ítem <input id="gm-search" placeholder="Ej: Ring of Magic" autocomplete="off"></label>
+        <select id="gm-results" size="6" aria-label="Resultados"></select>
+        <div id="gm-item" hidden>
+          <h2 id="gm-item-name"></h2>
+          <label>Nivel <select name="level" id="gm-level"></select></label>
+          <label class="check" id="gm-skill-row"><input type="checkbox" name="skill"> Skill</label>
+          <fieldset id="gm-luck" hidden><legend>Luck</legend></fieldset>
+          <fieldset id="gm-option" hidden><legend>Opción adicional</legend></fieldset>
+          <fieldset id="gm-excellent" hidden><legend>Opciones excelentes <button type="button" class="link" id="gm-all-exc">todas</button></legend></fieldset>
+          <fieldset id="gm-wing" hidden><legend>Opciones de alas</legend></fieldset>
+          <button class="btn btn-play" type="submit">Crear ítem</button>
+        </div>
+        <p class="error" id="gm-error" role="alert"></p>
+        <p class="ok" id="gm-ok" role="status"></p>
+      </form>
     </section>
   </main>
 
