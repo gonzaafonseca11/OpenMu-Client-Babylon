@@ -245,3 +245,8 @@ input:disabled { opacity: 0.6; }
 label.check { display: flex; gap: 8px; align-items: center; font-weight: 400; color: var(--text); }
 .link { background: none; border: 0; color: var(--gold); cursor: pointer; font: inherit; text-decoration: underline; }
 .ok { color: #6fd36f; margin: 0; }
+.gm-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; align-items: start; }
+.gm-col { display: grid; gap: 18px; }
+.gm-form h2 { margin: 0; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+.stats-grid label[hidden], .stats-form[hidden] { display: none; }

@@ -51,3 +51,5 @@ the extra option, excellent and wing options, and it is inserted into an offline
 (`server/gm.ts`). The site asks OpenMU's `/api/status` (`OPENMU_API_URL`) who is online first and
 refuses a connected character, since OpenMU would overwrite the bag on its next save. The role may
 INSERT only into `data."Item"` and `data."ItemOptionLink"` (`install/cli/siteRole.ts`).
+
+The same tab has a stat editor: level (experience set to that level's start), resets, base stats up to 32500, free points and zen of an offline character. The role may UPDATE only those columns.

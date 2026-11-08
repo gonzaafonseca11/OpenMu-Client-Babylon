@@ -145,6 +145,96 @@ export async function giveItem(sql: Sql, req: GiveRequest): Promise<{ slot: numb
   });
 }
 
+/* ------------------------------------------------------------ stat editor */
+
+/** What the stat editor reads and writes. `leadership` is null for classes without Command. */
+export type CharacterStats = { name: string; class: string; level: number; resets: number; strength: number; agility: number; vitality: number; energy: number; leadership: number | null; points: number; zen: number };
+
+const STAT_DESIGNATIONS = { level: 'Level', resets: 'Resets', strength: 'Base Strength', agility: 'Base Agility', vitality: 'Base Vitality', energy: 'Base Energy', leadership: 'Base Leadership' } as const;
+export const LIMITS = { level: [1, 400], resets: [0, 100000], stat: [1, 32500], points: [0, 2_000_000_000], zen: [0, 2_000_000_000] } as const;
+
+/** Experience a character holds at the start of a level: OpenMU's table, `10(n+9)n^2` plus the 1000x part past 255, n = level - 1. */
+export function experienceForLevel(level: number): number {
+  const n = level - 1;
+  const high = n > 255 ? 1000 * (n - 255 + 9) * (n - 255) ** 2 : 0;
+  return 10 * (n + 9) * n * n + high;
+}
+
+/** The values to store, or why not. */
+export function checkStats(s: Record<string, unknown>, hasLeadership: boolean): Omit<CharacterStats, 'name' | 'class'> | { error: string } {
+  const read = (key: string, [min, max]: readonly [number, number], label: string): number | string => {
+    const v = Number(s[key]);
+    return Number.isInteger(v) && v >= min && v <= max ? v : `${label} va de ${min.toLocaleString('es-AR')} a ${max.toLocaleString('es-AR')}.`;
+  };
+  const out = {
+    level: read('level', LIMITS.level, 'El nivel'),
+    resets: read('resets', LIMITS.resets, 'Los resets'),
+    strength: read('strength', LIMITS.stat, 'La fuerza'),
+    agility: read('agility', LIMITS.stat, 'La agilidad'),
+    vitality: read('vitality', LIMITS.stat, 'La vitalidad'),
+    energy: read('energy', LIMITS.stat, 'La energía'),
+    leadership: hasLeadership ? read('leadership', LIMITS.stat, 'El comando') : null,
+    points: read('points', LIMITS.points, 'Los puntos libres'),
+    zen: read('zen', LIMITS.zen, 'El zen'),
+  };
+  const bad = Object.values(out).find(v => typeof v === 'string');
+  return bad ? { error: bad as string } : (out as Omit<CharacterStats, 'name' | 'class'>);
+}
+
+async function statRows(sql: Sql, name: string) {
+  const [ch] = await sql`
+    SELECT c."Id" AS id, c."Name" AS name, cc."Name" AS class, c."LevelUpPoints" AS points, c."InventoryId" AS inv, COALESCE(s."Money", 0) AS zen
+    FROM data."Character" c JOIN config."CharacterClass" cc ON cc."Id" = c."CharacterClassId"
+    LEFT JOIN data."ItemStorage" s ON s."Id" = c."InventoryId"
+    WHERE lower(c."Name") = lower(${name})
+  `;
+  if (!ch) return null;
+  const rows = await sql`
+    SELECT ad."Designation" AS d, sa."Value" AS v FROM data."StatAttribute" sa
+    JOIN config."AttributeDefinition" ad ON ad."Id" = sa."DefinitionId"
+    WHERE sa."CharacterId" = ${ch.id} AND ad."Designation" IN ${sql(Object.values(STAT_DESIGNATIONS))}
+  `;
+  const values = new Map(rows.map(r => [String(r.d), Math.round(Number(r.v))]));
+  return { ch, values };
+}
+
+export async function readStats(sql: Sql, name: string): Promise<CharacterStats | null> {
+  const found = await statRows(sql, name);
+  if (!found) return null;
+  const { ch, values } = found;
+  const v = (k: keyof typeof STAT_DESIGNATIONS) => values.get(STAT_DESIGNATIONS[k]) ?? 0;
+  return {
+    name: String(ch.name), class: String(ch.class), level: v('level'), resets: v('resets'),
+    strength: v('strength'), agility: v('agility'), vitality: v('vitality'), energy: v('energy'),
+    leadership: values.has(STAT_DESIGNATIONS.leadership) ? v('leadership') : null,
+    points: Number(ch.points), zen: Number(ch.zen),
+  };
+}
+
+/** Writes the stats; the caller has checked the character is offline. */
+export async function writeStats(sql: Sql, name: string, body: Record<string, unknown>): Promise<CharacterStats | { error: string }> {
+  const found = await statRows(sql, name);
+  if (!found) return { error: `El personaje "${name}" no existe. Revisá cómo está escrito.` };
+  const { ch, values } = found;
+  const checked = checkStats(body, values.has(STAT_DESIGNATIONS.leadership));
+  if ('error' in checked) return checked;
+  await sql.begin('read write', async tx => {
+    for (const [key, designation] of Object.entries(STAT_DESIGNATIONS)) {
+      const value = checked[key as keyof typeof checked];
+      if (value === null || !values.has(designation)) continue;
+      await tx`
+        UPDATE data."StatAttribute" sa SET "Value" = ${value} FROM config."AttributeDefinition" ad
+        WHERE ad."Id" = sa."DefinitionId" AND sa."CharacterId" = ${ch.id} AND ad."Designation" = ${designation}
+      `;
+    }
+    const exp = checked.level === values.get(STAT_DESIGNATIONS.level) ? null : experienceForLevel(checked.level);
+    await tx`UPDATE data."Character" SET "LevelUpPoints" = ${checked.points} WHERE "Id" = ${ch.id}`;
+    if (exp !== null) await tx`UPDATE data."Character" SET "Experience" = ${exp} WHERE "Id" = ${ch.id}`;
+    if (ch.inv) await tx`UPDATE data."ItemStorage" SET "Money" = ${checked.zen} WHERE "Id" = ${ch.inv}`;
+  });
+  return (await readStats(sql, name)) ?? { error: 'No se pudo leer de nuevo.' };
+}
+
 /** Who is in the game now, from OpenMU's own API; null when it cannot be asked (then nothing is written). */
 export async function onlinePlayers(apiUrl: string): Promise<string[] | null> {
   try {

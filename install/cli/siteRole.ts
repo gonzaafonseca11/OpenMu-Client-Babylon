@@ -26,8 +26,10 @@ export function siteRoleSql(c: Config): string {
     `GRANT SELECT (${ACCOUNT_COLUMNS.map(col => `"${col}"`).join(', ')}) ON data."Account" TO ${role};`,
     `GRANT SELECT ON ${TABLES.join(', ')} TO ${role};`,
     `GRANT INSERT ON ${INSERT_TABLES.join(', ')} TO ${role};`,
-    // FOR UPDATE on the character row while its bag is filled.
-    `GRANT UPDATE ("InventoryId") ON data."Character" TO ${role};`,
+    // The GM stat editor (site/server/gm.ts); InventoryId only for FOR UPDATE while a bag is filled.
+    `GRANT UPDATE ("InventoryId", "LevelUpPoints", "Experience") ON data."Character" TO ${role};`,
+    `GRANT UPDATE ("Value") ON data."StatAttribute" TO ${role};`,
+    `GRANT SELECT ("Id", "Money"), UPDATE ("Money") ON data."ItemStorage" TO ${role};`,
     '',
   ].join('\n');
 }

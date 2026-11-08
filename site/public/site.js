@@ -260,6 +260,50 @@ async function gmGive(e) {
   else $('#gm-ok').textContent = `Listo: ${body.name} +${form.get('level')} quedó en el inventario de ${form.get('character')}.`;
 }
 
+const STAT_FIELDS = ['level', 'resets', 'strength', 'agility', 'vitality', 'energy', 'leadership', 'points', 'zen'];
+
+function fillStats(s) {
+  const form = $('#stats-form');
+  form.hidden = false;
+  $('#stats-title').textContent = `${s.name} - ${s.class}${s.online ? ' (conectado: salí del juego para guardar)' : ''}`;
+  $('#stats-leadership').hidden = s.leadership === null;
+  for (const f of STAT_FIELDS) form.elements[f].value = s[f] ?? '';
+}
+
+async function statsLoad(e) {
+  e.preventDefault();
+  $('#stats-find-error').textContent = '';
+  $('#stats-ok').textContent = '';
+  $('#stats-error').textContent = '';
+  const name = new FormData(e.target).get('name').trim();
+  const { ok, body } = await api(`/api/gm/stats?name=${encodeURIComponent(name)}`);
+  if (!ok) {
+    $('#stats-form').hidden = true;
+    $('#stats-find-error').textContent = body.error || 'No se pudo cargar.';
+    return;
+  }
+  fillStats(body);
+}
+
+async function statsSave(e) {
+  e.preventDefault();
+  const form = e.target;
+  const data = { name: $('#stats-find').elements.name.value.trim() };
+  for (const f of STAT_FIELDS) if (!(f === 'leadership' && $('#stats-leadership').hidden)) data[f] = Number(form.elements[f].value);
+  $('#stats-error').textContent = '';
+  $('#stats-ok').textContent = '';
+  const button = form.querySelector('button[type=submit]');
+  button.disabled = true;
+  const { ok, body } = await post('/api/gm/stats', data);
+  button.disabled = false;
+  if (!ok) {
+    $('#stats-error').textContent = body.error || 'No se pudo guardar.';
+    return;
+  }
+  fillStats(body);
+  $('#stats-ok').textContent = `Listo: guardé los cambios de ${body.name}.`;
+}
+
 /* ----------------------------------------------------------------- tabs */
 
 function showTab() {
@@ -307,6 +351,8 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#gm-family').addEventListener('change', gmBrowse);
   $('#gm-results').addEventListener('change', gmPick);
   $('#gm-form').addEventListener('submit', gmGive);
+  $('#stats-find').addEventListener('submit', statsLoad);
+  $('#stats-form').addEventListener('submit', statsSave);
   $('#gm-all-exc').addEventListener('click', () => {
     const boxes = [...document.querySelectorAll('#gm-excellent input')];
     const all = boxes.every(b => b.checked);

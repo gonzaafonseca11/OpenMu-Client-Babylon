@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { checkOptions, durabilityFor, optionLabel, type ItemOption } from './gm';
+import { checkOptions, checkStats, durabilityFor, experienceForLevel, optionLabel, type ItemOption } from './gm';
 
 const opts: ItemOption[] = [
   { id: 'e1', kind: 'excellent', number: 1, label: 'Zen', maxLevel: 4 },
@@ -22,6 +22,20 @@ describe('GM item maker', () => {
     expect(checkOptions(opts, [{ id: 'o1', level: 5 }])).toHaveProperty('error');
     expect(checkOptions(opts, [{ id: 'o1', level: 0 }])).toHaveProperty('error');
     expect(checkOptions(opts, [{ id: 'o1', level: 1 }, { id: 'o2', level: 1 }])).toHaveProperty('error');
+  });
+
+  it('gives a level the experience OpenMU holds at its start', () => {
+    expect(experienceForLevel(1)).toBe(0);
+    expect(experienceForLevel(330)).toBe(820362580);
+  });
+
+  it('accepts stats inside the limits only', () => {
+    const ok = { level: 400, resets: 51, strength: 32500, agility: 1, vitality: 100, energy: 32500, points: 0, zen: 2_000_000_000 };
+    expect(checkStats(ok, false)).toEqual({ ...ok, leadership: null });
+    expect(checkStats({ ...ok, leadership: 500 }, true)).toHaveProperty('leadership', 500);
+    expect(checkStats({ ...ok, strength: 32501 }, false)).toHaveProperty('error');
+    expect(checkStats({ ...ok, level: 0 }, false)).toHaveProperty('error');
+    expect(checkStats({ ...ok, zen: 1.5 }, false)).toHaveProperty('error');
   });
 
   it('names options in Spanish', () => {

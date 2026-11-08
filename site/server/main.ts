@@ -7,7 +7,7 @@ import { accountCharacters, accountHash, characterNames, findAccount, pkRanking,
 import { clearedCookie, cookieValue, fingerprint, issue, read, sessionCookie } from './session';
 import { openCommunity } from './community';
 import { chatBanned, chatMessage, chatTooFast, isBanned, isModerator, newsPost } from './rules';
-import { browseItems, giveItem, itemOptions, onlinePlayers } from './gm';
+import { browseItems, giveItem, itemOptions, onlinePlayers, readStats, writeStats } from './gm';
 
 /**
  * The world's own website (site/readme.md): rankings anyone can read, and a player's characters
@@ -153,6 +153,25 @@ async function gmRequest(path: string, req: Request, url: URL): Promise<Response
   if (req.method === 'GET' && path === '/api/gm/options') {
     const id = url.searchParams.get('id') ?? '';
     return /^[0-9a-f-]{36}$/.test(id) ? json(await itemOptions(sql, id)) : json({ error: 'Pedido inválido.' }, 400);
+  }
+  if (req.method === 'GET' && path === '/api/gm/stats') {
+    const name = (url.searchParams.get('name') ?? '').trim().slice(0, 10);
+    const stats = name ? await readStats(sql, name) : null;
+    if (!stats) return json({ error: `El personaje "${name}" no existe. Revisá cómo está escrito.` }, 404);
+    const online = OPENMU_API_URL ? await onlinePlayers(OPENMU_API_URL) : null;
+    return json({ ...stats, online: online?.some(n => n.toLowerCase() === stats.name.toLowerCase()) ?? false });
+  }
+  if (req.method === 'POST' && path === '/api/gm/stats') {
+    const body = await readJson(req);
+    const name = typeof body?.name === 'string' ? body.name.trim() : '';
+    if (!body || !name || name.length > 10) return json({ error: 'Pedido inválido.' }, 400);
+    const online = OPENMU_API_URL ? await onlinePlayers(OPENMU_API_URL) : null;
+    if (!online) return json({ error: 'No pude ver quién está conectado. Probá de nuevo en un rato.' }, 503);
+    if (online.some(n => n.toLowerCase() === name.toLowerCase())) return json({ error: `${name} está conectado. Salí del juego con ese personaje y probá de nuevo.` }, 409);
+    const result = await writeStats(sql, name, body);
+    if ('error' in result) return json(result, 400);
+    process.stdout.write(`gm ${account.login} set stats of ${result.name}: ${JSON.stringify(result)}\n`);
+    return json(result);
   }
   if (req.method === 'POST' && path === '/api/gm/give') {
     const body = await readJson(req);
