@@ -9,6 +9,8 @@
 !cashshop/server/**
 !marketplace/server/**
 !ops/server/**
+!site/**
+!public/ui/world_select/logo.webp
 !tools/sqliteMigrate.ts
 !tools/sqliteBackup.ts
 **/*.test.ts
