@@ -3,10 +3,12 @@ import bcrypt from 'bcryptjs';
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
 import { BurstLimit, bucketFor, clientIp } from '../../src/core/rateLimit';
-import { accountCharacters, accountHash, characterNames, findAccount, pkRanking, resetRanking, type RankedCharacter } from './queries';
+import { accountCharacters, accountEmail, accountHash, characterNames, findAccount, pkRanking, resetRanking, type RankedCharacter } from './queries';
 import { clearedCookie, cookieValue, fingerprint, issue, read, sessionCookie } from './session';
 import { openCommunity } from './community';
 import { chatBanned, chatMessage, chatTooFast, isBanned, isModerator, newsPost } from './rules';
+import { normalEmail, openMuHash, openRecovery, passwordProblem, recoveryMail, recoveryTargets, sendMail } from './recovery';
+import { isEmail } from '../../src/modules/servers/registerRules';
 import { browseItems, giveItem, giveSet, itemOptions, learnAllSkills, onlinePlayers, parseBrowse, readStats, writeStats } from './gm';
 
 /**
@@ -26,7 +28,12 @@ const REGISTER_URL = process.env.SITE_REGISTER_URL || '';
 /** The site's own SQLite file: the community chat and the news. */
 /** OpenMU's web API, asked who is online before the GM panel writes. Empty: the panel writes nothing. */
 const OPENMU_API_URL = process.env.OPENMU_API_URL || '';
-const SITE_DB_PATH =process.env.SITE_DB_PATH || join(import.meta.dir, '..', '.data', 'site.sqlite');
+/** Account recovery mail (recovery.ts): Resend API key and sender; empty = recovery is off. */
+const MAIL_API_KEY = process.env.MAIL_API_KEY || '';
+const MAIL_FROM = process.env.MAIL_FROM || '';
+/** The site's public address, for the links in recovery mail. */
+const SITE_URL = (process.env.SITE_URL || '').replace(/\/$/, '');
+const SITE_DB_PATH = process.env.SITE_DB_PATH || join(import.meta.dir, '..', '.data', 'site.sqlite');
 
 /** Login attempts per network in ten minutes: enough for typos, too few to guess passwords. */
 const LOGIN_LIMIT = Number(process.env.LOGIN_LIMIT || 10);
@@ -37,6 +44,9 @@ const RANKING_TTL_MS = 60 * 1000;
 const sql = postgres(DATABASE_URL, { max: 4, idle_timeout: 60 });
 const community = openCommunity(SITE_DB_PATH);
 const logins = new BurstLimit(LOGIN_LIMIT, LOGIN_WINDOW_MS);
+const recovery = openRecovery(community.database);
+/** Recovery requests per network: a few for typos, too few to flood someone's inbox. */
+const recoveries = new BurstLimit(5, 60 * 60 * 1000);
 /** Compared against when the account does not exist, so a missing name answers as slowly as a wrong password. */
 const DUMMY_HASH = bcrypt.hashSync('not-a-password', 10);
 
@@ -207,6 +217,53 @@ async function gmRequest(path: string, req: Request, url: URL): Promise<Response
   return json({ error: 'No encontrado.' }, 404);
 }
 
+const RECOVERY_SENT = 'Si la cuenta o el e-mail existen y tienen un e-mail cargado, te mandamos un mail con los pasos. Revisá también la carpeta de spam.';
+
+/** "Forgot my password / account": mails every matching account a one-use link. Same answer either way. */
+async function recover(req: Request, ip: string): Promise<Response> {
+  if (!MAIL_API_KEY || !MAIL_FROM || !SITE_URL) return json({ error: 'La recuperación de cuentas todavía no está activada. Escribile a un GM.' }, 503);
+  if (recoveries.hammering(bucketFor(ip))) return json({ error: 'Pediste demasiadas veces. Esperá un rato.' }, 429);
+  const body = await readJson(req);
+  const ask = typeof body?.ask === 'string' ? body.ask.trim().slice(0, 100) : '';
+  if (!ask) return json({ error: 'Escribí tu cuenta o tu e-mail.' }, 400);
+  const byEmail = new Map<string, { login: string; link: string }[]>();
+  for (const t of await recoveryTargets(sql, ask)) {
+    const link = `${SITE_URL}/#restablecer=${recovery.issue(t.id)}`;
+    byEmail.set(t.email, [...(byEmail.get(t.email) ?? []), { login: t.login, link }]);
+  }
+  for (const [email, accounts] of byEmail) await sendMail(MAIL_API_KEY, MAIL_FROM, email, recoveryMail(SITE_URL, NAME, accounts));
+  return json({ ok: true, message: RECOVERY_SENT });
+}
+
+/** Sets the new password behind a recovery link, and spends the link. */
+async function resetPassword(req: Request): Promise<Response> {
+  const body = await readJson(req);
+  const token = typeof body?.token === 'string' ? body.token : '';
+  const accountId = token ? recovery.peek(token) : null;
+  if (!accountId) return json({ error: 'El link venció o ya se usó. Pedí uno nuevo.' }, 400);
+  const problem = passwordProblem(body?.password);
+  if (problem) return json({ error: problem }, 400);
+  const hash = await openMuHash(String(body?.password));
+  await sql.begin('read write', tx => tx`UPDATE data."Account" SET "PasswordHash" = ${hash} WHERE "Id" = ${accountId}`);
+  recovery.spend(token);
+  const account = await accountHash(sql, accountId);
+  process.stdout.write(`password reset by mail for ${account?.login ?? accountId}\n`);
+  return json({ ok: true, login: account?.login ?? '' });
+}
+
+/** A logged-in player sets the account's e-mail; the current password confirms it is them. */
+async function setEmail(req: Request): Promise<Response> {
+  const account = await sessionAccount(req);
+  if (!account) return notLoggedIn();
+  const body = await readJson(req);
+  const email = normalEmail(body?.email);
+  if (!isEmail(email)) return json({ error: 'Escribí un e-mail válido.' }, 400);
+  const row = await accountHash(sql, account.id);
+  if (!row || typeof body?.password !== 'string' || !(await bcrypt.compare(body.password, row.hash))) return json({ error: 'La contraseña no es correcta.' }, 401);
+  await sql.begin('read write', tx => tx`UPDATE data."Account" SET "EMail" = ${email} WHERE "Id" = ${account.id}`);
+  return json({ ok: true, email });
+}
+
 async function login(req: Request, ip: string): Promise<Response> {
   if (!SECRET) return json({ error: 'El inicio de sesión no está disponible.' }, 503);
   if (logins.hammering(bucketFor(ip))) return json({ error: 'Demasiados intentos. Esperá unos minutos.' }, 429);
@@ -248,7 +305,12 @@ Bun.serve({
       if (req.method === 'GET' && path === '/api/me') {
         const account = await sessionAccount(req);
         if (!account) return json({ error: 'No iniciaste sesión.' }, 401);
-        return json({ login: account.login, moderator: account.moderator, chatBanned: account.chatBanned, characters: await accountCharacters(sql, account.id) });
+        return json({ login: account.login, email: await accountEmail(sql, account.id), moderator: account.moderator, chatBanned: account.chatBanned, characters: await accountCharacters(sql, account.id) });
+      }
+      if (req.method === 'GET' && path === '/api/reset') {
+        const id = recovery.peek(url.searchParams.get('token') ?? '');
+        const account = id ? await accountHash(sql, id) : null;
+        return account ? json({ login: account.login }) : json({ error: 'El link venció o ya se usó. Pedí uno nuevo.' }, 400);
       }
       if (req.method === 'GET' && path === '/api/news') return json(community.news());
       if (req.method === 'GET' || req.headers.get('content-type')?.startsWith('application/json')) {
@@ -263,6 +325,12 @@ Bun.serve({
       if (req.method === 'POST' && req.headers.get('content-type')?.startsWith('application/json')) {
         if (path === '/api/login') return await login(req, clientIp(req, server));
         if (path === '/api/logout') return json({ ok: true }, 200, { 'Set-Cookie': clearedCookie(SECURE_COOKIE) });
+        if (path === '/api/recover') return await recover(req, clientIp(req, server));
+        if (path === '/api/reset') return await resetPassword(req);
+        if (path === '/api/account/email') {
+          if (logins.hammering(bucketFor(clientIp(req, server)))) return json({ error: 'Demasiados intentos. Esperá unos minutos.' }, 429);
+          return await setEmail(req);
+        }
         const answer = await communityPost(path, req);
         if (answer) return answer;
       }

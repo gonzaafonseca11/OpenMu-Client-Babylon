@@ -170,7 +170,9 @@ Bun.serve({
       const rejection = await createAccount(
         sql,
         body.username as string,
-        body.password as string
+        body.password as string,
+        undefined,
+        body.email as string
       );
 
       if (rejection) return json({ error: rejection }, 409, cors);

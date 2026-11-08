@@ -4,6 +4,7 @@ import {
   MAX_ACCOUNT_PASSWORD_LENGTH,
   MIN_ACCOUNT_LENGTH,
   MIN_ACCOUNT_PASSWORD_LENGTH,
+  MAX_EMAIL_LENGTH,
   validateSignup,
   type SignupProblem,
 } from '../../src/modules/servers/registerRules';
@@ -34,7 +35,7 @@ const INPUT_X = 109;
 const LABEL_X = 22;
 
 /** First row, then one row every `ROW_STEP` px. */
-const FIRST_ROW_Y = 100;
+const FIRST_ROW_Y = 88;
 const ROW_STEP = 24;
 
 /** The label sits a few px below the input's top edge to look centred. */
@@ -45,7 +46,7 @@ const TEXT_INSET_Y = 6;
 
 const BUTTON_WIDTH = 54;
 const BUTTON_HEIGHT = 30;
-const BUTTON_Y = 192;
+const BUTTON_Y = 196;
 const OK_X = 150;
 const CANCEL_X = 211;
 
@@ -53,15 +54,14 @@ const CANCEL_X = 211;
 const API = import.meta.env.VITE_REGISTER_API || '/api/register';
 
 /**
- * The login window's two rows, plus the confirmation a password needs when it
- * is being set rather than typed back. No e-mail: nothing sends one, and a
- * field the server stores as the empty string is a field that asks for a
- * stranger's address for nothing.
+ * The login window's two rows, the confirmation a password needs when it is
+ * being set, and the e-mail a forgotten password is sent to (site/readme.md).
  */
 const ROWS = [
   { key: 'username', label: 'ID', type: 'text' },
   { key: 'password', label: 'Password', type: 'password' },
   { key: 'confirm', label: 'Confirm', type: 'password' },
+  { key: 'email', label: 'E-mail', type: 'email' },
 ] as const;
 
 type Field = (typeof ROWS)[number]['key'];
@@ -76,6 +76,7 @@ const EMPTY: Record<Field, string> = {
   username: '',
   password: '',
   confirm: '',
+  email: '',
 };
 
 /**
@@ -90,6 +91,7 @@ const PROBLEM_TEXT: Record<SignupProblem, string> = {
   passwordShort: `Password must be at least ${MIN_ACCOUNT_PASSWORD_LENGTH} characters.`,
   passwordChars: 'Password may contain only letters, numbers and basic symbols.',
   mismatch: 'Passwords do not match.',
+  email: 'Enter a valid e-mail. It is how you recover the account.',
 };
 
 export const RegisterPage = () => {
@@ -118,6 +120,7 @@ export const RegisterPage = () => {
         body: JSON.stringify({
           username: values.username,
           password: values.password,
+          email: values.email.trim(),
         }),
       });
 
@@ -182,7 +185,9 @@ export const RegisterPage = () => {
                     maxLength={
                       row.key === 'username'
                         ? MAX_ACCOUNT_LENGTH
-                        : MAX_ACCOUNT_PASSWORD_LENGTH
+                        : row.key === 'email'
+                          ? MAX_EMAIL_LENGTH
+                          : MAX_ACCOUNT_PASSWORD_LENGTH
                     }
                     style={{
                       paddingLeft: TEXT_INSET_X,

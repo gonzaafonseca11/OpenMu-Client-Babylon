@@ -28,6 +28,10 @@ export type Config = {
   /** The website's read-only database role password, and the key its login sessions are signed with; made when missing (state.ts). */
   siteDbSecret: string;
   siteSessionSecret: string;
+  /** Resend API key for the website's account recovery mail; empty = recovery off. */
+  siteMailKey: string;
+  /** The recovery mail's sender, e.g. `Mu Bardo <cuentas@example.com>` on a domain verified at Resend. */
+  siteMailFrom: string;
   band: boolean;
   ping: boolean;
   weather: boolean;
@@ -90,6 +94,8 @@ const KEYS: Record<keyof Config, string> = {
   shopTicketSecret: 'CASHSHOP_TICKET_SECRET',
   siteDbSecret: 'MU_SITE_DB_SECRET',
   siteSessionSecret: 'MU_SITE_SESSION_SECRET',
+  siteMailKey: 'MU_SITE_MAIL_KEY',
+  siteMailFrom: 'MU_SITE_MAIL_FROM',
   band: 'MU_BAND',
   ping: 'MU_PING',
   weather: 'MU_WEATHER',
@@ -136,6 +142,8 @@ export const DEFAULTS: Config = {
   shopTicketSecret: '',
   siteDbSecret: '',
   siteSessionSecret: '',
+  siteMailKey: '',
+  siteMailFrom: '',
   band: true,
   ping: true,
   weather: true,

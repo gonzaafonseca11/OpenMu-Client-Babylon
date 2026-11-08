@@ -97,6 +97,7 @@
           <button class="btn btn-play" type="submit">Entrar</button>
           <p class="error" id="login-error" role="alert"></p>
         </form>
+        <p class="hint"><a href="#recuperar">¿Olvidaste tu contraseña o tu cuenta?</a></p>
       </div>
       <div id="account" hidden>
         <div class="account-head">
@@ -104,6 +105,44 @@
           <button class="btn btn-ghost" id="logout" type="button">Salir</button>
         </div>
         <div id="characters" class="cards"></div>
+        <form id="email-form" class="login-box email-form">
+          <h2>E-mail de la cuenta</h2>
+          <p class="hint" id="email-current"></p>
+          <label>E-mail nuevo <input name="email" type="email" maxlength="100" autocomplete="email" required></label>
+          <label>Tu contraseña actual <input name="password" type="password" maxlength="20" autocomplete="current-password" required></label>
+          <button class="btn btn-play" type="submit">Guardar e-mail</button>
+          <p class="error" id="email-error" role="alert"></p>
+          <p class="ok" id="email-ok" role="status"></p>
+        </form>
+      </div>
+    </section>
+
+    <section id="recuperar" class="panel" hidden>
+      <div class="login-box">
+        <h1>Recuperar cuenta</h1>
+        <p class="hint">Escribí tu <b>cuenta</b> (si olvidaste la contraseña) o tu <b>e-mail</b> (si olvidaste la cuenta). Te mandamos un mail con un link para poner una contraseña nueva.</p>
+        <form id="recover-form">
+          <label>Cuenta o e-mail <input name="ask" maxlength="100" autocomplete="username" required></label>
+          <button class="btn btn-play" type="submit">Enviarme el mail</button>
+          <p class="error" id="recover-error" role="alert"></p>
+          <p class="ok" id="recover-ok" role="status"></p>
+        </form>
+        <p class="hint small">¿Tu cuenta no tiene e-mail cargado? Escribile a un GM.</p>
+      </div>
+    </section>
+
+    <section id="restablecer" class="panel" hidden>
+      <div class="login-box">
+        <h1>Contraseña nueva</h1>
+        <p class="hint" id="reset-for"></p>
+        <form id="reset-form">
+          <label>Contraseña nueva <input name="password" type="password" maxlength="10" autocomplete="new-password" required></label>
+          <label>Repetila <input name="confirm" type="password" maxlength="10" autocomplete="new-password" required></label>
+          <p class="hint small">De 4 a 10 caracteres: letras, números y símbolos básicos, sin espacios ni acentos.</p>
+          <button class="btn btn-play" type="submit">Cambiar contraseña</button>
+          <p class="error" id="reset-error" role="alert"></p>
+          <p class="ok" id="reset-ok" role="status"></p>
+        </form>
       </div>
     </section>
     <section id="gm" class="panel" hidden>

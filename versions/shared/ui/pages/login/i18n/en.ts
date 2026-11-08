@@ -11,6 +11,9 @@ const en = {
   'register.id': 'ID',
   'register.password': 'Password',
   'register.confirm': 'Confirm',
+  /** Where a forgotten password is sent. */
+  'register.email': 'E-mail',
+  'register.emailInvalid': 'Enter a valid e-mail. It is how you recover the account.',
   'register.fillEveryField': 'Please fill in every field.',
   'register.idTooShort': 'ID must be at least {min} characters.',
   'register.idChars': 'ID may contain only letters and numbers.',

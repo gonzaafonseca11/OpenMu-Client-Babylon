@@ -182,6 +182,9 @@ async function showAccount() {
   $('#gm-tab').hidden = !me?.moderator;
   if (!me) return;
   $('#account-name').textContent = me.login;
+  $('#email-current').textContent = me.email
+    ? `Tu e-mail es ${me.email}. Si olvidás la contraseña, te llega ahí.`
+    : 'Tu cuenta no tiene e-mail. Cargalo para poder recuperarla si olvidás la contraseña.';
   const cards = me.characters.map(characterCard);
   $('#characters').replaceChildren(...(cards.length ? cards : [el('p', { class: 'hint' }, 'Todavía no creaste personajes. ¡Entrá al juego y creá uno!')]));
 }
@@ -310,7 +313,24 @@ async function statsSave(e) {
 
 /* ----------------------------------------------------------------- tabs */
 
+/** The token of a recovery link (`#restablecer=<token>`), kept while the reset page is up. */
+let resetToken = '';
+
+async function showReset() {
+  $('#reset-error').textContent = '';
+  $('#reset-ok').textContent = '';
+  $('#reset-form').hidden = false;
+  const { ok, body } = await api(`/api/reset?token=${encodeURIComponent(resetToken)}`);
+  $('#reset-for').textContent = ok ? `Cuenta: ${body.login}` : body.error || 'El link no sirve.';
+  $('#reset-form').hidden = !ok;
+}
+
 function showTab() {
+  if (location.hash.startsWith('#restablecer=')) {
+    resetToken = location.hash.slice('#restablecer='.length);
+    // The token leaves the address bar (and the history) at once.
+    window.history.replaceState(null, '', '#restablecer');
+  }
   const tab = (location.hash || '#inicio').slice(1);
   const panel = document.getElementById(tab) ? tab : 'inicio';
   for (const s of document.querySelectorAll('main > section')) s.hidden = s.id !== panel;
@@ -321,6 +341,7 @@ function showTab() {
   if (panel === 'comunidad') showCommunity();
   else stopChat();
   if (panel === 'inicio') loadNews();
+  if (panel === 'restablecer') showReset();
   $('#gm-tab').hidden = !me?.moderator;
 }
 
@@ -348,6 +369,53 @@ document.addEventListener('DOMContentLoaded', () => {
     await post('/api/logout', {});
     me = null;
     stopChat();
+    showAccount();
+  });
+
+  $('#recover-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const button = e.target.querySelector('button');
+    $('#recover-error').textContent = '';
+    $('#recover-ok').textContent = '';
+    button.disabled = true;
+    const { ok, body } = await post('/api/recover', { ask: new FormData(e.target).get('ask') });
+    button.disabled = false;
+    if (ok) $('#recover-ok').textContent = body.message;
+    else $('#recover-error').textContent = body.error || 'No se pudo enviar.';
+  });
+
+  $('#reset-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const form = new FormData(e.target);
+    $('#reset-error').textContent = '';
+    if (form.get('password') !== form.get('confirm')) {
+      $('#reset-error').textContent = 'Las contraseñas no coinciden.';
+      return;
+    }
+    const { ok, body } = await post('/api/reset', { token: resetToken, password: form.get('password') });
+    if (!ok) {
+      $('#reset-error').textContent = body.error || 'No se pudo cambiar.';
+      return;
+    }
+    e.target.reset();
+    e.target.hidden = true;
+    resetToken = '';
+    $('#reset-ok').textContent = '';
+    $('#reset-for').textContent = `Listo: la contraseña de ${body.login} cambió. Ya podés entrar al juego con la nueva.`;
+  });
+
+  $('#email-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const form = new FormData(e.target);
+    $('#email-error').textContent = '';
+    $('#email-ok').textContent = '';
+    const { ok, body } = await post('/api/account/email', { email: form.get('email'), password: form.get('password') });
+    if (!ok) {
+      $('#email-error').textContent = body.error || 'No se pudo guardar.';
+      return;
+    }
+    e.target.reset();
+    $('#email-ok').textContent = 'Listo: guardamos tu e-mail.';
     showAccount();
   });
 

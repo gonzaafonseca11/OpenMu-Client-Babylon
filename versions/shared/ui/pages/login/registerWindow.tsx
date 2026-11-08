@@ -10,6 +10,7 @@ import {
   MAX_ACCOUNT_PASSWORD_LENGTH,
   MIN_ACCOUNT_LENGTH,
   MIN_ACCOUNT_PASSWORD_LENGTH,
+  MAX_EMAIL_LENGTH,
   validateSignup,
   type SignupProblem,
 } from '@/modules/servers/registerRules';
@@ -66,6 +67,7 @@ const ROWS = [
   { key: 'username', label: 'register.id', type: 'text' },
   { key: 'password', label: 'register.password', type: 'password' },
   { key: 'confirm', label: 'register.confirm', type: 'password' },
+  { key: 'email', label: 'register.email', type: 'email' },
 ] as const;
 
 type Field = (typeof ROWS)[number]['key'];
@@ -74,12 +76,14 @@ const EMPTY: Record<Field, string> = {
   username: '',
   password: '',
   confirm: '',
+  email: '',
 };
 
 const MAX_LENGTH: Record<Field, number> = {
   username: MAX_ACCOUNT_LENGTH,
   password: MAX_ACCOUNT_PASSWORD_LENGTH,
   confirm: MAX_ACCOUNT_PASSWORD_LENGTH,
+  email: MAX_EMAIL_LENGTH,
 };
 
 /** The shared rules' reasons, said in the player's language. */
@@ -99,6 +103,8 @@ function problemText(problem: SignupProblem): string {
       return t('register.passwordChars');
     case 'mismatch':
       return t('register.mismatch');
+    case 'email':
+      return t('register.emailInvalid');
   }
 }
 
@@ -138,6 +144,7 @@ export const RegisterWindow = observer(({ onCreated, onCancel }: RegisterWindowP
         body: JSON.stringify({
           username: values.username,
           password: values.password,
+          email: values.email.trim(),
         }),
       });
 

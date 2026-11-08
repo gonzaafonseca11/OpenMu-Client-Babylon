@@ -10,6 +10,8 @@ export default {
   'register.id': 'ID',
   'register.password': 'Contraseña',
   'register.confirm': 'Confirmar',
+  'register.email': 'E-mail',
+  'register.emailInvalid': 'Escribe un e-mail válido. Es para recuperar la cuenta.',
   'register.fillEveryField': 'Rellena todos los campos.',
   'register.idTooShort': 'El ID debe tener al menos {min} caracteres.',
   'register.idChars': 'El ID solo puede tener letras y números.',

@@ -34,30 +34,39 @@ const ACCOUNT_RE = /^[A-Za-z0-9]+$/;
  */
 const PASSWORD_RE = /^[!-~]+$/;
 
+/** The e-mail a lost password is sent to: one address, no spaces, a dot in the domain. */
+export const MAX_EMAIL_LENGTH = 100;
+const EMAIL_RE = /^[^\s@<>"']+@[^\s@<>"']+\.[^\s@<>"']+$/;
+
+export const isEmail = (email: string) => email.length <= MAX_EMAIL_LENGTH && EMAIL_RE.test(email);
+
 export type SignupProblem =
   | 'empty'
   | 'idShort'
   | 'idChars'
   | 'passwordShort'
   | 'passwordChars'
-  | 'mismatch';
+  | 'mismatch'
+  | 'email';
 
 type Signup = {
   username: string;
   password: string;
   confirm: string;
+  email: string;
 };
 
 /** The first thing wrong with this signup, or null when nothing is. */
 export function validateSignup(signup: Signup): SignupProblem | null {
-  const { username, password, confirm } = signup;
+  const { username, password, confirm, email } = signup;
 
-  if (!username || !password || !confirm) return 'empty';
+  if (!username || !password || !confirm || !email) return 'empty';
   if (username.length < MIN_ACCOUNT_LENGTH) return 'idShort';
   if (!ACCOUNT_RE.test(username)) return 'idChars';
   if (password.length < MIN_ACCOUNT_PASSWORD_LENGTH) return 'passwordShort';
   if (!PASSWORD_RE.test(password)) return 'passwordChars';
   if (password !== confirm) return 'mismatch';
+  if (!isEmail(email.trim())) return 'email';
 
   return null;
 }

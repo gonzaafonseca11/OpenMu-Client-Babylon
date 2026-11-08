@@ -53,3 +53,7 @@ refuses a connected character, since OpenMU would overwrite the bag on its next 
 INSERT only into `data."Item"` and `data."ItemOptionLink"` (`install/cli/siteRole.ts`).
 
 The same tab has a stat editor: level (experience set to that level's start), resets, base stats up to 32500, free points and zen of an offline character. The role may UPDATE only those columns.
+
+## Account recovery
+
+Signup asks for an e-mail (register service, both forms). On the site a player can set or change it under Mi cuenta (current password required), and #recuperar takes an account name or an e-mail: every matching account gets a one-use link (an hour, only its hash kept in the site's SQLite) to #restablecer, which sets a new password in OpenMU's format. Mail goes through Resend (MU_SITE_MAIL_KEY, MU_SITE_MAIL_FROM); without them recovery answers that it is off. The answer never says whether an account exists.

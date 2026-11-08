@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { validateSignup } from './registerRules';
 
-const good = { username: 'player', password: 'secret', confirm: 'secret' };
+const good = { username: 'player', password: 'secret', confirm: 'secret', email: 'player@example.com' };
 
 describe('validateSignup', () => {
   it('accepts a well-formed signup', () => {
@@ -11,8 +11,15 @@ describe('validateSignup', () => {
   it('names the first thing wrong, in field order', () => {
     // A short ID *and* a mismatch: the ID is what the player is looking at.
     expect(
-      validateSignup({ username: 'ab', password: 'secret', confirm: 'other' })
+      validateSignup({ username: 'ab', password: 'secret', confirm: 'other', email: 'x@y.com' })
     ).toBe('idShort');
+  });
+
+  it('wants an e-mail it can send a lost password to', () => {
+    expect(validateSignup({ ...good, email: '' })).toBe('empty');
+    expect(validateSignup({ ...good, email: 'player' })).toBe('email');
+    expect(validateSignup({ ...good, email: 'a b@example.com' })).toBe('email');
+    expect(validateSignup({ ...good, email: 'a@example' })).toBe('email');
   });
 
   it('rejects an empty field before anything else', () => {
@@ -35,7 +42,7 @@ describe('validateSignup', () => {
 });
 
 describe('the password charset', () => {
-  const good = { username: 'player', password: 'secret1', confirm: 'secret1' };
+  const good = { username: 'player', password: 'secret1', confirm: 'secret1', email: 'player@example.com' };
 
   it('takes letters, numbers and basic symbols', () => {
     for (const password of ['secret1', 'p@ss-w0rd', 'a_b.c!1']) {

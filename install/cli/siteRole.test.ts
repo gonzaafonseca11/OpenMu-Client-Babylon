@@ -7,16 +7,17 @@ import { siteRoleSql } from './siteRole';
 const domain = { ...DEFAULTS, domain: 'example.com', siteDbSecret: 'abc_DEF-123', siteSessionSecret: 'sess' };
 
 describe('website', () => {
-  it('gives its role reads, GM item inserts only, and only seven account columns', () => {
+  it('gives its role reads, GM writes and recovery only, and only eight account columns', () => {
     const sqlText = siteRoleSql(domain);
     expect(sqlText).toContain("PASSWORD 'abc_DEF-123'");
     expect(sqlText).toContain('default_transaction_read_only = on');
-    expect(sqlText).toContain('GRANT SELECT ("Id", "LoginName", "PasswordHash", "State", "IsBot", "IsTemplate", "ChatBanUntil") ON data."Account"');
-    expect(sqlText).not.toContain('"EMail"');
+    expect(sqlText).toContain('GRANT SELECT ("Id", "LoginName", "PasswordHash", "State", "IsBot", "IsTemplate", "ChatBanUntil", "EMail") ON data."Account"');
+    expect(sqlText).toContain('GRANT UPDATE ("PasswordHash", "EMail") ON data."Account" TO mu_site;');
+    expect(sqlText).not.toMatch(/"(VaultPassword|SecurityCode)"/);
     expect(sqlText).not.toMatch(/GRANT (DELETE|ALL)/);
     expect(sqlText).toContain('GRANT INSERT ON data."Item", data."ItemOptionLink", data."SkillEntry" TO mu_site;');
     expect(sqlText).toContain('GRANT UPDATE ("Value") ON data."StatAttribute" TO mu_site;');
-    expect(sqlText.match(/GRANT (INSERT|UPDATE)[^;]*;/g)).toHaveLength(3);
+    expect(sqlText.match(/GRANT (INSERT|UPDATE)[^;]*;/g)).toHaveLength(4);
   });
 
   it('refuses a secret that could break out of the quotes', () => {
@@ -36,6 +37,8 @@ describe('website', () => {
     const env = serviceEnv(domain).site;
     expect(env?.DATABASE_URL).toBe('postgres://mu_site:abc_DEF-123@database:5432/openmu');
     expect(env?.SITE_SECURE_COOKIE).toBe('on');
+    expect(env?.SITE_URL).toBe('https://example.com');
+    expect(serviceEnv({ ...domain, siteMailKey: 're_x', siteMailFrom: 'MU <a@example.com>' }).site?.MAIL_API_KEY).toBe('re_x');
     expect(env?.SITE_PLAY_URL).toBe('https://play.example.com');
     expect(env?.SITE_REGISTER_URL).toBe('https://register.example.com');
     expect(serviceEnv({ ...domain, mode: 'ip', publicIp: '203.0.113.7' }).site?.SITE_SECURE_COOKIE).toBe('off');

@@ -250,3 +250,4 @@ label.check { display: flex; gap: 8px; align-items: center; font-weight: 400; co
 .gm-form h2 { margin: 0; }
 .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
 .stats-grid label[hidden], .stats-form[hidden] { display: none; }
+.email-form { margin-top: 28px; }

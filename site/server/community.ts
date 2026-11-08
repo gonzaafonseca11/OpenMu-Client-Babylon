@@ -45,6 +45,8 @@ export function openCommunity(path: string) {
   setInterval(() => pruneChat.run(Date.now() - CHAT_KEEP_MS), 60 * 60 * 1000).unref();
 
   return {
+    /** The same file holds the recovery links (recovery.ts). */
+    database: db,
     /** The latest page, or what came after `after`; plus what was hidden lately, so open pages drop it too. */
     chat(after: number): { messages: ChatRow[]; hidden: number[] } {
       const messages = after > 0 ? chatAfter.all(after, CHAT_PAGE) : latestChat.all(CHAT_PAGE);

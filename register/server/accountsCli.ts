@@ -10,7 +10,7 @@ const [command, login] = process.argv.slice(2);
 try {
   if (command === 'gm') {
     const password = (await Bun.stdin.text()).trim();
-    const problem = validate({ username: login, password }) ?? (await createAccount(sql, login, password, AccountState.GameMaster));
+    const problem = validate({ username: login, password }, false) ?? (await createAccount(sql, login, password, AccountState.GameMaster));
     if (problem) {
       console.error(problem);
       process.exitCode = 1;

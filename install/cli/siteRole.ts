@@ -3,8 +3,8 @@ import type { Config } from './config';
 import type { Stack } from './docker';
 import { SITE_DB_ROLE } from './stack';
 
-/** Account columns the site needs: its login check, the GM/ban filter and the chat ban. Never e-mail, vault or security code. */
-const ACCOUNT_COLUMNS = ['Id', 'LoginName', 'PasswordHash', 'State', 'IsBot', 'IsTemplate', 'ChatBanUntil'];
+/** Account columns the site needs: its login check, the GM/ban filter, the chat ban and the recovery e-mail. Never vault or security code. */
+const ACCOUNT_COLUMNS = ['Id', 'LoginName', 'PasswordHash', 'State', 'IsBot', 'IsTemplate', 'ChatBanUntil', 'EMail'];
 const TABLES = ['data."Character"', 'data."StatAttribute"', 'config."AttributeDefinition"', 'config."CharacterClass"', 'config."GameMapDefinition"',
   // The GM panel's item maker reads the item definitions and the bag it fills.
   'config."ItemDefinition"', 'config."ItemDefinitionCharacterClass"', 'config."ItemDefinitionItemOptionDefinition"', 'config."IncreasableItemOption"', 'config."ItemOptionType"',
@@ -30,6 +30,8 @@ export function siteRoleSql(c: Config): string {
     // The GM stat editor (site/server/gm.ts); InventoryId only for FOR UPDATE while a bag is filled.
     `GRANT UPDATE ("InventoryId", "LevelUpPoints", "Experience", "CharacterClassId") ON data."Character" TO ${role};`,
     `GRANT UPDATE ("Value") ON data."StatAttribute" TO ${role};`,
+    // Account recovery (site/server/recovery.ts): a new password behind a mailed link, and the player's own e-mail.
+    `GRANT UPDATE ("PasswordHash", "EMail") ON data."Account" TO ${role};`,
     `GRANT SELECT ("Id", "Money"), UPDATE ("Money") ON data."ItemStorage" TO ${role};`,
     '',
   ].join('\n');

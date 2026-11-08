@@ -2,6 +2,7 @@
 import type { Sql } from 'postgres';
 import bcrypt from 'bcryptjs';
 import { isReservedName } from '../../src/modules/servers/reservedNames';
+import { isEmail } from '../../src/modules/servers/registerRules';
 
 /** OpenMU's `AccountState` (DataModel/Entities/Account.cs). */
 export const AccountState = { Normal: 0, GameMaster: 2, Banned: 4 } as const;
@@ -32,11 +33,17 @@ const USERNAME_RE = /^[A-Za-z0-9]+$/;
 export function validate(body: {
   username?: unknown;
   password?: unknown;
-}): string | null {
-  const { username, password } = body;
+  email?: unknown;
+}, needsEmail = true): string | null {
+  const { username, password, email } = body;
 
   if (typeof username !== 'string' || typeof password !== 'string') {
     return 'Malformed request.';
+  }
+
+  // The signup forms send one; the operator's CLI (accountsCli.ts) makes accounts without.
+  if (needsEmail && (typeof email !== 'string' || !isEmail(email.trim()))) {
+    return 'Enter a valid e-mail. It is how you recover the account.';
   }
 
   if (
@@ -113,7 +120,8 @@ export async function createAccount(
   sql: Sql,
   username: string,
   password: string,
-  state: AccountState = AccountState.Normal
+  state: AccountState = AccountState.Normal,
+  email = ''
 ): Promise<string | null> {
   const existing = await sql`
     SELECT 1 FROM data."Account" WHERE lower("LoginName") = lower(${username}) LIMIT 1
@@ -127,14 +135,14 @@ export async function createAccount(
     // Column list mirrors every NOT NULL column on `data."Account"` that has no
     // default. `VaultId` stays null: OpenMU creates the vault storage itself on
     // first use, and inventing one here would mean writing `ItemStorage` too.
-    // `EMail` is NOT NULL but the form does not ask for one, so it takes the
-    // empty string.
+    // `EMail` is NOT NULL: the signup's address (where a lost password goes), or
+    // the empty string for an account made from the CLI.
     await sql`
       INSERT INTO data."Account" (
         "Id", "LoginName", "PasswordHash", "SecurityCode", "EMail",
         "RegistrationDate", "State", "TimeZone", "VaultPassword", "IsVaultExtended"
       ) VALUES (
-        gen_random_uuid(), ${username}, ${passwordHash}, '', '',
+        gen_random_uuid(), ${username}, ${passwordHash}, '', ${email.trim().toLowerCase()},
         now(), ${state}, 0, '', false
       )
     `;
