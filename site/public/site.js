@@ -355,6 +355,16 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#gm-form').addEventListener('submit', gmGive);
   $('#stats-find').addEventListener('submit', statsLoad);
   $('#stats-form').addEventListener('submit', statsSave);
+  $('#stats-skills').addEventListener('click', async e => {
+    $('#stats-error').textContent = '';
+    $('#stats-ok').textContent = '';
+    e.target.disabled = true;
+    const name = $('#stats-find').elements.name.value.trim();
+    const { ok, body } = await post('/api/gm/skills', { name });
+    e.target.disabled = false;
+    if (!ok) $('#stats-error').textContent = body.error || 'No se pudo.';
+    else $('#stats-ok').textContent = body.added ? `Listo: ${name} aprendió ${body.added} poderes nuevos (tiene ${body.total}).` : `${name} ya tenía todos los poderes de su clase.`;
+  });
   $('#gm-all-exc').addEventListener('click', () => {
     const boxes = [...document.querySelectorAll('#gm-excellent input')];
     const all = boxes.every(b => b.checked);

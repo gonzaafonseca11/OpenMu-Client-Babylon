@@ -14,7 +14,7 @@ describe('website', () => {
     expect(sqlText).toContain('GRANT SELECT ("Id", "LoginName", "PasswordHash", "State", "IsBot", "IsTemplate", "ChatBanUntil") ON data."Account"');
     expect(sqlText).not.toContain('"EMail"');
     expect(sqlText).not.toMatch(/GRANT (DELETE|ALL)/);
-    expect(sqlText).toContain('GRANT INSERT ON data."Item", data."ItemOptionLink" TO mu_site;');
+    expect(sqlText).toContain('GRANT INSERT ON data."Item", data."ItemOptionLink", data."SkillEntry" TO mu_site;');
     expect(sqlText).toContain('GRANT UPDATE ("Value") ON data."StatAttribute" TO mu_site;');
     expect(sqlText.match(/GRANT (INSERT|UPDATE)[^;]*;/g)).toHaveLength(3);
   });

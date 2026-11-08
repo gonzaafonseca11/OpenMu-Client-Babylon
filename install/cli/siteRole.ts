@@ -8,9 +8,10 @@ const ACCOUNT_COLUMNS = ['Id', 'LoginName', 'PasswordHash', 'State', 'IsBot', 'I
 const TABLES = ['data."Character"', 'data."StatAttribute"', 'config."AttributeDefinition"', 'config."CharacterClass"', 'config."GameMapDefinition"',
   // The GM panel's item maker reads the item definitions and the bag it fills.
   'config."ItemDefinition"', 'config."ItemDefinitionCharacterClass"', 'config."ItemDefinitionItemOptionDefinition"', 'config."IncreasableItemOption"', 'config."ItemOptionType"',
-  'config."ItemOptionOfLevel"', 'config."PowerUpDefinition"', 'data."Item"', 'data."ItemOptionLink"'];
-/** The only rows the site may add: a GM's item and its options (site/server/gm.ts). Never update or delete. */
-const INSERT_TABLES = ['data."Item"', 'data."ItemOptionLink"'];
+  'config."ItemOptionOfLevel"', 'config."PowerUpDefinition"', 'data."Item"', 'data."ItemOptionLink"',
+  'config."Skill"', 'config."SkillCharacterClass"', 'data."SkillEntry"'];
+/** The only rows the site may add: a GM's item, its options and skills (site/server/gm.ts). Never delete. */
+const INSERT_TABLES = ['data."Item"', 'data."ItemOptionLink"', 'data."SkillEntry"'];
 
 /** Idempotent: creates the role when missing, sets its password and its grants every time. */
 export function siteRoleSql(c: Config): string {

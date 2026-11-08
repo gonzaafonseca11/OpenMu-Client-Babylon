@@ -241,6 +241,28 @@ export async function writeStats(sql: Sql, name: string, body: Record<string, un
   return (await readStats(sql, name)) ?? { error: 'No se pudo leer de nuevo.' };
 }
 
+/**
+ * Teaches the character every skill its class learns from a scroll or orb (groups 12 and 15), the
+ * ones a player buys and reads; weapon, pet and master-tree skills come from the game itself.
+ * The caller has checked the character is offline. Returns how many were new.
+ */
+export async function learnAllSkills(sql: Sql, name: string): Promise<{ added: number; total: number } | { error: string }> {
+  return sql.begin('read write', async tx => {
+    const [ch] = await tx`SELECT "Id" AS id, "CharacterClassId" AS cls FROM data."Character" WHERE lower("Name") = lower(${name})`;
+    if (!ch) return { error: `El personaje "${name}" no existe. Revisá cómo está escrito.` };
+    const skills = await tx`
+      SELECT s."Id" AS id FROM config."Skill" s
+      WHERE s."MasterDefinitionId" IS NULL
+        AND EXISTS (SELECT 1 FROM config."SkillCharacterClass" q WHERE q."SkillId" = s."Id" AND q."CharacterClassId" = ${ch.cls})
+        AND EXISTS (SELECT 1 FROM config."ItemDefinition" d WHERE d."SkillId" = s."Id" AND d."Group" IN (12, 15))
+        AND NOT EXISTS (SELECT 1 FROM data."SkillEntry" e WHERE e."CharacterId" = ${ch.id} AND e."SkillId" = s."Id")
+    `;
+    for (const s of skills) await tx`INSERT INTO data."SkillEntry" ("Id", "SkillId", "CharacterId", "Level") VALUES (${crypto.randomUUID()}, ${s.id}, ${ch.id}, 0)`;
+    const [{ total }] = await tx`SELECT count(*)::int AS total FROM data."SkillEntry" WHERE "CharacterId" = ${ch.id}`;
+    return { added: skills.length, total: Number(total) };
+  });
+}
+
 /** Who is in the game now, from OpenMU's own API; null when it cannot be asked (then nothing is written). */
 export async function onlinePlayers(apiUrl: string): Promise<string[] | null> {
   try {
