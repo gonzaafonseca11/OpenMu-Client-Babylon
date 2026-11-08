@@ -256,7 +256,9 @@ const WINGS: Readonly<Record<number, WingSpec>> = {
       },
     ],
   },
-  [CAPE_OF_EMPEROR]: { blendMesh: -1, cape: 'emperor' },
+  // Mu Bardo: the cloth alone. The original also draws a rigid model on bone 19, which read as a
+  // second cape over the physics one.
+  [CAPE_OF_EMPEROR]: { blendMesh: -1, cape: 'emperor', clothOnly: true },
   [WING_OF_CURSE]: PLAIN,
   [WINGS_OF_DESPAIR]: { blendMesh: -1, passes: [{ mesh: 1, kind: 'chrome' }] },
   [WING_OF_DIMENSION]: { blendMesh: -1, passes: [{ mesh: 1, kind: 'chrome' }] },

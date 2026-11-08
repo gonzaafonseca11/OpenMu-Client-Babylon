@@ -23,12 +23,12 @@ describe('the wing slot', () => {
     expect(load).not.toHaveBeenCalled();
   });
 
-  it('keeps the model of the Mantle of Monarch and the Cape of Overrule, which hang cloth beside it', async () => {
+  it('keeps the model of the Cape of Overrule, and draws the Mantle of Monarch as its cloth alone (Mu Bardo)', async () => {
     const player = new PlayerObject(scene, new TransformNode('player', scene));
     const load = vi.spyOn(player, 'loadPartAsync').mockResolvedValue();
     await player.setWingsAsync({ group: 12, num: 40 });
     await player.setWingsAsync({ group: 12, num: 50 });
-    expect(load.mock.calls.map(call => call[2])).toEqual(['DarkLordRobe02.glb', 'Wing51.glb']);
+    expect(load.mock.calls.map(call => call[2])).toEqual(['Wing51.glb']);
   });
 });
 
