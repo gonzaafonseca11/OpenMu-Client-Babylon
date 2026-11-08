@@ -148,7 +148,7 @@ export async function giveItem(sql: Sql, req: GiveRequest): Promise<{ slot: numb
 /* ------------------------------------------------------------ stat editor */
 
 /** What the stat editor reads and writes. `leadership` is null for classes without Command. */
-export type CharacterStats = { name: string; class: string; level: number; resets: number; strength: number; agility: number; vitality: number; energy: number; leadership: number | null; points: number; zen: number };
+export type CharacterStats = { name: string; class: string; classNumber: number; classes: { number: number; name: string }[]; level: number; resets: number; strength: number; agility: number; vitality: number; energy: number; leadership: number | null; points: number; zen: number };
 
 const STAT_DESIGNATIONS = { level: 'Level', resets: 'Resets', strength: 'Base Strength', agility: 'Base Agility', vitality: 'Base Vitality', energy: 'Base Energy', leadership: 'Base Leadership' } as const;
 export const LIMITS = { level: [1, 400], resets: [0, 100000], stat: [1, 32500], points: [0, 2_000_000_000], zen: [0, 2_000_000_000] } as const;
@@ -161,7 +161,7 @@ export function experienceForLevel(level: number): number {
 }
 
 /** The values to store, or why not. */
-export function checkStats(s: Record<string, unknown>, hasLeadership: boolean): Omit<CharacterStats, 'name' | 'class'> | { error: string } {
+export function checkStats(s: Record<string, unknown>, hasLeadership: boolean): Omit<CharacterStats, 'name' | 'class' | 'classNumber' | 'classes'> | { error: string } {
   const read = (key: string, [min, max]: readonly [number, number], label: string): number | string => {
     const v = Number(s[key]);
     return Number.isInteger(v) && v >= min && v <= max ? v : `${label} va de ${min.toLocaleString('es-AR')} a ${max.toLocaleString('es-AR')}.`;
@@ -178,12 +178,12 @@ export function checkStats(s: Record<string, unknown>, hasLeadership: boolean): 
     zen: read('zen', LIMITS.zen, 'El zen'),
   };
   const bad = Object.values(out).find(v => typeof v === 'string');
-  return bad ? { error: bad as string } : (out as Omit<CharacterStats, 'name' | 'class'>);
+  return bad ? { error: bad as string } : (out as Omit<CharacterStats, 'name' | 'class' | 'classNumber' | 'classes'>);
 }
 
 async function statRows(sql: Sql, name: string) {
   const [ch] = await sql`
-    SELECT c."Id" AS id, c."Name" AS name, cc."Name" AS class, c."LevelUpPoints" AS points, c."InventoryId" AS inv, COALESCE(s."Money", 0) AS zen
+    SELECT c."Id" AS id, c."Name" AS name, cc."Name" AS class, cc."Number" AS cnum, c."LevelUpPoints" AS points, c."InventoryId" AS inv, COALESCE(s."Money", 0) AS zen
     FROM data."Character" c JOIN config."CharacterClass" cc ON cc."Id" = c."CharacterClassId"
     LEFT JOIN data."ItemStorage" s ON s."Id" = c."InventoryId"
     WHERE lower(c."Name") = lower(${name})
@@ -195,16 +195,19 @@ async function statRows(sql: Sql, name: string) {
     WHERE sa."CharacterId" = ${ch.id} AND ad."Designation" IN ${sql(Object.values(STAT_DESIGNATIONS))}
   `;
   const values = new Map(rows.map(r => [String(r.d), Math.round(Number(r.v))]));
-  return { ch, values };
+  // Its evolutions: the classes of the same family (class number / 4), e.g. Dark Wizard, Soul Master, Grand Master.
+  const family = await sql`SELECT "Id" AS id, "Number" AS number, "Name" AS name FROM config."CharacterClass" WHERE "Number" / 4 = ${Math.floor(Number(ch.cnum) / 4)} ORDER BY "Number"`;
+  const classes = family.map(r => ({ id: String(r.id), number: Number(r.number), name: String(r.name) }));
+  return { ch, values, classes };
 }
 
 export async function readStats(sql: Sql, name: string): Promise<CharacterStats | null> {
   const found = await statRows(sql, name);
   if (!found) return null;
-  const { ch, values } = found;
+  const { ch, values, classes } = found;
   const v = (k: keyof typeof STAT_DESIGNATIONS) => values.get(STAT_DESIGNATIONS[k]) ?? 0;
   return {
-    name: String(ch.name), class: String(ch.class), level: v('level'), resets: v('resets'),
+    name: String(ch.name), class: String(ch.class), classNumber: Number(ch.cnum), classes: classes.map(({ number, name }) => ({ number, name })), level: v('level'), resets: v('resets'),
     strength: v('strength'), agility: v('agility'), vitality: v('vitality'), energy: v('energy'),
     leadership: values.has(STAT_DESIGNATIONS.leadership) ? v('leadership') : null,
     points: Number(ch.points), zen: Number(ch.zen),
@@ -215,9 +218,12 @@ export async function readStats(sql: Sql, name: string): Promise<CharacterStats 
 export async function writeStats(sql: Sql, name: string, body: Record<string, unknown>): Promise<CharacterStats | { error: string }> {
   const found = await statRows(sql, name);
   if (!found) return { error: `El personaje "${name}" no existe. Revisá cómo está escrito.` };
-  const { ch, values } = found;
+  const { ch, values, classes } = found;
   const checked = checkStats(body, values.has(STAT_DESIGNATIONS.leadership));
   if ('error' in checked) return checked;
+  const wanted = body.classNumber === undefined ? Number(ch.cnum) : Number(body.classNumber);
+  const newClass = classes.find(c => c.number === wanted);
+  if (!newClass) return { error: 'Esa clase no es una evolución de este personaje.' };
   await sql.begin('read write', async tx => {
     for (const [key, designation] of Object.entries(STAT_DESIGNATIONS)) {
       const value = checked[key as keyof typeof checked];
@@ -228,7 +234,7 @@ export async function writeStats(sql: Sql, name: string, body: Record<string, un
       `;
     }
     const exp = checked.level === values.get(STAT_DESIGNATIONS.level) ? null : experienceForLevel(checked.level);
-    await tx`UPDATE data."Character" SET "LevelUpPoints" = ${checked.points} WHERE "Id" = ${ch.id}`;
+    await tx`UPDATE data."Character" SET "LevelUpPoints" = ${checked.points}, "CharacterClassId" = ${newClass.id} WHERE "Id" = ${ch.id}`;
     if (exp !== null) await tx`UPDATE data."Character" SET "Experience" = ${exp} WHERE "Id" = ${ch.id}`;
     if (ch.inv) await tx`UPDATE data."ItemStorage" SET "Money" = ${checked.zen} WHERE "Id" = ${ch.inv}`;
   });

@@ -267,6 +267,8 @@ function fillStats(s) {
   form.hidden = false;
   $('#stats-title').textContent = `${s.name} - ${s.class}${s.online ? ' (conectado: salí del juego para guardar)' : ''}`;
   $('#stats-leadership').hidden = s.leadership === null;
+  $('#stats-class').replaceChildren(...s.classes.map(c => el('option', { value: String(c.number) }, c.name)));
+  $('#stats-class').value = String(s.classNumber);
   for (const f of STAT_FIELDS) form.elements[f].value = s[f] ?? '';
 }
 
@@ -288,7 +290,7 @@ async function statsLoad(e) {
 async function statsSave(e) {
   e.preventDefault();
   const form = e.target;
-  const data = { name: $('#stats-find').elements.name.value.trim() };
+  const data = { name: $('#stats-find').elements.name.value.trim(), classNumber: Number($('#stats-class').value) };
   for (const f of STAT_FIELDS) if (!(f === 'leadership' && $('#stats-leadership').hidden)) data[f] = Number(form.elements[f].value);
   $('#stats-error').textContent = '';
   $('#stats-ok').textContent = '';
