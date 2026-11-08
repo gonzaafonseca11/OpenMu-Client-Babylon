@@ -40,6 +40,7 @@ describe('GM item maker', () => {
 
   it('reads the type list and names sets by their armor', () => {
     expect(parseBrowse('sets')).toBe('sets');
+    expect(parseBrowse('jewelry')).toBe('jewelry');
     expect(parseBrowse('7')).toBe(7);
     expect(parseBrowse('99')).toBeNull();
     expect(parseBrowse('')).toBeNull();

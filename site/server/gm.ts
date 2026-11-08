@@ -70,10 +70,10 @@ export function optionLabel(kind: OptionKind, attribute: string | null, number: 
  * An item with no class listed (rings, jewels) fits every class.
  */
 /** What the panel's "type" list asks for: an item group, wings or orbs (both group 12), or full armor sets. */
-export type Browse = number | 'wings' | 'orbs' | 'sets';
+export type Browse = number | 'wings' | 'orbs' | 'sets' | 'jewelry' | 'pets';
 
 export function parseBrowse(value: string | null): Browse | null {
-  if (value === 'wings' || value === 'orbs' || value === 'sets') return value;
+  if (value === 'wings' || value === 'orbs' || value === 'sets' || value === 'jewelry' || value === 'pets') return value;
   const n = Number(value);
   return value !== null && value !== '' && Number.isInteger(n) && n >= 0 && n <= 15 ? n : null;
 }
@@ -82,9 +82,15 @@ export function parseBrowse(value: string | null): Browse | null {
 export const setName = (armor: string) => armor.replace(/\s+(Armor|Robe|Suit)$/i, '');
 
 export async function browseItems(sql: Sql, browse: Browse, family: number): Promise<ItemChoice[]> {
-  const group = browse === 'sets' ? 8 : typeof browse === 'number' ? browse : 12;
+  const group = browse === 'sets' ? 8 : typeof browse === 'number' ? browse : browse === 'jewelry' || browse === 'pets' ? 13 : 12;
   // Wings are the group 12 items worn in a slot; orbs, jewels and the rest have none.
-  const slot = browse === 'wings' ? sql`AND d."ItemSlotId" IS NOT NULL` : browse === 'orbs' ? sql`AND d."ItemSlotId" IS NULL` : sql``;
+  // Group 13 splits by name: rings and pendants, then pets and the rest.
+  const slot =
+    browse === 'wings' ? sql`AND d."ItemSlotId" IS NOT NULL`
+    : browse === 'orbs' ? sql`AND d."ItemSlotId" IS NULL`
+    : browse === 'jewelry' ? sql`AND d."Name" ~* '(ring|pendant)'`
+    : browse === 'pets' ? sql`AND d."Name" !~* '(ring|pendant)'`
+    : sql``;
   const rows = await sql`
     SELECT d."Id" AS id, d."Name" AS name, d."Group" AS g, d."Number" AS n, d."MaximumItemLevel" AS max, d."Width" AS w, d."Height" AS h,
            d."SkillId" IS NOT NULL AS skill, d."Durability" AS dur
