@@ -481,6 +481,26 @@ export async function learnAllSkills(sql: Sql, name: string): Promise<{ added: n
   });
 }
 
+/** Every master skill of the character's class at its maximum level; only a third class has them. */
+export async function maxMasterTree(sql: Sql, name: string): Promise<{ count: number } | { error: string }> {
+  return sql.begin('read write', async tx => {
+    const [ch] = await tx`SELECT "Id" AS id, "CharacterClassId" AS cls FROM data."Character" WHERE lower("Name") = lower(${name})`;
+    if (!ch) return { error: `El personaje "${name}" no existe. Revisá cómo está escrito.` };
+    const skills = await tx`
+      SELECT s."Id" AS id, m."MaximumLevel" AS max,
+             (SELECT e."Id" FROM data."SkillEntry" e WHERE e."CharacterId" = ${ch.id} AND e."SkillId" = s."Id" LIMIT 1) AS entry
+      FROM config."Skill" s JOIN config."MasterSkillDefinition" m ON m."Id" = s."MasterDefinitionId"
+      WHERE EXISTS (SELECT 1 FROM config."SkillCharacterClass" q WHERE q."SkillId" = s."Id" AND q."CharacterClassId" = ${ch.cls})
+    `;
+    if (!skills.length) return { error: 'Esta clase no tiene árbol de maestría: primero tiene que ser tercera clase (Grand Master, Blade Master, etc.).' };
+    for (const s of skills) {
+      if (s.entry) await tx`UPDATE data."SkillEntry" SET "Level" = ${s.max} WHERE "Id" = ${s.entry}`;
+      else await tx`INSERT INTO data."SkillEntry" ("Id", "SkillId", "CharacterId", "Level") VALUES (${crypto.randomUUID()}, ${s.id}, ${ch.id}, ${s.max})`;
+    }
+    return { count: skills.length };
+  });
+}
+
 /** Who is in the game now, from OpenMU's own API; null when it cannot be asked (then nothing is written). */
 export async function onlinePlayers(apiUrl: string): Promise<string[] | null> {
   try {

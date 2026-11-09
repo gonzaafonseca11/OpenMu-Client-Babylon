@@ -10,7 +10,7 @@ import { openCommunity } from './community';
 import { chatBanned, chatMessage, chatTooFast, clean, isBanned, isModerator, newsPost, REPORT_STATUSES, REPORTS_PER_HOUR, reportPost } from './rules';
 import { normalEmail, openMuHash, openRecovery, passwordProblem, recoveryMail, recoveryTargets, sendMail } from './recovery';
 import { isEmail } from '../../src/modules/servers/registerRules';
-import { browseItems, giveItem, giveSet, itemOptions, learnAllSkills, onlinePlayers, parseBrowse, readStats, setExcellents, writeStats } from './gm';
+import { browseItems, giveItem, giveSet, itemOptions, learnAllSkills, maxMasterTree, onlinePlayers, parseBrowse, readStats, setExcellents, writeStats } from './gm';
 
 /**
  * The world's own website (site/readme.md): rankings anyone can read, and a player's characters
@@ -208,13 +208,19 @@ async function gmRequest(path: string, req: Request, url: URL): Promise<Response
     const online = OPENMU_API_URL ? await onlinePlayers(OPENMU_API_URL) : null;
     return json({ ...stats, online: online?.some(n => n.toLowerCase() === stats.name.toLowerCase()) ?? false });
   }
-  if (req.method === 'POST' && (path === '/api/gm/stats' || path === '/api/gm/skills')) {
+  if (req.method === 'POST' && (path === '/api/gm/stats' || path === '/api/gm/skills' || path === '/api/gm/master')) {
     const body = await readJson(req);
     const name = typeof body?.name === 'string' ? body.name.trim() : '';
     if (!body || !name || name.length > 10) return json({ error: 'Pedido inválido.' }, 400);
     const online = OPENMU_API_URL ? await onlinePlayers(OPENMU_API_URL) : null;
     if (!online) return json({ error: 'No pude ver quién está conectado. Probá de nuevo en un rato.' }, 503);
     if (online.some(n => n.toLowerCase() === name.toLowerCase())) return json({ error: `${name} está conectado. Salí del juego con ese personaje y probá de nuevo.` }, 409);
+    if (path === '/api/gm/master') {
+      const tree = await maxMasterTree(sql, name);
+      if ('error' in tree) return json(tree, 400);
+      process.stdout.write(`gm ${account.login} maxed the master tree of ${name} (${tree.count} skills)\n`);
+      return json(tree);
+    }
     if (path === '/api/gm/skills') {
       const learned = await learnAllSkills(sql, name);
       if ('error' in learned) return json(learned, 400);
