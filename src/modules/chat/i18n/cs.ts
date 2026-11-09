@@ -53,6 +53,7 @@ export default {
   'cmd.move': 'Přesunout se na mapu',
   'cmd.war': 'Vyzvat k válce cechů',
   'cmd.battlesoccer': 'Vyzvat k zápasu Battle Soccer',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'Změnit jazyk zpráv serveru',
   'cmd.offlevel': 'Offline levelování',
   'cmd.pkclear': 'Vymazat stav PK',

@@ -78,6 +78,8 @@ const CHAT_COMMANDS: readonly ChatCommand[] = [
   { name: '/war', usage: '<guild>', helpKey: 'cmd.war' },
   { name: '/battlesoccer', usage: '<guild>', helpKey: 'cmd.battlesoccer' },
   { name: '/language', usage: '<isoCode>', helpKey: 'cmd.language' },
+  // Mu Bardo's vault switch (openmu/plugins/GameLogic/Vaults).
+  { name: '/baul', usage: '<0-5>', helpKey: 'cmd.baul' },
   { name: '/offlevel', helpKey: 'cmd.offlevel' },
   { name: '/reset', helpKey: 'cmd.reset' },
   { name: '/resetinfo', helpKey: 'cmd.resetinfo' },

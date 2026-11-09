@@ -54,6 +54,7 @@ export default {
   'cmd.move': 'Przenieś się na mapę',
   'cmd.war': 'Wyzwij na wojnę gildii',
   'cmd.battlesoccer': 'Wyzwij na mecz Battle Soccer',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'Zmień język komunikatów serwera',
   'cmd.offlevel': 'Levelowanie offline',
   'cmd.pkclear': 'Wyczyść stan PK',

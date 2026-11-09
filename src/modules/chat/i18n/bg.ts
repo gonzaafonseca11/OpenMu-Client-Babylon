@@ -54,6 +54,7 @@ export default {
   'cmd.move': 'Премести се на карта',
   'cmd.war': 'Поискай война между guild-ове',
   'cmd.battlesoccer': 'Поискай мач на Battle Soccer',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'Смени езика на съобщенията от сървъра',
   'cmd.offlevel': 'Качване на нива офлайн',
   'cmd.pkclear': 'Изчисти PK състоянието',

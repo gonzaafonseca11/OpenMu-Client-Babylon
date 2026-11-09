@@ -54,6 +54,7 @@ export default {
   'cmd.move': '맵으로 이동',
   'cmd.war': '길드 전쟁 신청',
   'cmd.battlesoccer': '배틀 사커 신청',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': '서버 메시지 언어 변경',
   'cmd.offlevel': '오프라인 레벨업',
   'cmd.pkclear': 'PK 상태 초기화',

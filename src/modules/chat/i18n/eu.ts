@@ -53,6 +53,7 @@ export default {
   'cmd.move': 'Teleportatu mapa batera',
   'cmd.war': 'Eskatu gremio-gerra bat',
   'cmd.battlesoccer': 'Eskatu Battle Soccer partida bat',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'Aldatu zerbitzariaren mezuen hizkuntza',
   'cmd.offlevel': 'Lineaz kanpoko maila-igoera',
   'cmd.pkclear': 'Garbitu PK egoera',

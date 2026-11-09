@@ -54,6 +54,7 @@ export default {
   'cmd.move': 'Dịch chuyển tới bản đồ',
   'cmd.war': 'Yêu cầu bang chiến',
   'cmd.battlesoccer': 'Yêu cầu trận Battle Soccer',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'Đổi ngôn ngữ tin nhắn máy chủ',
   'cmd.offlevel': 'Luyện cấp ngoại tuyến',
   'cmd.pkclear': 'Xóa trạng thái PK',

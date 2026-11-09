@@ -53,6 +53,7 @@ export default {
   'cmd.move': 'Teletransporta\'t a un mapa',
   'cmd.war': 'Sol·licita una guerra de gremis',
   'cmd.battlesoccer': 'Sol·licita un partit de Battle Soccer',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'Canvia l\'idioma dels missatges del servidor',
   'cmd.offlevel': 'Puja de nivell sense connexió',
   'cmd.pkclear': 'Esborra l\'estat de PK',

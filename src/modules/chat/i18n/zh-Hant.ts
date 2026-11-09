@@ -54,6 +54,7 @@ export default {
   'cmd.move': '傳送到地圖',
   'cmd.war': '申請戰盟戰',
   'cmd.battlesoccer': '申請戰盟足球賽',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': '變更伺服器訊息的語言',
   'cmd.offlevel': '離線練功',
   'cmd.pkclear': '清除 PK 狀態',

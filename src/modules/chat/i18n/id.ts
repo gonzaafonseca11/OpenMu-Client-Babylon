@@ -53,6 +53,7 @@ export default {
   'cmd.move': 'Pindah ke peta',
   'cmd.war': 'Ajukan Perang Guild',
   'cmd.battlesoccer': 'Ajukan pertandingan Battle Soccer',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'Ganti bahasa pesan server',
   'cmd.offlevel': 'Naik level offline',
   'cmd.pkclear': 'Hapus status PK',

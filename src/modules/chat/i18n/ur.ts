@@ -54,6 +54,7 @@ export default {
   'cmd.move': 'کسی نقشے پر سفر کریں',
   'cmd.war': 'گلڈ جنگ کی درخواست کریں',
   'cmd.battlesoccer': 'جنگی فٹ بال میچ کی درخواست کریں',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'سرور پیغامات کی زبان بدلیں',
   'cmd.offlevel': 'آف لائن لیولنگ',
   'cmd.pkclear': 'PK حالت صاف کریں',

@@ -54,6 +54,7 @@ export default {
   'cmd.move': '传送到某张地图',
   'cmd.war': '申请公会战',
   'cmd.battlesoccer': '申请公会足球赛',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': '更改服务器消息的语言',
   'cmd.offlevel': '离线挂机升级',
   'cmd.pkclear': '清除 PK 状态',

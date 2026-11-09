@@ -53,6 +53,7 @@ export default {
   'cmd.move': 'Переміститися на мапу',
   'cmd.war': 'Викликати на війну гільдій',
   'cmd.battlesoccer': 'Викликати на матч Battle Soccer',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'Змінити мову повідомлень сервера',
   'cmd.offlevel': 'Офлайн-прокачування',
   'cmd.pkclear': 'Скинути статус PK',

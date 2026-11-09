@@ -53,6 +53,7 @@ export default {
   'cmd.move': 'Bir haritaya ışınlan',
   'cmd.war': 'Lonca savaşı iste',
   'cmd.battlesoccer': 'Battle Soccer maçı iste',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'Sunucu mesajlarının dilini değiştir',
   'cmd.offlevel': 'Çevrimdışı seviye kasma',
   'cmd.pkclear': 'PK durumunu temizle',

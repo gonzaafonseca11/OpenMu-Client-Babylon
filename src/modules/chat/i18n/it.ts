@@ -57,6 +57,7 @@ export default {
   'cmd.move': 'Spostarsi su una mappa',
   'cmd.war': 'Chiedere una guerra tra gilde',
   'cmd.battlesoccer': 'Chiedere una partita di Battle Soccer',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'Cambiare la lingua dei messaggi del server',
   'cmd.offlevel': 'Salita di livello offline',
   'cmd.pkclear': 'Azzerare lo stato di PK',

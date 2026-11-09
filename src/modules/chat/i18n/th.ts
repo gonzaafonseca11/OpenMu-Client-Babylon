@@ -54,6 +54,7 @@ export default {
   'cmd.move': 'วาร์ปไปยังแผนที่',
   'cmd.war': 'ขอทำสงครามกิลด์',
   'cmd.battlesoccer': 'ขอแข่งแบทเทิลซอคเกอร์',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'เปลี่ยนภาษาของข้อความจากเซิร์ฟเวอร์',
   'cmd.offlevel': 'เก็บเลเวลแบบออฟไลน์',
   'cmd.pkclear': 'ล้างสถานะ PK',

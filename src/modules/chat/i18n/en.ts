@@ -52,6 +52,7 @@ const en = {
   'cmd.move': 'Warp to a map',
   'cmd.war': 'Request a guild war',
   'cmd.battlesoccer': 'Request a battle soccer match',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'Change the server message language',
   'cmd.offlevel': 'Offline levelling',
   'cmd.pkclear': 'Clear the PK state',

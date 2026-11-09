@@ -53,6 +53,7 @@ export default {
   'cmd.move': 'Teleportálás egy térképre',
   'cmd.war': 'Céhháború kezdeményezése',
   'cmd.battlesoccer': 'Battle Soccer mérkőzés kezdeményezése',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'A szerverüzenetek nyelvének váltása',
   'cmd.offlevel': 'Offline fejlődés',
   'cmd.pkclear': 'A PK állapot törlése',

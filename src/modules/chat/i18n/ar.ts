@@ -53,6 +53,7 @@ export default {
   'cmd.move': 'الانتقال إلى خريطة',
   'cmd.war': 'طلب حرب نقابات',
   'cmd.battlesoccer': 'طلب مباراة Battle Soccer',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'تغيير لغة رسائل الخادم',
   'cmd.offlevel': 'رفع المستوى دون اتصال',
   'cmd.pkclear': 'مسح حالة PK',

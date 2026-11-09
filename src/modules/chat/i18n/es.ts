@@ -55,6 +55,7 @@ export default {
   'cmd.move': 'Viajar a un mapa',
   'cmd.war': 'Pedir una guerra de guilds',
   'cmd.battlesoccer': 'Pedir un partido de Battle Soccer',
+  'cmd.baul': 'Cambiar de baúl (0 a 5), con el baúl cerrado',
   'cmd.language': 'Cambiar el idioma de los mensajes del servidor',
   'cmd.offlevel': 'Subir de nivel sin conexión',
   'cmd.pkclear': 'Limpiar el estado de PK',

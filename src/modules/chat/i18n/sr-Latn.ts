@@ -53,6 +53,7 @@ export default {
   'cmd.move': 'Teleport na mapu',
   'cmd.war': 'Izazovi na rat gilda',
   'cmd.battlesoccer': 'Izazovi na meč Battle Soccer',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'Promeni jezik poruka servera',
   'cmd.offlevel': 'Podizanje nivoa van mreže',
   'cmd.pkclear': 'Obriši PK status',

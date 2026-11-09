@@ -56,6 +56,7 @@ export default {
   'cmd.move': 'Deplasează-te pe o hartă',
   'cmd.war': 'Cere un război de guild',
   'cmd.battlesoccer': 'Cere un meci de Battle Soccer',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'Schimbă limba mesajelor serverului',
   'cmd.offlevel': 'Creștere de nivel offline',
   'cmd.pkclear': 'Curăță starea de PK',

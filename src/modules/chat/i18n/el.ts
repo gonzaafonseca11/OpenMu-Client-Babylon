@@ -53,6 +53,7 @@ export default {
   'cmd.move': 'Τηλεμεταφορά σε χάρτη',
   'cmd.war': 'Πρόκληση σε πόλεμο συντεχνιών',
   'cmd.battlesoccer': 'Πρόκληση σε αγώνα Battle Soccer',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'Αλλαγή της γλώσσας των μηνυμάτων του διακομιστή',
   'cmd.offlevel': 'Ανέβασμα επιπέδου εκτός σύνδεσης',
   'cmd.pkclear': 'Καθαρισμός της κατάστασης φονιά',

@@ -54,6 +54,7 @@ export default {
   'cmd.move': 'انتقال به یک نقشه',
   'cmd.war': 'درخواست جنگ انجمن‌ها',
   'cmd.battlesoccer': 'درخواست مسابقه فوتبال نبرد',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'تغییر زبان پیام‌های سرور',
   'cmd.offlevel': 'ارتقای سطح آفلاین',
   'cmd.pkclear': 'پاک کردن وضعیت PK',

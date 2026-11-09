@@ -53,6 +53,7 @@ export default {
   'cmd.move': 'কোনো ম্যাপে স্থানান্তর',
   'cmd.war': 'গিল্ড যুদ্ধের অনুরোধ',
   'cmd.battlesoccer': 'Battle Soccer ম্যাচের অনুরোধ',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'সার্ভারের বার্তার ভাষা বদলান',
   'cmd.offlevel': 'অফলাইন লেভেলিং',
   'cmd.pkclear': 'PK অবস্থা মুছুন',

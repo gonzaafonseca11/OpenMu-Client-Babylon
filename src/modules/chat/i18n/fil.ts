@@ -54,6 +54,7 @@ export default {
   'cmd.move': 'Lumipat sa isang mapa',
   'cmd.war': 'Humiling ng digmaan ng guild',
   'cmd.battlesoccer': 'Humiling ng laban sa battle soccer',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'Palitan ang wika ng mga mensahe ng server',
   'cmd.offlevel': 'Pag-level habang offline',
   'cmd.pkclear': 'Burahin ang estado ng PK',

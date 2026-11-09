@@ -53,6 +53,7 @@ export default {
   'cmd.move': 'किसी नक्शे पर वार्प करें',
   'cmd.war': 'गिल्ड युद्ध का अनुरोध करें',
   'cmd.battlesoccer': 'Battle Soccer मैच का अनुरोध करें',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'सर्वर संदेशों की भाषा बदलें',
   'cmd.offlevel': 'ऑफ़लाइन लेवलिंग',
   'cmd.pkclear': 'PK स्थिति साफ़ करें',

@@ -54,6 +54,7 @@ export default {
   'cmd.move': 'マップへ移動する',
   'cmd.war': 'ギルド戦を申し込む',
   'cmd.battlesoccer': 'バトルサッカーを申し込む',
+  'cmd.baul': 'Switch vault (0 to 5), with the vault closed',
   'cmd.language': 'サーバーメッセージの言語を変える',
   'cmd.offlevel': 'オフラインレベリング',
   'cmd.pkclear': 'PK 状態を消す',
