@@ -78,6 +78,11 @@ web client's saved login, so no password is kept in a browser.
 - The client offers tokens only on a world whose `server.json` says `loginTokens: true`; the
   installer writes that, since this DLL is in every image it builds.
 
+Vaults (`GameLogic/Vaults`, Mu Bardo): the chat command `/baul 0-5`, with the vault window closed,
+points the account's vault at vault N. Vault 0 is the account's own vault, recorded on first use in
+`mu_plugins.vault_home`; vaults 1-5 are `ItemStorage` rows whose ids are a SHA-256 of the account id
+and N, made when first opened. Each keeps its own items and Zen; nothing is ever moved or deleted.
+
 ## Change it
 
 - add a plugin: a new `[PlugIn]` class under `plugins/`, public OpenMU types only. Rebuild with
