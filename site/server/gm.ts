@@ -242,9 +242,10 @@ export async function giveItem(sql: Sql, req: GiveRequest): Promise<{ slot: numb
       INSERT INTO data."Item" ("Id", "ItemStorageId", "DefinitionId", "ItemSlot", "Durability", "Level", "HasSkill", "SocketCount", "StorePrice", "PetExperience")
       VALUES (${itemId}, ${ch.inv}, ${def.id}, ${slot}, ${durabilityFor(Number(def.dur), level, excellent)}, ${level}, ${Boolean(req.skill) && Boolean(def.skill)}, ${sockets.slots.length}, NULL, 0)
     `;
-    // A filled socket is its option with the slot as Index and the sphere level as Level (Socket.cs).
+    // A filled socket is its option with the slot as Index. The deployed OpenMU sends Level * 50 + option,
+    // so Level is the sphere level from 0 (level 5 stored as 5 wraps the byte into another option).
     for (const [i, s] of sockets.slots.entries()) {
-      if (s) await tx`INSERT INTO data."ItemOptionLink" ("Id", "ItemOptionId", "ItemId", "Level", "Index") VALUES (${crypto.randomUUID()}, ${s.option.id}, ${itemId}, ${s.level}, ${i})`;
+      if (s) await tx`INSERT INTO data."ItemOptionLink" ("Id", "ItemOptionId", "ItemId", "Level", "Index") VALUES (${crypto.randomUUID()}, ${s.option.id}, ${itemId}, ${s.level - 1}, ${i})`;
     }
     // Wings keep their options in order (Index), as OpenMU's own /item writes them; others use 0.
     const sorted = [...checked.links].sort((a, b) => ['luck', 'option', 'wing', 'excellent'].indexOf(a.option.kind) - ['luck', 'option', 'wing', 'excellent'].indexOf(b.option.kind));
