@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { checkOptions, checkStats, durabilityFor, experienceForLevel, matchOptions, optionLabel, parseBrowse, setName, type ItemOption } from './gm';
+import { checkOptions, checkSockets, checkStats, durabilityFor, experienceForLevel, matchOptions, optionLabel, parseBrowse, setName, type ItemOption } from './gm';
 
 const opts: ItemOption[] = [
   { id: 'e1', kind: 'excellent', number: 1, label: 'Zen', maxLevel: 4 },
@@ -7,6 +7,23 @@ const opts: ItemOption[] = [
   { id: 'o1', kind: 'option', number: 0, label: 'Adicional', maxLevel: 4 },
   { id: 'o2', kind: 'option', number: 3, label: 'Adicional 2', maxLevel: 4 },
 ];
+
+describe('GM sockets', () => {
+  const fire: ItemOption = { id: 's1', kind: 'socket', number: 1, element: 0, label: 'Fuego', maxLevel: 5 };
+  const all = [...opts, fire];
+
+  it('fills slots in order, empty ids stay empty, levels 1-5, no more than the item has', () => {
+    expect(checkSockets(all, [{ id: 's1', level: 5 }, { id: '', level: 0 }], 3)).toEqual({ slots: [{ option: fire, level: 5 }, null] });
+    expect(checkSockets(all, [{ id: 's1', level: 6 }], 3)).toHaveProperty('error');
+    expect(checkSockets(all, [{ id: 'e1', level: 1 }], 3)).toHaveProperty('error');
+    expect(checkSockets(all, [{ id: '', level: 0 }], 0)).toHaveProperty('error');
+    expect(checkOptions(all, [{ id: 's1', level: 0 }])).toHaveProperty('error');
+  });
+
+  it('names a sphere by its element', () => {
+    expect(optionLabel('socket', null, 1, 3)).toBe('Viento: Vida máxima');
+  });
+});
 
 describe('GM item maker', () => {
   it('grows durability like the classic client: +15 excellent is base + 62, capped at 255', () => {

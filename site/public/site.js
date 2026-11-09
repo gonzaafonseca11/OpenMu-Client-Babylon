@@ -263,6 +263,23 @@ async function gmPick() {
   fillLevels();
   extra.replaceChildren(extra.querySelector('legend'), pick, lvl);
   extra.hidden = !lines.length;
+
+  // Sockets: how many slots, then per slot a seed sphere (or empty) and its level 1-5.
+  const box = $('#gm-sockets');
+  const spheres = of('socket');
+  const count = el('select', { name: 'socketCount' }, ...Array.from({ length: gmItem.sockets + 1 }, (_, n) => el('option', { value: String(n) }, n ? `${n} engarce${n > 1 ? 's' : ''}` : 'Sin engarces')));
+  count.value = String(gmItem.sockets);
+  const rows = Array.from({ length: gmItem.sockets }, (_, i) => {
+    const sphere = el('select', { name: `socket${i}` }, el('option', { value: '' }, 'Vacío'), ...spheres.map(o => el('option', { value: o.id }, o.label)));
+    const level = el('select', { name: `socketLevel${i}` }, ...[1, 2, 3, 4, 5].map(l => el('option', { value: String(l) }, `Esfera nivel ${l}`)));
+    level.value = '5';
+    return el('div', { class: 'socket-row' }, `Engarce ${i + 1}: `, sphere, level);
+  });
+  const showRows = () => rows.forEach((r, i) => { r.hidden = i >= Number(count.value); });
+  count.addEventListener('change', showRows);
+  showRows();
+  box.replaceChildren(box.querySelector('legend'), count, ...rows);
+  box.hidden = !gmItem.sockets;
 }
 
 async function gmGive(e) {
@@ -278,7 +295,8 @@ async function gmGive(e) {
   const button = e.target.querySelector('button[type=submit]');
   button.disabled = true;
   const isSet = $('#gm-group').value === 'sets';
-  const { ok, body } = await post(isSet ? '/api/gm/give-set' : '/api/gm/give', { character: form.get('character'), definitionId: gmItem.id, level: Number(form.get('level')), skill: form.get('skill') === 'on', options });
+  const sockets = Array.from({ length: Number(form.get('socketCount') ?? 0) }, (_, i) => ({ id: form.get(`socket${i}`) || '', level: Number(form.get(`socketLevel${i}`)) }));
+  const { ok, body } = await post(isSet ? '/api/gm/give-set' : '/api/gm/give', { character: form.get('character'), definitionId: gmItem.id, level: Number(form.get('level')), skill: form.get('skill') === 'on', options, sockets });
   button.disabled = false;
   if (!ok) $('#gm-error').textContent = body.error || 'No se pudo crear.';
   else if (isSet) $('#gm-ok').textContent = `Listo: ${body.given.join(', ')} +${form.get('level')} quedaron en el inventario de ${form.get('character')}.`;

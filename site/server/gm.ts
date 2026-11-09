@@ -16,15 +16,47 @@ export const OPTION_KINDS = {
   'Black Fenrir Option': 'fenrir',
   'Blue Fenrir Option': 'fenrir',
   'Gold Fenrir Option': 'fenrir',
+  'Socket Option': 'socket',
 } as const;
+
+/** Seed sphere elements, by `SubOptionType`, and each one's options by number (Socket.cs, SocketSystem.cs). */
+const SOCKETS: Record<number, [string, string[]]> = {
+  0: ['Fuego', ['Daño/magia según nivel', 'Velocidad de ataque', 'Daño máximo', 'Daño mínimo', 'Daño', 'Menos AG usado']],
+  1: ['Agua', ['Tasa de defensa', 'Defensa', 'Defensa del escudo', 'Reduce daño', 'Refleja daño']],
+  2: ['Hielo', ['Vida al matar monstruo', 'Maná al matar monstruo', 'Daño de habilidad', 'Tasa de ataque', 'Durabilidad']],
+  3: ['Viento', ['Recuperación de vida', 'Vida máxima', 'Maná máximo', 'Recuperación de maná', 'AG máximo', 'Recuperación de AG']],
+  4: ['Rayo', ['Daño excelente', 'Probabilidad de excelente', 'Daño crítico', 'Probabilidad de crítico']],
+  5: ['Tierra', ['Vida máxima']],
+};
+/** Seed sphere levels (1-5) and the most slots an item has (ItemSerializerHelper.cs). */
+const SPHERE_LEVELS = 5;
+const MAX_SOCKETS = 5;
 
 /** The Horn of Fenrir's kinds, by option number: one kind per horn, Gold being several lines. */
 export const FENRIR = { 1: 'Negro (Destroy): +daño', 2: 'Azul (Protect): -daño recibido', 4: 'Dorado (Illusion): +daño, +vida, +maná' } as const;
 export type OptionKind = (typeof OPTION_KINDS)[keyof typeof OPTION_KINDS];
 
-export type ItemOption = { id: string; kind: OptionKind; number: number; label: string; maxLevel: number };
-export type ItemChoice = { id: string; name: string; group: number; number: number; maxLevel: number; width: number; height: number; hasSkill: boolean; durability: number };
+export type ItemOption = { id: string; kind: OptionKind; number: number; element?: number; label: string; maxLevel: number };
+export type ItemChoice = { id: string; name: string; group: number; number: number; maxLevel: number; width: number; height: number; hasSkill: boolean; durability: number; sockets: number };
 export type Picked = { id: string; level: number };
+
+/**
+ * The socket slots to store, one entry per slot: an empty id is an empty slot. At most the item's own
+ * slot count, each option one of the item's socket options, each sphere level 1-5.
+ */
+export function checkSockets(available: readonly ItemOption[], slots: readonly Picked[], maxSockets: number): { slots: ({ option: ItemOption; level: number } | null)[] } | { error: string } {
+  if (slots.length > Math.min(maxSockets, MAX_SOCKETS)) return { error: maxSockets ? `Este ítem tiene ${maxSockets} engarces como máximo.` : 'Este ítem no lleva engarces.' };
+  const out: ({ option: ItemOption; level: number } | null)[] = [];
+  for (const s of slots) {
+    if (!s.id) { out.push(null); continue; }
+    const option = available.find(o => o.id === s.id && o.kind === 'socket');
+    if (!option) return { error: 'Ese engarce no es de este ítem.' };
+    const level = Math.trunc(Number(s.level));
+    if (!(level >= 1 && level <= SPHERE_LEVELS)) return { error: `El nivel de la esfera va de 1 a ${SPHERE_LEVELS}.` };
+    out.push({ option, level });
+  }
+  return { slots: out };
+}
 
 /** Classic durability growth per item level (ZzzInventory CalcMaxDurability); excellent adds 15, the byte caps at 255. */
 export function durabilityFor(base: number, level: number, excellent: boolean): number {
@@ -38,7 +70,7 @@ export function checkOptions(available: readonly ItemOption[], picked: readonly 
   const links: { option: ItemOption; level: number }[] = [];
   for (const p of picked) {
     const option = byId.get(p.id);
-    if (!option) return { error: 'Esa opción no es de este ítem.' };
+    if (!option || option.kind === 'socket') return { error: 'Esa opción no es de este ítem.' };
     if (links.some(l => l.option.id === option.id)) continue;
     const level = option.kind === 'option' ? Math.trunc(Number(p.level)) : 0;
     if (option.kind === 'option' && !(level >= 1 && level <= option.maxLevel)) return { error: `La opción va de 1 a ${option.maxLevel}.` };
@@ -63,8 +95,12 @@ const LABELS: Record<string, string> = {
 };
 
 /** A plain Spanish name for an option, from what it raises. */
-export function optionLabel(kind: OptionKind, attribute: string | null, number: number): string {
+export function optionLabel(kind: OptionKind, attribute: string | null, number: number, element = 0): string {
   if (kind === 'luck') return 'Luck (crítico +5%)';
+  if (kind === 'socket') {
+    const [name, lines] = SOCKETS[element] ?? [`Elemento ${element}`, []];
+    return `${name}: ${lines[number] ?? attribute ?? `#${number}`}`;
+  }
   const what = attribute ?? `#${number}`;
   if (kind === 'excellent') return LABELS[what] ?? what;
   if (kind === 'wing') return `Ala: ${what}`;
@@ -101,7 +137,7 @@ export async function browseItems(sql: Sql, browse: Browse, family: number): Pro
     : sql``;
   const rows = await sql`
     SELECT d."Id" AS id, d."Name" AS name, d."Group" AS g, d."Number" AS n, d."MaximumItemLevel" AS max, d."Width" AS w, d."Height" AS h,
-           d."SkillId" IS NOT NULL AS skill, d."Durability" AS dur
+           d."SkillId" IS NOT NULL AS skill, d."Durability" AS dur, d."MaximumSockets" AS sockets
     FROM config."ItemDefinition" d
     WHERE d."Group" = ${group} ${slot} AND (${family} < 0
       OR NOT EXISTS (SELECT 1 FROM config."ItemDefinitionCharacterClass" q WHERE q."ItemDefinitionId" = d."Id")
@@ -109,17 +145,21 @@ export async function browseItems(sql: Sql, browse: Browse, family: number): Pro
                  WHERE q."ItemDefinitionId" = d."Id" AND c."Number" / 4 = ${family}))
     ORDER BY d."DropLevel", d."Number"
   `;
-  return rows.map(r => ({ id: String(r.id), name: browse === 'sets' ? `Set ${setName(String(r.name))}` : String(r.name), group: Number(r.g), number: Number(r.n), maxLevel: Number(r.max), width: Number(r.w), height: Number(r.h), hasSkill: Boolean(r.skill), durability: Number(r.dur) }));
+  return rows.map(r => ({ id: String(r.id), name: browse === 'sets' ? `Set ${setName(String(r.name))}` : String(r.name), group: Number(r.g), number: Number(r.n), maxLevel: Number(r.max), width: Number(r.w), height: Number(r.h), hasSkill: Boolean(r.skill), durability: Number(r.dur), sockets: Number(r.sockets) || 0 }));
 }
 
 /** The same choice on another piece: options match by kind and number (excellent 1-6, luck, the extra option). */
 export function matchOptions(from: readonly ItemOption[], picked: readonly Picked[], to: readonly ItemOption[]): Picked[] {
   return picked.flatMap(p => {
     const o = from.find(x => x.id === p.id);
-    const twin = o && to.find(x => x.kind === o.kind && x.number === o.number);
+    const twin = o && to.find(x => x.kind === o.kind && x.number === o.number && x.element === o.element);
     return twin ? [{ id: twin.id, level: Math.min(p.level, twin.maxLevel) }] : [];
   });
 }
+
+/** Socket slots for another piece: the same element and option, empty where that piece lacks it. */
+const matchSockets = (from: readonly ItemOption[], slots: readonly Picked[], to: readonly ItemOption[]): Picked[] =>
+  slots.map(s => (s.id ? matchOptions(from, [s], to)[0] : undefined) ?? { id: '', level: 0 });
 
 /**
  * A full armor set: the helm, armor, pants, gloves and boots (groups 7-11) that share the armor's
@@ -133,8 +173,10 @@ export async function giveSet(sql: Sql, req: GiveRequest): Promise<{ given: stri
   const given: string[] = [];
   for (const piece of pieces) {
     const id = String(piece.id);
-    const options = id === req.definitionId ? req.options : matchOptions(armorOptions, req.options, await itemOptions(sql, id));
-    const result = await giveItem(sql, { ...req, definitionId: id, options });
+    const own = id === req.definitionId ? null : await itemOptions(sql, id);
+    const options = own ? matchOptions(armorOptions, req.options, own) : req.options;
+    const sockets = own ? matchSockets(armorOptions, req.sockets ?? [], own) : req.sockets;
+    const result = await giveItem(sql, { ...req, definitionId: id, options, sockets });
     if ('error' in result) return { error: given.length ? `${result.error} Ya entregué: ${given.join(', ')}.` : result.error };
     given.push(result.name);
   }
@@ -143,7 +185,7 @@ export async function giveSet(sql: Sql, req: GiveRequest): Promise<{ given: stri
 
 export async function itemOptions(sql: Sql, definitionId: string): Promise<ItemOption[]> {
   const rows = await sql`
-    SELECT o."Id" AS id, t."Name" AS type, o."Number" AS number, ad."Designation" AS attr,
+    SELECT o."Id" AS id, t."Name" AS type, o."Number" AS number, o."SubOptionType" AS element, ad."Designation" AS attr,
            (SELECT max(ol."Level") FROM config."ItemOptionOfLevel" ol WHERE ol."IncreasableItemOptionId" = o."Id") AS max
     FROM config."ItemDefinitionItemOptionDefinition" l
     JOIN config."IncreasableItemOption" o ON o."ItemOptionDefinitionId" = l."ItemOptionDefinitionId"
@@ -157,23 +199,29 @@ export async function itemOptions(sql: Sql, definitionId: string): Promise<ItemO
     const kind = OPTION_KINDS[String(r.type) as keyof typeof OPTION_KINDS];
     if (!kind) return [];
     const attr = r.attr == null ? null : String(r.attr);
-    return [{ id: String(r.id), kind, number: Number(r.number), label: optionLabel(kind, attr, Number(r.number)), maxLevel: Math.min(Number(r.max) || 1, 4) }];
+    const element = Number(r.element) || 0;
+    const maxLevel = kind === 'socket' ? SPHERE_LEVELS : Math.min(Number(r.max) || 1, 4);
+    return [{ id: String(r.id), kind, number: Number(r.number), element, label: optionLabel(kind, attr, Number(r.number), element), maxLevel }];
   });
 }
 
-export type GiveRequest = { character: string; definitionId: string; level: number; skill: boolean; options: Picked[] };
+/** `sockets`: one entry per socket slot, an empty id for an empty slot. */
+export type GiveRequest = { character: string; definitionId: string; level: number; skill: boolean; options: Picked[]; sockets?: Picked[] };
 
 /** Puts the item in the character's bag; the caller has checked the character is offline. */
 export async function giveItem(sql: Sql, req: GiveRequest): Promise<{ slot: number; name: string } | { error: string }> {
   const [def] = await sql`
-    SELECT "Id" AS id, "Name" AS name, "MaximumItemLevel" AS max, "Width" AS w, "Height" AS h, "SkillId" IS NOT NULL AS skill, "Durability" AS dur
+    SELECT "Id" AS id, "Name" AS name, "MaximumItemLevel" AS max, "Width" AS w, "Height" AS h, "SkillId" IS NOT NULL AS skill, "Durability" AS dur, "MaximumSockets" AS sockets
     FROM config."ItemDefinition" WHERE "Id" = ${req.definitionId}
   `;
   if (!def) return { error: 'No existe ese ítem.' };
   const level = Math.trunc(Number(req.level));
   if (!(level >= 0 && level <= Number(def.max))) return { error: `Este ítem va de +0 a +${def.max}.` };
-  const checked = checkOptions(await itemOptions(sql, req.definitionId), req.options ?? []);
+  const available = await itemOptions(sql, req.definitionId);
+  const checked = checkOptions(available, req.options ?? []);
   if ('error' in checked) return checked;
+  const sockets = checkSockets(available, Array.isArray(req.sockets) ? req.sockets : [], Number(def.sockets) || 0);
+  if ('error' in sockets) return sockets;
 
   return sql.begin('read write', async tx => {
     const [ch] = await tx`SELECT "InventoryId" AS inv FROM data."Character" WHERE lower("Name") = lower(${req.character}) FOR UPDATE`;
@@ -192,8 +240,12 @@ export async function giveItem(sql: Sql, req: GiveRequest): Promise<{ slot: numb
     const itemId = crypto.randomUUID();
     await tx`
       INSERT INTO data."Item" ("Id", "ItemStorageId", "DefinitionId", "ItemSlot", "Durability", "Level", "HasSkill", "SocketCount", "StorePrice", "PetExperience")
-      VALUES (${itemId}, ${ch.inv}, ${def.id}, ${slot}, ${durabilityFor(Number(def.dur), level, excellent)}, ${level}, ${Boolean(req.skill) && Boolean(def.skill)}, 0, NULL, 0)
+      VALUES (${itemId}, ${ch.inv}, ${def.id}, ${slot}, ${durabilityFor(Number(def.dur), level, excellent)}, ${level}, ${Boolean(req.skill) && Boolean(def.skill)}, ${sockets.slots.length}, NULL, 0)
     `;
+    // A filled socket is its option with the slot as Index and the sphere level as Level (Socket.cs).
+    for (const [i, s] of sockets.slots.entries()) {
+      if (s) await tx`INSERT INTO data."ItemOptionLink" ("Id", "ItemOptionId", "ItemId", "Level", "Index") VALUES (${crypto.randomUUID()}, ${s.option.id}, ${itemId}, ${s.level}, ${i})`;
+    }
     // Wings keep their options in order (Index), as OpenMU's own /item writes them; others use 0.
     const sorted = [...checked.links].sort((a, b) => ['luck', 'option', 'wing', 'excellent'].indexOf(a.option.kind) - ['luck', 'option', 'wing', 'excellent'].indexOf(b.option.kind));
     for (const [i, l] of sorted.entries()) {
