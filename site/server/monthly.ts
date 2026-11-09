@@ -9,6 +9,8 @@ import { RANKING_SIZE } from './queries';
  */
 
 const ART_OFFSET_MS = 3 * 3_600_000;
+/** New characters start with this many gifted resets (OpenMU StarterGiftPlugIn); the month does not count them. Set 0 when the gift ends. */
+export const GIFT_RESETS = 10;
 export const WINNERS = 3;
 export type MonthlyKind = 'pk' | 'resets';
 export type Winner = { month: string; kind: MonthlyKind; place: number; name: string; class: string; score: number; delivered: boolean };
@@ -19,10 +21,10 @@ export const monthKey = (at: number) => new Date(at - ART_OFFSET_MS).toISOString
 /** When a month began, as an instant. */
 export const monthStart = (key: string) => new Date(Date.parse(`${key}-01T00:00:00Z`) + ART_OFFSET_MS);
 
-/** Resets gained since the snapshot (a character made later started at 0), best first. */
+/** Resets gained since the snapshot (a character made later started with the gift), best first. */
 export function monthlyResets(now: readonly ResetsNow[], snapshot: ReadonlyMap<string, number>): RankedCharacter[] {
   return now
-    .map(c => ({ name: c.name, class: c.class, level: c.level, kills: 0, resets: c.resets - (snapshot.get(c.id) ?? 0) }))
+    .map(c => ({ name: c.name, class: c.class, level: c.level, kills: 0, resets: c.resets - (snapshot.get(c.id) ?? Math.min(c.resets, GIFT_RESETS)) }))
     .filter(c => c.resets > 0)
     .sort((a, b) => b.resets - a.resets || b.level - a.level || a.name.localeCompare(b.name))
     .slice(0, RANKING_SIZE);
