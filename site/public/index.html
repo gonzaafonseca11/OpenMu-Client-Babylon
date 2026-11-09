@@ -14,8 +14,7 @@
     <a class="brand" href="#inicio"><img src="/logo.webp" alt="" width="44" height="44"><span>{{NAME}}</span></a>
     <nav class="tabs" aria-label="Secciones">
       <a href="#inicio" data-tab="inicio">Inicio</a>
-      <a href="#pk" data-tab="pk">Ranking PK</a>
-      <a href="#resets" data-tab="resets">Ranking Resets</a>
+      <a href="#rankings" data-tab="rankings">Rankings</a>
       <a href="#comunidad" data-tab="comunidad">Reportes</a>
       <a href="#cuenta" data-tab="cuenta">Mi cuenta</a>
       <a href="#gm" data-tab="gm" id="gm-tab" hidden>Panel GM</a>
@@ -70,16 +69,19 @@
       </div>
     </section>
 
-    <section id="pk" class="panel" hidden>
-      <h1>Ranking PK</h1>
-      <p class="hint">Los 50 personajes con más kills. Se actualiza cada minuto.</p>
-      <div class="table-wrap"><table class="ranking" data-ranking="pk" data-score="kills" data-score-label="Kills"></table></div>
-    </section>
-
-    <section id="resets" class="panel" hidden>
-      <h1>Ranking Resets</h1>
-      <p class="hint">Los 50 personajes con más resets. Se actualiza cada minuto.</p>
-      <div class="table-wrap"><table class="ranking" data-ranking="resets" data-score="resets" data-score-label="Resets"></table></div>
+    <section id="rankings" class="panel" hidden>
+      <h1>Rankings</h1>
+      <p class="hint">Los 50 mejores de cada uno. Se actualizan cada minuto.</p>
+      <div class="rankings">
+        <div>
+          <h2>Resets</h2>
+          <div class="table-wrap"><table class="ranking" data-ranking="resets" data-score="resets" data-score-label="Resets"></table></div>
+        </div>
+        <div>
+          <h2>PK</h2>
+          <div class="table-wrap"><table class="ranking" data-ranking="pk" data-score="kills" data-score-label="Kills"></table></div>
+        </div>
+      </div>
     </section>
 
     <section id="cuenta" class="panel" hidden>

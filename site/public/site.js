@@ -388,12 +388,13 @@ function showTab() {
     // The token leaves the address bar (and the history) at once.
     window.history.replaceState(null, '', '#restablecer');
   }
-  const tab = (location.hash || '#inicio').slice(1);
+  const asked = (location.hash || '#inicio').slice(1);
+  // Old links to #pk and #resets land on the joined page.
+  const tab = asked === 'pk' || asked === 'resets' ? 'rankings' : asked;
   const panel = document.getElementById(tab) ? tab : 'inicio';
   for (const s of document.querySelectorAll('main > section')) s.hidden = s.id !== panel;
   for (const a of document.querySelectorAll('.tabs a')) a.classList.toggle('active', a.dataset.tab === panel);
-  const table = document.querySelector(`#${panel} table.ranking`);
-  if (table) loadRanking(table);
+  for (const table of document.querySelectorAll(`#${panel} table.ranking`)) loadRanking(table);
   if (panel === 'cuenta') showAccount();
   if (panel === 'comunidad') showCommunity();
   if (panel === 'inicio') { loadNews(); loadOnline(); }

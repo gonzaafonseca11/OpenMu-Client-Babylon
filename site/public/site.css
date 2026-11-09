@@ -270,3 +270,8 @@ label.check { display: flex; gap: 8px; align-items: center; font-weight: 400; co
 .online b { color: #3ddc84; font-size: 18px; font-variant-numeric: tabular-nums; }
 .online .dot { width: 9px; height: 9px; border-radius: 50%; background: #3ddc84; animation: online-pulse 2s infinite; }
 @keyframes online-pulse { 50% { opacity: .35; } }
+
+/* Rankings page: resets and PK side by side, stacked on phones. */
+.rankings { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+.rankings > * { min-width: 0; }
+@media (max-width: 900px) { .rankings { grid-template-columns: 1fr; } }
