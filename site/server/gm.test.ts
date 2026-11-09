@@ -32,7 +32,8 @@ describe('GM sockets', () => {
   });
 
   it('gives each ancient set piece all its excellents, its luck and its extra option at the top', () => {
-    expect(piecePicks(opts, { excellent: true, luck: true, option: true })).toEqual([{ id: 'e1', level: 0 }, { id: 'luck', level: 0 }, { id: 'o1', level: 4 }]);
+    expect(piecePicks(opts, { excellent: ['Zen'], luck: true, option: true })).toEqual([{ id: 'e1', level: 0 }, { id: 'luck', level: 0 }, { id: 'o1', level: 4 }]);
+    expect(piecePicks(opts, { excellent: ['Otra'] })).toEqual([]);
     expect(piecePicks(opts, {})).toEqual([]);
   });
 

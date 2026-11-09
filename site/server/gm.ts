@@ -227,17 +227,28 @@ async function giveAncientSet(sql: Sql, req: GiveRequest): Promise<{ given: stri
   return { given };
 }
 
-/** What a whole ancient set asks of every piece: all its excellent options, luck, its first extra option at the top level. */
-export type SetExtras = { excellent?: boolean; luck?: boolean; option?: boolean };
+/** What a whole ancient set asks of every piece: the excellent options by label, luck, its first extra option at the top level. */
+export type SetExtras = { excellent?: string[]; luck?: boolean; option?: boolean };
 
 /** The options of one piece for `extras`: only what that piece has (a ring has no luck, a pendant other excellents). */
 export function piecePicks(available: readonly ItemOption[], extras: SetExtras): Picked[] {
   const extra = available.find(o => o.kind === 'option');
+  const wanted = new Set(extras.excellent ?? []);
   return [
-    ...(extras.excellent ? available.filter(o => o.kind === 'excellent').map(o => ({ id: o.id, level: 0 })) : []),
+    ...available.filter(o => o.kind === 'excellent' && wanted.has(o.label)).map(o => ({ id: o.id, level: 0 })),
     ...(extras.luck ? available.filter(o => o.kind === 'luck').map(o => ({ id: o.id, level: 0 })) : []),
     ...(extras.option && extra ? [{ id: extra.id, level: extra.maxLevel }] : []),
   ];
+}
+
+/** Every excellent option any piece of an ancient set has, once per label (the id is the label: pieces differ). */
+export async function setExcellents(sql: Sql, setId: string): Promise<ItemOption[]> {
+  const pieces = await sql`SELECT DISTINCT "ItemDefinitionId" AS def FROM config."ItemOfItemSet" WHERE "ItemSetGroupId" = ${setId} AND "AncientSetDiscriminator" <> 0`;
+  const seen = new Map<string, ItemOption>();
+  for (const p of pieces) {
+    for (const o of await itemOptions(sql, String(p.def))) if (o.kind === 'excellent' && !seen.has(o.label)) seen.set(o.label, { ...o, id: o.label });
+  }
+  return [...seen.values()];
 }
 
 /** Ancient sets for a class family: a set shows when any of its pieces fits the family. */

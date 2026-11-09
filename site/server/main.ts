@@ -9,7 +9,7 @@ import { openCommunity } from './community';
 import { chatBanned, chatMessage, chatTooFast, isBanned, isModerator, newsPost } from './rules';
 import { normalEmail, openMuHash, openRecovery, passwordProblem, recoveryMail, recoveryTargets, sendMail } from './recovery';
 import { isEmail } from '../../src/modules/servers/registerRules';
-import { browseItems, giveItem, giveSet, itemOptions, learnAllSkills, onlinePlayers, parseBrowse, readStats, writeStats } from './gm';
+import { browseItems, giveItem, giveSet, itemOptions, learnAllSkills, onlinePlayers, parseBrowse, readStats, setExcellents, writeStats } from './gm';
 
 /**
  * The world's own website (site/readme.md): rankings anyone can read, and a player's characters
@@ -162,7 +162,9 @@ async function gmRequest(path: string, req: Request, url: URL): Promise<Response
   }
   if (req.method === 'GET' && path === '/api/gm/options') {
     const id = url.searchParams.get('id') ?? '';
-    return /^[0-9a-f-]{36}$/.test(id) ? json(await itemOptions(sql, id)) : json({ error: 'Pedido inválido.' }, 400);
+    if (!/^[0-9a-f-]{36}$/.test(id)) return json({ error: 'Pedido inválido.' }, 400);
+    // A whole ancient set (its id is the set group): the excellents its pieces have, to pick from.
+    return json(url.searchParams.get('set') === 'ancient' ? await setExcellents(sql, id) : await itemOptions(sql, id));
   }
   if (req.method === 'GET' && path === '/api/gm/stats') {
     const name = (url.searchParams.get('name') ?? '').trim().slice(0, 10);
@@ -203,7 +205,7 @@ async function gmRequest(path: string, req: Request, url: URL): Promise<Response
       skill: body.skill === true,
       options: body.options.map(o => ({ id: String((o as Record<string, unknown>)?.id ?? ''), level: Number((o as Record<string, unknown>)?.level ?? 0) })),
       ancient: body.ancient && typeof body.ancient === 'object' ? { id: String((body.ancient as Record<string, unknown>).id ?? ''), level: Number((body.ancient as Record<string, unknown>).level ?? 0) } : null,
-      extras: { excellent: body.excellent === true, luck: body.luck === true, option: body.extraOption === true },
+      extras: { excellent: Array.isArray(body.excellent) ? body.excellent.map(String).slice(0, 30) : [], luck: body.luck === true, option: body.extraOption === true },
       sockets: (Array.isArray(body.sockets) ? body.sockets : []).map(o => ({ id: String((o as Record<string, unknown>)?.id ?? ''), level: Number((o as Record<string, unknown>)?.level ?? 0) })),
     };
     if (path === '/api/gm/give-set') {

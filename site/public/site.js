@@ -220,7 +220,7 @@ async function gmPick() {
   const option = $('#gm-results').selectedOptions[0];
   if (!option) return;
   gmItem = option.item;
-  const { ok, body } = await api(`/api/gm/options?id=${gmItem.id}`);
+  const { ok, body } = await api(`/api/gm/options?id=${gmItem.id}${$('#gm-group').value === 'ancients' ? '&set=ancient' : ''}`);
   if (!ok) return;
   $('#gm-item').hidden = false;
   $('#gm-item-name').textContent = gmItem.name;
@@ -285,7 +285,6 @@ async function gmPick() {
     bonus.hidden = false;
     bonus.replaceChildren(...[2, 1].map(l => el('option', { value: String(l) }, `Bonus de stat +${l * 5}`)));
     anc.replaceChildren(anc.querySelector('legend'), setPick, bonus,
-      checkbox('setExcellent', 'on', 'Todas las opciones excelentes (en cada pieza)', true),
       checkbox('setLuck', 'on', 'Luck (en cada pieza que lo admita)', true),
       checkbox('setOption', 'on', 'Opción adicional al máximo', true));
     anc.hidden = false;
@@ -323,7 +322,7 @@ async function gmGive(e) {
   button.disabled = true;
   const isSet = $('#gm-group').value === 'sets' || $('#gm-group').value === 'ancients';
   const sockets = Array.from({ length: Number(form.get('socketCount') ?? 0) }, (_, i) => ({ id: form.get(`socket${i}`) || '', level: Number(form.get(`socketLevel${i}`)) }));
-  const { ok, body } = await post(isSet ? '/api/gm/give-set' : '/api/gm/give', { character: form.get('character'), definitionId: gmItem.id, level: Number(form.get('level')), skill: form.get('skill') === 'on', options, sockets, ancient: form.get('ancientId') ? { id: form.get('ancientId'), level: Number(form.get('ancientLevel') ?? 0) } : null, excellent: form.get('setExcellent') === 'on', luck: form.get('setLuck') === 'on', extraOption: form.get('setOption') === 'on' });
+  const { ok, body } = await post(isSet ? '/api/gm/give-set' : '/api/gm/give', { character: form.get('character'), definitionId: gmItem.id, level: Number(form.get('level')), skill: form.get('skill') === 'on', options, sockets, ancient: form.get('ancientId') ? { id: form.get('ancientId'), level: Number(form.get('ancientLevel') ?? 0) } : null, excellent: form.getAll('opt'), luck: form.get('setLuck') === 'on', extraOption: form.get('setOption') === 'on' });
   button.disabled = false;
   if (!ok) $('#gm-error').textContent = body.error || 'No se pudo crear.';
   else if (isSet) $('#gm-ok').textContent = `Listo: ${body.given.join(', ')} +${form.get('level')} quedaron en el inventario de ${form.get('character')}.`;
