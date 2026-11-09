@@ -7,7 +7,7 @@ namespace MUnique.OpenMU.GameLogic.StarterGift;
 using System.Runtime.InteropServices;
 using MUnique.OpenMU.GameLogic.Attributes;
 using MUnique.OpenMU.GameLogic.PlugIns;
-using MUnique.OpenMU.Persistence;
+using MUnique.OpenMU.DataModel.Entities;
 using MUnique.OpenMU.PlugIns;
 
 /// <summary>
@@ -26,7 +26,7 @@ public class StarterGiftPlugIn : ICharacterCreatedPlugIn
     public const int Points = 5000;
 
     /// <inheritdoc />
-    public void CharacterCreated(Account account, Character createdCharacter, IContext persistenceContext, GameConfiguration gameConfiguration, ILogger logger)
+    public void CharacterCreated(Player player, Character createdCharacter)
     {
         var resets = createdCharacter.Attributes.FirstOrDefault(a => a.Definition == Stats.Resets);
         if (resets is null || resets.Value > 0)
