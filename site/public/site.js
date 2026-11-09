@@ -58,6 +58,17 @@ async function loadRanking(table) {
   if (!rows.length) table.append(el('caption', {}, 'Todavía no hay nadie en este ranking. ¡Sé el primero!'));
 }
 
+/* --------------------------------------------------------------- online */
+
+async function loadOnline() {
+  const { ok, body } = await api('/api/online');
+  const n = ok ? body.online : null;
+  $('#online').hidden = typeof n !== 'number';
+  if (typeof n !== 'number') return;
+  $('#online-count').textContent = fmt(n);
+  $('#online-label').textContent = n === 1 ? 'jugador online' : 'jugadores online';
+}
+
 /* ----------------------------------------------------------------- news */
 
 function newsItem(n, moderator) {
@@ -385,7 +396,7 @@ function showTab() {
   if (table) loadRanking(table);
   if (panel === 'cuenta') showAccount();
   if (panel === 'comunidad') showCommunity();
-  if (panel === 'inicio') loadNews();
+  if (panel === 'inicio') { loadNews(); loadOnline(); }
   if (panel === 'gm' && me?.moderator) { loadNews(); loadAllReports(); }
   if (panel === 'restablecer') showReset();
   $('#gm-tab').hidden = !me?.moderator;
@@ -394,6 +405,7 @@ function showTab() {
 document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('hashchange', showTab);
   loadMe().then(showTab);
+  setInterval(() => { if (!$('#inicio').hidden) loadOnline(); }, 30_000);
 
   $('#login-form').addEventListener('submit', async e => {
     e.preventDefault();

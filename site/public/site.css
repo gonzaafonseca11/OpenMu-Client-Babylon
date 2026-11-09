@@ -264,3 +264,9 @@ label.check { display: flex; gap: 8px; align-items: center; font-weight: 400; co
 .report-done { opacity: .7; }
 .news-form label { display: grid; gap: 4px; }
 @media (max-width: 720px) { .report-answer { grid-template-columns: 1fr; } }
+
+/* Players online on the home page: a green dot that pulses. */
+.online { display: inline-flex; align-items: center; gap: 8px; margin: 14px 0 0; padding: 6px 14px; border-radius: 999px; background: rgba(40, 200, 90, .12); font-size: 15px; }
+.online b { color: #3ddc84; font-size: 18px; font-variant-numeric: tabular-nums; }
+.online .dot { width: 9px; height: 9px; border-radius: 50%; background: #3ddc84; animation: online-pulse 2s infinite; }
+@keyframes online-pulse { 50% { opacity: .35; } }

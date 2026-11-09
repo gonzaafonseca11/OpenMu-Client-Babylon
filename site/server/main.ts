@@ -88,7 +88,16 @@ async function cached(key: string, load: () => Promise<RankedCharacter[]>): Prom
   return rows;
 }
 
-type SessionAccount = { id: string; login: string; moderator: boolean; chatBanned: boolean };
+/** How many are in the game, asked of OpenMU at most every 15 s; null when it cannot be asked. Names stay private. */
+let onlineHit = { at: 0, count: null as number | null };
+async function onlineCount(): Promise<number | null> {
+  if (!OPENMU_API_URL) return null;
+  if (Date.now() - onlineHit.at < 15_000) return onlineHit.count;
+  onlineHit = { at: Date.now(), count: (await onlinePlayers(OPENMU_API_URL))?.length ?? null };
+  return onlineHit.count;
+}
+
+type SessionAccount ={ id: string; login: string; moderator: boolean; chatBanned: boolean };
 
 /** The logged-in account, when the session is valid, its password has not changed since and it is not banned. */
 async function sessionAccount(req: Request): Promise<SessionAccount | null> {
@@ -330,7 +339,8 @@ Bun.serve({
         const account = id ? await accountHash(sql, id) : null;
         return account ? json({ login: account.login }) : json({ error: 'El link venció o ya se usó. Pedí uno nuevo.' }, 400);
       }
-      if (req.method === 'GET' && path === '/api/news') return json(community.news());
+      if (req.method === 'GET' && path === '/api/online') return json({ online: await onlineCount() });
+      if (req.method === 'GET' && path === '/api/news')return json(community.news());
       if (req.method === 'GET' || req.headers.get('content-type')?.startsWith('application/json')) {
         const gm = await gmRequest(path, req, url);
         if (gm) return gm;
