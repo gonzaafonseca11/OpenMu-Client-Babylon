@@ -1,4 +1,4 @@
-// <copyright file="MarketplaceEscrowAction.cs" company="MUnique">
+﻿// <copyright file="MarketplaceEscrowAction.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -125,7 +125,7 @@ public class MarketplaceEscrowAction
     /// The typed loader hands back shallow copies of configuration rows. The game compares those by
     /// reference, so every one is swapped for the instance the game configuration already holds.
     /// </summary>
-    private static void Rehome(Item item, GameConfiguration configuration)
+    internal static void Rehome(Item item, GameConfiguration configuration)
     {
         if (item.Definition is { } definition)
         {
