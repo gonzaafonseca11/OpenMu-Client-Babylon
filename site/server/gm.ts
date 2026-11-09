@@ -365,10 +365,10 @@ export async function giveItem(sql: Sql, req: GiveRequest): Promise<{ slot: numb
 /* ------------------------------------------------------------ stat editor */
 
 /** What the stat editor reads and writes. `leadership` is null for classes without Command. */
-export type CharacterStats = { name: string; class: string; classNumber: number; classes: { number: number; name: string }[]; level: number; resets: number; strength: number; agility: number; vitality: number; energy: number; leadership: number | null; points: number; zen: number };
+export type CharacterStats = { name: string; class: string; classNumber: number; classes: { number: number; name: string }[]; level: number; resets: number; strength: number; agility: number; vitality: number; energy: number; leadership: number | null; points: number; masterPoints: number; zen: number };
 
 const STAT_DESIGNATIONS = { level: 'Level', resets: 'Resets', strength: 'Base Strength', agility: 'Base Agility', vitality: 'Base Vitality', energy: 'Base Energy', leadership: 'Base Leadership' } as const;
-export const LIMITS = { level: [1, 400], resets: [0, 100000], stat: [1, 32500], points: [0, 2_000_000_000], zen: [0, 2_000_000_000] } as const;
+export const LIMITS = { level: [1, 400], resets: [0, 100000], stat: [1, 32500], points: [0, 2_000_000_000], masterPoints: [0, 100_000], zen: [0, 2_000_000_000] } as const;
 
 /** Experience a character holds at the start of a level: OpenMU's table, `10(n+9)n^2` plus the 1000x part past 255, n = level - 1. */
 export function experienceForLevel(level: number): number {
@@ -392,6 +392,7 @@ export function checkStats(s: Record<string, unknown>, hasLeadership: boolean): 
     energy: read('energy', LIMITS.stat, 'La energía'),
     leadership: hasLeadership ? read('leadership', LIMITS.stat, 'El comando') : null,
     points: read('points', LIMITS.points, 'Los puntos libres'),
+    masterPoints: read('masterPoints', LIMITS.masterPoints, 'Los puntos de maestría'),
     zen: read('zen', LIMITS.zen, 'El zen'),
   };
   const bad = Object.values(out).find(v => typeof v === 'string');
@@ -400,7 +401,7 @@ export function checkStats(s: Record<string, unknown>, hasLeadership: boolean): 
 
 async function statRows(sql: Sql, name: string) {
   const [ch] = await sql`
-    SELECT c."Id" AS id, c."Name" AS name, cc."Name" AS class, cc."Number" AS cnum, c."LevelUpPoints" AS points, c."InventoryId" AS inv, COALESCE(s."Money", 0) AS zen
+    SELECT c."Id" AS id, c."Name" AS name, cc."Name" AS class, cc."Number" AS cnum, c."LevelUpPoints" AS points, c."MasterLevelUpPoints" AS mpoints, c."InventoryId" AS inv, COALESCE(s."Money", 0) AS zen
     FROM data."Character" c JOIN config."CharacterClass" cc ON cc."Id" = c."CharacterClassId"
     LEFT JOIN data."ItemStorage" s ON s."Id" = c."InventoryId"
     WHERE lower(c."Name") = lower(${name})
@@ -427,7 +428,7 @@ export async function readStats(sql: Sql, name: string): Promise<CharacterStats 
     name: String(ch.name), class: String(ch.class), classNumber: Number(ch.cnum), classes: classes.map(({ number, name }) => ({ number, name })), level: v('level'), resets: v('resets'),
     strength: v('strength'), agility: v('agility'), vitality: v('vitality'), energy: v('energy'),
     leadership: values.has(STAT_DESIGNATIONS.leadership) ? v('leadership') : null,
-    points: Number(ch.points), zen: Number(ch.zen),
+    points: Number(ch.points), masterPoints: Number(ch.mpoints), zen: Number(ch.zen),
   };
 }
 
@@ -451,7 +452,7 @@ export async function writeStats(sql: Sql, name: string, body: Record<string, un
       `;
     }
     const exp = checked.level === values.get(STAT_DESIGNATIONS.level) ? null : experienceForLevel(checked.level);
-    await tx`UPDATE data."Character" SET "LevelUpPoints" = ${checked.points}, "CharacterClassId" = ${newClass.id} WHERE "Id" = ${ch.id}`;
+    await tx`UPDATE data."Character" SET "LevelUpPoints" = ${checked.points}, "MasterLevelUpPoints" = ${checked.masterPoints}, "CharacterClassId" = ${newClass.id} WHERE "Id" = ${ch.id}`;
     if (exp !== null) await tx`UPDATE data."Character" SET "Experience" = ${exp} WHERE "Id" = ${ch.id}`;
     if (ch.inv) await tx`UPDATE data."ItemStorage" SET "Money" = ${checked.zen} WHERE "Id" = ${ch.inv}`;
   });

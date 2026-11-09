@@ -64,12 +64,13 @@ describe('GM item maker', () => {
   });
 
   it('accepts stats inside the limits only', () => {
-    const ok = { level: 400, resets: 51, strength: 32500, agility: 1, vitality: 100, energy: 32500, points: 0, zen: 2_000_000_000 };
+    const ok = { level: 400, resets: 51, strength: 32500, agility: 1, vitality: 100, energy: 32500, points: 0, masterPoints: 200, zen: 2_000_000_000 };
     expect(checkStats(ok, false)).toEqual({ ...ok, leadership: null });
     expect(checkStats({ ...ok, leadership: 500 }, true)).toHaveProperty('leadership', 500);
     expect(checkStats({ ...ok, strength: 32501 }, false)).toHaveProperty('error');
     expect(checkStats({ ...ok, level: 0 }, false)).toHaveProperty('error');
     expect(checkStats({ ...ok, zen: 1.5 }, false)).toHaveProperty('error');
+    expect(checkStats({ ...ok, masterPoints: -1 }, false)).toHaveProperty('error');
   });
 
   it('reads the type list and names sets by their armor', () => {

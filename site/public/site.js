@@ -341,7 +341,7 @@ async function gmGive(e) {
   else $('#gm-ok').textContent = `Listo: ${body.name} +${form.get('level')} quedó en el inventario de ${form.get('character')}.`;
 }
 
-const STAT_FIELDS = ['level', 'resets', 'strength', 'agility', 'vitality', 'energy', 'leadership', 'points', 'zen'];
+const STAT_FIELDS = ['level', 'resets', 'strength', 'agility', 'vitality', 'energy', 'leadership', 'points', 'masterPoints', 'zen'];
 
 function fillStats(s) {
   const form = $('#stats-form');
