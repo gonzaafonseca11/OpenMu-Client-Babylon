@@ -267,13 +267,13 @@ async function gmPick() {
   // Sockets: how many slots, then per slot a seed sphere (or empty) and its level 1-5.
   const box = $('#gm-sockets');
   const spheres = of('socket');
-  const count = el('select', { name: 'socketCount' }, ...Array.from({ length: gmItem.sockets + 1 }, (_, n) => el('option', { value: String(n) }, n ? `${n} engarce${n > 1 ? 's' : ''}` : 'Sin engarces')));
+  const count = el('select', { name: 'socketCount' }, ...Array.from({ length: gmItem.sockets + 1 }, (_, n) => el('option', { value: String(n) }, n ? `${n} socket${n > 1 ? 's' : ''}` : 'Sin sockets')));
   count.value = String(gmItem.sockets);
   const rows = Array.from({ length: gmItem.sockets }, (_, i) => {
     const sphere = el('select', { name: `socket${i}` }, el('option', { value: '' }, 'Vacío'), ...spheres.map(o => el('option', { value: o.id }, o.label)));
     const level = el('select', { name: `socketLevel${i}` }, ...[1, 2, 3, 4, 5].map(l => el('option', { value: String(l) }, `Esfera nivel ${l}`)));
     level.value = '5';
-    return el('div', { class: 'socket-row' }, `Engarce ${i + 1}: `, sphere, level);
+    return el('div', { class: 'socket-row' }, `Socket ${i + 1}: `, sphere, level);
   });
   const showRows = () => rows.forEach((r, i) => { r.hidden = i >= Number(count.value); });
   count.addEventListener('change', showRows);

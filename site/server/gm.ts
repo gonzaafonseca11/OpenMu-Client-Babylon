@@ -28,7 +28,7 @@ const SOCKETS: Record<number, [string, string[]]> = {
   4: ['Rayo', ['Daño excelente', 'Probabilidad de excelente', 'Daño crítico', 'Probabilidad de crítico']],
   5: ['Tierra', ['Vida máxima']],
 };
-/** Seed sphere levels (1-5) and the most slots an item has (ItemSerializerHelper.cs). */
+/** Seed sphere levels (1-5) and the most slots the packet carries (ItemSerializerHelper.cs): Mu Bardo gives every socket item 5. */
 const SPHERE_LEVELS = 5;
 const MAX_SOCKETS = 5;
 
@@ -45,12 +45,12 @@ export type Picked = { id: string; level: number };
  * slot count, each option one of the item's socket options, each sphere level 1-5.
  */
 export function checkSockets(available: readonly ItemOption[], slots: readonly Picked[], maxSockets: number): { slots: ({ option: ItemOption; level: number } | null)[] } | { error: string } {
-  if (slots.length > Math.min(maxSockets, MAX_SOCKETS)) return { error: maxSockets ? `Este ítem tiene ${maxSockets} engarces como máximo.` : 'Este ítem no lleva engarces.' };
+  if (slots.length > Math.min(maxSockets, MAX_SOCKETS)) return { error: maxSockets ? `Este ítem tiene ${maxSockets} sockets como máximo.` : 'Este ítem no lleva sockets.' };
   const out: ({ option: ItemOption; level: number } | null)[] = [];
   for (const s of slots) {
     if (!s.id) { out.push(null); continue; }
     const option = available.find(o => o.id === s.id && o.kind === 'socket');
-    if (!option) return { error: 'Ese engarce no es de este ítem.' };
+    if (!option) return { error: 'Ese socket no es de este ítem.' };
     const level = Math.trunc(Number(s.level));
     if (!(level >= 1 && level <= SPHERE_LEVELS)) return { error: `El nivel de la esfera va de 1 a ${SPHERE_LEVELS}.` };
     out.push({ option, level });
@@ -145,7 +145,7 @@ export async function browseItems(sql: Sql, browse: Browse, family: number): Pro
                  WHERE q."ItemDefinitionId" = d."Id" AND c."Number" / 4 = ${family}))
     ORDER BY d."DropLevel", d."Number"
   `;
-  return rows.map(r => ({ id: String(r.id), name: browse === 'sets' ? `Set ${setName(String(r.name))}` : String(r.name), group: Number(r.g), number: Number(r.n), maxLevel: Number(r.max), width: Number(r.w), height: Number(r.h), hasSkill: Boolean(r.skill), durability: Number(r.dur), sockets: Number(r.sockets) || 0 }));
+  return rows.map(r => ({ id: String(r.id), name: browse === 'sets' ? `Set ${setName(String(r.name))}` : String(r.name), group: Number(r.g), number: Number(r.n), maxLevel: Number(r.max), width: Number(r.w), height: Number(r.h), hasSkill: Boolean(r.skill), durability: Number(r.dur), sockets: Number(r.sockets) > 0 ? MAX_SOCKETS : 0 }));
 }
 
 /** The same choice on another piece: options match by kind and number (excellent 1-6, luck, the extra option). */
@@ -220,7 +220,7 @@ export async function giveItem(sql: Sql, req: GiveRequest): Promise<{ slot: numb
   const available = await itemOptions(sql, req.definitionId);
   const checked = checkOptions(available, req.options ?? []);
   if ('error' in checked) return checked;
-  const sockets = checkSockets(available, Array.isArray(req.sockets) ? req.sockets : [], Number(def.sockets) || 0);
+  const sockets = checkSockets(available, Array.isArray(req.sockets) ? req.sockets : [], Number(def.sockets) > 0 ? MAX_SOCKETS : 0);
   if ('error' in sockets) return sockets;
 
   return sql.begin('read write', async tx => {
