@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { checkAncient, checkOptions, checkSockets, checkStats, durabilityFor, experienceForLevel, matchOptions, optionLabel, parseBrowse, setName, type ItemOption } from './gm';
+import { checkAncient, checkOptions, checkSockets, checkStats, durabilityFor, experienceForLevel, matchOptions, optionLabel, parseBrowse, piecePicks, setName, type ItemOption } from './gm';
 
 const opts: ItemOption[] = [
   { id: 'e1', kind: 'excellent', number: 1, label: 'Zen', maxLevel: 4 },
@@ -29,6 +29,11 @@ describe('GM sockets', () => {
     expect(checkAncient([hyon, fire], { id: 's1', level: 1 })).toHaveProperty('error');
     expect(checkAncient([hyon], null)).toEqual({ ancient: null, level: 0 });
     expect(checkOptions([hyon], [{ id: 'a1', level: 0 }])).toHaveProperty('error');
+  });
+
+  it('gives each ancient set piece all its excellents, its luck and its extra option at the top', () => {
+    expect(piecePicks(opts, { excellent: true, luck: true, option: true })).toEqual([{ id: 'e1', level: 0 }, { id: 'luck', level: 0 }, { id: 'o1', level: 4 }]);
+    expect(piecePicks(opts, {})).toEqual([]);
   });
 
   it('names a sphere by its element', () => {

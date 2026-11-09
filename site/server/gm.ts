@@ -219,11 +219,25 @@ async function giveAncientSet(sql: Sql, req: GiveRequest): Promise<{ given: stri
   for (const p of pieces) {
     const level = Math.min(Math.trunc(Number(req.level)) || 0, Number(p.max));
     const ancient = { id: String(p.id), level: p.bonus ? Number(req.ancient?.level ?? 0) : 0 };
-    const result = await giveItem(sql, { ...req, definitionId: String(p.def), level, options: [], sockets: [], ancient });
+    const options = piecePicks(await itemOptions(sql, String(p.def)), req.extras ?? {});
+    const result = await giveItem(sql, { ...req, definitionId: String(p.def), level, options, sockets: [], ancient });
     if ('error' in result) return { error: given.length ? `${result.error} Ya entregué: ${given.join(', ')}.` : result.error };
     given.push(result.name);
   }
   return { given };
+}
+
+/** What a whole ancient set asks of every piece: all its excellent options, luck, its first extra option at the top level. */
+export type SetExtras = { excellent?: boolean; luck?: boolean; option?: boolean };
+
+/** The options of one piece for `extras`: only what that piece has (a ring has no luck, a pendant other excellents). */
+export function piecePicks(available: readonly ItemOption[], extras: SetExtras): Picked[] {
+  const extra = available.find(o => o.kind === 'option');
+  return [
+    ...(extras.excellent ? available.filter(o => o.kind === 'excellent').map(o => ({ id: o.id, level: 0 })) : []),
+    ...(extras.luck ? available.filter(o => o.kind === 'luck').map(o => ({ id: o.id, level: 0 })) : []),
+    ...(extras.option && extra ? [{ id: extra.id, level: extra.maxLevel }] : []),
+  ];
 }
 
 /** Ancient sets for a class family: a set shows when any of its pieces fits the family. */
@@ -280,7 +294,7 @@ export async function itemOptions(sql: Sql, definitionId: string): Promise<ItemO
 const ANCIENT_BONUS: Record<string, string> = { 'Total Strength': 'Fuerza', 'Total Agility': 'Agilidad', 'Total Vitality': 'Vitalidad', 'Total Energy': 'Energía', 'Total Leadership': 'Comando' };
 
 /** `sockets`: one entry per socket slot, an empty id for an empty slot. */
-export type GiveRequest = { character: string; definitionId: string; level: number; skill: boolean; options: Picked[]; sockets?: Picked[]; ancient?: Picked | null };
+export type GiveRequest = { character: string; definitionId: string; level: number; skill: boolean; options: Picked[]; sockets?: Picked[]; ancient?: Picked | null; extras?: SetExtras };
 
 /** Puts the item in the character's bag; the caller has checked the character is offline. */
 export async function giveItem(sql: Sql, req: GiveRequest): Promise<{ slot: number; name: string } | { error: string }> {
