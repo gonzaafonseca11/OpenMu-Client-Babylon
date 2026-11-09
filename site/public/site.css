@@ -256,3 +256,11 @@ label.check { display: flex; gap: 8px; align-items: center; font-weight: 400; co
 
 /* Whatever a rule's display, an element the script hides stays hidden. */
 [hidden] { display: none !important; }
+
+/* Reports: the staff answer row, and a colour per state. */
+.report-answer { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; margin-top: 8px; }
+.report-answer > * { min-width: 0; }
+.report-open { border-left: 3px solid var(--red); }
+.report-done { opacity: .7; }
+.news-form label { display: grid; gap: 4px; }
+@media (max-width: 720px) { .report-answer { grid-template-columns: 1fr; } }

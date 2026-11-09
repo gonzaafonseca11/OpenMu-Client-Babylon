@@ -9,7 +9,8 @@ import { migrate } from '../../tools/sqliteMigrate';
  */
 
 export type ChatRow = { id: number; author: string; body: string; at: number };
-export type NewsRow = { id: number; title: string; body: string; at: number };
+export type ReportRow = { id: number; login: string; kind: string; target: string; body: string; link: string; status: string; reply: string; at: number };
+export type NewsRow ={ id: number; title: string; body: string; at: number };
 
 /** Chat older than this is dropped hourly; the news stay. */
 const CHAT_KEEP_MS = 30 * 86_400_000;
@@ -42,6 +43,15 @@ export function openCommunity(path: string) {
   );
   const hideNews = db.query<unknown, [number]>('UPDATE news SET deleted = 1 WHERE id = ?');
 
+  const reportCols = 'id, login, kind, target, body, link, status, reply, at';
+  const insertReport = db.query<{ id: number }, [string, string, string, string, string, string, number]>(
+    'INSERT INTO reports (account_id, login, kind, target, body, link, at) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id'
+  );
+  const reportsBy = db.query<ReportRow, [string]>(`SELECT ${reportCols} FROM reports WHERE account_id = ? ORDER BY id DESC LIMIT 50`);
+  const allReports = db.query<ReportRow, []>(`SELECT ${reportCols} FROM reports ORDER BY status = 'done', id DESC LIMIT 200`);
+  const reportsSince = db.query<{ n: number }, [string, number]>('SELECT COUNT(*) AS n FROM reports WHERE account_id = ? AND at > ?');
+  const answerReport = db.query<unknown, [string, string, number]>('UPDATE reports SET status = ?, reply = ? WHERE id = ?');
+
   setInterval(() => pruneChat.run(Date.now() - CHAT_KEEP_MS), 60 * 60 * 1000).unref();
 
   return {
@@ -59,6 +69,13 @@ export function openCommunity(path: string) {
     news: () => listNews.all(NEWS_PAGE),
     postNews: (accountId: string, title: string, body: string, at = Date.now()) => insertNews.get(accountId, title, body, at)?.id ?? 0,
     hideNews: (id: number) => hideNews.run(id),
+    postReport: (accountId: string, login: string, r: { kind: string; target: string; body: string; link: string }, at = Date.now()) =>
+      insertReport.get(accountId, login, r.kind, r.target, r.body, r.link, at)?.id ?? 0,
+    myReports: (accountId: string) => reportsBy.all(accountId),
+    allReports: () => allReports.all(),
+    /** Reports this account sent in the last hour. */
+    reportsLastHour: (accountId: string, now = Date.now()) => reportsSince.get(accountId, now - 3_600_000)?.n ?? 0,
+    answerReport: (id: number, status: string, reply: string) => answerReport.run(status, reply, id),
   };
 }
 

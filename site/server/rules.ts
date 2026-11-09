@@ -42,6 +42,25 @@ export function newsPost(title: unknown, body: unknown): { title: string; body: 
   return { title: t, body: b };
 }
 
+export const REPORT_KINDS = ['bug', 'player', 'other'] as const;
+export const REPORT_STATUSES = ['open', 'seen', 'done'] as const;
+export const REPORT_BODY_MAX = 2000;
+export const REPORTS_PER_HOUR = 5;
+
+/** A report to store, or why not. The link is optional and must be http(s). */
+export function reportPost(kind: unknown, target: unknown, body: unknown, link: unknown):
+  { kind: string; target: string; body: string; link: string } | { error: string } {
+  if (!REPORT_KINDS.includes(kind as never)) return { error: 'Elegí el tipo de reporte.' };
+  const t = clean(target, false).slice(0, 10);
+  if (kind === 'player' && !t) return { error: 'Escribí el nombre del personaje.' };
+  const b = clean(body, true);
+  if (!b) return { error: 'Contá qué pasó.' };
+  if (b.length > REPORT_BODY_MAX) return { error: `Máximo ${REPORT_BODY_MAX} caracteres.` };
+  const l = clean(link, false);
+  if (l && (l.length > 300 || !/^https?:\/\/[^\s]+$/i.test(l))) return { error: 'El link tiene que empezar con http:// o https://' };
+  return { kind: kind as string, target: kind === 'player' ? t : '', body: b, link: l };
+}
+
 /** Whether an account may post now, given when it posted lately (newest last). */
 export function chatTooFast(recent: readonly number[], now: number): boolean {
   const last = recent[recent.length - 1];

@@ -16,7 +16,7 @@
       <a href="#inicio" data-tab="inicio">Inicio</a>
       <a href="#pk" data-tab="pk">Ranking PK</a>
       <a href="#resets" data-tab="resets">Ranking Resets</a>
-      <a href="#comunidad" data-tab="comunidad">Comunidad</a>
+      <a href="#comunidad" data-tab="comunidad">Reportes</a>
       <a href="#cuenta" data-tab="cuenta">Mi cuenta</a>
       <a href="#gm" data-tab="gm" id="gm-tab" hidden>Panel GM</a>
     </nav>
@@ -38,39 +38,33 @@
       <div class="home-news" id="home-news" hidden>
         <h2>Últimas noticias</h2>
         <div class="news-list" data-news-list="home"></div>
-        <a class="more" href="#comunidad">Ver todas y el chat de la comunidad</a>
       </div>
     </section>
 
     <section id="comunidad" class="panel" hidden>
-      <h1>Comunidad</h1>
-      <p class="hint">Las novedades del servidor y el chat de los jugadores.</p>
-
-      <div class="community">
-        <div class="news-col">
-          <h2>Noticias</h2>
-          <form id="news-form" class="news-form" hidden>
-            <input name="title" maxlength="120" placeholder="Título de la noticia" required>
-            <textarea name="body" maxlength="4000" rows="4" placeholder="Texto de la noticia" required></textarea>
-            <button class="btn btn-play" type="submit">Publicar noticia</button>
-            <p class="error" id="news-error" role="alert"></p>
-          </form>
-          <div class="news-list" data-news-list="all"></div>
-        </div>
-
-        <div class="chat-col">
-          <h2>Chat</h2>
-          <p class="hint" id="chat-login">Para leer y escribir en el chat, <a href="#cuenta">entrá con tu cuenta</a>.</p>
-          <div id="chat" hidden>
-            <div class="chat-log" id="chat-log" aria-live="polite"></div>
-            <form id="chat-form" class="chat-form">
-              <select name="character" aria-label="Hablar como"></select>
-              <input name="body" maxlength="300" placeholder="Escribí un mensaje..." autocomplete="off" required>
-              <button class="btn btn-play" type="submit">Enviar</button>
-            </form>
-            <p class="error" id="chat-error" role="alert"></p>
-            <p class="hint small">Respeto ante todo. El staff puede borrar mensajes y bloquear el chat.</p>
-          </div>
+      <h1>Reportes</h1>
+      <p class="hint">¿Encontraste un bug o un jugador que hace trampa? Contanos y el staff lo revisa.</p>
+      <p class="hint" id="report-login">Para reportar, <a href="#cuenta">entrá con tu cuenta</a>.</p>
+      <div class="community" id="report-box" hidden>
+        <form id="report-form" class="news-form">
+          <label>Tipo
+            <select name="kind" id="report-kind">
+              <option value="bug">Bug o error del juego</option>
+              <option value="player">Jugador tramposo o abusivo</option>
+              <option value="other">Otro</option>
+            </select>
+          </label>
+          <label id="report-target" hidden>Personaje reportado <input name="target" maxlength="10" autocomplete="off"></label>
+          <label>¿Qué pasó? <textarea name="body" maxlength="2000" rows="5" placeholder="Contá qué pasó, dónde y cuándo." required></textarea></label>
+          <label>Link de prueba (opcional) <input name="link" type="url" maxlength="300" placeholder="https://..."></label>
+          <p class="hint small">Subí la foto a <a href="https://imgur.com/upload" target="_blank" rel="noopener">imgur.com</a> o <a href="https://prnt.sc" target="_blank" rel="noopener">prnt.sc</a>, y el video a YouTube (como "no listado") o <a href="https://streamable.com" target="_blank" rel="noopener">streamable.com</a>. Después pegá el link acá.</p>
+          <button class="btn btn-play" type="submit">Enviar reporte</button>
+          <p class="error" id="report-error" role="alert"></p>
+          <p class="ok" id="report-ok" role="status"></p>
+        </form>
+        <div>
+          <h2>Mis reportes</h2>
+          <div class="news-list" id="my-reports"></div>
         </div>
       </div>
     </section>
@@ -235,6 +229,24 @@
         <p class="ok" id="stats-ok" role="status"></p>
       </form>
       </div>
+      </div>
+
+      <div class="gm-cols">
+        <div class="gm-col">
+          <form id="news-form" class="gm-form news-form">
+            <h2>Publicar noticia</h2>
+            <p class="hint small">Las 3 últimas se ven en el Inicio.</p>
+            <input name="title" maxlength="120" placeholder="Título de la noticia" required>
+            <textarea name="body" maxlength="4000" rows="4" placeholder="Texto de la noticia" required></textarea>
+            <button class="btn btn-play" type="submit">Publicar noticia</button>
+            <p class="error" id="news-error" role="alert"></p>
+          </form>
+          <div class="news-list" data-news-list="all"></div>
+        </div>
+        <div class="gm-col">
+          <h2>Reportes de los jugadores</h2>
+          <div class="news-list" id="all-reports"></div>
+        </div>
       </div>
     </section>
   </main>

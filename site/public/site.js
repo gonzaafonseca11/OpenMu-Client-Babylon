@@ -1,4 +1,4 @@
-// The site's page script: tabs by hash, rankings, news, the chat and the account panel.
+// The site's page script: tabs by hash, rankings, news, reports and the account panel.
 // Data goes in as text, never as HTML.
 /* global document, window, location, fetch, FormData, setInterval, clearInterval */
 const $ = sel => document.querySelector(sel);
@@ -83,78 +83,60 @@ async function loadNews() {
   const news = ok ? body : [];
   const moderator = !!me?.moderator;
   for (const list of document.querySelectorAll('[data-news-list]')) {
-    const items = list.dataset.newsList === 'home' ? news.slice(0, 2) : news;
+    const items = list.dataset.newsList === 'home' ? news.slice(0, 3) : news;
     list.replaceChildren(...(items.length ? items.map(n => newsItem(n, moderator && list.dataset.newsList === 'all')) : [el('p', { class: 'hint' }, 'Todavía no hay noticias.')]));
   }
   $('#home-news').hidden = news.length === 0;
 }
 
-/* ----------------------------------------------------------------- chat */
+/* -------------------------------------------------------------- reports */
 
-let lastChatId = 0;
-let chatTimer = 0;
-const shown = new Map();
+const REPORT_KIND = { bug: 'Bug', player: 'Jugador', other: 'Otro' };
+const REPORT_STATUS = { open: 'Pendiente', seen: 'Revisado', done: 'Resuelto' };
 
-function chatLine(m) {
-  const line = el('div', { class: 'chat-line', 'data-id': String(m.id) },
-    el('time', {}, when(m.at)),
-    el('b', {}, m.author),
-    el('span', {}, m.body)
+function reportItem(r, staff) {
+  const head = `${REPORT_KIND[r.kind] || r.kind}${r.target ? `: ${r.target}` : ''}${staff ? ` (de ${r.login})` : ''}`;
+  const item = el('article', { class: `news report-${r.status}` },
+    el('h3', {}, head),
+    el('time', {}, `${when(r.at)} · ${REPORT_STATUS[r.status] || r.status}`),
+    el('p', {}, r.body)
   );
-  if (me?.moderator) {
-    const del = el('button', { class: 'link-danger', type: 'button', title: 'Borrar mensaje' }, '✕');
-    del.addEventListener('click', async () => {
-      await post('/api/chat/delete', { id: m.id });
-      line.remove();
-    });
-    line.append(del);
+  // Only http(s) links reach here (the server checks), shown as a link that opens apart.
+  if (r.link) item.append(el('p', {}, el('a', { href: r.link, target: '_blank', rel: 'noopener noreferrer nofollow' }, 'Ver prueba')));
+  if (!staff) {
+    if (r.reply) item.append(el('p', { class: 'ok' }, `Staff: ${r.reply}`));
+    return item;
   }
-  return line;
+  const status = el('select', {}, ...Object.entries(REPORT_STATUS).map(([v, t]) => el('option', { value: v }, t)));
+  status.value = r.status;
+  const reply = el('input', { maxlength: '500', placeholder: 'Respuesta para el jugador (opcional)' });
+  reply.value = r.reply;
+  const save = el('button', { class: 'btn btn-ghost', type: 'button' }, 'Guardar');
+  save.addEventListener('click', async () => {
+    await post('/api/reports/answer', { id: r.id, status: status.value, reply: reply.value });
+    loadAllReports();
+  });
+  item.append(el('div', { class: 'report-answer' }, status, reply, save));
+  return item;
 }
 
-async function pollChat() {
-  const { ok, body } = await api(`/api/chat?after=${lastChatId}`);
-  if (!ok) return;
-  const log = $('#chat-log');
-  const atBottom = log.scrollHeight - log.scrollTop - log.clientHeight < 40;
-  for (const m of body.messages) {
-    if (shown.has(m.id)) continue;
-    const line = chatLine(m);
-    shown.set(m.id, line);
-    log.append(line);
-    lastChatId = Math.max(lastChatId, m.id);
-  }
-  for (const id of body.hidden) {
-    shown.get(id)?.remove();
-    shown.delete(id);
-  }
-  if (!log.children.length) log.replaceChildren(el('p', { class: 'hint empty' }, 'Nadie escribió todavía. ¡Saludá!'));
-  else log.querySelector('.empty')?.remove();
-  if (atBottom) log.scrollTop = log.scrollHeight;
+async function loadMyReports() {
+  const { ok, body } = await api('/api/reports');
+  const list = ok ? body : [];
+  $('#my-reports').replaceChildren(...(list.length ? list.map(r => reportItem(r, false)) : [el('p', { class: 'hint' }, 'Todavía no mandaste reportes.')]));
 }
 
-function stopChat() {
-  clearInterval(chatTimer);
-  chatTimer = 0;
+async function loadAllReports() {
+  const { ok, body } = await api('/api/reports/all');
+  const list = ok ? body : [];
+  $('#all-reports').replaceChildren(...(list.length ? list.map(r => reportItem(r, true)) : [el('p', { class: 'hint' }, 'No hay reportes.')]));
 }
 
 async function showCommunity() {
   await loadMe();
-  $('#news-form').hidden = !me?.moderator;
-  loadNews();
-  const canChat = !!me;
-  $('#chat-login').hidden = canChat;
-  $('#chat').hidden = !canChat;
-  if (!canChat) return stopChat();
-
-  const select = $('#chat-form select');
-  select.replaceChildren(...me.characters.map(c => el('option', { value: c.name }, c.name)));
-  const input = $('#chat-form input');
-  input.disabled = me.chatBanned || !me.characters.length;
-  input.placeholder = me.chatBanned ? 'Tenés el chat bloqueado por un rato.' : me.characters.length ? 'Escribí un mensaje...' : 'Creá un personaje en el juego para chatear.';
-  await pollChat();
-  $('#chat-log').scrollTop = $('#chat-log').scrollHeight;
-  if (!chatTimer) chatTimer = setInterval(pollChat, 4000);
+  $('#report-login').hidden = !!me;
+  $('#report-box').hidden = !me;
+  if (me) loadMyReports();
 }
 
 /* -------------------------------------------------------------- account */
@@ -403,8 +385,8 @@ function showTab() {
   if (table) loadRanking(table);
   if (panel === 'cuenta') showAccount();
   if (panel === 'comunidad') showCommunity();
-  else stopChat();
   if (panel === 'inicio') loadNews();
+  if (panel === 'gm' && me?.moderator) { loadNews(); loadAllReports(); }
   if (panel === 'restablecer') showReset();
   $('#gm-tab').hidden = !me?.moderator;
 }
@@ -432,7 +414,6 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#logout').addEventListener('click', async () => {
     await post('/api/logout', {});
     me = null;
-    stopChat();
     showAccount();
   });
 
@@ -505,19 +486,21 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const b of boxes) b.checked = !all;
   });
 
-  $('#chat-form').addEventListener('submit', async e => {
+  $('#report-kind').addEventListener('change', e => { $('#report-target').hidden = e.target.value !== 'player'; });
+  $('#report-form').addEventListener('submit', async e => {
     e.preventDefault();
     const form = new FormData(e.target);
-    const input = e.target.querySelector('input');
-    $('#chat-error').textContent = '';
-    const { ok, body } = await post('/api/chat', { character: form.get('character'), body: form.get('body') });
+    $('#report-error').textContent = '';
+    $('#report-ok').textContent = '';
+    const { ok, body } = await post('/api/reports', { kind: form.get('kind'), target: form.get('target'), body: form.get('body'), link: form.get('link') });
     if (!ok) {
-      $('#chat-error').textContent = body.error || 'No se pudo enviar.';
+      $('#report-error').textContent = body.error || 'No se pudo enviar.';
       return;
     }
-    input.value = '';
-    await pollChat();
-    $('#chat-log').scrollTop = $('#chat-log').scrollHeight;
+    e.target.reset();
+    $('#report-target').hidden = true;
+    $('#report-ok').textContent = 'Listo: el staff va a revisar tu reporte.';
+    loadMyReports();
   });
 
   $('#news-form').addEventListener('submit', async e => {

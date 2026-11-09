@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { chatBanned, chatMessage, chatTooFast, clean, isBanned, isModerator, newsPost } from './rules';
+import { chatBanned, chatMessage, chatTooFast, clean, isBanned, isModerator, newsPost, reportPost } from './rules';
 
 describe('community rules', () => {
   it('strips control characters and keeps lines only where asked', () => {
@@ -34,5 +34,15 @@ describe('community rules', () => {
     expect(chatBanned(null)).toBe(false);
     expect(chatBanned(new Date(Date.now() + 60_000))).toBe(true);
     expect(chatBanned('2000-01-01T00:00:00Z')).toBe(false);
+  });
+});
+
+describe('reports', () => {
+  it('needs a kind, a body, a name for players, and an http link if any', () => {
+    expect(reportPost('bug', '', 'se cae', '')).toEqual({ kind: 'bug', target: '', body: 'se cae', link: '' });
+    expect(reportPost('player', 'Pepe', 'hack', 'https://imgur.com/x')).toEqual({ kind: 'player', target: 'Pepe', body: 'hack', link: 'https://imgur.com/x' });
+    expect(reportPost('player', '', 'hack', '')).toHaveProperty('error');
+    expect(reportPost('nope', '', 'x', '')).toHaveProperty('error');
+    expect(reportPost('bug', '', 'x', 'javascript:alert(1)')).toHaveProperty('error');
   });
 });

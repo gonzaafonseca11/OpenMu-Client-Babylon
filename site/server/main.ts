@@ -6,7 +6,7 @@ import { BurstLimit, bucketFor, clientIp } from '../../src/core/rateLimit';
 import { accountCharacters, accountEmail, accountHash, characterNames, findAccount, pkRanking, resetRanking, type RankedCharacter } from './queries';
 import { clearedCookie, cookieValue, fingerprint, issue, read, sessionCookie } from './session';
 import { openCommunity } from './community';
-import { chatBanned, chatMessage, chatTooFast, isBanned, isModerator, newsPost } from './rules';
+import { chatBanned, chatMessage, chatTooFast, clean, isBanned, isModerator, newsPost, REPORT_STATUSES, REPORTS_PER_HOUR, reportPost } from './rules';
 import { normalEmail, openMuHash, openRecovery, passwordProblem, recoveryMail, recoveryTargets, sendMail } from './recovery';
 import { isEmail } from '../../src/modules/servers/registerRules';
 import { browseItems, giveItem, giveSet, itemOptions, learnAllSkills, onlinePlayers, parseBrowse, readStats, setExcellents, writeStats } from './gm';
@@ -113,11 +113,19 @@ const notAllowed = () => json({ error: 'Solo el staff puede hacer esto.' }, 403)
 
 /** The community's POSTs: chat lines, and for moderators news and hiding either. */
 async function communityPost(path: string, req: Request): Promise<Response | null> {
-  if (!['/api/chat', '/api/chat/delete', '/api/news', '/api/news/delete'].includes(path)) return null;
+  if (!['/api/chat', '/api/chat/delete', '/api/news', '/api/news/delete', '/api/reports', '/api/reports/answer'].includes(path)) return null;
   const account = await sessionAccount(req);
   if (!account) return notLoggedIn();
   const body = await readJson(req);
   if (!body) return json({ error: 'Pedido inválido.' }, 400);
+
+  if (path === '/api/reports') {
+    if (account.chatBanned) return json({ error: 'Tenés los reportes bloqueados por un rato.' }, 403);
+    const report = reportPost(body.kind, body.target, body.body, body.link);
+    if ('error' in report) return json(report, 400);
+    if (community.reportsLastHour(account.id) >= REPORTS_PER_HOUR) return json({ error: 'Llegaste al máximo de reportes por hora. Probá más tarde.' }, 429);
+    return json({ id: community.postReport(account.id, account.login, report) });
+  }
 
   if (path === '/api/chat') {
     if (account.chatBanned) return json({ error: 'Tenés el chat bloqueado por un rato.' }, 403);
@@ -138,6 +146,11 @@ async function communityPost(path: string, req: Request): Promise<Response | nul
   }
   if (path === '/api/news/delete' && Number.isInteger(id)) {
     community.hideNews(id);
+    return json({ ok: true });
+  }
+  if (path === '/api/reports/answer' && Number.isInteger(id)) {
+    if (!REPORT_STATUSES.includes(body.status as never)) return json({ error: 'Estado inválido.' }, 400);
+    community.answerReport(id, String(body.status), clean(body.reply, true).slice(0, 500));
     return json({ ok: true });
   }
   if (path === '/api/news') {
@@ -321,6 +334,12 @@ Bun.serve({
       if (req.method === 'GET' || req.headers.get('content-type')?.startsWith('application/json')) {
         const gm = await gmRequest(path, req, url);
         if (gm) return gm;
+      }
+      if (req.method === 'GET' && (path === '/api/reports' || path === '/api/reports/all')) {
+        const account = await sessionAccount(req);
+        if (!account) return notLoggedIn();
+        if (path === '/api/reports') return json(community.myReports(account.id));
+        return account.moderator ? json(community.allReports()) : notAllowed();
       }
       if (req.method === 'GET' && path === '/api/chat') {
         if (!(await sessionAccount(req))) return notLoggedIn();
