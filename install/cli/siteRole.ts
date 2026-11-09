@@ -28,7 +28,7 @@ export function siteRoleSql(c: Config): string {
     `GRANT SELECT ON ${TABLES.join(', ')} TO ${role};`,
     `GRANT INSERT ON ${INSERT_TABLES.join(', ')} TO ${role};`,
     // The GM stat editor (site/server/gm.ts); InventoryId only for FOR UPDATE while a bag is filled.
-    `GRANT UPDATE ("InventoryId", "LevelUpPoints", "Experience", "CharacterClassId") ON data."Character" TO ${role};`,
+    `GRANT UPDATE ("InventoryId", "LevelUpPoints", "MasterLevelUpPoints", "Experience", "CharacterClassId") ON data."Character" TO ${role};`,
     `GRANT UPDATE ("Value") ON data."StatAttribute" TO ${role};`,
     // Account recovery (site/server/recovery.ts): a new password behind a mailed link, and the player's own e-mail.
     `GRANT UPDATE ("PasswordHash", "EMail") ON data."Account" TO ${role};`,
