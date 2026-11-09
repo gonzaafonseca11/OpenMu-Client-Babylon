@@ -1,4 +1,4 @@
-import type { Database } from 'bun:sqlite';
+﻿import type { Database } from 'bun:sqlite';
 import type { RankedCharacter, ResetsNow } from './queries';
 import { RANKING_SIZE } from './queries';
 
@@ -68,7 +68,7 @@ export function openMonthly(db: Database, source: Source) {
     async resets(now = Date.now()): Promise<RankedCharacter[]> {
       return monthlyResets(await source.resetsNow(), snapshot(monthKey(now)));
     },
-    pk: (now = Date.now()) => source.pk(monthStart(monthKey(now)), new Date(8.64e15)),
+    pk: (now = Date.now()) => source.pk(monthStart(monthKey(now)), new Date('9999-01-01')),
     winners: (): Winner[] => winners.all().map(w => ({ ...w, delivered: w.delivered === 1 })),
     deliver: (month: string, kind: string, place: number, done: boolean) => deliver.run(done ? 1 : 0, month, kind, place),
   };

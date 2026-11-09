@@ -1,4 +1,4 @@
-import type { Sql } from 'postgres';
+﻿import type { Sql } from 'postgres';
 
 /**
  * The site's reads from OpenMU's database. Read only: the site connects as a role that may only
@@ -47,7 +47,7 @@ export const PK_MIN_RESETS = 50;
  * Players only: no Game Masters, spectators, banned accounts or characters, bots or templates.
  * Kills are the logged ones (mu_plugins.pvp_kill) since `since`, so a PK ranking lists 50+ resets only.
  */
-async function ranking(sql: Sql, by: 'kills' | 'resets', since = new Date(0), until = new Date(8.64e15)): Promise<RankedCharacter[]> {
+async function ranking(sql: Sql, by: 'kills' | 'resets', since = new Date(0), until = new Date('9999-01-01')): Promise<RankedCharacter[]> {
   const rows = await sql`
     SELECT * FROM (
       SELECT c."Id" AS id, c."Name" AS name, cc."Name" AS class,
