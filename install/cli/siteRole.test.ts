@@ -15,7 +15,7 @@ describe('website', () => {
     expect(sqlText).toContain('GRANT UPDATE ("PasswordHash", "EMail") ON data."Account" TO mu_site;');
     expect(sqlText).not.toMatch(/"(VaultPassword|SecurityCode)"/);
     expect(sqlText).not.toMatch(/GRANT (DELETE|ALL)/);
-    expect(sqlText).toContain('GRANT INSERT ON data."Item", data."ItemOptionLink", data."SkillEntry" TO mu_site;');
+    expect(sqlText).toContain('GRANT INSERT ON data."Item", data."ItemOptionLink", data."SkillEntry", data."ItemItemOfItemSet" TO mu_site;');
     expect(sqlText).toContain('GRANT UPDATE ("Value") ON data."StatAttribute" TO mu_site;');
     expect(sqlText.match(/GRANT (INSERT|UPDATE)[^;]*;/g)).toHaveLength(4);
   });

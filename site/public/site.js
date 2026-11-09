@@ -264,6 +264,22 @@ async function gmPick() {
   extra.replaceChildren(extra.querySelector('legend'), pick, lvl);
   extra.hidden = !lines.length;
 
+  // Ancient: the set (or none), then its stat bonus +5 / +10 when the set has one.
+  const anc = $('#gm-ancient');
+  const sets = of('ancient');
+  const setPick = el('select', { name: 'ancientId' }, el('option', { value: '' }, 'No ancient'), ...sets.map(o => el('option', { value: o.id }, o.label)));
+  const bonus = el('select', { name: 'ancientLevel' });
+  const fillBonus = () => {
+    const set = sets.find(o => o.id === setPick.value);
+    bonus.hidden = !set?.bonus;
+    const stat = set?.bonusLabel ?? 'stat';
+    bonus.replaceChildren(...[2, 1].map(l => el('option', { value: String(l) }, `${stat} +${l * 5}`)));
+  };
+  setPick.addEventListener('change', fillBonus);
+  fillBonus();
+  anc.replaceChildren(anc.querySelector('legend'), setPick, bonus);
+  anc.hidden = !sets.length;
+
   // Sockets: how many slots, then per slot a seed sphere (or empty) and its level 1-5.
   const box = $('#gm-sockets');
   const spheres = of('socket');
@@ -296,7 +312,7 @@ async function gmGive(e) {
   button.disabled = true;
   const isSet = $('#gm-group').value === 'sets';
   const sockets = Array.from({ length: Number(form.get('socketCount') ?? 0) }, (_, i) => ({ id: form.get(`socket${i}`) || '', level: Number(form.get(`socketLevel${i}`)) }));
-  const { ok, body } = await post(isSet ? '/api/gm/give-set' : '/api/gm/give', { character: form.get('character'), definitionId: gmItem.id, level: Number(form.get('level')), skill: form.get('skill') === 'on', options, sockets });
+  const { ok, body } = await post(isSet ? '/api/gm/give-set' : '/api/gm/give', { character: form.get('character'), definitionId: gmItem.id, level: Number(form.get('level')), skill: form.get('skill') === 'on', options, sockets, ancient: form.get('ancientId') ? { id: form.get('ancientId'), level: Number(form.get('ancientLevel') ?? 0) } : null });
   button.disabled = false;
   if (!ok) $('#gm-error').textContent = body.error || 'No se pudo crear.';
   else if (isSet) $('#gm-ok').textContent = `Listo: ${body.given.join(', ')} +${form.get('level')} quedaron en el inventario de ${form.get('character')}.`;

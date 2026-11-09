@@ -34,9 +34,23 @@ const MAX_SOCKETS = 5;
 
 /** The Horn of Fenrir's kinds, by option number: one kind per horn, Gold being several lines. */
 export const FENRIR = { 1: 'Negro (Destroy): +daño', 2: 'Azul (Protect): -daño recibido', 4: 'Dorado (Illusion): +daño, +vida, +maná' } as const;
-export type OptionKind = (typeof OPTION_KINDS)[keyof typeof OPTION_KINDS];
+export type OptionKind = (typeof OPTION_KINDS)[keyof typeof OPTION_KINDS] | 'ancient';
 
-export type ItemOption = { id: string; kind: OptionKind; number: number; element?: number; label: string; maxLevel: number };
+/**
+ * An item option the panel offers. An 'ancient' one is an ancient set the item belongs to: its id is the
+ * config."ItemOfItemSet" row, `bonus` its stat bonus option (level 1 = +5, 2 = +10).
+ */
+export type ItemOption = { id: string; kind: OptionKind; number: number; element?: number; label: string; maxLevel: number; bonus?: string | null; bonusLabel?: string };
+
+/** The ancient set to store, or why not: one of the item's own, bonus level 0-2 (0 when the set has no bonus). */
+export function checkAncient(available: readonly ItemOption[], picked: Picked | null | undefined): { ancient: ItemOption | null; level: number } | { error: string } {
+  if (!picked?.id) return { ancient: null, level: 0 };
+  const ancient = available.find(o => o.id === picked.id && o.kind === 'ancient');
+  if (!ancient) return { error: 'Ese set ancient no es de este ítem.' };
+  const level = ancient.bonus ? Math.trunc(Number(picked.level)) : 0;
+  if (!(level >= 0 && level <= 2)) return { error: 'El bonus ancient es +5 o +10.' };
+  return { ancient, level };
+}
 export type ItemChoice = { id: string; name: string; group: number; number: number; maxLevel: number; width: number; height: number; hasSkill: boolean; durability: number; sockets: number };
 export type Picked = { id: string; level: number };
 
@@ -70,7 +84,7 @@ export function checkOptions(available: readonly ItemOption[], picked: readonly 
   const links: { option: ItemOption; level: number }[] = [];
   for (const p of picked) {
     const option = byId.get(p.id);
-    if (!option || option.kind === 'socket') return { error: 'Esa opción no es de este ítem.' };
+    if (!option || option.kind === 'socket' || option.kind === 'ancient') return { error: 'Esa opción no es de este ítem.' };
     if (links.some(l => l.option.id === option.id)) continue;
     const level = option.kind === 'option' ? Math.trunc(Number(p.level)) : 0;
     if (option.kind === 'option' && !(level >= 1 && level <= option.maxLevel)) return { error: `La opción va de 1 a ${option.maxLevel}.` };
@@ -176,7 +190,11 @@ export async function giveSet(sql: Sql, req: GiveRequest): Promise<{ given: stri
     const own = id === req.definitionId ? null : await itemOptions(sql, id);
     const options = own ? matchOptions(armorOptions, req.options, own) : req.options;
     const sockets = own ? matchSockets(armorOptions, req.sockets ?? [], own) : req.sockets;
-    const result = await giveItem(sql, { ...req, definitionId: id, options, sockets });
+    // The same ancient set on each piece, matched by the set's name.
+    const setOf = req.ancient?.id ? armorOptions.find(o => o.id === req.ancient?.id) : undefined;
+    const twin = own && setOf ? own.find(o => o.kind === 'ancient' && o.label === setOf.label) : undefined;
+    const ancient = !own ? req.ancient : twin ? { id: twin.id, level: twin.bonus ? req.ancient?.level ?? 0 : 0 } : null;
+    const result = await giveItem(sql, { ...req, definitionId: id, options, sockets, ancient });
     if ('error' in result) return { error: given.length ? `${result.error} Ya entregué: ${given.join(', ')}.` : result.error };
     given.push(result.name);
   }
@@ -195,7 +213,7 @@ export async function itemOptions(sql: Sql, definitionId: string): Promise<ItemO
     WHERE l."ItemDefinitionId" = ${definitionId}
     ORDER BY t."Name", o."Number"
   `;
-  return rows.flatMap(r => {
+  const options: ItemOption[] = rows.flatMap(r => {
     const kind = OPTION_KINDS[String(r.type) as keyof typeof OPTION_KINDS];
     if (!kind) return [];
     const attr = r.attr == null ? null : String(r.attr);
@@ -203,10 +221,27 @@ export async function itemOptions(sql: Sql, definitionId: string): Promise<ItemO
     const maxLevel = kind === 'socket' ? SPHERE_LEVELS : Math.min(Number(r.max) || 1, 4);
     return [{ id: String(r.id), kind, number: Number(r.number), element, label: optionLabel(kind, attr, Number(r.number), element), maxLevel }];
   });
+  // Ancient sets: discriminator 0 rows are the plain set bonuses (Dragon defense...), not ancient.
+  const sets = await sql`
+    SELECT s."Id" AS id, g."Name" AS name, s."AncientSetDiscriminator" AS disc, s."BonusOptionId" AS bonus, ad."Designation" AS attr
+    FROM config."ItemOfItemSet" s
+    JOIN config."ItemSetGroup" g ON g."Id" = s."ItemSetGroupId"
+    LEFT JOIN config."IncreasableItemOption" o ON o."Id" = s."BonusOptionId"
+    LEFT JOIN config."PowerUpDefinition" p ON p."Id" = o."PowerUpDefinitionId"
+    LEFT JOIN config."AttributeDefinition" ad ON ad."Id" = p."TargetAttributeId"
+    WHERE s."ItemDefinitionId" = ${definitionId} AND s."AncientSetDiscriminator" <> 0
+    ORDER BY s."AncientSetDiscriminator"
+  `;
+  return [...options, ...sets.map(r => ({
+    id: String(r.id), kind: 'ancient' as const, number: Number(r.disc), label: String(r.name), maxLevel: r.bonus ? 2 : 0,
+    bonus: r.bonus == null ? null : String(r.bonus), bonusLabel: ANCIENT_BONUS[String(r.attr)] ?? (r.attr == null ? undefined : String(r.attr)),
+  }))];
 }
 
+const ANCIENT_BONUS: Record<string, string> = { 'Total Strength': 'Fuerza', 'Total Agility': 'Agilidad', 'Total Vitality': 'Vitalidad', 'Total Energy': 'Energía', 'Total Leadership': 'Comando' };
+
 /** `sockets`: one entry per socket slot, an empty id for an empty slot. */
-export type GiveRequest = { character: string; definitionId: string; level: number; skill: boolean; options: Picked[]; sockets?: Picked[] };
+export type GiveRequest = { character: string; definitionId: string; level: number; skill: boolean; options: Picked[]; sockets?: Picked[]; ancient?: Picked | null };
 
 /** Puts the item in the character's bag; the caller has checked the character is offline. */
 export async function giveItem(sql: Sql, req: GiveRequest): Promise<{ slot: number; name: string } | { error: string }> {
@@ -222,6 +257,8 @@ export async function giveItem(sql: Sql, req: GiveRequest): Promise<{ slot: numb
   if ('error' in checked) return checked;
   const sockets = checkSockets(available, Array.isArray(req.sockets) ? req.sockets : [], Number(def.sockets) > 0 ? MAX_SOCKETS : 0);
   if ('error' in sockets) return sockets;
+  const ancient = checkAncient(available, req.ancient);
+  if ('error' in ancient) return ancient;
 
   return sql.begin('read write', async tx => {
     const [ch] = await tx`SELECT "InventoryId" AS inv FROM data."Character" WHERE lower("Name") = lower(${req.character}) FOR UPDATE`;
@@ -242,6 +279,11 @@ export async function giveItem(sql: Sql, req: GiveRequest): Promise<{ slot: numb
       INSERT INTO data."Item" ("Id", "ItemStorageId", "DefinitionId", "ItemSlot", "Durability", "Level", "HasSkill", "SocketCount", "StorePrice", "PetExperience")
       VALUES (${itemId}, ${ch.inv}, ${def.id}, ${slot}, ${durabilityFor(Number(def.dur), level, excellent)}, ${level}, ${Boolean(req.skill) && Boolean(def.skill)}, ${sockets.slots.length}, NULL, 0)
     `;
+    // Ancient: the item joins the set (the client reads its discriminator), the bonus is +5 / +10 (Level 1 / 2).
+    if (ancient.ancient) {
+      await tx`INSERT INTO data."ItemItemOfItemSet" ("ItemId", "ItemOfItemSetId") VALUES (${itemId}, ${ancient.ancient.id})`;
+      if (ancient.ancient.bonus && ancient.level > 0) await tx`INSERT INTO data."ItemOptionLink" ("Id", "ItemOptionId", "ItemId", "Level", "Index") VALUES (${crypto.randomUUID()}, ${ancient.ancient.bonus}, ${itemId}, ${ancient.level}, 0)`;
+    }
     // A filled socket is its option with the slot as Index. The deployed OpenMU sends Level * 50 + option,
     // so Level is the sphere level from 0 (level 5 stored as 5 wraps the byte into another option).
     for (const [i, s] of sockets.slots.entries()) {

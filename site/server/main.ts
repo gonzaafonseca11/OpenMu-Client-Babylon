@@ -202,6 +202,7 @@ async function gmRequest(path: string, req: Request, url: URL): Promise<Response
       level: Number(body.level),
       skill: body.skill === true,
       options: body.options.map(o => ({ id: String((o as Record<string, unknown>)?.id ?? ''), level: Number((o as Record<string, unknown>)?.level ?? 0) })),
+      ancient: body.ancient && typeof body.ancient === 'object' ? { id: String((body.ancient as Record<string, unknown>).id ?? ''), level: Number((body.ancient as Record<string, unknown>).level ?? 0) } : null,
       sockets: (Array.isArray(body.sockets) ? body.sockets : []).map(o => ({ id: String((o as Record<string, unknown>)?.id ?? ''), level: Number((o as Record<string, unknown>)?.level ?? 0) })),
     };
     if (path === '/api/gm/give-set') {

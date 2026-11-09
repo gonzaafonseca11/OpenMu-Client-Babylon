@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { checkOptions, checkSockets, checkStats, durabilityFor, experienceForLevel, matchOptions, optionLabel, parseBrowse, setName, type ItemOption } from './gm';
+import { checkAncient, checkOptions, checkSockets, checkStats, durabilityFor, experienceForLevel, matchOptions, optionLabel, parseBrowse, setName, type ItemOption } from './gm';
 
 const opts: ItemOption[] = [
   { id: 'e1', kind: 'excellent', number: 1, label: 'Zen', maxLevel: 4 },
@@ -18,6 +18,17 @@ describe('GM sockets', () => {
     expect(checkSockets(all, [{ id: 'e1', level: 1 }], 3)).toHaveProperty('error');
     expect(checkSockets(all, [{ id: '', level: 0 }], 0)).toHaveProperty('error');
     expect(checkOptions(all, [{ id: 's1', level: 0 }])).toHaveProperty('error');
+  });
+
+  it('takes an ancient set of the item, bonus 0-2 only when the set has one', () => {
+    const hyon: ItemOption = { id: 'a1', kind: 'ancient', number: 1, label: 'Hyon', maxLevel: 2, bonus: 'b1' };
+    const gywen: ItemOption = { id: 'a2', kind: 'ancient', number: 1, label: 'Gywen', maxLevel: 0, bonus: null };
+    expect(checkAncient([hyon, gywen], { id: 'a1', level: 2 })).toEqual({ ancient: hyon, level: 2 });
+    expect(checkAncient([hyon, gywen], { id: 'a2', level: 2 })).toEqual({ ancient: gywen, level: 0 });
+    expect(checkAncient([hyon], { id: 'a1', level: 3 })).toHaveProperty('error');
+    expect(checkAncient([hyon, fire], { id: 's1', level: 1 })).toHaveProperty('error');
+    expect(checkAncient([hyon], null)).toEqual({ ancient: null, level: 0 });
+    expect(checkOptions([hyon], [{ id: 'a1', level: 0 }])).toHaveProperty('error');
   });
 
   it('names a sphere by its element', () => {
