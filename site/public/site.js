@@ -44,14 +44,14 @@ async function loadRanking(table) {
     return;
   }
   loaded.add(key);
-  const head = el('tr', {}, el('th', {}, '#'), el('th', {}, 'Personaje'), el('th', {}, 'Clase'), el('th', { class: 'num' }, table.dataset.scoreLabel), el('th', { class: 'num' }, key === 'pk' ? 'Resets' : 'Nivel'));
+  const head = el('tr', {}, el('th', {}, '#'), el('th', {}, 'Personaje'), el('th', {}, 'Clase'), el('th', { class: 'num' }, table.dataset.scoreLabel), el('th', { class: 'num' }, key.startsWith('pk') ? 'Resets' : 'Nivel'));
   const rows = body.map((c, i) =>
     el('tr', { class: i < 3 ? `top${i + 1}` : '' },
       el('td', {}, String(i + 1)),
       el('td', { class: 'name' }, c.name),
       el('td', {}, c.class),
       el('td', { class: 'num' }, fmt(c[table.dataset.score])),
-      el('td', { class: 'num' }, fmt(key === 'pk' ? c.resets : c.level))
+      el('td', { class: 'num' }, fmt(key.startsWith('pk') ? c.resets : c.level))
     )
   );
   table.replaceChildren(el('thead', {}, head), el('tbody', {}, ...rows));
@@ -135,6 +135,25 @@ async function loadMyReports() {
   const { ok, body } = await api('/api/reports');
   const list = ok ? body : [];
   $('#my-reports').replaceChildren(...(list.length ? list.map(r => reportItem(r, false)) : [el('p', { class: 'hint' }, 'Todavía no mandaste reportes.')]));
+}
+
+const MONTHS = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const monthName = key => `${MONTHS[Number(key.slice(5, 7)) - 1]} ${key.slice(0, 4)}`;
+
+async function loadWinners() {
+  const { ok, body } = await api('/api/gm/winners');
+  const list = ok ? body : [];
+  const rows = list.map(w => {
+    const box = el('input', { type: 'checkbox' });
+    box.checked = w.delivered;
+    box.addEventListener('change', () => post('/api/gm/winners/deliver', { month: w.month, kind: w.kind, place: w.place, delivered: box.checked }));
+    const what = w.kind === 'pk' ? `${fmt(w.score)} kills` : `${fmt(w.score)} resets`;
+    return el('article', { class: `news ${w.delivered ? 'report-done' : 'report-open'}` },
+      el('h3', {}, `${w.place}° ${w.kind === 'pk' ? 'PK' : 'Resets'}: ${w.name}`),
+      el('time', {}, `${monthName(w.month)} · ${w.class} · ${what}`),
+      el('label', { class: 'check' }, box, ' Premio entregado'));
+  });
+  $('#gm-winners').replaceChildren(...(rows.length ? rows : [el('p', { class: 'hint' }, 'Todavía no terminó ningún mes.')]));
 }
 
 async function loadAllReports() {
@@ -398,7 +417,7 @@ function showTab() {
   if (panel === 'cuenta') showAccount();
   if (panel === 'comunidad') showCommunity();
   if (panel === 'inicio') { loadNews(); loadOnline(); }
-  if (panel === 'gm' && me?.moderator) { loadNews(); loadAllReports(); }
+  if (panel === 'gm' && me?.moderator) { loadNews(); loadAllReports(); loadWinners(); }
   if (panel === 'restablecer') showReset();
   $('#gm-tab').hidden = !me?.moderator;
 }

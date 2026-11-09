@@ -33,6 +33,12 @@ export function siteRoleSql(c: Config): string {
     // Account recovery (site/server/recovery.ts): a new password behind a mailed link, and the player's own e-mail.
     `GRANT UPDATE ("PasswordHash", "EMail") ON data."Account" TO ${role};`,
     `GRANT SELECT ("Id", "Money"), UPDATE ("Money") ON data."ItemStorage" TO ${role};`,
+    // PK rankings: the kills OpenMU's PvpKillLogPlugIn logs (openmu/plugins/GameLogic/PvpRanking); made here too so the grant holds.
+    'CREATE SCHEMA IF NOT EXISTS mu_plugins;',
+    'CREATE TABLE IF NOT EXISTS mu_plugins.pvp_kill (id bigserial PRIMARY KEY, killer_id uuid NOT NULL, victim_id uuid NOT NULL, at timestamptz NOT NULL DEFAULT now());',
+    'CREATE INDEX IF NOT EXISTS pvp_kill_at ON mu_plugins.pvp_kill (at);',
+    `GRANT USAGE ON SCHEMA mu_plugins TO ${role};`,
+    `GRANT SELECT ON mu_plugins.pvp_kill TO ${role};`,
     '',
   ].join('\n');
 }

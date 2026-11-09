@@ -3,7 +3,8 @@ import bcrypt from 'bcryptjs';
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
 import { BurstLimit, bucketFor, clientIp } from '../../src/core/rateLimit';
-import { accountCharacters, accountEmail, accountHash, characterNames, findAccount, pkRanking, resetRanking, type RankedCharacter } from './queries';
+import { accountCharacters, accountEmail, accountHash, characterNames, findAccount, pkRanking, resetRanking, resetsNow, type RankedCharacter } from './queries';
+import { openMonthly } from './monthly';
 import { clearedCookie, cookieValue, fingerprint, issue, read, sessionCookie } from './session';
 import { openCommunity } from './community';
 import { chatBanned, chatMessage, chatTooFast, clean, isBanned, isModerator, newsPost, REPORT_STATUSES, REPORTS_PER_HOUR, reportPost } from './rules';
@@ -43,6 +44,10 @@ const RANKING_TTL_MS = 60 * 1000;
 
 const sql = postgres(DATABASE_URL, { max: 4, idle_timeout: 60 });
 const community = openCommunity(SITE_DB_PATH);
+const monthly = openMonthly(community.database, { resetsNow: () => resetsNow(sql), pk: (since, until) => pkRanking(sql, since, until) });
+const monthTick = () => monthly.tick().catch(err => console.error('site monthly rankings failed:', err));
+void monthTick();
+setInterval(monthTick, 60_000).unref();
 const logins = new BurstLimit(LOGIN_LIMIT, LOGIN_WINDOW_MS);
 const recovery = openRecovery(community.database);
 /** Recovery requests per network: a few for typos, too few to flood someone's inbox. */
@@ -176,6 +181,14 @@ async function gmRequest(path: string, req: Request, url: URL): Promise<Response
   const account = await sessionAccount(req);
   if (!account) return notLoggedIn();
   if (!account.moderator) return notAllowed();
+  if (req.method === 'GET' && path === '/api/gm/winners') return json(monthly.winners());
+  if (req.method === 'POST' && path === '/api/gm/winners/deliver') {
+    const body = await readJson(req);
+    const place = Number(body?.place);
+    if (!body || !/^\d{4}-\d{2}$/.test(String(body.month)) || !['pk', 'resets'].includes(String(body.kind)) || !Number.isInteger(place)) return json({ error: 'Pedido inválido.' }, 400);
+    monthly.deliver(String(body.month), String(body.kind), place, body.delivered === true);
+    return json({ ok: true });
+  }
   if (req.method === 'GET' && path === '/api/gm/items') {
     const browse = parseBrowse(url.searchParams.get('group'));
     const family = Number(url.searchParams.get('family') ?? -1);
@@ -329,6 +342,8 @@ Bun.serve({
       }
       if (req.method === 'GET' && path === '/api/ranking/pk') return json(await cached('pk', () => pkRanking(sql)));
       if (req.method === 'GET' && path === '/api/ranking/resets') return json(await cached('resets', () => resetRanking(sql)));
+      if (req.method === 'GET' && path === '/api/ranking/pk-month') return json(await cached('pk-month', () => monthly.pk()));
+      if (req.method === 'GET' && path === '/api/ranking/resets-month') return json(await cached('resets-month', () => monthly.resets()));
       if (req.method === 'GET' && path === '/api/me') {
         const account = await sessionAccount(req);
         if (!account) return json({ error: 'No iniciaste sesión.' }, 401);

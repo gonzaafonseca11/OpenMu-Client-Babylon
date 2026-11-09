@@ -40,26 +40,47 @@ const toRanked = (r: Record<string, unknown>): RankedCharacter => ({
   kills: Number(r.kills),
 });
 
-/** Players only: no Game Masters, spectators, banned accounts or characters, bots or templates. */
-async function ranking(sql: Sql, by: 'kills' | 'resets'): Promise<RankedCharacter[]> {
+/** Kills and resets at the PK rankings' floor: OpenMU's PvpKillLogPlugIn logs only kills between characters this strong. */
+export const PK_MIN_RESETS = 50;
+
+/**
+ * Players only: no Game Masters, spectators, banned accounts or characters, bots or templates.
+ * Kills are the logged ones (mu_plugins.pvp_kill) since `since`, so a PK ranking lists 50+ resets only.
+ */
+async function ranking(sql: Sql, by: 'kills' | 'resets', since = new Date(0), until = new Date(8.64e15)): Promise<RankedCharacter[]> {
   const rows = await sql`
     SELECT * FROM (
-      SELECT c."Name" AS name, cc."Name" AS class, c."PlayerKillCount" AS kills,
+      SELECT c."Id" AS id, c."Name" AS name, cc."Name" AS class,
+             (SELECT COUNT(*) FROM mu_plugins.pvp_kill k WHERE k.killer_id = c."Id" AND k.at >= ${since} AND k.at < ${until}) AS kills,
              ${stat(sql, 'Level')} AS level, ${stat(sql, 'Resets')} AS resets
       FROM data."Character" c
       JOIN data."Account" a ON a."Id" = c."AccountId"
       JOIN config."CharacterClass" cc ON cc."Id" = c."CharacterClassId"
       WHERE a."State" = 0 AND c."CharacterStatus" = 0 AND NOT a."IsBot" AND NOT a."IsTemplate"
     ) ranked
-    WHERE ${by === 'kills' ? sql`kills > 0` : sql`true`}
+    WHERE ${by === 'kills' ? sql`kills > 0 AND resets >= ${PK_MIN_RESETS}` : sql`true`}
     ORDER BY ${by === 'kills' ? sql`kills DESC, resets DESC` : sql`resets DESC, level DESC`}, name
     LIMIT ${RANKING_SIZE}
   `;
   return rows.map(toRanked);
 }
 
-export const pkRanking = (sql: Sql) => ranking(sql, 'kills');
+export const pkRanking = (sql: Sql, since?: Date, until?: Date) => ranking(sql, 'kills', since, until);
 export const resetRanking = (sql: Sql) => ranking(sql, 'resets');
+
+export type ResetsNow = { id: string; name: string; class: string; level: number; resets: number };
+
+/** Every ranked player's resets now: the month's resets ranking subtracts the month-start snapshot. */
+export async function resetsNow(sql: Sql): Promise<ResetsNow[]> {
+  const rows = await sql`
+    SELECT c."Id" AS id, c."Name" AS name, cc."Name" AS class, ${stat(sql, 'Level')} AS level, ${stat(sql, 'Resets')} AS resets
+    FROM data."Character" c
+    JOIN data."Account" a ON a."Id" = c."AccountId"
+    JOIN config."CharacterClass" cc ON cc."Id" = c."CharacterClassId"
+    WHERE a."State" = 0 AND c."CharacterStatus" = 0 AND NOT a."IsBot" AND NOT a."IsTemplate"
+  `;
+  return rows.map(r => ({ id: String(r.id), name: String(r.name), class: String(r.class), level: Math.round(Number(r.level)), resets: Math.round(Number(r.resets)) }));
+}
 
 /** The account a login names, case-insensitive like OpenMU's own lookup, or null. */
 export async function findAccount(sql: Sql, login: string): Promise<LoginRow | null> {

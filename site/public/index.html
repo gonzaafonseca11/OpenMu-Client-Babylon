@@ -71,7 +71,9 @@
 
     <section id="rankings" class="panel" hidden>
       <h1>Rankings</h1>
-      <p class="hint">Los 50 mejores de cada uno. Se actualizan cada minuto.</p>
+      <p class="hint">Los 50 mejores de cada uno. Se actualizan cada minuto. En PK solo cuentan las kills entre personajes de 50 resets o más.</p>
+
+      <h2 class="rank-title">De siempre</h2>
       <div class="rankings">
         <div>
           <h2>Resets</h2>
@@ -80,6 +82,19 @@
         <div>
           <h2>PK</h2>
           <div class="table-wrap"><table class="ranking" data-ranking="pk" data-score="kills" data-score-label="Kills"></table></div>
+        </div>
+      </div>
+
+      <h2 class="rank-title">Del mes, con premios</h2>
+      <p class="hint">Se reinician el día 1 de cada mes. Los 3 primeros de cada uno ganan premio.</p>
+      <div class="rankings">
+        <div>
+          <h2>Resets del mes</h2>
+          <div class="table-wrap"><table class="ranking" data-ranking="resets-month" data-score="resets" data-score-label="Resets"></table></div>
+        </div>
+        <div>
+          <h2>PK del mes</h2>
+          <div class="table-wrap"><table class="ranking" data-ranking="pk-month" data-score="kills" data-score-label="Kills"></table></div>
         </div>
       </div>
     </section>
@@ -247,6 +262,9 @@
           <div class="news-list" data-news-list="all"></div>
         </div>
         <div class="gm-col">
+          <h2>Ganadores del mes</h2>
+          <p class="hint small">El día 1 se guardan los 3 primeros de cada ranking del mes. Dales el premio con "Crear ítem" o "Modificar stats" y marcalo como entregado.</p>
+          <div class="news-list" id="gm-winners"></div>
           <h2>Reportes de los jugadores</h2>
           <div class="news-list" id="all-reports"></div>
         </div>
