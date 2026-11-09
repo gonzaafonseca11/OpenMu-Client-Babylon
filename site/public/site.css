@@ -237,6 +237,8 @@ input:disabled { opacity: 0.6; }
 
 /* GM panel */
 .gm-form { display: grid; gap: 14px; max-width: 560px; }
+.gm-col, .gm-form, .gm-form > * { min-width: 0; }
+.gm-form select { max-width: 100%; }
 .gm-form select, .gm-form fieldset { background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 8px; font: inherit; }
 .gm-form fieldset { display: grid; gap: 6px; }
 .gm-form legend { color: var(--muted); font-weight: 600; padding: 0 6px; }
