@@ -128,10 +128,10 @@ export function optionLabel(kind: OptionKind, attribute: string | null, number: 
  * An item with no class listed (rings, jewels) fits every class.
  */
 /** What the panel's "type" list asks for: an item group, wings or orbs (both group 12), or full armor sets. */
-export type Browse = number | 'wings' | 'orbs' | 'sets' | 'jewelry' | 'pets';
+export type Browse = number | 'wings' | 'orbs' | 'sets' | 'jewelry' | 'pets' | 'ancients';
 
 export function parseBrowse(value: string | null): Browse | null {
-  if (value === 'wings' || value === 'orbs' || value === 'sets' || value === 'jewelry' || value === 'pets') return value;
+  if (value === 'wings' || value === 'orbs' || value === 'sets' || value === 'jewelry' || value === 'pets' || value === 'ancients') return value;
   const n = Number(value);
   return value !== null && value !== '' && Number.isInteger(n) && n >= 0 && n <= 15 ? n : null;
 }
@@ -140,6 +140,7 @@ export function parseBrowse(value: string | null): Browse | null {
 export const setName = (armor: string) => armor.replace(/\s+(Armor|Robe|Suit)$/i, '');
 
 export async function browseItems(sql: Sql, browse: Browse, family: number): Promise<ItemChoice[]> {
+  if (browse === 'ancients') return ancientSets(sql, family);
   const group = browse === 'sets' ? 8 : typeof browse === 'number' ? browse : browse === 'jewelry' || browse === 'pets' ? 13 : 12;
   // Wings are the group 12 items worn in a slot; orbs, jewels and the rest have none.
   // Group 13 splits by name: rings and pendants, then pets and the rest.
@@ -181,7 +182,7 @@ const matchSockets = (from: readonly ItemOption[], slots: readonly Picked[], to:
  */
 export async function giveSet(sql: Sql, req: GiveRequest): Promise<{ given: string[] } | { error: string }> {
   const [armor] = await sql`SELECT "Number" AS n, "GameConfigurationId" AS cfg FROM config."ItemDefinition" WHERE "Id" = ${req.definitionId} AND "Group" = 8`;
-  if (!armor) return { error: 'Ese set no existe.' };
+  if (!armor) return giveAncientSet(sql, req);
   const pieces = await sql`SELECT "Id" AS id FROM config."ItemDefinition" WHERE "Number" = ${armor.n} AND "GameConfigurationId" = ${armor.cfg} AND "Group" BETWEEN 7 AND 11 ORDER BY "Group"`;
   const armorOptions = await itemOptions(sql, req.definitionId);
   const given: string[] = [];
@@ -199,6 +200,44 @@ export async function giveSet(sql: Sql, req: GiveRequest): Promise<{ given: stri
     given.push(result.name);
   }
   return { given };
+}
+
+/**
+ * A whole ancient set (Hyon, Vicious...): every item of the set group, weapons and jewelry included,
+ * each as that set's ancient with the bonus level asked. `definitionId` is the config."ItemSetGroup" id;
+ * the item level is capped at each piece's own maximum (a ring stays +0).
+ */
+async function giveAncientSet(sql: Sql, req: GiveRequest): Promise<{ given: string[] } | { error: string }> {
+  const pieces = await sql`
+    SELECT s."Id" AS id, s."ItemDefinitionId" AS def, d."MaximumItemLevel" AS max, s."BonusOptionId" IS NOT NULL AS bonus
+    FROM config."ItemOfItemSet" s JOIN config."ItemDefinition" d ON d."Id" = s."ItemDefinitionId"
+    WHERE s."ItemSetGroupId" = ${req.definitionId} AND s."AncientSetDiscriminator" <> 0
+    ORDER BY d."Group", d."Number"
+  `;
+  if (!pieces.length) return { error: 'Ese set no existe.' };
+  const given: string[] = [];
+  for (const p of pieces) {
+    const level = Math.min(Math.trunc(Number(req.level)) || 0, Number(p.max));
+    const ancient = { id: String(p.id), level: p.bonus ? Number(req.ancient?.level ?? 0) : 0 };
+    const result = await giveItem(sql, { ...req, definitionId: String(p.def), level, options: [], sockets: [], ancient });
+    if ('error' in result) return { error: given.length ? `${result.error} Ya entregué: ${given.join(', ')}.` : result.error };
+    given.push(result.name);
+  }
+  return { given };
+}
+
+/** Ancient sets for a class family: a set shows when any of its pieces fits the family. */
+async function ancientSets(sql: Sql, family: number): Promise<ItemChoice[]> {
+  const rows = await sql`
+    SELECT g."Id" AS id, g."Name" AS name FROM config."ItemSetGroup" g
+    WHERE EXISTS (
+      SELECT 1 FROM config."ItemOfItemSet" s JOIN config."ItemDefinition" d ON d."Id" = s."ItemDefinitionId"
+      WHERE s."ItemSetGroupId" = g."Id" AND s."AncientSetDiscriminator" <> 0 AND (${family} < 0
+        OR EXISTS (SELECT 1 FROM config."ItemDefinitionCharacterClass" q JOIN config."CharacterClass" c ON c."Id" = q."CharacterClassId"
+                   WHERE q."ItemDefinitionId" = d."Id" AND c."Number" / 4 = ${family})))
+    ORDER BY g."Name"
+  `;
+  return rows.map(r => ({ id: String(r.id), name: `Set ${r.name}`, group: -1, number: 0, maxLevel: 15, width: 0, height: 0, hasSkill: true, durability: 0, sockets: 0 }));
 }
 
 export async function itemOptions(sql: Sql, definitionId: string): Promise<ItemOption[]> {

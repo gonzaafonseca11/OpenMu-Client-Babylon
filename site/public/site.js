@@ -279,6 +279,13 @@ async function gmPick() {
   fillBonus();
   anc.replaceChildren(anc.querySelector('legend'), setPick, bonus);
   anc.hidden = !sets.length;
+  // A whole ancient set: the set is the pick itself, only its bonus is asked.
+  if ($('#gm-group').value === 'ancients') {
+    setPick.replaceChildren(el('option', { value: gmItem.id }, gmItem.name));
+    bonus.hidden = false;
+    bonus.replaceChildren(...[2, 1].map(l => el('option', { value: String(l) }, `Bonus de stat +${l * 5}`)));
+    anc.hidden = false;
+  }
 
   // Sockets: how many slots, then per slot a seed sphere (or empty) and its level 1-5.
   const box = $('#gm-sockets');
@@ -310,7 +317,7 @@ async function gmGive(e) {
   $('#gm-ok').textContent = '';
   const button = e.target.querySelector('button[type=submit]');
   button.disabled = true;
-  const isSet = $('#gm-group').value === 'sets';
+  const isSet = $('#gm-group').value === 'sets' || $('#gm-group').value === 'ancients';
   const sockets = Array.from({ length: Number(form.get('socketCount') ?? 0) }, (_, i) => ({ id: form.get(`socket${i}`) || '', level: Number(form.get(`socketLevel${i}`)) }));
   const { ok, body } = await post(isSet ? '/api/gm/give-set' : '/api/gm/give', { character: form.get('character'), definitionId: gmItem.id, level: Number(form.get('level')), skill: form.get('skill') === 'on', options, sockets, ancient: form.get('ancientId') ? { id: form.get('ancientId'), level: Number(form.get('ancientLevel') ?? 0) } : null });
   button.disabled = false;
