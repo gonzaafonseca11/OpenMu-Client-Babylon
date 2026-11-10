@@ -15,6 +15,7 @@ import { aimX, aimY } from '../../controllers/camera';
 import { requestPing } from '../../controllers/net/pingNet';
 import { pickGround } from '../../controllers/terrain/terrainPick';
 import { isSliding } from './positionSlideSystem';
+import { isOn } from '../../controllers/fidelity';
 import { boxReachSq, rayMissesReach, type Reach } from './pointerReach';
 
 const COLOR_RED = new Color3(1, 0, 0);
@@ -142,6 +143,8 @@ export const PointerInputSystem: ISystemFactory = world => {
     }
 
     const keys = world.keyboardInput.pressedKeys;
+    // shiftWalk: Shift picks nothing, so the click walks to the ground.
+    if (isOn('shiftWalk') && (keys.has('ShiftLeft') || keys.has('ShiftRight'))) return null;
     const itemsFirst = keys.has('AltLeft') || keys.has('AltRight');
     return itemsFirst ? (bestDrop ?? best) : (best ?? bestDrop);
   }

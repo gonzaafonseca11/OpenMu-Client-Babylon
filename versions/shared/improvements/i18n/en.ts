@@ -39,6 +39,9 @@ const en = {
   'fidelity.cameraKeepsView': 'Camera kept across warps',
   'fidelity.cameraKeepsView.hint':
     'Your camera zoom, turn and tilt stay as they are when you warp or change maps, and a Reset camera button shows while the view is moved. Classic: every map change resets the camera, as in the original.',
+  'fidelity.shiftWalk': 'Shift + click walks through monsters',
+  'fidelity.shiftWalk.hint':
+    'Hold Shift and left click to walk to that spot even when monsters are under the cursor, to get out when surrounded. Classic: a click on a monster always attacks it, as in the original.',
   'fidelity.swingFill': 'Swings fill the time between hits',
   'fidelity.swingFill.hint':
     'At a high attack speed, the part of your swing after the blow plays slower so it lasts until the next swing, instead of the hero freezing in between. Hits land at the same moment. Classic: the swing ends early and the hero stands still, as in the original.',
