@@ -1,5 +1,6 @@
 import { localisedNpcName } from '@/controllers/assets';
 import type { MonsterRow } from '@/controllers/monsters';
+import { isOn } from '@/controllers/fidelity';
 import { t } from '@/i18n';
 import { monsters } from './all';
 
@@ -17,9 +18,12 @@ export const MonstersDatabase = {
  * original table carries, else a placeholder. Everything that keys on a monster
  * still uses `MonstersDatabase.get`; this is only what the player reads.
  */
+/** `elvenlandNames`: the pack's 419-421 lines are shifted by one; each type reads the line meant for it. */
+const SHIFTED_NAMES: Readonly<Record<number, number>> = { 419: 421, 420: 419, 421: 420 };
+
 export function monsterDisplayName(type: number, fallback?: string): string {
   return (
-    localisedNpcName(type) ??
+    localisedNpcName(isOn('elvenlandNames') ? (SHIFTED_NAMES[type] ?? type) : type) ??
     MonstersDatabase.get(type)?.Name ??
     fallback ??
     t('item.monsterFallback', { type })

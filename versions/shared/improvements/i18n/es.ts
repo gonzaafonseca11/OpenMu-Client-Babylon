@@ -42,6 +42,9 @@ export default {
   'fidelity.cameraKeepsView': 'La cámara se mantiene al viajar',
   'fidelity.cameraKeepsView.hint':
     'El zoom, el giro y la inclinación de la cámara se mantienen al teletransportarte o cambiar de mapa, y aparece un botón Restablecer cámara mientras la vista está movida. Clásica: cada cambio de mapa restablece la cámara, como en el original.',
+  'fidelity.elvenlandNames': 'Nombres correctos en Elvenland',
+  'fidelity.elvenlandNames.hint':
+    'La Mariposa Contaminada, el Conejo Espantoso y el Hombre Lobo muestran su propio nombre. Clásico: cada uno de los tres muestra el nombre de otro, como en el original.',
   'fidelity.holdWalk': 'Mantener el clic camina entre monstruos',
   'fidelity.holdWalk.hint':
     'Mantené el botón izquierdo medio segundo para seguir caminando hacia el cursor aunque haya monstruos; un clic corto sigue atacando. Clásico: un clic sobre un monstruo siempre lo ataca, como en el original.',
