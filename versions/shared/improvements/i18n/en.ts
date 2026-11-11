@@ -39,6 +39,9 @@ const en = {
   'fidelity.cameraKeepsView': 'Camera kept across warps',
   'fidelity.cameraKeepsView.hint':
     'Your camera zoom, turn and tilt stay as they are when you warp or change maps, and a Reset camera button shows while the view is moved. Classic: every map change resets the camera, as in the original.',
+  'fidelity.holdWalk': 'Hold click to walk through monsters',
+  'fidelity.holdWalk.hint':
+    'Hold the left button for half a second to keep walking toward the cursor even over monsters; a short click still attacks. Classic: a click on a monster always attacks it, as in the original.',
   'fidelity.shiftWalk': 'Shift + click walks through monsters',
   'fidelity.shiftWalk.hint':
     'Hold Shift and left click to walk to that spot even when monsters are under the cursor, to get out when surrounded. Classic: a click on a monster always attacks it, as in the original.',

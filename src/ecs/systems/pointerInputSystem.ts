@@ -269,6 +269,7 @@ export const PointerInputSystem: ISystemFactory = world => {
 
     if (ev.type === PointerEventTypes.POINTERDOWN) {
       world.pointerPressed = true;
+      world.pointerPressedAt = performance.now();
       // `MoveHero` returns while the server slides the hero in (`JumpTime > 0`): the click is lost.
       if (isSliding(world.playerEntity)) return;
       // `MoveHero` (ZzzInterface.cpp:7535): a click of the hero's own -

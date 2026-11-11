@@ -582,6 +582,9 @@ export class World extends ECSWorld<Entity> {
 
   pointerPressed = false;
 
+  /** When the left button went down (performance.now()), for the `holdWalk` improvement. */
+  pointerPressedAt = 0;
+
   /** Right mouse button held (repeats the current skill, like MouseRButton). */
   rightPointerPressed = false;
 

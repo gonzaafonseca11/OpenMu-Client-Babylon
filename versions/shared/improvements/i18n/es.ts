@@ -42,6 +42,9 @@ export default {
   'fidelity.cameraKeepsView': 'La cámara se mantiene al viajar',
   'fidelity.cameraKeepsView.hint':
     'El zoom, el giro y la inclinación de la cámara se mantienen al teletransportarte o cambiar de mapa, y aparece un botón Restablecer cámara mientras la vista está movida. Clásica: cada cambio de mapa restablece la cámara, como en el original.',
+  'fidelity.holdWalk': 'Mantener el clic camina entre monstruos',
+  'fidelity.holdWalk.hint':
+    'Mantené el botón izquierdo medio segundo para seguir caminando hacia el cursor aunque haya monstruos; un clic corto sigue atacando. Clásico: un clic sobre un monstruo siempre lo ataca, como en el original.',
   'fidelity.shiftWalk': 'Shift + clic camina entre monstruos',
   'fidelity.shiftWalk.hint':
     'Mantené Shift y hacé clic izquierdo para caminar a ese lugar aunque haya monstruos bajo el cursor, para salir cuando te rodean. Clásico: un clic sobre un monstruo siempre lo ataca, como en el original.',

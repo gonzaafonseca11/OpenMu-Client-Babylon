@@ -17,6 +17,9 @@ import { teleportGate } from '../../modules/warp/teleportRules';
 import { teleportBusy } from './teleportSystem';
 import { isSliding } from './positionSlideSystem';
 import { pickGround } from '../../controllers/terrain/terrainPick';
+import { isOn } from '../../controllers/fidelity';
+
+const HOLD_WALK_MS = 500;
 
 const MOVE_DELAY = 0.25;
 
@@ -85,7 +88,9 @@ export const PlayerControllerSystem: ISystemFactory = world => {
     // walking and no new path, or the corpse strolls off with HP 0.
     if (playerEntity.dying) return;
 
-    if (world.currentPointerTarget) return;
+    // holdWalk: a left button held past HOLD_WALK_MS walks over whatever is under the cursor.
+    const holdWalk = isOn('holdWalk') && world.pointerPressed && performance.now() - world.pointerPressedAt > HOLD_WALK_MS;
+    if (world.currentPointerTarget && !holdWalk) return;
 
     if (Bag.pickedItem) return;
 
