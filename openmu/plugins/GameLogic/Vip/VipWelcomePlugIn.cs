@@ -15,10 +15,10 @@ using MUnique.OpenMU.PlugIns;
 
 /// <summary>
 /// On entering the world, on any server, a VIP is told until when the VIP runs; the first time after
-/// a paid VIP, the account also gets a Box of Kundun +3 (in the inventory, or at the feet when full).
+/// a paid VIP, the account also gets a Box of Kundun +4 (in the inventory, or at the feet when full).
 /// </summary>
 [PlugIn]
-[Display(Name = "VIP welcome", Description = "Tells a VIP until when it runs and gives a Box of Kundun +3 once after the first payment.")]
+[Display(Name = "VIP welcome", Description = "Tells a VIP until when it runs and gives a Box of Kundun +4 once after the first payment.")]
 [Guid("A9D5C3E1-7F42-4B8D-9C26-1E8F4A7B3D50")]
 public class VipWelcomePlugIn : IPlayerStateChangedPlugIn
 {
@@ -26,8 +26,8 @@ public class VipWelcomePlugIn : IPlayerStateChangedPlugIn
 
     private const short BoxNumber = 11;
 
-    /// <summary>Box of Kundun +3.</summary>
-    private const byte GiftLevel = 10;
+    /// <summary>Box of Kundun +4.</summary>
+    private const byte GiftLevel = 11;
 
     /// <inheritdoc />
     public async ValueTask PlayerStateChangedAsync(Player player, State previousState, State currentState)
@@ -72,12 +72,12 @@ public class VipWelcomePlugIn : IPlayerStateChangedPlugIn
         if (player.Inventory is { } inventory && await inventory.AddItemAsync(item).ConfigureAwait(false))
         {
             await player.InvokeViewPlugInAsync<IItemAppearPlugIn>(p => p.ItemAppearAsync(item)).ConfigureAwait(false);
-            await Vip.SayAsync(player, "Regalo VIP: una Caja Kundun +3 en tu inventario. ¡Gracias por suscribirte!").ConfigureAwait(false);
+            await Vip.SayAsync(player, "Regalo VIP: una Caja Kundun +4 en tu inventario. ¡Gracias por suscribirte!").ConfigureAwait(false);
         }
         else if (player.CurrentMap is { } map)
         {
             await map.AddAsync(new DroppedItem(item, player.Position, map, player, player.GetAsEnumerable())).ConfigureAwait(false);
-            await Vip.SayAsync(player, "Regalo VIP: una Caja Kundun +3 a tus pies (tu inventario está lleno).").ConfigureAwait(false);
+            await Vip.SayAsync(player, "Regalo VIP: una Caja Kundun +4 a tus pies (tu inventario está lleno).").ConfigureAwait(false);
         }
 
         await player.SaveProgressAsync().ConfigureAwait(false);
