@@ -23,6 +23,16 @@ public class VipGatePlugIn : IPlayerStateChangingPlugIn
     /// <inheritdoc />
     public async ValueTask PlayerStateChangingAsync(Player player, StateMachine.StateChangeEventArgs eventArgs)
     {
+        if (eventArgs.NextState == PlayerState.EnteredWorld || eventArgs.NextState == PlayerState.CharacterSelection)
+        {
+            player.Logger.LogInformation(
+                "VIP gate: {Account} going to {State} on server {Server} ({Context})",
+                player.Account?.LoginName,
+                eventArgs.NextState == PlayerState.EnteredWorld ? "world" : "character selection",
+                (player.GameContext as IGameServerContext)?.Id,
+                player.GameContext.GetType().Name);
+        }
+
         if (eventArgs.NextState != PlayerState.EnteredWorld
             || !Vip.OnVipServer(player)
             || player.Account is not { } account
