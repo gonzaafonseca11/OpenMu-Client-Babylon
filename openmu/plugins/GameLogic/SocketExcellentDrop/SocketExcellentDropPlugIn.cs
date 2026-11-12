@@ -26,7 +26,7 @@ public class SocketExcellentDropPlugIn : IAttackableGotKilledPlugIn
     public const short MapNumber = 57;
 
     /// <summary>One drop per this many kills on average.</summary>
-    public const int OneIn = 400;
+    public const int OneIn = 2;
 
     private static int kills;
 
