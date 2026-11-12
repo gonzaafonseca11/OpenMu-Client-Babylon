@@ -14,16 +14,16 @@ using MUnique.OpenMU.GameLogic.PlugIns;
 using MUnique.OpenMU.PlugIns;
 
 /// <summary>
-/// LaCleon's monsters may drop an excellent socket item: OpenMU's own drops never make one
+/// LaCleon and Vulcanus monsters may drop an excellent socket item: OpenMU's own drops never make one
 /// (DefaultDropGenerator keeps socket items out of excellent drops), so this plugin does.
 /// </summary>
 [Guid("8F4C2A71-5B3E-4D96-A2C8-1E7F9D0B6A35")]
 [PlugIn]
-[Display(Name = "Excellent socket drops (LaCleon)", Description = "LaCleon monsters drop an excellent socket item 1 in 200 kills.")]
+[Display(Name = "Excellent socket drops (LaCleon, Vulcanus)", Description = "LaCleon and Vulcanus monsters drop an excellent socket item 1 in 200 kills.")]
 public class SocketExcellentDropPlugIn : IAttackableGotKilledPlugIn
 {
-    /// <summary>The map: LaCleon.</summary>
-    public const short MapNumber = 57;
+    /// <summary>The maps: LaCleon and Vulcanus.</summary>
+    private static readonly short[] MapNumbers = [57, 63];
 
     /// <summary>One drop per this many kills on average.</summary>
     public const int OneIn = 200;
@@ -36,7 +36,7 @@ public class SocketExcellentDropPlugIn : IAttackableGotKilledPlugIn
         if (killed is not Monster monster
             || killer is not Player player
             || monster.CurrentMap is not { } map
-            || map.Definition.Number != MapNumber)
+            || !MapNumbers.Contains(map.Definition.Number))
         {
             return;
         }
@@ -44,7 +44,7 @@ public class SocketExcellentDropPlugIn : IAttackableGotKilledPlugIn
         var count = Interlocked.Increment(ref kills);
         if (count % 100 == 0)
         {
-            player.Logger.LogInformation("Socket drop: {Count} LaCleon kills so far", count);
+            player.Logger.LogInformation("Socket drop: {Count} LaCleon and Vulcanus kills so far", count);
         }
 
         if (Random.Shared.Next(OneIn) != 0)
