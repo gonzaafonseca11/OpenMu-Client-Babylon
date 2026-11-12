@@ -10,7 +10,7 @@ import { openCommunity } from './community';
 import { chatBanned, chatMessage, chatTooFast, clean, isBanned, isModerator, newsPost, REPORT_STATUSES, REPORTS_PER_HOUR, reportPost } from './rules';
 import { normalEmail, openMuHash, openRecovery, passwordProblem, recoveryMail, recoveryTargets, sendMail } from './recovery';
 import { isEmail } from '../../src/modules/servers/registerRules';
-import { vipAddPaidMonth, vipGrant, vipList, vipOf, vipRecord, vipSetSubscription } from './vip';
+import { vipAddPaidMonth, vipEndingSoon, vipGrant, vipList, vipMarkReminded, vipOf, vipRecord, vipReminderMail, vipSetSubscription } from './vip';
 import { cancelSubscription, createSubscription, getAuthorizedPayment, getSubscription, paymentApproved, signatureValid, type MpConfig } from './mp';
 import { browseItems, giveItem, giveSet, itemOptions, learnAllSkills, maxMasterTree, onlinePlayers, parseBrowse, readStats, setExcellents, writeStats } from './gm';
 
@@ -57,6 +57,19 @@ const monthly = openMonthly(community.database, { resetsNow: () => resetsNow(sql
 const monthTick = () => monthly.tick().catch(err => console.error('site monthly rankings failed:', err));
 void monthTick();
 setInterval(monthTick, 60_000).unref();
+/** Once an hour: mails each VIP that ends within 3 days without renewing, once per end date. */
+const vipReminderTick = async () => {
+  try {
+    for (const v of await vipEndingSoon(sql)) {
+      if (isEmail(v.email)) await sendMail(MAIL_API_KEY, MAIL_FROM, v.email, vipReminderMail(SITE_URL, NAME, v.login, v.until));
+      await vipMarkReminded(sql, v.accountId, v.until);
+    }
+  } catch (err) {
+    console.error('site vip reminders failed:', err);
+  }
+};
+setTimeout(vipReminderTick, 60_000).unref();
+setInterval(vipReminderTick, 60 * 60_000).unref();
 const logins = new BurstLimit(LOGIN_LIMIT, LOGIN_WINDOW_MS);
 const recovery = openRecovery(community.database);
 /** Recovery requests per network: a few for typos, too few to flood someone's inbox. */

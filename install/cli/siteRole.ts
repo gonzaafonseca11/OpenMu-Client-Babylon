@@ -42,6 +42,9 @@ export function siteRoleSql(c: Config): string {
     // VIP accounts (OpenMU's Vip plugin reads them; the site's GM panel and payments write them).
     'CREATE TABLE IF NOT EXISTS mu_plugins.vip (account_id uuid PRIMARY KEY, until timestamptz NOT NULL, auto_renew boolean NOT NULL DEFAULT false, subscription_id text, updated_at timestamptz NOT NULL DEFAULT now());',
     `GRANT SELECT, INSERT, UPDATE ON mu_plugins.vip TO ${role};`,
+    // The welcome gift given in game, and the VIP end the site last mailed a reminder for.
+    'ALTER TABLE mu_plugins.vip ADD COLUMN IF NOT EXISTS gift_at timestamptz;',
+    'ALTER TABLE mu_plugins.vip ADD COLUMN IF NOT EXISTS reminded_for timestamptz;',
     // Mercado Pago payments already counted, so a repeated notification never adds a second month.
     'CREATE TABLE IF NOT EXISTS mu_plugins.vip_payment (id text PRIMARY KEY, account_id uuid NOT NULL, at timestamptz NOT NULL DEFAULT now());',
     `GRANT SELECT, INSERT ON mu_plugins.vip_payment TO ${role};`,

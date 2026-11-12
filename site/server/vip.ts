@@ -72,3 +72,33 @@ export async function vipAddPaidMonth(sql: Sql, accountId: string, paymentId: st
     return row.until as Date;
   });
 }
+
+/** VIPs that will not renew and end within 3 days, not yet mailed for this end. */
+export async function vipEndingSoon(sql: Sql): Promise<{ accountId: string; login: string; email: string; until: Date }[]> {
+  const rows = await sql`
+    SELECT v.account_id, a."LoginName" AS login, a."EMail" AS email, v.until FROM mu_plugins.vip v
+    JOIN data."Account" a ON a."Id" = v.account_id
+    WHERE NOT v.auto_renew AND v.until > now() AND v.until <= now() + interval '3 days'
+      AND v.reminded_for IS DISTINCT FROM v.until`;
+  return rows.map(r => ({ accountId: String(r.account_id), login: String(r.login), email: String(r.email ?? ''), until: r.until as Date }));
+}
+
+/** Notes that the reminder for this end went out (or cannot), so it is sent once. */
+export async function vipMarkReminded(sql: Sql, accountId: string, until: Date): Promise<void> {
+  await sql`UPDATE mu_plugins.vip SET reminded_for = ${until} WHERE account_id = ${accountId}`;
+}
+
+/** The "your VIP ends soon" mail. */
+export function vipReminderMail(site: string, server: string, login: string, until: Date): { subject: string; text: string; html: string } {
+  const esc = (s: string) => s.replace(/[&<>"']/g, ch => `&#${ch.charCodeAt(0)};`);
+  const date = until.toLocaleDateString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' });
+  const link = `${site}/#cuenta`;
+  return {
+    subject: `${server}: tu VIP termina el ${date}`,
+    text: `Hola ${login}, tu VIP de ${server} termina el ${date} y no se va a renovar.
+
+Si querés seguir siendo VIP, renovalo desde Mi cuenta: ${link}
+`,
+    html: `<p>Hola <b>${esc(login)}</b>, tu VIP de <b>${esc(server)}</b> termina el <b>${date}</b> y no se va a renovar.</p><p>Si querés seguir siendo VIP, renovalo desde <a href="${esc(link)}">Mi cuenta</a>.</p>`,
+  };
+}

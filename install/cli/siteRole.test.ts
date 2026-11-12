@@ -20,6 +20,7 @@ describe('website', () => {
     expect(sqlText.match(/GRANT (INSERT|UPDATE)[^;]*;/g)).toHaveLength(5);
     expect(sqlText).toContain('GRANT SELECT, INSERT ON mu_plugins.vip_payment TO mu_site;');
     expect(sqlText).toContain('GRANT SELECT, INSERT, UPDATE ON mu_plugins.vip TO mu_site;');
+    expect(sqlText).toContain('ADD COLUMN IF NOT EXISTS reminded_for timestamptz');
   });
 
   it('refuses a secret that could break out of the quotes', () => {

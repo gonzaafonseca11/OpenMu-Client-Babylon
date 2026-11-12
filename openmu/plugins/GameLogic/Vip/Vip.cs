@@ -29,6 +29,9 @@ public static class Vip
     public const string CreateSql = """
         CREATE SCHEMA IF NOT EXISTS mu_plugins;
         CREATE TABLE IF NOT EXISTS mu_plugins.vip (account_id uuid PRIMARY KEY, until timestamptz NOT NULL, auto_renew boolean NOT NULL DEFAULT false, subscription_id text, updated_at timestamptz NOT NULL DEFAULT now());
+        ALTER TABLE mu_plugins.vip ADD COLUMN IF NOT EXISTS gift_at timestamptz;
+        ALTER TABLE mu_plugins.vip ADD COLUMN IF NOT EXISTS reminded_for timestamptz;
+        CREATE TABLE IF NOT EXISTS mu_plugins.vip_payment (id text PRIMARY KEY, account_id uuid NOT NULL, at timestamptz NOT NULL DEFAULT now());
         """;
 
     private static readonly ConcurrentDictionary<Guid, (bool Vip, DateTime CheckedAt)> Cache = new();
@@ -52,7 +55,48 @@ public static class Vip
             return hit.Vip;
         }
 
-        await using var connection = new NpgsqlConnection(ConnectionString);
+        await using var connection = await OpenAsync().ConfigureAwait(false);
+        await using var command = new NpgsqlCommand("SELECT EXISTS (SELECT 1 FROM mu_plugins.vip WHERE account_id = @id AND until > now())", connection);
+        command.Parameters.AddWithValue("id", accountId);
+        var vip = (bool)(await command.ExecuteScalarAsync().ConfigureAwait(false) ?? false);
+        Cache[accountId] = (vip, DateTime.UtcNow);
+        return vip;
+    }
+
+    /// <summary>When the account's VIP ends, if it runs now.</summary>
+    public static async ValueTask<DateTime?> UntilAsync(Guid accountId)
+    {
+        await using var connection = await OpenAsync().ConfigureAwait(false);
+        await using var command = new NpgsqlCommand("SELECT until FROM mu_plugins.vip WHERE account_id = @id AND until > now()", connection);
+        command.Parameters.AddWithValue("id", accountId);
+        return await command.ExecuteScalarAsync().ConfigureAwait(false) is DateTime until ? until : null;
+    }
+
+    /// <summary>
+    /// Marks the welcome gift as given, once per account: only a running VIP that was paid through
+    /// Mercado Pago (a GM's days give no gift). True when the gift is now due.
+    /// </summary>
+    public static async ValueTask<bool> ClaimGiftAsync(Guid accountId)
+    {
+        await using var connection = await OpenAsync().ConfigureAwait(false);
+        await using var command = new NpgsqlCommand(
+            """
+            UPDATE mu_plugins.vip SET gift_at = now()
+            WHERE account_id = @id AND gift_at IS NULL AND until > now()
+              AND EXISTS (SELECT 1 FROM mu_plugins.vip_payment p WHERE p.account_id = @id)
+            """,
+            connection);
+        command.Parameters.AddWithValue("id", accountId);
+        return await command.ExecuteNonQueryAsync().ConfigureAwait(false) > 0;
+    }
+
+    /// <summary>A blue system message to the player.</summary>
+    public static ValueTask SayAsync(Player player, string message)
+        => player.InvokeViewPlugInAsync<IShowMessagePlugIn>(p => p.ShowMessageAsync(message, MessageType.BlueNormal));
+
+    private static async ValueTask<NpgsqlConnection> OpenAsync()
+    {
+        var connection = new NpgsqlConnection(ConnectionString);
         await connection.OpenAsync().ConfigureAwait(false);
         if (!created)
         {
@@ -61,14 +105,6 @@ public static class Vip
             created = true;
         }
 
-        await using var command = new NpgsqlCommand("SELECT EXISTS (SELECT 1 FROM mu_plugins.vip WHERE account_id = @id AND until > now())", connection);
-        command.Parameters.AddWithValue("id", accountId);
-        var vip = (bool)(await command.ExecuteScalarAsync().ConfigureAwait(false) ?? false);
-        Cache[accountId] = (vip, DateTime.UtcNow);
-        return vip;
+        return connection;
     }
-
-    /// <summary>A blue system message to the player.</summary>
-    public static ValueTask SayAsync(Player player, string message)
-        => player.InvokeViewPlugInAsync<IShowMessagePlugIn>(p => p.ShowMessageAsync(message, MessageType.BlueNormal));
 }
