@@ -156,6 +156,26 @@ async function loadWinners() {
   $('#gm-winners').replaceChildren(...(rows.length ? rows : [el('p', { class: 'hint' }, 'Todavía no terminó ningún mes.')]));
 }
 
+const dateAr = iso => new Date(iso).toLocaleDateString('es-AR');
+
+async function loadVip() {
+  const { ok, body } = await api('/api/gm/vip');
+  const rows = (ok ? body : []).map(v => el('article', { class: 'news report-open' },
+    el('h3', {}, v.login), el('time', {}, `VIP hasta el ${dateAr(v.until)}${v.autoRenew ? ' · se renueva solo' : ''}`)));
+  $('#vip-list').replaceChildren(...(rows.length ? rows : [el('p', { class: 'hint' }, 'Todavía no hay cuentas VIP.')]));
+}
+
+async function vipSave(e) {
+  e.preventDefault();
+  const form = new FormData(e.target);
+  $('#vip-error').textContent = '';
+  $('#vip-ok').textContent = '';
+  const { ok, body } = await post('/api/gm/vip', { login: String(form.get('login')).trim(), days: Number(form.get('days')) });
+  if (!ok) { $('#vip-error').textContent = body.error || 'No se pudo.'; return; }
+  $('#vip-ok').textContent = body.until ? `Listo: ${body.login} es VIP hasta el ${dateAr(body.until)}.` : `Listo: ${body.login} ya no es VIP.`;
+  loadVip();
+}
+
 async function loadAllReports() {
   const { ok, body } = await api('/api/reports/all');
   const list = ok ? body : [];
@@ -201,6 +221,10 @@ async function showAccount() {
   applySession();
   if (!me) return;
   $('#account-name').textContent = me.login;
+  $('#vip-status').hidden = !me.vip;
+  if (me.vip) $('#vip-status').textContent = me.vip.autoRenew
+    ? `⭐ VIP activo. Se renueva solo el ${new Date(me.vip.until).toLocaleDateString('es-AR')}.`
+    : `⭐ VIP activo hasta el ${new Date(me.vip.until).toLocaleDateString('es-AR')}.`;
   $('#email-current').textContent = me.email
     ? `Tu e-mail es ${me.email}. Si olvidás la contraseña, te llega ahí.`
     : 'Tu cuenta no tiene e-mail. Cargalo para poder recuperarla si olvidás la contraseña.';
@@ -424,7 +448,7 @@ function showTab() {
   if (panel === 'cuenta') showAccount();
   if (panel === 'comunidad') showCommunity();
   if (panel === 'inicio') { loadNews(); loadOnline(); }
-  if (panel === 'gm' && me?.moderator) { loadNews(); loadAllReports(); loadWinners(); }
+  if (panel === 'gm' && me?.moderator) { loadNews(); loadAllReports(); loadWinners(); loadVip(); }
   if (panel === 'restablecer') showReset();
   applySession();
 }
@@ -507,6 +531,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#gm-family').addEventListener('change', gmBrowse);
   $('#gm-results').addEventListener('change', gmPick);
   $('#gm-form').addEventListener('submit', gmGive);
+  $('#vip-form').addEventListener('submit', vipSave);
   $('#stats-find').addEventListener('submit', statsLoad);
   $('#stats-form').addEventListener('submit', statsSave);
   $('#stats-skills').addEventListener('click', async e => {

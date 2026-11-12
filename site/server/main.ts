@@ -10,6 +10,7 @@ import { openCommunity } from './community';
 import { chatBanned, chatMessage, chatTooFast, clean, isBanned, isModerator, newsPost, REPORT_STATUSES, REPORTS_PER_HOUR, reportPost } from './rules';
 import { normalEmail, openMuHash, openRecovery, passwordProblem, recoveryMail, recoveryTargets, sendMail } from './recovery';
 import { isEmail } from '../../src/modules/servers/registerRules';
+import { vipGrant, vipList, vipOf } from './vip';
 import { browseItems, giveItem, giveSet, itemOptions, learnAllSkills, maxMasterTree, onlinePlayers, parseBrowse, readStats, setExcellents, writeStats } from './gm';
 
 /**
@@ -182,6 +183,16 @@ async function gmRequest(path: string, req: Request, url: URL): Promise<Response
   if (!account) return notLoggedIn();
   if (!account.moderator) return notAllowed();
   if (req.method === 'GET' && path === '/api/gm/winners') return json(monthly.winners());
+  if (req.method === 'GET' && path === '/api/gm/vip') return json(await vipList(sql));
+  if (req.method === 'POST' && path === '/api/gm/vip') {
+    const body = await readJson(req);
+    const login = typeof body?.login === 'string' ? body.login.trim() : '';
+    if (!login || login.length > 10) return json({ error: 'Escribí la cuenta.' }, 400);
+    const result = await vipGrant(sql, login, Number(body?.days));
+    if ('error' in result) return json(result, 400);
+    process.stdout.write(`gm ${account.login} vip ${result.login} +${Number(body?.days)} days\n`);
+    return json(result);
+  }
   if (req.method === 'POST' && path === '/api/gm/winners/deliver') {
     const body = await readJson(req);
     const place = Number(body?.place);
@@ -353,7 +364,7 @@ Bun.serve({
       if (req.method === 'GET' && path === '/api/me') {
         const account = await sessionAccount(req);
         if (!account) return json({ error: 'No iniciaste sesión.' }, 401);
-        return json({ login: account.login, email: await accountEmail(sql, account.id), moderator: account.moderator, chatBanned: account.chatBanned, characters: await accountCharacters(sql, account.id) });
+        return json({ login: account.login, email: await accountEmail(sql, account.id), vip: await vipOf(sql, account.id), moderator: account.moderator, chatBanned: account.chatBanned, characters: await accountCharacters(sql, account.id) });
       }
       if (req.method === 'GET' && path === '/api/reset') {
         const id = recovery.peek(url.searchParams.get('token') ?? '');

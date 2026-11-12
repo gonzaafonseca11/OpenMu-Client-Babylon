@@ -17,7 +17,8 @@ describe('website', () => {
     expect(sqlText).not.toMatch(/GRANT (DELETE|ALL)/);
     expect(sqlText).toContain('GRANT INSERT ON data."Item", data."ItemOptionLink", data."SkillEntry", data."ItemItemOfItemSet" TO mu_site;');
     expect(sqlText).toContain('GRANT UPDATE ("Value") ON data."StatAttribute" TO mu_site;');
-    expect(sqlText.match(/GRANT (INSERT|UPDATE)[^;]*;/g)).toHaveLength(4);
+    expect(sqlText.match(/GRANT (INSERT|UPDATE)[^;]*;/g)).toHaveLength(5);
+    expect(sqlText).toContain('GRANT SELECT, INSERT, UPDATE ON mu_plugins.vip TO mu_site;');
   });
 
   it('refuses a secret that could break out of the quotes', () => {

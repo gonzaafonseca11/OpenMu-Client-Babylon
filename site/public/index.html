@@ -190,6 +190,7 @@
           <h1>Hola, <span id="account-name"></span></h1>
           <button class="btn btn-ghost" id="logout" type="button">Salir</button>
         </div>
+        <p class="vip-status" id="vip-status" hidden></p>
         <div id="characters" class="cards"></div>
         <form id="email-form" class="login-box email-form">
           <h2>E-mail de la cuenta</h2>
@@ -338,6 +339,16 @@
           <div class="news-list" data-news-list="all"></div>
         </div>
         <div class="gm-col">
+          <h2>VIP</h2>
+          <p class="hint small">Dale días de VIP a una cuenta (se suman a lo que le queda). 0 días se lo saca.</p>
+          <form id="vip-form" class="news-form vip-form">
+            <label>Cuenta <input name="login" maxlength="10" required autocomplete="off"></label>
+            <label>Días <input name="days" type="number" min="0" max="3650" value="30" required></label>
+            <button class="btn btn-play" type="submit">Guardar</button>
+            <p class="error" id="vip-error" role="alert"></p>
+            <p class="ok" id="vip-ok" role="status"></p>
+          </form>
+          <div class="news-list" id="vip-list"></div>
           <h2>Ganadores del mes</h2>
           <p class="hint small">El día 1 se guardan los 3 primeros de cada ranking del mes. Dales el premio con "Crear ítem" o "Modificar stats" y marcalo como entregado.</p>
           <div class="news-list" id="gm-winners"></div>

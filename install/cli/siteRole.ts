@@ -39,6 +39,9 @@ export function siteRoleSql(c: Config): string {
     'CREATE TABLE IF NOT EXISTS mu_plugins.pvp_kill (id bigserial PRIMARY KEY, killer_id uuid NOT NULL, victim_id uuid NOT NULL, at timestamptz NOT NULL DEFAULT now());',
     'CREATE INDEX IF NOT EXISTS pvp_kill_at ON mu_plugins.pvp_kill (at);',
     `GRANT USAGE ON SCHEMA mu_plugins TO ${role};`,
+    // VIP accounts (OpenMU's Vip plugin reads them; the site's GM panel and payments write them).
+    'CREATE TABLE IF NOT EXISTS mu_plugins.vip (account_id uuid PRIMARY KEY, until timestamptz NOT NULL, auto_renew boolean NOT NULL DEFAULT false, subscription_id text, updated_at timestamptz NOT NULL DEFAULT now());',
+    `GRANT SELECT, INSERT, UPDATE ON mu_plugins.vip TO ${role};`,
     `GRANT SELECT ON mu_plugins.pvp_kill TO ${role};`,
     '',
   ].join('\n');
