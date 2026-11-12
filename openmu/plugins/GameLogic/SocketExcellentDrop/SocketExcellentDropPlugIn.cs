@@ -5,6 +5,7 @@
 namespace MUnique.OpenMU.GameLogic.SocketExcellentDrop;
 
 using System.Runtime.InteropServices;
+using Microsoft.Extensions.Logging;
 using MUnique.OpenMU.DataModel.Configuration.Items;
 using MUnique.OpenMU.DataModel.Entities;
 using MUnique.OpenMU.GameLogic.Attributes;
@@ -27,14 +28,26 @@ public class SocketExcellentDropPlugIn : IAttackableGotKilledPlugIn
     /// <summary>One drop per this many kills on average.</summary>
     public const int OneIn = 400;
 
+    private static int kills;
+
     /// <inheritdoc />
     public async ValueTask AttackableGotKilledAsync(IAttackable killed, IAttacker? killer)
     {
         if (killed is not Monster monster
             || killer is not Player player
             || monster.CurrentMap is not { } map
-            || map.Definition.Number != MapNumber
-            || Random.Shared.Next(OneIn) != 0)
+            || map.Definition.Number != MapNumber)
+        {
+            return;
+        }
+
+        var count = Interlocked.Increment(ref kills);
+        if (count % 100 == 0)
+        {
+            player.Logger.LogInformation("Socket drop: {Count} LaCleon kills so far", count);
+        }
+
+        if (Random.Shared.Next(OneIn) != 0)
         {
             return;
         }
@@ -55,6 +68,7 @@ public class SocketExcellentDropPlugIn : IAttackableGotKilledPlugIn
         AddExcellentOptions(item);
         item.Durability = item.GetMaximumDurabilityOfOnePiece();
 
+        player.Logger.LogInformation("Socket drop: {Item} with {Sockets} sockets for {Player} after {Count} kills", definition.Name, item.SocketCount, player.Name, count);
         await map.AddAsync(new DroppedItem(item, monster.Position, map, null, new object[] { player })).ConfigureAwait(false);
     }
 
