@@ -187,11 +187,18 @@ function characterCard(c) {
   );
 }
 
+/** What the header and home show for who is logged in: the account tab's name, Crear cuenta, the GM tab. */
+function applySession() {
+  $('#account-tab').textContent = me ? 'Mi cuenta' : 'Iniciar sesión';
+  $('#register-btn').hidden = !!me;
+  $('#gm-tab').hidden = !me?.moderator;
+}
+
 async function showAccount() {
   await loadMe();
   $('#login-box').hidden = !!me;
   $('#account').hidden = !me;
-  $('#gm-tab').hidden = !me?.moderator;
+  applySession();
   if (!me) return;
   $('#account-name').textContent = me.login;
   $('#email-current').textContent = me.email
@@ -419,7 +426,7 @@ function showTab() {
   if (panel === 'inicio') { loadNews(); loadOnline(); }
   if (panel === 'gm' && me?.moderator) { loadNews(); loadAllReports(); loadWinners(); }
   if (panel === 'restablecer') showReset();
-  $('#gm-tab').hidden = !me?.moderator;
+  applySession();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
