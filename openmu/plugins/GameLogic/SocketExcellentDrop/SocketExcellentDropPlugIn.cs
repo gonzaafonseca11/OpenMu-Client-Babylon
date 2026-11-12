@@ -19,14 +19,14 @@ using MUnique.OpenMU.PlugIns;
 /// </summary>
 [Guid("8F4C2A71-5B3E-4D96-A2C8-1E7F9D0B6A35")]
 [PlugIn]
-[Display(Name = "Excellent socket drops (LaCleon)", Description = "LaCleon monsters drop an excellent socket item 1 in 400 kills.")]
+[Display(Name = "Excellent socket drops (LaCleon)", Description = "LaCleon monsters drop an excellent socket item 1 in 200 kills.")]
 public class SocketExcellentDropPlugIn : IAttackableGotKilledPlugIn
 {
     /// <summary>The map: LaCleon.</summary>
     public const short MapNumber = 57;
 
     /// <summary>One drop per this many kills on average.</summary>
-    public const int OneIn = 2;
+    public const int OneIn = 200;
 
     private static int kills;
 
