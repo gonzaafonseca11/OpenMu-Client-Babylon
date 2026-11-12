@@ -5,6 +5,7 @@
 namespace MUnique.OpenMU.GameLogic.KundunBoxes;
 
 using System.Runtime.InteropServices;
+using MUnique.OpenMU.DataModel.Configuration;
 using MUnique.OpenMU.DataModel.Configuration.Items;
 using MUnique.OpenMU.DataModel.Entities;
 using MUnique.OpenMU.GameLogic.PlugIns;
