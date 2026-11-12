@@ -216,7 +216,7 @@ function applySession() {
 
 /** The VIP box on Mi cuenta: what the player has and the one button that changes it. */
 function showVip() {
-  const price = `${fmt(me.vipPrice)}`;
+  const price = '$' + fmt(me.vipPrice);
   const until = me.vip ? new Date(me.vip.until).toLocaleDateString('es-AR') : '';
   let text;
   let subscribe = '';
@@ -229,6 +229,8 @@ function showVip() {
   $('#vip-box').hidden = !me.vip && !me.vipRenews && !me.vipPay;
   $('#vip-status').textContent = text;
   $('#vip-subscribe').hidden = !subscribe;
+  $('#vip-email-label').hidden = !subscribe;
+  if (subscribe && !$('#vip-email').value) $('#vip-email').value = me.email || '';
   $('#vip-subscribe').textContent = subscribe;
   $('#vip-cancel').hidden = !cancel;
   $('#vip-pay-error').textContent = '';
@@ -237,7 +239,7 @@ function showVip() {
 async function vipPay(path) {
   $('#vip-pay-error').textContent = '';
   if (path === '/api/vip/cancel' && !confirm('¿Cancelar la renovación? Seguís siendo VIP hasta la fecha que ya pagaste.')) return;
-  const { ok, body } = await post(path, {});
+  const { ok, body } = await post(path, path === '/api/vip/subscribe' ? { email: $('#vip-email').value.trim() } : {});
   if (!ok) { $('#vip-pay-error').textContent = body.error || 'No se pudo.'; return; }
   if (body.url) { location.href = body.url; return; }
   showAccount();

@@ -322,8 +322,10 @@ async function vipSubscribe(req: Request): Promise<Response> {
   const account = await sessionAccount(req);
   if (!account) return notLoggedIn();
   if (!MP.token || !SITE_URL) return json({ error: 'El pago del VIP todavía no está activado. Escribile a un GM.' }, 503);
-  const email = await accountEmail(sql, account.id);
-  if (!isEmail(email)) return json({ error: 'Para suscribirte, primero cargá tu e-mail acá abajo.' }, 400);
+  // Mercado Pago charges the account behind this e-mail, which need not be the game account's.
+  const body = await readJson(req);
+  const email = normalEmail(body?.email);
+  if (!isEmail(email)) return json({ error: 'Escribí el e-mail de tu cuenta de Mercado Pago.' }, 400);
   const record = await vipRecord(sql, account.id);
   if (record.subscriptionId && record.autoRenew) return json({ error: 'Ya tenés la suscripción activa.' }, 400);
   // VIP still running (a cancelled renewal turned back on): the first charge waits until it ends.
