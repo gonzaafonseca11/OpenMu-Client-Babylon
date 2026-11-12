@@ -254,9 +254,16 @@ async function showAccount() {
   if (!me) return;
   $('#account-name').textContent = me.login;
   showVip();
+  $('#info-login').textContent = me.login;
+  $('#info-email').textContent = me.email || 'Sin e-mail';
   $('#email-current').textContent = me.email
-    ? `Tu e-mail es ${me.email}. Si olvidás la contraseña, te llega ahí.`
-    : 'Tu cuenta no tiene e-mail. Cargalo para poder recuperarla si olvidás la contraseña.';
+    ? 'Si olvidás la contraseña, te llega a ese e-mail.'
+    : 'Cargá un e-mail para poder recuperar la cuenta si olvidás la contraseña.';
+  for (const input of document.querySelectorAll('.tool-form input[name="username"]')) input.value = me.login;
+  const picked = $('#move-name').value;
+  $('#move-name').replaceChildren(...me.characters.map(c => el('option', { value: c.name }, c.name)));
+  if (me.characters.some(c => c.name === picked)) $('#move-name').value = picked;
+  $('#move-form').hidden = !me.characters.length;
   const cards = me.characters.map(characterCard);
   $('#characters').replaceChildren(...(cards.length ? cards : [el('p', { class: 'hint' }, 'Todavía no creaste personajes. ¡Entrá al juego y creá uno!')]));
 }
@@ -541,18 +548,60 @@ document.addEventListener('DOMContentLoaded', () => {
     $('#reset-for').textContent = `Listo: la contraseña de ${body.login} cambió. Ya podés entrar al juego con la nueva.`;
   });
 
+  // One form open at a time under "Tu cuenta"; its button opens and closes it.
+  const toggleForm = (show, hide) => {
+    $('#account-ok').textContent = '';
+    $(hide).hidden = true;
+    $(show).hidden = !$(show).hidden;
+    if (!$(show).hidden) $(show).querySelector('input:not([hidden])').focus();
+  };
+  $('#show-email').addEventListener('click', () => toggleForm('#email-form', '#password-form'));
+  $('#show-password').addEventListener('click', () => toggleForm('#password-form', '#email-form'));
+
   $('#email-form').addEventListener('submit', async e => {
     e.preventDefault();
     const form = new FormData(e.target);
     $('#email-error').textContent = '';
-    $('#email-ok').textContent = '';
     const { ok, body } = await post('/api/account/email', { email: form.get('email'), password: form.get('password') });
     if (!ok) {
       $('#email-error').textContent = body.error || 'No se pudo guardar.';
       return;
     }
     e.target.reset();
-    $('#email-ok').textContent = 'Listo: guardamos tu e-mail.';
+    e.target.hidden = true;
+    $('#account-ok').textContent = 'Listo: guardamos tu e-mail.';
+    showAccount();
+  });
+
+  $('#password-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const form = new FormData(e.target);
+    $('#password-error').textContent = '';
+    if (form.get('newPassword') !== form.get('repeat')) {
+      $('#password-error').textContent = 'Las dos contraseñas nuevas no son iguales.';
+      return;
+    }
+    const { ok, body } = await post('/api/account/password', { password: form.get('password'), newPassword: form.get('newPassword') });
+    if (!ok) {
+      $('#password-error').textContent = body.error || 'No se pudo cambiar.';
+      return;
+    }
+    e.target.reset();
+    e.target.hidden = true;
+    $('#account-ok').textContent = 'Listo: cambiamos tu contraseña. En el juego entrá con la nueva.';
+  });
+
+  $('#move-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const form = new FormData(e.target);
+    $('#move-error').textContent = '';
+    $('#move-ok').textContent = '';
+    const { ok, body } = await post('/api/account/move', { name: form.get('name'), town: form.get('town') });
+    if (!ok) {
+      $('#move-error').textContent = body.error || 'No se pudo mover.';
+      return;
+    }
+    $('#move-ok').textContent = `Listo: ${body.name} está en ${body.town}.`;
     showAccount();
   });
 

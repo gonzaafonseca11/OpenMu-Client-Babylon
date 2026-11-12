@@ -12,6 +12,7 @@ import { normalEmail, openMuHash, openRecovery, passwordProblem, recoveryMail, r
 import { isEmail } from '../../src/modules/servers/registerRules';
 import { vipAddPaidMonth, vipEndingSoon, vipGrant, vipList, vipMarkReminded, vipOf, vipRecord, vipReminderMail, vipSetSubscription } from './vip';
 import { cancelSubscription, createSubscription, getAuthorizedPayment, getSubscription, paymentApproved, signatureValid, type MpConfig } from './mp';
+import { isTown, moveCharacter } from './move';
 import { browseItems, giveItem, giveSet, itemOptions, learnAllSkills, maxMasterTree, onlinePlayers, parseBrowse, readStats, setExcellents, writeStats } from './gm';
 
 /**
@@ -405,6 +406,40 @@ async function mpWebhook(req: Request, url: URL): Promise<Response> {
   return json({ ok: true });
 }
 
+/** A logged-in player changes the password; the current one confirms it is them. The session moves to the new one. */
+async function setPassword(req: Request): Promise<Response> {
+  const account = await sessionAccount(req);
+  if (!account) return notLoggedIn();
+  const body = await readJson(req);
+  const row = await accountHash(sql, account.id);
+  if (!row || typeof body?.password !== 'string' || !(await bcrypt.compare(body.password, row.hash))) return json({ error: 'La contraseña actual no es correcta.' }, 401);
+  const problem = passwordProblem(body?.newPassword);
+  if (problem) return json({ error: problem }, 400);
+  const hash = await openMuHash(String(body?.newPassword));
+  await sql.begin('read write', tx => tx`UPDATE data."Account" SET "PasswordHash" = ${hash} WHERE "Id" = ${account.id}`);
+  process.stdout.write(`password changed from the site by ${account.login}
+`);
+  return json({ ok: true }, 200, { 'Set-Cookie': sessionCookie(issue(SECRET, account.id, hash), SECURE_COOKIE) });
+}
+
+/** "Mover personaje": one of the player's characters to a town, only while the account is out of the game. */
+async function moveOwnCharacter(req: Request): Promise<Response> {
+  const account = await sessionAccount(req);
+  if (!account) return notLoggedIn();
+  const body = await readJson(req);
+  const name = typeof body?.name === 'string' ? body.name.trim() : '';
+  if (!name || name.length > 10 || !isTown(body?.town)) return json({ error: 'Elegí un personaje y una ciudad.' }, 400);
+  const online = OPENMU_API_URL ? await onlinePlayers(OPENMU_API_URL) : null;
+  if (!online) return json({ error: 'No pude ver quién está conectado. Probá de nuevo en un rato.' }, 503);
+  const mine = (await characterNames(sql, account.id)).map(n => n.toLowerCase());
+  if (online.some(n => mine.includes(n.toLowerCase()))) return json({ error: 'Salí del juego primero (con todos tus personajes) y probá de nuevo.' }, 409);
+  const moved = await moveCharacter(sql, account.id, name, body.town);
+  if ('error' in moved) return json(moved, 400);
+  process.stdout.write(`${account.login} moved ${moved.name} to ${moved.town}
+`);
+  return json(moved);
+}
+
 async function setEmail(req: Request): Promise<Response> {
   const account = await sessionAccount(req);
   if (!account) return notLoggedIn();
@@ -503,10 +538,11 @@ Sitemap: ${SITE_URL}/sitemap.xml
         if (path === '/api/mp/webhook') return await mpWebhook(req, url);
         if (path === '/api/vip/subscribe') return await vipSubscribe(req);
         if (path === '/api/vip/cancel') return await vipCancel(req);
-        if (path === '/api/account/email') {
+        if (path === '/api/account/email' || path === '/api/account/password') {
           if (logins.hammering(bucketFor(clientIp(req, server)))) return json({ error: 'Demasiados intentos. Esperá unos minutos.' }, 429);
-          return await setEmail(req);
+          return await (path === '/api/account/email' ? setEmail(req) : setPassword(req));
         }
+        if (path === '/api/account/move') return await moveOwnCharacter(req);
         const answer = await communityPost(path, req);
         if (answer) return answer;
       }

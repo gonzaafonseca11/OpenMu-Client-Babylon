@@ -263,7 +263,15 @@ label.check { display: flex; gap: 8px; align-items: center; font-weight: 400; co
 .gm-form h2 { margin: 0; }
 .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
 .stats-grid label[hidden], .stats-form[hidden] { display: none; }
-.email-form { margin-top: 28px; }
+.account-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 28px; align-items: start; }
+.tool-box { display: grid; gap: 10px; padding: 18px; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; background: rgba(0, 0, 0, 0.25); }
+.tool-box h2 { margin: 0; }
+.tool-box .hint, .tool-box .error, .tool-box .ok { margin: 0; }
+.tool-box label { display: grid; gap: 6px; }
+.tool-form { display: grid; gap: 10px; margin-top: 4px; }
+.account-info { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; }
+.account-info dt { color: var(--muted); }
+.account-info dd { margin: 0; font-weight: 700; overflow-wrap: anywhere; }
 
 /* Whatever a rule's display, an element the script hides stays hidden. */
 [hidden] { display: none !important; }

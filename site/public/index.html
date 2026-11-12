@@ -226,15 +226,52 @@
           <p class="error" id="vip-pay-error" role="alert"></p>
         </div>
         <div id="characters" class="cards"></div>
-        <form id="email-form" class="login-box email-form">
-          <h2>E-mail de la cuenta</h2>
-          <p class="hint" id="email-current"></p>
-          <label>E-mail nuevo <input name="email" type="email" maxlength="100" autocomplete="email" required></label>
-          <label>Tu contraseña actual <input name="password" type="password" maxlength="20" autocomplete="current-password" required></label>
-          <button class="btn btn-play" type="submit">Guardar e-mail</button>
-          <p class="error" id="email-error" role="alert"></p>
-          <p class="ok" id="email-ok" role="status"></p>
-        </form>
+        <div class="account-tools">
+          <div class="tool-box">
+            <h2>Tu cuenta</h2>
+            <dl class="account-info">
+              <dt>Usuario</dt><dd id="info-login"></dd>
+              <dt>E-mail</dt><dd id="info-email"></dd>
+            </dl>
+            <p class="hint" id="email-current"></p>
+            <div class="actions">
+              <button class="btn btn-ghost" type="button" id="show-email">Modificar e-mail</button>
+              <button class="btn btn-ghost" type="button" id="show-password">Cambiar contraseña</button>
+            </div>
+            <p class="ok" id="account-ok" role="status"></p>
+            <form id="email-form" class="tool-form" hidden>
+              <input type="text" name="username" autocomplete="username" hidden>
+              <label>E-mail nuevo <input name="email" type="email" maxlength="100" autocomplete="off" required></label>
+              <label>Tu contraseña actual <input name="password" type="password" maxlength="20" autocomplete="current-password" required></label>
+              <button class="btn btn-play" type="submit">Guardar e-mail</button>
+              <p class="error" id="email-error" role="alert"></p>
+            </form>
+            <form id="password-form" class="tool-form" hidden>
+              <input type="text" name="username" autocomplete="username" hidden>
+              <label>Contraseña actual <input name="password" type="password" maxlength="20" autocomplete="current-password" required></label>
+              <label>Contraseña nueva <input name="newPassword" type="password" maxlength="20" autocomplete="new-password" required></label>
+              <label>Repetí la contraseña nueva <input name="repeat" type="password" maxlength="20" autocomplete="new-password" required></label>
+              <button class="btn btn-play" type="submit">Cambiar contraseña</button>
+              <p class="error" id="password-error" role="alert"></p>
+            </form>
+          </div>
+          <form class="tool-box" id="move-form">
+            <h2>Mover personaje</h2>
+            <p class="hint">¿Un personaje quedó trabado? Mandalo a una ciudad. Antes salí del juego.</p>
+            <label>Personaje <select name="name" id="move-name" required></select></label>
+            <label>Ciudad
+              <select name="town" required>
+                <option value="lorencia">Lorencia</option>
+                <option value="noria">Noria</option>
+                <option value="devias">Devias</option>
+                <option value="elvenland">Elvenland</option>
+              </select>
+            </label>
+            <button class="btn btn-play" type="submit">Mover</button>
+            <p class="error" id="move-error" role="alert"></p>
+            <p class="ok" id="move-ok" role="status"></p>
+          </form>
+        </div>
       </div>
     </section>
 
