@@ -51,7 +51,7 @@ public class SocketExcellentDropPlugIn : IAttackableGotKilledPlugIn
         var definition = candidates[Random.Shared.Next(candidates.Count)];
         var item = new TemporaryItem { Definition = definition };
         item.SocketCount = Random.Shared.Next(1, definition.MaximumSockets + 1);
-        item.HasSkill = item.CanHaveSkill();
+        item.HasSkill = definition.Skill is not null;
         AddExcellentOptions(item);
         item.Durability = item.GetMaximumDurabilityOfOnePiece();
 
