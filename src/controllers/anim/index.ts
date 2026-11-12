@@ -1,5 +1,5 @@
 // Public API of the anim controller: code outside this folder imports from here.
-export { monsterPlaySpeed } from './playSpeed';
+export { monsterPlaySpeed, setServerAttackSpeedMax } from './playSpeed';
 export { animations, defineAnimation, registerAnimations, AnimationRegistry } from './animation';
 export { resolveGenderedAction } from './playerActionMapper';
 export type { AnimationDef, FrameSpeed, PlayerActionName, SpeedRule } from './animation';

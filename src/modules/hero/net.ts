@@ -2,6 +2,7 @@ import { BaseStatsExtendedPacket, CharacterInformationExtendedPacket, CharacterI
 import { Commands } from '../chat/commands';
 import { Economy } from '../economy/economy';
 import { EventBus } from '@/core/eventBus';
+import { setServerAttackSpeedMax } from '@/controllers/anim';
 import { GmPanel } from '../gm/gmPanel';
 import { Messenger } from '../friends/messenger';
 import { PlayerAction } from '@versions/shared/objects/enum';
@@ -46,7 +47,7 @@ type CharacterInformationView = Pick<
   | 'CurrentAbility'
   | 'MaximumAbility'
   | 'Status'
-> & { AttackSpeed?: number; MagicSpeed?: number };
+> & { AttackSpeed?: number; MagicSpeed?: number; MaximumAttackSpeed?: number };
 
 /**
  * `CharacterStatus.GameMaster`. Tested as a bit rather than compared: the
@@ -120,6 +121,7 @@ function applyCharacterInformation(p: CharacterInformationView, narrow = true) {
     // Only the extended packet carries the server's speed values.
     playerData.attackSpeed = p.AttackSpeed ?? null;
     playerData.magicSpeed = p.MagicSpeed ?? null;
+    setServerAttackSpeedMax(p.MaximumAttackSpeed);
 
     // No HeroState in this packet; neutral until the scope add carries it.
     playerData.heroState = 3;

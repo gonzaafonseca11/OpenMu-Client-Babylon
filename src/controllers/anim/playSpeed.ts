@@ -199,14 +199,21 @@ const SERVER_ATTACK_SAFETY_MARGIN = 1.1;
  * attribute's MaximumValue, 200 in the Season 6 data, while the client - which the server does not
  * send the value to - works it out from agility uncapped (a Grand Master with 32767 agility: 1638).
  * Uncapped, the floor came out at 66 ms against the server's 210 ms and a held Evil Spirit drew a
- * speed-check warning every 5 s (10 in an hour disconnect).
+ * speed-check warning every 5 s (10 in an hour disconnect). A server that raises the cap says so in
+ * CharacterInformationExtended's MaximumAttackSpeed.
  */
 const SERVER_ATTACK_SPEED_MAX = 200;
+let serverAttackSpeedMax = SERVER_ATTACK_SPEED_MAX;
+
+/** The server's attack speed cap, from its character information; 0 or missing keeps 200. */
+export function setServerAttackSpeedMax(max: number | undefined): void {
+  serverAttackSpeedMax = max && max > 0 ? max : SERVER_ATTACK_SPEED_MAX;
+}
 
 export function serverMinAttackInterval(attackSpeed: number): number {
   const ms = Math.max(
     SERVER_ATTACK_MIN_INTERVAL_MS,
-    SERVER_ATTACK_BASE_DELAY_MS - Math.min(attackSpeed, SERVER_ATTACK_SPEED_MAX) * SERVER_ATTACK_SCALING_FACTOR
+    SERVER_ATTACK_BASE_DELAY_MS - Math.min(attackSpeed, serverAttackSpeedMax) * SERVER_ATTACK_SCALING_FACTOR
   );
   return (ms / 1000) * SERVER_ATTACK_SAFETY_MARGIN;
 }
