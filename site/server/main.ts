@@ -90,7 +90,7 @@ const INDEX = readFileSync(join(PUBLIC, 'index.html'), 'utf8')
 const STATIC: Record<string, { file: string; type: string }> = {
   '/site.css': { file: join(PUBLIC, 'site.css'), type: 'text/css; charset=utf-8' },
   '/site.js': { file: join(PUBLIC, 'site.js'), type: 'text/javascript; charset=utf-8' },
-  '/logo.webp': { file: join(import.meta.dir, '..', '..', 'public', 'ui', 'world_select', 'logo.webp'), type: 'image/webp' },
+  '/logo.webp': { file: join(import.meta.dir, '..', 'public', 'logo.webp'), type: 'image/webp' },
 };
 
 const SECURITY_HEADERS = {
