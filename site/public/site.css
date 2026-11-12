@@ -120,6 +120,11 @@ h1 { margin: 0 0 4px; font-size: 28px; }
 .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
 
 .ranking { width: 100%; border-collapse: collapse; }
+.info-table { width: 100%; border-collapse: collapse; }
+.info-table th, .info-table td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+.info-table tbody th { white-space: nowrap; color: var(--gold); }
+.info-table thead th { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; }
+.info-table tbody tr:last-child th, .info-table tbody tr:last-child td { border-bottom: 0; }
 .ranking caption { padding: 18px; color: var(--muted); caption-side: bottom; }
 .ranking th, .ranking td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
 .ranking th { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; }
