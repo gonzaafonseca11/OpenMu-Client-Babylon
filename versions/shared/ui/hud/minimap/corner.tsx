@@ -142,10 +142,14 @@ export const MinimapCorner = observer(() => {
       }
 
       const pos = current.playerEntity?.transform?.pos;
-      const picture = pictureRef.current;
-      if (!pos || !picture || (pos.x === lastX && pos.z === lastY)) return;
+      if (!pos || (pos.x === lastX && pos.z === lastY)) return;
       lastX = pos.x;
       lastY = pos.z;
+      if (coordsRef.current) {
+        coordsRef.current.textContent = `${Math.floor(pos.x)}, ${Math.floor(pos.z)}`;
+      }
+      const picture = pictureRef.current;
+      if (!picture) return;
 
       const heroTx = (pos.z / TERRAIN_SIZE) * mapSize;
       const heroTy = (pos.x / TERRAIN_SIZE) * mapSize;
@@ -157,16 +161,24 @@ export const MinimapCorner = observer(() => {
         hero.style.left = `${heroTx - HERO_SIZE / 2}px`;
         hero.style.top = `${heroTy - HERO_SIZE / 2}px`;
       }
-      if (coordsRef.current) {
-        coordsRef.current.textContent = `${Math.floor(pos.x)}, ${Math.floor(pos.z)}`;
-      }
     };
 
     tick();
     return () => cancelAnimationFrame(frame);
   }, [shown, map, mapSize, minimap, pan]);
 
-  if (!shown || !minimap) return null;
+  if (!shown || minimap === undefined) return null;
+
+  // A map with no minimap art (Arena, the event maps): the coordinates alone, where the bar would be.
+  if (minimap === null) {
+    return (
+      <div className="minimap-corner-panel" style={{ width: PANEL, height: 0, transform: `scale(${scale})` }}>
+        <div className="minimap-corner-bar" style={{ transform: `scale(${1 / PANEL_SCALE})` }}>
+          <div ref={coordsRef} className="minimap-corner-coords" />
+        </div>
+      </div>
+    );
+  }
 
   const onWheel = (event: React.WheelEvent) => {
     setZoom(z =>
