@@ -364,9 +364,9 @@ async function mpWebhook(req: Request, url: URL): Promise<Response> {
   const data = body?.data as { id?: unknown } | undefined;
   const dataId = url.searchParams.get('data.id') ?? (data?.id === undefined ? '' : String(data.id));
   const type = String(body?.type ?? url.searchParams.get('type') ?? '');
-  if (!signatureValid(MP.webhookSecret, req.headers.get('x-signature'), req.headers.get('x-request-id'), dataId)) {
-    return json({ error: 'firma inválida' }, 401);
-  }
+  const signed = signatureValid(MP.webhookSecret, req.headers.get('x-signature'), req.headers.get('x-request-id'), dataId);
+  process.stdout.write(`mp webhook in: type=${type} id=${dataId} signed=${signed} query=${url.search}\n`);
+  if (!signed) return json({ error: 'firma inválida' }, 401);
   try {
     if (type === 'subscription_preapproval') {
       const sub = await getSubscription(MP, dataId);
