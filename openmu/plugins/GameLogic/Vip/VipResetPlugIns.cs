@@ -52,14 +52,19 @@ public class VipResetChatCommandPlugIn : IChatCommandPlugIn
 [PlugIn]
 [Display(Name = "Reset NPC (VIP 350)", Description = "Leo the Helper resets at level 350 on the VIP server, 400 on the others.")]
 [Guid("F4B8D1E6-2C95-4A3B-A7F0-5E6C8D2B9A14")]
-public class VipResetNpcPlugIn : NpcTalkPlugInBase
+public class VipResetNpcPlugIn : IPlayerTalkToNpcPlugIn
 {
-    /// <inheritdoc />
-    public override short DefaultNpcNumber => 371;
+    /// <summary>Leo the Helper.</summary>
+    private const short LeoTheHelper = 371;
 
     /// <inheritdoc />
-    protected override async ValueTask PlayerTalksToConfiguredNpcAsync(Player player, NonPlayerCharacter npc, NpcTalkEventArgs eventArgs)
+    public async ValueTask PlayerTalksToNpcAsync(Player player, NonPlayerCharacter npc, NpcTalkEventArgs eventArgs)
     {
+        if (npc.Definition.Number != LeoTheHelper)
+        {
+            return;
+        }
+
         eventArgs.HasBeenHandled = true;
         await VipReset.ResetAsync(player, npc).ConfigureAwait(false);
     }
