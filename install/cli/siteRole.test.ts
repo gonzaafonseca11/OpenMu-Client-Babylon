@@ -18,6 +18,7 @@ describe('website', () => {
     expect(sqlText).toContain('GRANT INSERT ON data."Item", data."ItemOptionLink", data."SkillEntry", data."ItemItemOfItemSet" TO mu_site;');
     expect(sqlText).toContain('GRANT UPDATE ("Value") ON data."StatAttribute" TO mu_site;');
     expect(sqlText.match(/GRANT (INSERT|UPDATE)[^;]*;/g)).toHaveLength(5);
+    expect(sqlText).toContain('GRANT SELECT, INSERT ON mu_plugins.vip_payment TO mu_site;');
     expect(sqlText).toContain('GRANT SELECT, INSERT, UPDATE ON mu_plugins.vip TO mu_site;');
   });
 

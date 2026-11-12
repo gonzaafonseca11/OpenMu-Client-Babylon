@@ -42,3 +42,33 @@ export async function vipGrant(sql: Sql, login: string, days: number): Promise<{
     return { login: String(acc.login), until: (row.until as Date).toISOString() };
   });
 }
+
+/** The account's Mercado Pago subscription id and VIP end, running or not. */
+export async function vipRecord(sql: Sql, accountId: string): Promise<{ subscriptionId: string | null; until: Date | null; autoRenew: boolean }> {
+  const [row] = await sql`SELECT subscription_id, until, auto_renew FROM mu_plugins.vip WHERE account_id = ${accountId}`;
+  return row
+    ? { subscriptionId: (row.subscription_id as string | null) ?? null, until: row.until as Date, autoRenew: Boolean(row.auto_renew) }
+    : { subscriptionId: null, until: null, autoRenew: false };
+}
+
+/** Records the account's subscription and whether it renews; a new account row starts expired (now) until a charge comes in. */
+export async function vipSetSubscription(sql: Sql, accountId: string, subscriptionId: string, autoRenew: boolean): Promise<void> {
+  await sql.begin('read write', async tx => {
+    await tx`
+      INSERT INTO mu_plugins.vip (account_id, until, auto_renew, subscription_id) VALUES (${accountId}, now(), ${autoRenew}, ${subscriptionId})
+      ON CONFLICT (account_id) DO UPDATE SET auto_renew = ${autoRenew}, subscription_id = ${subscriptionId}, updated_at = now()`;
+  });
+}
+
+/** One paid month on top of what is left; a payment already counted adds nothing. Returns the new end, or null when it was a repeat. */
+export async function vipAddPaidMonth(sql: Sql, accountId: string, paymentId: string): Promise<Date | null> {
+  return sql.begin('read write', async tx => {
+    const [fresh] = await tx`INSERT INTO mu_plugins.vip_payment (id, account_id) VALUES (${paymentId}, ${accountId}) ON CONFLICT (id) DO NOTHING RETURNING id`;
+    if (!fresh) return null;
+    const [row] = await tx`
+      INSERT INTO mu_plugins.vip (account_id, until) VALUES (${accountId}, now() + interval '1 month')
+      ON CONFLICT (account_id) DO UPDATE SET until = greatest(mu_plugins.vip.until, now()) + interval '1 month', updated_at = now()
+      RETURNING until`;
+    return row.until as Date;
+  });
+}

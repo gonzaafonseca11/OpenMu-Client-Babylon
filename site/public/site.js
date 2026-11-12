@@ -214,6 +214,35 @@ function applySession() {
   $('#gm-tab').hidden = !me?.moderator;
 }
 
+/** The VIP box on Mi cuenta: what the player has and the one button that changes it. */
+function showVip() {
+  const price = `${fmt(me.vipPrice)}`;
+  const until = me.vip ? new Date(me.vip.until).toLocaleDateString('es-AR') : '';
+  let text;
+  let subscribe = '';
+  let cancel = false;
+  if (me.vip && me.vipRenews) { text = `⭐ VIP activo. Se renueva solo el ${until} (${price}).`; cancel = true; }
+  else if (me.vip) { text = `⭐ VIP activo hasta el ${until}. No se va a renovar.`; subscribe = 'Volver a activar la renovación'; }
+  else if (me.vipRenews) { text = '⭐ Tu suscripción está activa: el VIP se enciende cuando Mercado Pago confirme el pago.'; cancel = true; }
+  else { text = `⭐ VIP: ${price} por mes. Experiencia x999, joyas al doble y reset en nivel 350.`; subscribe = 'Suscribirme'; }
+  if (!me.vipPay) subscribe = '';
+  $('#vip-box').hidden = !me.vip && !me.vipRenews && !me.vipPay;
+  $('#vip-status').textContent = text;
+  $('#vip-subscribe').hidden = !subscribe;
+  $('#vip-subscribe').textContent = subscribe;
+  $('#vip-cancel').hidden = !cancel;
+  $('#vip-pay-error').textContent = '';
+}
+
+async function vipPay(path) {
+  $('#vip-pay-error').textContent = '';
+  if (path === '/api/vip/cancel' && !confirm('¿Cancelar la renovación? Seguís siendo VIP hasta la fecha que ya pagaste.')) return;
+  const { ok, body } = await post(path, {});
+  if (!ok) { $('#vip-pay-error').textContent = body.error || 'No se pudo.'; return; }
+  if (body.url) { location.href = body.url; return; }
+  showAccount();
+}
+
 async function showAccount() {
   await loadMe();
   $('#login-box').hidden = !!me;
@@ -221,10 +250,7 @@ async function showAccount() {
   applySession();
   if (!me) return;
   $('#account-name').textContent = me.login;
-  $('#vip-status').hidden = !me.vip;
-  if (me.vip) $('#vip-status').textContent = me.vip.autoRenew
-    ? `⭐ VIP activo. Se renueva solo el ${new Date(me.vip.until).toLocaleDateString('es-AR')}.`
-    : `⭐ VIP activo hasta el ${new Date(me.vip.until).toLocaleDateString('es-AR')}.`;
+  showVip();
   $('#email-current').textContent = me.email
     ? `Tu e-mail es ${me.email}. Si olvidás la contraseña, te llega ahí.`
     : 'Tu cuenta no tiene e-mail. Cargalo para poder recuperarla si olvidás la contraseña.';
@@ -532,6 +558,8 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#gm-results').addEventListener('change', gmPick);
   $('#gm-form').addEventListener('submit', gmGive);
   $('#vip-form').addEventListener('submit', vipSave);
+  $('#vip-subscribe').addEventListener('click', () => vipPay('/api/vip/subscribe'));
+  $('#vip-cancel').addEventListener('click', () => vipPay('/api/vip/cancel'));
   $('#stats-find').addEventListener('submit', statsLoad);
   $('#stats-form').addEventListener('submit', statsSave);
   $('#stats-skills').addEventListener('click', async e => {

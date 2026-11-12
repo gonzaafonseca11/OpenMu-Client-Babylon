@@ -190,7 +190,14 @@
           <h1>Hola, <span id="account-name"></span></h1>
           <button class="btn btn-ghost" id="logout" type="button">Salir</button>
         </div>
-        <p class="vip-status" id="vip-status" hidden></p>
+        <div class="vip-box" id="vip-box" hidden>
+          <p class="vip-status" id="vip-status"></p>
+          <div class="actions">
+            <button class="btn btn-play" type="button" id="vip-subscribe" hidden>Suscribirme</button>
+            <button class="btn btn-ghost" type="button" id="vip-cancel" hidden>Cancelar renovación</button>
+          </div>
+          <p class="error" id="vip-pay-error" role="alert"></p>
+        </div>
         <div id="characters" class="cards"></div>
         <form id="email-form" class="login-box email-form">
           <h2>E-mail de la cuenta</h2>

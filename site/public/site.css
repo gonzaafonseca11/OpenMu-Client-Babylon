@@ -121,7 +121,9 @@ h1 { margin: 0 0 4px; font-size: 28px; }
 
 .ranking { width: 100%; border-collapse: collapse; }
 .info-table { width: 100%; border-collapse: collapse; }
-.vip-status { margin: 0 0 16px; padding: 12px 16px; border: 1px solid var(--gold); border-radius: 10px; color: var(--gold); font-weight: 700; }
+.vip-box { margin: 0 0 16px; padding: 12px 16px; border: 1px solid var(--gold); border-radius: 10px; }
+.vip-box .actions { justify-content: flex-start; margin: 8px 0 0; }
+.vip-status { margin: 0; color: var(--gold); font-weight: 700; }
 .info-table th, .info-table td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
 .info-table tbody th { white-space: nowrap; color: var(--gold); }
 .info-table thead th { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; }

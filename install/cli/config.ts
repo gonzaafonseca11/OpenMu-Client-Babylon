@@ -32,6 +32,12 @@ export type Config = {
   siteMailKey: string;
   /** The recovery mail's sender, e.g. `Mu Bardo <cuentas@example.com>` on a domain verified at Resend. */
   siteMailFrom: string;
+  /** Mercado Pago access token for the VIP subscription (TEST-... or APP_USR-...); empty = VIP payments off. */
+  siteMpToken: string;
+  /** Mercado Pago webhook secret: the site checks each notification's signature with it. */
+  siteMpWebhookSecret: string;
+  /** The VIP subscription's monthly price in pesos. */
+  vipPrice: number;
   band: boolean;
   ping: boolean;
   weather: boolean;
@@ -96,6 +102,9 @@ const KEYS: Record<keyof Config, string> = {
   siteSessionSecret: 'MU_SITE_SESSION_SECRET',
   siteMailKey: 'MU_SITE_MAIL_KEY',
   siteMailFrom: 'MU_SITE_MAIL_FROM',
+  siteMpToken: 'MU_SITE_MP_TOKEN',
+  siteMpWebhookSecret: 'MU_SITE_MP_WEBHOOK_SECRET',
+  vipPrice: 'MU_VIP_PRICE',
   band: 'MU_BAND',
   ping: 'MU_PING',
   weather: 'MU_WEATHER',
@@ -144,6 +153,9 @@ export const DEFAULTS: Config = {
   siteSessionSecret: '',
   siteMailKey: '',
   siteMailFrom: '',
+  siteMpToken: '',
+  siteMpWebhookSecret: '',
+  vipPrice: 5000,
   band: true,
   ping: true,
   weather: true,

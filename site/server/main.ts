@@ -10,7 +10,8 @@ import { openCommunity } from './community';
 import { chatBanned, chatMessage, chatTooFast, clean, isBanned, isModerator, newsPost, REPORT_STATUSES, REPORTS_PER_HOUR, reportPost } from './rules';
 import { normalEmail, openMuHash, openRecovery, passwordProblem, recoveryMail, recoveryTargets, sendMail } from './recovery';
 import { isEmail } from '../../src/modules/servers/registerRules';
-import { vipGrant, vipList, vipOf } from './vip';
+import { vipAddPaidMonth, vipGrant, vipList, vipOf, vipRecord, vipSetSubscription } from './vip';
+import { cancelSubscription, createSubscription, getAuthorizedPayment, getSubscription, paymentApproved, signatureValid, type MpConfig } from './mp';
 import { browseItems, giveItem, giveSet, itemOptions, learnAllSkills, maxMasterTree, onlinePlayers, parseBrowse, readStats, setExcellents, writeStats } from './gm';
 
 /**
@@ -35,6 +36,13 @@ const MAIL_API_KEY = process.env.MAIL_API_KEY || '';
 const MAIL_FROM = process.env.MAIL_FROM || '';
 /** The site's public address, for the links in recovery mail. */
 const SITE_URL = (process.env.SITE_URL || '').replace(/\/$/, '');
+/** The VIP subscription (site/server/mp.ts); payments are off while the token is empty. */
+const MP: MpConfig = {
+  token: process.env.MP_ACCESS_TOKEN || '',
+  webhookSecret: process.env.MP_WEBHOOK_SECRET || '',
+  price: Number(process.env.VIP_PRICE || 5000),
+  siteUrl: SITE_URL,
+};
 const SITE_DB_PATH = process.env.SITE_DB_PATH || join(import.meta.dir, '..', '.data', 'site.sqlite');
 
 /** Login attempts per network in ten minutes: enough for typos, too few to guess passwords. */
@@ -309,6 +317,75 @@ async function resetPassword(req: Request): Promise<Response> {
 }
 
 /** A logged-in player sets the account's e-mail; the current password confirms it is them. */
+/** "Suscribirme": a Mercado Pago subscription for the account; the player authorizes it there. */
+async function vipSubscribe(req: Request): Promise<Response> {
+  const account = await sessionAccount(req);
+  if (!account) return notLoggedIn();
+  if (!MP.token || !SITE_URL) return json({ error: 'El pago del VIP todavía no está activado. Escribile a un GM.' }, 503);
+  const email = await accountEmail(sql, account.id);
+  if (!isEmail(email)) return json({ error: 'Para suscribirte, primero cargá tu e-mail acá abajo.' }, 400);
+  const record = await vipRecord(sql, account.id);
+  if (record.subscriptionId && record.autoRenew) return json({ error: 'Ya tenés la suscripción activa.' }, 400);
+  // VIP still running (a cancelled renewal turned back on): the first charge waits until it ends.
+  const start = record.until && record.until.getTime() > Date.now() ? record.until : undefined;
+  try {
+    const sub = await createSubscription(MP, account.id, email, start);
+    await vipSetSubscription(sql, account.id, sub.id, false);
+    process.stdout.write(`vip subscribe ${account.login} ${sub.id}\n`);
+    return json({ url: sub.init_point });
+  } catch (err) {
+    process.stderr.write(`vip subscribe ${account.login} failed: ${err}\n`);
+    return json({ error: 'Mercado Pago no respondió. Probá de nuevo en un rato.' }, 502);
+  }
+}
+
+/** "Cancelar renovación": Mercado Pago stops charging; the VIP already paid runs to its end. */
+async function vipCancel(req: Request): Promise<Response> {
+  const account = await sessionAccount(req);
+  if (!account) return notLoggedIn();
+  const record = await vipRecord(sql, account.id);
+  if (!record.subscriptionId || !record.autoRenew) return json({ error: 'No tenés una renovación activa.' }, 400);
+  try {
+    await cancelSubscription(MP, record.subscriptionId);
+    await vipSetSubscription(sql, account.id, record.subscriptionId, false);
+    process.stdout.write(`vip cancel ${account.login} ${record.subscriptionId}\n`);
+    return json({ ok: true });
+  } catch (err) {
+    process.stderr.write(`vip cancel ${account.login} failed: ${err}\n`);
+    return json({ error: 'Mercado Pago no respondió. Probá de nuevo en un rato.' }, 502);
+  }
+}
+
+/** Mercado Pago's notifications: a subscription changed, or a monthly charge happened. Signed (mp.ts). */
+async function mpWebhook(req: Request, url: URL): Promise<Response> {
+  const body = await readJson(req);
+  const data = body?.data as { id?: unknown } | undefined;
+  const dataId = url.searchParams.get('data.id') ?? (data?.id === undefined ? '' : String(data.id));
+  const type = String(body?.type ?? url.searchParams.get('type') ?? '');
+  if (!signatureValid(MP.webhookSecret, req.headers.get('x-signature'), req.headers.get('x-request-id'), dataId)) {
+    return json({ error: 'firma inválida' }, 401);
+  }
+  try {
+    if (type === 'subscription_preapproval') {
+      const sub = await getSubscription(MP, dataId);
+      if (sub.external_reference) await vipSetSubscription(sql, sub.external_reference, sub.id, sub.status === 'authorized');
+    } else if (type === 'subscription_authorized_payment') {
+      const pay = await getAuthorizedPayment(MP, dataId);
+      if (paymentApproved(pay)) {
+        const sub = await getSubscription(MP, pay.preapproval_id);
+        if (sub.external_reference) {
+          const until = await vipAddPaidMonth(sql, sub.external_reference, `ap-${pay.id}`);
+          if (until) process.stdout.write(`vip paid ${sub.external_reference} until ${until.toISOString()}\n`);
+        }
+      }
+    }
+  } catch (err) {
+    process.stderr.write(`mp webhook ${type} ${dataId} failed: ${err}\n`);
+    return json({ error: 'reintentar' }, 500);
+  }
+  return json({ ok: true });
+}
+
 async function setEmail(req: Request): Promise<Response> {
   const account = await sessionAccount(req);
   if (!account) return notLoggedIn();
@@ -364,7 +441,7 @@ Bun.serve({
       if (req.method === 'GET' && path === '/api/me') {
         const account = await sessionAccount(req);
         if (!account) return json({ error: 'No iniciaste sesión.' }, 401);
-        return json({ login: account.login, email: await accountEmail(sql, account.id), vip: await vipOf(sql, account.id), moderator: account.moderator, chatBanned: account.chatBanned, characters: await accountCharacters(sql, account.id) });
+        return json({ login: account.login, email: await accountEmail(sql, account.id), vip: await vipOf(sql, account.id), vipRenews: (await vipRecord(sql, account.id)).autoRenew, vipPrice: MP.price, vipPay: Boolean(MP.token), moderator: account.moderator, chatBanned: account.chatBanned, characters: await accountCharacters(sql, account.id) });
       }
       if (req.method === 'GET' && path === '/api/reset') {
         const id = recovery.peek(url.searchParams.get('token') ?? '');
@@ -393,6 +470,9 @@ Bun.serve({
         if (path === '/api/logout') return json({ ok: true }, 200, { 'Set-Cookie': clearedCookie(SECURE_COOKIE) });
         if (path === '/api/recover') return await recover(req, clientIp(req, server));
         if (path === '/api/reset') return await resetPassword(req);
+        if (path === '/api/mp/webhook') return await mpWebhook(req, url);
+        if (path === '/api/vip/subscribe') return await vipSubscribe(req);
+        if (path === '/api/vip/cancel') return await vipCancel(req);
         if (path === '/api/account/email') {
           if (logins.hammering(bucketFor(clientIp(req, server)))) return json({ error: 'Demasiados intentos. Esperá unos minutos.' }, 429);
           return await setEmail(req);
