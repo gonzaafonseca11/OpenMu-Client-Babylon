@@ -42,12 +42,12 @@ export function newsPost(title: unknown, body: unknown): { title: string; body: 
   return { title: t, body: b };
 }
 
-export const REPORT_KINDS = ['bug', 'player', 'other'] as const;
+export const REPORT_KINDS = ['bug', 'player', 'migration', 'other'] as const;
 export const REPORT_STATUSES = ['open', 'seen', 'done'] as const;
 export const REPORT_BODY_MAX = 2000;
 export const REPORTS_PER_HOUR = 5;
 
-/** A report to store, or why not. The link is optional and must be http(s). */
+/** A report to store, or why not. The link is optional and must be http(s); a migration needs it (the proof). */
 export function reportPost(kind: unknown, target: unknown, body: unknown, link: unknown):
   { kind: string; target: string; body: string; link: string } | { error: string } {
   if (!REPORT_KINDS.includes(kind as never)) return { error: 'Elegí el tipo de reporte.' };
@@ -58,6 +58,7 @@ export function reportPost(kind: unknown, target: unknown, body: unknown, link: 
   if (b.length > REPORT_BODY_MAX) return { error: `Máximo ${REPORT_BODY_MAX} caracteres.` };
   const l = clean(link, false);
   if (l && (l.length > 300 || !/^https?:\/\/[^\s]+$/i.test(l))) return { error: 'El link tiene que empezar con http:// o https://' };
+  if (kind === 'migration' && !l) return { error: 'Para migrar, pegá el link con las capturas o el video de tu personaje.' };
   return { kind: kind as string, target: kind === 'player' ? t : '', body: b, link: l };
 }
 

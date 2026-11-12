@@ -102,7 +102,7 @@ async function loadNews() {
 
 /* -------------------------------------------------------------- reports */
 
-const REPORT_KIND = { bug: 'Bug', player: 'Jugador', other: 'Otro' };
+const REPORT_KIND = { bug: 'Bug', player: 'Jugador', migration: 'Migración', other: 'Otro' };
 const REPORT_STATUS = { open: 'Pendiente', seen: 'Revisado', done: 'Resuelto' };
 
 function reportItem(r, staff) {
@@ -528,7 +528,12 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const b of boxes) b.checked = !all;
   });
 
-  $('#report-kind').addEventListener('change', e => { $('#report-target').hidden = e.target.value !== 'player'; });
+  $('#report-kind').addEventListener('change', e => {
+    const kind = e.target.value;
+    $('#report-target').hidden = kind !== 'player';
+    $('#report-migration').hidden = kind !== 'migration';
+    $('#report-link-label').textContent = kind === 'migration' ? 'Link de las capturas o el video (obligatorio)' : 'Link de prueba (opcional)';
+  });
   $('#report-form').addEventListener('submit', async e => {
     e.preventDefault();
     const form = new FormData(e.target);

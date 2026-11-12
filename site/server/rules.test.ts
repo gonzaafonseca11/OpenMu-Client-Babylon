@@ -43,6 +43,8 @@ describe('reports', () => {
     expect(reportPost('player', 'Pepe', 'hack', 'https://imgur.com/x')).toEqual({ kind: 'player', target: 'Pepe', body: 'hack', link: 'https://imgur.com/x' });
     expect(reportPost('player', '', 'hack', '')).toHaveProperty('error');
     expect(reportPost('nope', '', 'x', '')).toHaveProperty('error');
+    expect(reportPost('migration', '', 'mi DK de MuX', '')).toHaveProperty('error');
+    expect(reportPost('migration', 'x', 'mi DK de MuX', 'https://imgur.com/a/1')).toEqual({ kind: 'migration', target: '', body: 'mi DK de MuX', link: 'https://imgur.com/a/1' });
     expect(reportPost('bug', '', 'x', 'javascript:alert(1)')).toHaveProperty('error');
   });
 });

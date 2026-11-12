@@ -51,12 +51,22 @@
             <select name="kind" id="report-kind">
               <option value="bug">Bug o error del juego</option>
               <option value="player">Jugador tramposo o abusivo</option>
+              <option value="migration">Migrar cuenta de otro MU</option>
               <option value="other">Otro</option>
             </select>
           </label>
           <label id="report-target" hidden>Personaje reportado <input name="target" maxlength="10" autocomplete="off"></label>
+          <div class="hint" id="report-migration" hidden>
+            <p><b>Migración desde otro MU.</b> Si tenés personajes fuertes en otro servidor, los pasamos acá. Se migra:</p>
+            <ul>
+              <li>El <b>nombre</b> de cada personaje (si está libre en Mu Bardo).</li>
+              <li>Los <b>puntos</b> (fuerza, agilidad, vitalidad, energía y comando).</li>
+              <li>La <b>armadura y armas que lleva puestas</b>.</li>
+            </ul>
+            <p>No se migra el inventario, el baúl, el zen ni las joyas. Contá en el texto de qué MU venís y qué personajes son, y pegá abajo el link con las <b>capturas o el video</b> donde se vean el personaje, sus puntos y lo que tiene puesto. La migración tarda <b>hasta 7 días</b>.</p>
+          </div>
           <label>¿Qué pasó? <textarea name="body" maxlength="2000" rows="5" placeholder="Contá qué pasó, dónde y cuándo." required></textarea></label>
-          <label>Link de prueba (opcional) <input name="link" type="url" maxlength="300" placeholder="https://..."></label>
+          <label><span id="report-link-label">Link de prueba (opcional)</span> <input name="link" type="url" maxlength="300" placeholder="https://..."></label>
           <p class="hint small">Subí la foto a <a href="https://imgur.com/upload" target="_blank" rel="noopener">imgur.com</a> o <a href="https://prnt.sc" target="_blank" rel="noopener">prnt.sc</a>, y el video a YouTube (como "no listado") o <a href="https://streamable.com" target="_blank" rel="noopener">streamable.com</a>. Después pegá el link acá.</p>
           <button class="btn btn-play" type="submit">Enviar reporte</button>
           <p class="error" id="report-error" role="alert"></p>
