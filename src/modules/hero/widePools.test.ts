@@ -23,5 +23,7 @@ describe('16-bit pools past 65535', () => {
     expect(unwrapCurrent(63000, 120000, 129402)).toBe(128536);
     expect(unwrapCurrent(1000, 2000, 129402)).toBe(1000);
     expect(unwrapCurrent(500, 400, 1000)).toBe(500);
+    // Full: the low bits of the maximum mean the maximum, even after a wrong guess (18232 of 83768).
+    expect(unwrapCurrent(18232, 18232, 83768)).toBe(83768);
   });
 });

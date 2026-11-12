@@ -42,6 +42,8 @@ export function unwrapMaximum(wrapped: number, floor: number): number {
 /** A wrapped current value: of the values with those low 16 bits up to the maximum, the nearest to the last one. */
 export function unwrapCurrent(wrapped: number, last: number, max: number): number {
   if (wrapped >= TURN || max < TURN) return wrapped;
+  // The pool is full: the server sends the maximum, so a wrong earlier guess cannot stick.
+  if (wrapped === max % TURN) return max;
   let best = wrapped;
   for (let v = wrapped; v <= max; v += TURN) if (Math.abs(v - last) < Math.abs(best - last)) best = v;
   return best;
