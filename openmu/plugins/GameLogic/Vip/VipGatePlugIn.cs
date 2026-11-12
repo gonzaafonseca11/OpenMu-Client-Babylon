@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Extensions.Logging;
 using MUnique.OpenMU.DataModel.Entities;
 using MUnique.OpenMU.GameLogic.PlugIns;
+using MUnique.OpenMU.Persistence;
 using MUnique.OpenMU.PlugIns;
 
 /// <summary>
@@ -25,6 +26,7 @@ public class VipGatePlugIn : IPlayerStateChangingPlugIn
         if (eventArgs.NextState != PlayerState.EnteredWorld
             || !Vip.OnVipServer(player)
             || player.Account is not { } account
+            || account is not IIdentifiable identifiable
             || account.State is AccountState.GameMaster or AccountState.GameMasterInvisible)
         {
             return;
@@ -33,7 +35,7 @@ public class VipGatePlugIn : IPlayerStateChangingPlugIn
         bool vip;
         try
         {
-            vip = await Vip.IsVipAsync(account.Id).ConfigureAwait(false);
+            vip = await Vip.IsVipAsync(identifiable.Id).ConfigureAwait(false);
         }
         catch (Exception ex)
         {
