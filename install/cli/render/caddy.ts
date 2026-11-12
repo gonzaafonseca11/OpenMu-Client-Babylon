@@ -64,7 +64,9 @@ export function caddyfile(c: Config): string {
       ...(c.email ? [`{\n\temail ${c.email}\n}\n`] : []),
       block(d, siteBody),
       block(`www.${d}`, `\tredir https://${d}{uri}`),
-      block(`play.${d}`, clientSite(`https://register.${d}`)),
+      // The website on the bare domain is what search engines should list, not the game page.
+      block(`play.${d}`, `	header X-Robots-Tag noindex
+${clientSite(`https://register.${d}`)}`),
       block(`api.${d}`, apiRoutes()),
       block(`ws.${d}`, proxySite()),
       block(`register.${d}`, registerSite()),

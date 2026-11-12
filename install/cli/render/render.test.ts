@@ -198,6 +198,11 @@ describe('server.json', () => {
 });
 
 describe('caddyfile', () => {
+  it('keeps the game page out of search results in domain mode, leaving the website', () => {
+    const text = caddyfile(domain);
+    expect(text).toContain(`play.${domain.domain} {\n\theader X-Robots-Tag noindex\n`);
+    expect(text.match(/X-Robots-Tag/g)).toHaveLength(1);
+  });
   it('serves every subdomain over HTTPS in domain mode', () => {
     const text = caddyfile(domain);
     for (const host of ['play', 'api', 'ws', 'register', 'admin']) expect(text).toContain(`${host}.example.com {`);

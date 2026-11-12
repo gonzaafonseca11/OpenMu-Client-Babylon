@@ -82,6 +82,7 @@ const escapeHtml = (s: string) => s.replace(/[&<>"']/g, ch => `&#${ch.charCodeAt
 const PUBLIC = join(import.meta.dir, '..', 'public');
 const INDEX = readFileSync(join(PUBLIC, 'index.html'), 'utf8')
   .replaceAll('{{NAME}}', escapeHtml(NAME))
+  .replaceAll('{{SITE_URL}}', escapeHtml(SITE_URL))
   .replaceAll('{{PLAY_URL}}', escapeHtml(PLAY_URL))
   .replaceAll('{{REGISTER_URL}}', escapeHtml(REGISTER_URL || PLAY_URL))
   // A new start is a new deploy: the page asks for its script and style afresh.
@@ -90,7 +91,10 @@ const INDEX = readFileSync(join(PUBLIC, 'index.html'), 'utf8')
 const STATIC: Record<string, { file: string; type: string }> = {
   '/site.css': { file: join(PUBLIC, 'site.css'), type: 'text/css; charset=utf-8' },
   '/site.js': { file: join(PUBLIC, 'site.js'), type: 'text/javascript; charset=utf-8' },
-  '/logo.webp': { file: join(import.meta.dir, '..', 'public', 'logo.webp'), type: 'image/webp' },
+  '/logo.webp': { file: join(PUBLIC, 'logo.webp'), type: 'image/webp' },
+  '/favicon.png': { file: join(PUBLIC, 'favicon.png'), type: 'image/png' },
+  '/favicon.ico': { file: join(PUBLIC, 'favicon.png'), type: 'image/png' },
+  '/share.png': { file: join(PUBLIC, 'share.png'), type: 'image/png' },
 };
 
 const SECURITY_HEADERS = {
@@ -443,10 +447,21 @@ Bun.serve({
       if (req.method === 'GET' && (path === '/' || path === '/index.html')) {
         return new Response(INDEX, { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache', ...SECURITY_HEADERS } });
       }
+      if (req.method === 'GET' && path === '/robots.txt') {
+        return new Response(`User-agent: *
+Allow: /
+Sitemap: ${SITE_URL}/sitemap.xml
+`, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+      }
+      if (req.method === 'GET' && path === '/sitemap.xml') {
+        return new Response(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${SITE_URL}/</loc></url></urlset>
+`, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
+      }
       const asset = STATIC[path];
       if (req.method === 'GET' && asset) {
         // Small files: always revalidated, so a deploy shows at once; only the logo is kept a while.
-        const caching = path === '/logo.webp' ? 'public, max-age=3600' : 'no-cache';
+        const caching = path.endsWith('.png') || path === '/logo.webp' || path === '/favicon.ico' ? 'public, max-age=3600' : 'no-cache';
         return new Response(Bun.file(asset.file), { headers: { 'Content-Type': asset.type, 'Cache-Control': caching, ...SECURITY_HEADERS } });
       }
       if (req.method === 'GET' && path === '/api/ranking/pk') return json(await cached('pk', () => pkRanking(sql)));
