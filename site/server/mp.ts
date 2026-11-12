@@ -12,16 +12,25 @@ export type MpConfig = { token: string; webhookSecret: string; price: number; si
 export type Preapproval = { id: string; status: string; external_reference?: string; next_payment_date?: string };
 export type AuthorizedPayment = { id: number | string; preapproval_id: string; status: string; payment?: { status?: string } };
 
+/** Waits before asking again for a GET that is not there yet: a notice can come before its charge is readable. */
+const NOT_YET_WAITS_MS = [2_000, 5_000, 10_000];
+
 async function mp<T>(cfg: MpConfig, method: string, path: string, body?: unknown): Promise<T> {
-  const res = await fetch(`${API}${path}`, {
-    method,
-    headers: { Authorization: `Bearer ${cfg.token}`, 'Content-Type': 'application/json' },
-    body: body === undefined ? undefined : JSON.stringify(body),
-    signal: AbortSignal.timeout(15_000),
-  });
-  const text = await res.text();
-  if (!res.ok) throw new Error(`Mercado Pago ${method} ${path}: ${res.status} ${text.slice(0, 300)}`);
-  return JSON.parse(text) as T;
+  for (let attempt = 0; ; attempt++) {
+    const res = await fetch(`${API}${path}`, {
+      method,
+      headers: { Authorization: `Bearer ${cfg.token}`, 'Content-Type': 'application/json' },
+      body: body === undefined ? undefined : JSON.stringify(body),
+      signal: AbortSignal.timeout(15_000),
+    });
+    const text = await res.text();
+    if (res.ok) return JSON.parse(text) as T;
+    if (method === 'GET' && res.status === 404 && attempt < NOT_YET_WAITS_MS.length) {
+      await new Promise(r => setTimeout(r, NOT_YET_WAITS_MS[attempt]));
+      continue;
+    }
+    throw new Error(`Mercado Pago ${method} ${path}: ${res.status} ${text.slice(0, 300)}`);
+  }
 }
 
 /** A new monthly subscription; the player authorizes it at `init_point`. `start` delays the first charge (re-subscribing while VIP runs). */
