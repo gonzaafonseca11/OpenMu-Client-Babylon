@@ -10,5 +10,6 @@ export default {
   'resume.cancelled': 'تم إلغاء إعادة الاتصال',
   'login.closingOldSession': 'الحساب ما زال متصلا: جار إغلاق الجلسة القديمة والمحاولة مجددا...',
   'login.tokenRefused': 'انتهت صلاحية تسجيل الدخول المحفوظ. أدخل كلمة المرور.',
+  'login.vipOnly': 'هذا الخادم مخصص لحسابات VIP فقط. اشترك في VIP على الموقع.',
   'login.tokenUnanswered': 'لم يستجب الخادم لتسجيل الدخول المحفوظ. أدخل كلمة المرور.',
 } satisfies Partial<Record<keyof typeof en, string>>;

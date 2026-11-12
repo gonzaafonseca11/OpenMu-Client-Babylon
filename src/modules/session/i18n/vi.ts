@@ -10,5 +10,6 @@ export default {
   'resume.cancelled': 'Đã hủy kết nối lại',
   'login.closingOldSession': 'Tài khoản vẫn đang kết nối: đang đóng phiên cũ và thử lại...',
   'login.tokenRefused': 'Đăng nhập đã lưu đã hết hạn. Hãy nhập mật khẩu.',
+  'login.vipOnly': 'Máy chủ này chỉ dành cho tài khoản VIP. Hãy trở thành VIP trên trang web.',
   'login.tokenUnanswered': 'Máy chủ không phản hồi đăng nhập đã lưu. Hãy nhập mật khẩu.',
 } satisfies Partial<Record<keyof typeof en, string>>;

@@ -10,5 +10,6 @@ export default {
   'resume.cancelled': 'Ponovno povezivanje je otkazano',
   'login.closingOldSession': 'Nalog je još povezan: zatvaram staru sesiju i pokušavam ponovo...',
   'login.tokenRefused': 'Tvoja sačuvana prijava je istekla. Unesi lozinku.',
+  'login.vipOnly': 'Ovaj server je samo za VIP naloge. Postani VIP na sajtu.',
   'login.tokenUnanswered': 'Server nije odgovorio na sačuvanu prijavu. Unesi lozinku.',
 } satisfies Partial<Record<keyof typeof en, string>>;

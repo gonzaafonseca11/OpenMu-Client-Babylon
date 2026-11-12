@@ -150,7 +150,9 @@ export function installNet(): void {
     const tokenRefused = Session.onLoginRefusedToken(p.Success === LoginResponseLoginResultEnum.InvalidPassword);
 
     runInAction(() => {
-      Session.loginError = tokenRefused ? t('login.tokenRefused') : `Error: ${LoginResponseLoginResultEnum[p.Success]}`;
+      // NoChargeInfo / SubscriptionTermOver: our VIP server's refusal (openmu/plugins/GameLogic/Vip).
+      const vipOnly = p.Success === LoginResponseLoginResultEnum.NoChargeInfo || p.Success === LoginResponseLoginResultEnum.SubscriptionTermOver;
+      Session.loginError = tokenRefused ? t('login.tokenRefused') : vipOnly ? t('login.vipOnly') : `Error: ${LoginResponseLoginResultEnum[p.Success]}`;
       AppState.uiState = UIState.Login;
     });
   });

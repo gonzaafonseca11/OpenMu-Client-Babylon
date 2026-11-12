@@ -10,5 +10,6 @@ export default {
   'resume.cancelled': 'Opětovné připojení zrušeno',
   'login.closingOldSession': 'Účet je stále připojen: ukončuji starou relaci a zkouším to znovu...',
   'login.tokenRefused': 'Tvoje uložené přihlášení vypršelo. Zadej heslo.',
+  'login.vipOnly': 'Tento server je jen pro VIP účty. Staňte se VIP na webu.',
   'login.tokenUnanswered': 'Server na uložené přihlášení neodpověděl. Zadej heslo.',
 } satisfies Partial<Record<keyof typeof en, string>>;

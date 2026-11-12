@@ -42,6 +42,12 @@ export default {
   'fidelity.cameraKeepsView': 'Kamera teleportazioen artean mantendua',
   'fidelity.cameraKeepsView.hint':
     'Kameraren zooma, biraketa eta inklinazioa bere horretan geratzen dira teleportatzean edo mapaz aldatzean, eta Berrezarri kamera botoia agertzen da ikuspegia mugituta dagoen bitartean. Klasikoa: mapa-aldaketa bakoitzak kamera berrezartzen du, jatorrizkoan bezala.',
+  'fidelity.holdWalk': 'Klika mantenduz munstroen artean ibili',
+  'fidelity.holdWalk.hint':
+    'Eutsi ezkerreko botoiari segundo erdiz kurtsorera ibiltzeko, munstroen gainetik ere; klik labur batek eraso egiten du. Klasikoa: munstro batean klik eginez beti erasotzen zaio, jatorrizkoan bezala.',
+  'fidelity.shiftWalk': 'Shift + klik munstroen artean ibiltzen da',
+  'fidelity.shiftWalk.hint':
+    'Eutsi Shift eta egin ezkerreko klik hara ibiltzeko, munstroak egon arren. Klasikoa: munstro batean klik eginez beti erasotzen zaio, jatorrizkoan bezala.',
   'fidelity.swingFill': 'Kolpeek kolpeen arteko denbora betetzen dute',
   'fidelity.swingFill.hint':
     'Eraso-abiadura handian, kolpearen ondorengo mugimenduaren zatia motelago jotzen da hurrengo kolpera arte iraun dezan, heroia tartean geldi geratu beharrean. Kolpeak une berean iristen dira. Klasikoa: mugimendua lehenago amaitzen da eta heroia geldi geratzen da, jatorrizkoan bezala.',

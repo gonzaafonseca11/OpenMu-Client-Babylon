@@ -11,5 +11,6 @@ export default {
   'login.closingOldSession':
     'অ্যাকাউন্ট এখনও সংযুক্ত: পুরোনো সেশন বন্ধ করে আবার চেষ্টা করা হচ্ছে...',
   'login.tokenRefused': 'আপনার সংরক্ষিত লগইনের মেয়াদ শেষ। পাসওয়ার্ড দিন।',
+  'login.vipOnly': 'এই সার্ভারটি শুধু VIP অ্যাকাউন্টের জন্য। ওয়েবসাইটে VIP হন।',
   'login.tokenUnanswered': 'সার্ভার সংরক্ষিত লগইনের উত্তর দেয়নি। পাসওয়ার্ড দিন।',
 } satisfies Partial<Record<keyof typeof en, string>>;

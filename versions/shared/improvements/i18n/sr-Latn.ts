@@ -42,6 +42,12 @@ export default {
   'fidelity.cameraKeepsView': 'Kamera se čuva pri teleportu',
   'fidelity.cameraKeepsView.hint':
     'Zum, okret i nagib kamere ostaju isti kada se teleportuješ ili promeniš mapu, a dugme Resetuj kameru se prikazuje dok je pogled pomeren. Klasično: svaka promena mape resetuje kameru, kao u originalu.',
+  'fidelity.holdWalk': 'Drži klik da hodaš kroz čudovišta',
+  'fidelity.holdWalk.hint':
+    'Drži levo dugme pola sekunde da hodaš ka kursoru čak i preko čudovišta; kratak klik napada. Klasično: klik na čudovište ga uvek napada, kao u originalu.',
+  'fidelity.shiftWalk': 'Shift + klik hoda kroz čudovišta',
+  'fidelity.shiftWalk.hint':
+    'Drži Shift i klikni levim dugmetom da odeš tamo čak i preko čudovišta. Klasično: klik na čudovište ga uvek napada, kao u originalu.',
   'fidelity.swingFill': 'Zamasi popunjavaju vreme između udaraca',
   'fidelity.swingFill.hint':
     'Pri velikoj brzini napada deo zamaha posle udarca se usporava da traje do sledećeg zamaha, umesto da se junak između njih ukoči. Udarci padaju u istom trenutku. Klasično: zamah se ranije završava i junak stoji, kao u originalu.',

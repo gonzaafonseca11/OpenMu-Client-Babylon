@@ -42,6 +42,12 @@ export default {
   'fidelity.cameraKeepsView': 'Càmera mantinguda entre mapes',
   'fidelity.cameraKeepsView.hint':
     'El zoom, el gir i la inclinació de la càmera es mantenen quan et teletransportes o canvies de mapa, i apareix un botó Restableix la càmera mentre la vista està moguda. Clàssic: cada canvi de mapa restableix la càmera, com a l\'original.',
+  'fidelity.holdWalk': 'Mantén el clic per caminar entre monstres',
+  'fidelity.holdWalk.hint':
+    'Mantén el botó esquerre mig segon per caminar cap al cursor encara que hi hagi monstres; un clic curt ataca. Clàssic: un clic sobre un monstre sempre l’ataca, com a l’original.',
+  'fidelity.shiftWalk': 'Shift + clic camina entre monstres',
+  'fidelity.shiftWalk.hint':
+    'Mantén Shift i fes clic esquerre per caminar-hi encara que hi hagi monstres. Clàssic: un clic sobre un monstre sempre l’ataca, com a l’original.',
   'fidelity.swingFill': 'Els cops omplen el temps entre impactes',
   'fidelity.swingFill.hint':
     'Amb una velocitat d\'atac alta, la part del cop posterior a l\'impacte es reprodueix més lenta perquè duri fins al cop següent, en lloc que l\'heroi es quedi glaçat entremig. Els impactes arriben al mateix moment. Clàssic: el cop acaba abans i l\'heroi es queda quiet, com a l\'original.',

@@ -42,6 +42,12 @@ export default {
   'fidelity.cameraKeepsView': 'Kamera tetap setelah teleportasi',
   'fidelity.cameraKeepsView.hint':
     'Zoom, putaran, dan kemiringan kameramu tetap seperti semula saat kamu berteleportasi atau berganti peta, dan tombol Atur ulang kamera muncul selama pandangan digeser. Klasik: setiap ganti peta mengatur ulang kamera, seperti aslinya.',
+  'fidelity.holdWalk': 'Tahan klik untuk berjalan melewati monster',
+  'fidelity.holdWalk.hint':
+    'Tahan tombol kiri setengah detik untuk berjalan ke kursor meski di atas monster; klik singkat menyerang. Klasik: klik pada monster selalu menyerangnya, seperti aslinya.',
+  'fidelity.shiftWalk': 'Shift + klik berjalan melewati monster',
+  'fidelity.shiftWalk.hint':
+    'Tahan Shift dan klik kiri untuk berjalan ke sana meski ada monster. Klasik: klik pada monster selalu menyerangnya, seperti aslinya.',
   'fidelity.swingFill': 'Ayunan mengisi jeda antarserangan',
   'fidelity.swingFill.hint':
     'Pada kecepatan serang tinggi, bagian ayunan setelah pukulan diputar lebih lambat agar berlangsung sampai ayunan berikutnya, alih-alih pahlawan membeku di antaranya. Serangan tetap mengenai pada saat yang sama. Klasik: ayunan berakhir lebih awal dan pahlawan diam, seperti aslinya.',

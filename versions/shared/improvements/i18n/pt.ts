@@ -42,6 +42,12 @@ export default {
   'fidelity.cameraKeepsView': 'Câmera mantida entre mapas',
   'fidelity.cameraKeepsView.hint':
     'O zoom, o giro e a inclinação da câmera continuam iguais quando você se teleporta ou muda de mapa, e um botão Redefinir câmera aparece enquanto a visão estiver movida. Clássica: cada troca de mapa redefine a câmera, como no original.',
+  'fidelity.holdWalk': 'Segurar o clique anda entre monstros',
+  'fidelity.holdWalk.hint':
+    'Segure o botão esquerdo meio segundo para andar até o cursor mesmo sobre monstros; um clique curto ataca. Clássico: clicar num monstro sempre o ataca, como no original.',
+  'fidelity.shiftWalk': 'Shift + clique anda entre monstros',
+  'fidelity.shiftWalk.hint':
+    'Segure Shift e clique com o botão esquerdo para ir até lá mesmo sobre monstros. Clássico: clicar num monstro sempre o ataca, como no original.',
   'fidelity.swingFill': 'Golpes preenchem o tempo entre eles',
   'fidelity.swingFill.hint':
     'Com velocidade de ataque alta, a parte do golpe depois do impacto toca mais devagar para durar até o próximo golpe, em vez de o herói ficar parado no meio. Os golpes acertam no mesmo momento. Clássica: o golpe acaba cedo e o herói fica parado, como no original.',

@@ -11,6 +11,7 @@ export default {
   'login.closingOldSession':
     'A fiók még csatlakozva van: a régi munkamenet bezárása és újrapróbálkozás...',
   'login.tokenRefused': 'A mentett bejelentkezés lejárt. Add meg a jelszavadat.',
+  'login.vipOnly': 'Ez a szerver csak VIP fiókoknak szól. Legyél VIP a weboldalon.',
   'login.tokenUnanswered':
     'A szerver nem válaszolt a mentett bejelentkezésre. Add meg a jelszavadat.',
 } satisfies Partial<Record<keyof typeof en, string>>;

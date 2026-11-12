@@ -10,5 +10,6 @@ export default {
   'resume.cancelled': 'Reconectare anulată',
   'login.closingOldSession': 'Contul este încă conectat: se închide sesiunea veche și se reîncearcă...',
   'login.tokenRefused': 'Autentificarea salvată a expirat. Introdu parola.',
+  'login.vipOnly': 'Acest server este doar pentru conturi VIP. Devino VIP pe site.',
   'login.tokenUnanswered': 'Serverul nu a răspuns la autentificarea salvată. Introdu parola.',
 } satisfies Partial<Record<keyof typeof en, string>>;

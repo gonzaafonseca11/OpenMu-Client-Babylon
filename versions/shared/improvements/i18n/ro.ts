@@ -42,6 +42,12 @@ export default {
   'fidelity.cameraKeepsView': 'Camera păstrată între hărți',
   'fidelity.cameraKeepsView.hint':
     'Zoomul, rotirea și înclinarea camerei rămân la fel când te teleportezi sau schimbi harta, iar un buton Resetează camera apare cât timp vederea este mutată. Clasică: fiecare schimbare de hartă resetează camera, ca în original.',
+  'fidelity.holdWalk': 'Ține clicul apăsat ca să mergi printre monștri',
+  'fidelity.holdWalk.hint':
+    'Ține butonul stâng o jumătate de secundă ca să mergi spre cursor chiar peste monștri; un clic scurt atacă. Clasic: un clic pe un monstru îl atacă mereu, ca în original.',
+  'fidelity.shiftWalk': 'Shift + clic merge printre monștri',
+  'fidelity.shiftWalk.hint':
+    'Ține Shift și dă clic stânga ca să mergi acolo chiar peste monștri. Clasic: un clic pe un monstru îl atacă mereu, ca în original.',
   'fidelity.swingFill': 'Loviturile umplu timpul dintre ele',
   'fidelity.swingFill.hint':
     'La viteză mare de atac, partea loviturii de după impact rulează mai lent ca să dureze până la următoarea lovitură, în loc ca eroul să înghețe între ele. Loviturile ating în același moment. Clasică: lovitura se termină devreme și eroul stă pe loc, ca în original.',

@@ -42,6 +42,12 @@ export default {
   'fidelity.cameraKeepsView': 'Telecamera mantenuta tra le mappe',
   'fidelity.cameraKeepsView.hint':
     'Zoom, rotazione e inclinazione della telecamera restano uguali quando ti teletrasporti o cambi mappa, e un pulsante Reimposta telecamera appare finché la visuale è spostata. Classica: ogni cambio di mappa reimposta la telecamera, come nell’originale.',
+  'fidelity.holdWalk': 'Tieni premuto il clic per camminare tra i mostri',
+  'fidelity.holdWalk.hint':
+    'Tieni premuto il tasto sinistro mezzo secondo per camminare verso il cursore anche sopra i mostri; un clic breve attacca. Classico: un clic su un mostro lo attacca sempre, come nell’originale.',
+  'fidelity.shiftWalk': 'Shift + clic cammina tra i mostri',
+  'fidelity.shiftWalk.hint':
+    'Tieni premuto Shift e fai clic sinistro per andarci anche sopra i mostri. Classico: un clic su un mostro lo attacca sempre, come nell’originale.',
   'fidelity.swingFill': 'I colpi riempiono il tempo tra uno e l’altro',
   'fidelity.swingFill.hint':
     'Con un’alta velocità d’attacco, la parte del colpo dopo l’impatto viene riprodotta più lenta per durare fino al colpo successivo, invece di lasciare l’eroe fermo nel mezzo. I colpi arrivano nello stesso momento. Classica: il colpo finisce presto e l’eroe resta fermo, come nell’originale.',

@@ -42,6 +42,12 @@ export default {
   'fidelity.cameraKeepsView': 'Nananatili ang camera sa paglipat',
   'fidelity.cameraKeepsView.hint':
     'Nananatili ang zoom, ikot at hilig ng camera kapag lumipat ka o nagpalit ng mapa, at may lumilitaw na button na I-reset ang camera habang nababago ang tanaw. Klasiko: nire-reset ng bawat pagpalit ng mapa ang camera, gaya ng orihinal.',
+  'fidelity.holdWalk': 'Pindutin nang matagal para lumakad sa gitna ng halimaw',
+  'fidelity.holdWalk.hint':
+    'Pindutin ang kaliwang button nang kalahating segundo para lumakad papunta sa cursor kahit may halimaw; ang mabilis na click ay umaatake. Classic: laging inaatake ang halimaw na na-click, gaya ng orihinal.',
+  'fidelity.shiftWalk': 'Shift + click para lumakad sa gitna ng halimaw',
+  'fidelity.shiftWalk.hint':
+    'Pindutin ang Shift at mag-left click para pumunta roon kahit may halimaw. Classic: laging inaatake ang halimaw na na-click, gaya ng orihinal.',
   'fidelity.swingFill': 'Pinupuno ng hampas ang pagitan ng tama',
   'fidelity.swingFill.hint':
     'Sa mataas na bilis ng atake, bumabagal ang bahagi ng hampas pagkatapos ng tama para tumagal ito hanggang sa susunod na hampas, sa halip na tumigil ang bayani sa pagitan. Pareho pa rin ang sandali ng tama. Klasiko: maagang natatapos ang hampas at nakatayo lang ang bayani, gaya ng orihinal.',

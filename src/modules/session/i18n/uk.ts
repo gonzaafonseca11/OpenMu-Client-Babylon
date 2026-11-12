@@ -10,5 +10,6 @@ export default {
   'resume.cancelled': 'Перепідключення скасовано',
   'login.closingOldSession': 'Акаунт досі в мережі: закриваємо стару сесію й пробуємо знову...',
   'login.tokenRefused': 'Термін збереженого входу минув. Введіть пароль.',
+  'login.vipOnly': 'Цей сервер лише для VIP-акаунтів. Станьте VIP на сайті.',
   'login.tokenUnanswered': 'Сервер не відповів на збережений вхід. Введіть пароль.',
 } satisfies Partial<Record<keyof typeof en, string>>;

@@ -11,5 +11,6 @@ export default {
   'login.closingOldSession':
     'अकाउंट अभी भी कनेक्टेड है: पुराना सेशन बंद करके फिर से कोशिश कर रहे हैं...',
   'login.tokenRefused': 'आपका सहेजा हुआ लॉगिन पुराना हो गया है। अपना पासवर्ड डालें।',
+  'login.vipOnly': 'यह सर्वर केवल VIP खातों के लिए है। वेबसाइट पर VIP बनें।',
   'login.tokenUnanswered': 'सर्वर ने सहेजे हुए लॉगिन का जवाब नहीं दिया। अपना पासवर्ड डालें।',
 } satisfies Partial<Record<keyof typeof en, string>>;

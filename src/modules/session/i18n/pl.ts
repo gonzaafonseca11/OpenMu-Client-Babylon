@@ -10,5 +10,6 @@ export default {
   'resume.cancelled': 'Ponowne łączenie anulowane',
   'login.closingOldSession': 'Konto nadal połączone: zamykanie starej sesji i ponowna próba...',
   'login.tokenRefused': 'Zapisane logowanie wygasło. Podaj hasło.',
+  'login.vipOnly': 'Ten serwer jest tylko dla kont VIP. Zostań VIP na stronie.',
   'login.tokenUnanswered': 'Serwer nie odpowiedział na zapisane logowanie. Podaj hasło.',
 } satisfies Partial<Record<keyof typeof en, string>>;

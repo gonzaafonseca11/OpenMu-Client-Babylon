@@ -42,6 +42,12 @@ export default {
   'fidelity.cameraKeepsView': 'Kamera bleibt beim Kartenwechsel',
   'fidelity.cameraKeepsView.hint':
     'Zoom, Drehung und Neigung der Kamera bleiben erhalten, wenn du dich teleportierst oder die Karte wechselst, und eine Schaltfläche „Kamera zurücksetzen“ erscheint, solange die Ansicht verstellt ist. Klassisch: Jeder Kartenwechsel setzt die Kamera zurück, wie im Original.',
+  'fidelity.holdWalk': 'Klick halten läuft durch Monster',
+  'fidelity.holdWalk.hint':
+    'Halte die linke Taste eine halbe Sekunde, um auch über Monster zum Cursor zu laufen; ein kurzer Klick greift an. Klassisch: Ein Klick auf ein Monster greift es immer an, wie im Original.',
+  'fidelity.shiftWalk': 'Shift + Klick läuft durch Monster',
+  'fidelity.shiftWalk.hint':
+    'Halte Shift und klicke links, um dorthin zu laufen, auch über Monster. Klassisch: Ein Klick auf ein Monster greift es immer an, wie im Original.',
   'fidelity.swingFill': 'Schläge füllen die Zeit dazwischen',
   'fidelity.swingFill.hint':
     'Bei hohem Angriffstempo läuft der Teil deines Schlags nach dem Treffer langsamer, sodass er bis zum nächsten Schlag dauert, statt dass der Held dazwischen erstarrt. Treffer landen im selben Moment. Klassisch: Der Schlag endet früh und der Held steht still, wie im Original.',

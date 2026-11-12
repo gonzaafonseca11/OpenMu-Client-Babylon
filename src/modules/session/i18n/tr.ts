@@ -10,5 +10,6 @@ export default {
   'resume.cancelled': 'Yeniden bağlanma iptal edildi',
   'login.closingOldSession': 'Hesap hâlâ bağlı: eski oturum kapatılıp yeniden deneniyor...',
   'login.tokenRefused': 'Kayıtlı girişinin süresi doldu. Şifreni gir.',
+  'login.vipOnly': 'Bu sunucu yalnızca VIP hesaplar içindir. Web sitesinden VIP ol.',
   'login.tokenUnanswered': 'Sunucu kayıtlı girişe yanıt vermedi. Şifreni gir.',
 } satisfies Partial<Record<keyof typeof en, string>>;

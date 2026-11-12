@@ -30,6 +30,12 @@ export default {
   'fidelity.cameraKeepsView': '傳送後保留鏡頭',
   'fidelity.cameraKeepsView.hint':
     '傳送或切換地圖時，鏡頭的縮放、旋轉與傾斜維持不變；視角被移動時會顯示「重設鏡頭」按鈕。經典：與原版相同，每次切換地圖都會重設鏡頭。',
+  'fidelity.holdWalk': '按住點擊可穿過怪物行走',
+  'fidelity.holdWalk.hint':
+    '按住左鍵半秒，即使游標下有怪物也會走向游標；短按會攻擊。經典：點擊怪物一律攻擊，與原版相同。',
+  'fidelity.shiftWalk': 'Shift + 點擊可穿過怪物行走',
+  'fidelity.shiftWalk.hint':
+    '按住 Shift 並左鍵點擊，即使有怪物也會走到那裡。經典：點擊怪物一律攻擊，與原版相同。',
   'fidelity.swingFill': '揮擊動作填滿出手間隔',
   'fidelity.swingFill.hint':
     '攻擊速度很高時，命中後的揮擊動作會放慢播放，一直持續到下一次揮擊，角色不會在中間僵住。命中時機不變。經典：與原版相同，動作提早結束，角色原地站著。',

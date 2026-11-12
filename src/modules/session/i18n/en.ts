@@ -11,6 +11,7 @@ const en = {
   'login.closingOldSession': 'Account still connected: closing the old session and trying again...',
   /** A token login refused (expired, replaced, or the password changed): the form asks for the password. */
   'login.tokenRefused': 'Your saved login has expired. Enter your password.',
+  'login.vipOnly': 'This server is for VIP accounts only. Become VIP on the website.',
   /** A token login the server never answered (no plugin behind a server.json that offers tokens): the form asks for the password. */
   'login.tokenUnanswered': 'The server did not answer the saved login. Enter your password.',
 };

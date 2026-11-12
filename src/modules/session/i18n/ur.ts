@@ -11,5 +11,6 @@ export default {
   'login.closingOldSession':
     'اکاؤنٹ اب بھی منسلک ہے: پرانا سیشن بند کر کے دوبارہ کوشش ہو رہی ہے...',
   'login.tokenRefused': 'آپ کا محفوظ لاگ ان ختم ہو گیا۔ اپنا پاس ورڈ درج کریں۔',
+  'login.vipOnly': 'یہ سرور صرف VIP اکاؤنٹس کے لیے ہے۔ ویب سائٹ پر VIP بنیں۔',
   'login.tokenUnanswered': 'سرور نے محفوظ لاگ ان کا جواب نہیں دیا۔ اپنا پاس ورڈ درج کریں۔',
 } satisfies Partial<Record<keyof typeof en, string>>;

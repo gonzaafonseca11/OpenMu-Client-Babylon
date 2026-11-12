@@ -42,6 +42,12 @@ export default {
   'fidelity.cameraKeepsView': 'Kamera megtartása teleportáláskor',
   'fidelity.cameraKeepsView.hint':
     'A kamera nagyítása, forgatása és dőlése megmarad teleportáláskor vagy térképváltáskor, és amíg a nézet el van mozdítva, megjelenik egy Kamera visszaállítása gomb. Klasszikus: minden térképváltás visszaállítja a kamerát, mint az eredetiben.',
+  'fidelity.holdWalk': 'Kattintás nyomva tartása szörnyek között sétál',
+  'fidelity.holdWalk.hint':
+    'Tartsd lenyomva a bal gombot fél másodpercig, hogy a kurzor felé menj szörnyek fölött is; egy rövid kattintás támad. Klasszikus: a szörnyre kattintás mindig támad, mint az eredetiben.',
+  'fidelity.shiftWalk': 'Shift + kattintás szörnyek között sétál',
+  'fidelity.shiftWalk.hint':
+    'Tartsd lenyomva a Shiftet és kattints bal gombbal, hogy odamenj szörnyek fölött is. Klasszikus: a szörnyre kattintás mindig támad, mint az eredetiben.',
   'fidelity.swingFill': 'Suhintások kitöltik a találatok közti időt',
   'fidelity.swingFill.hint':
     'Nagy támadási sebességnél a suhintás ütés utáni része lassabban játszódik, hogy a következő suhintásig tartson, és a hős ne dermedjen meg közben. A találatok ugyanakkor érkeznek. Klasszikus: a suhintás korán véget ér, és a hős egy helyben áll, mint az eredetiben.',

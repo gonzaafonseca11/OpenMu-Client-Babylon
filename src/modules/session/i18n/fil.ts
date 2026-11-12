@@ -11,6 +11,7 @@ export default {
   'login.closingOldSession':
     'Nakakonekta pa ang account: isinasara ang lumang session at sinusubukan muli...',
   'login.tokenRefused': 'Nag-expire na ang naka-save mong login. Ilagay ang iyong password.',
+  'login.vipOnly': 'Para lang sa mga VIP account ang server na ito. Maging VIP sa website.',
   'login.tokenUnanswered':
     'Hindi sinagot ng server ang naka-save na login. Ilagay ang iyong password.',
 } satisfies Partial<Record<keyof typeof en, string>>;

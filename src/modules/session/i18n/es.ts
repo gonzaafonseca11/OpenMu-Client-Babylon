@@ -10,5 +10,6 @@ export default {
   'resume.cancelled': 'Reconexión cancelada',
   'login.closingOldSession': 'La cuenta sigue conectada: cerrando la sesión anterior y reintentando...',
   'login.tokenRefused': 'Tu inicio de sesión guardado ha caducado. Escribe tu contraseña.',
+  'login.vipOnly': 'Este servidor es solo para cuentas VIP. Hacete VIP en la página.',
   'login.tokenUnanswered': 'El servidor no respondió al inicio de sesión guardado. Escribe tu contraseña.',
 } satisfies Partial<Record<keyof typeof en, string>>;

@@ -42,6 +42,12 @@ export default {
   'fidelity.cameraKeepsView': 'Kamera zůstává po přesunu',
   'fidelity.cameraKeepsView.hint':
     'Přiblížení, otočení a sklon kamery zůstanou stejné, když se přeneseš nebo změníš mapu, a když je pohled posunutý, zobrazí se tlačítko Resetovat kameru. Klasické: každá změna mapy kameru resetuje, jako v originálu.',
+  'fidelity.holdWalk': 'Držením kliknutí projdeš mezi příšerami',
+  'fidelity.holdWalk.hint':
+    'Drž levé tlačítko půl sekundy a půjdeš ke kurzoru i přes příšery; krátké kliknutí útočí. Klasika: kliknutí na příšeru vždy útočí, jako v originále.',
+  'fidelity.shiftWalk': 'Shift + klik projde mezi příšerami',
+  'fidelity.shiftWalk.hint':
+    'Drž Shift a klikni levým tlačítkem, abys tam šel i přes příšery. Klasika: kliknutí na příšeru vždy útočí, jako v originále.',
   'fidelity.swingFill': 'Máchnutí vyplní čas mezi zásahy',
   'fidelity.swingFill.hint':
     'Při vysoké rychlosti útoku se část máchnutí po úderu přehraje pomaleji, aby trvala až do dalšího máchnutí, místo aby hrdina mezi nimi ztuhl. Zásahy dopadnou ve stejnou chvíli. Klasické: máchnutí skončí brzy a hrdina stojí, jako v originálu.',

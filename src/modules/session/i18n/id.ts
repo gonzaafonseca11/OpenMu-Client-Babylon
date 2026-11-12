@@ -10,5 +10,6 @@ export default {
   'resume.cancelled': 'Penyambungan ulang dibatalkan',
   'login.closingOldSession': 'Akun masih terhubung: menutup sesi lama dan mencoba lagi...',
   'login.tokenRefused': 'Login tersimpanmu sudah kedaluwarsa. Masukkan kata sandimu.',
+  'login.vipOnly': 'Server ini hanya untuk akun VIP. Jadilah VIP di situs web.',
   'login.tokenUnanswered': 'Server tidak menjawab login tersimpan. Masukkan kata sandimu.',
 } satisfies Partial<Record<keyof typeof en, string>>;

@@ -10,5 +10,6 @@ export default {
   'resume.cancelled': 'اتصال دوباره لغو شد',
   'login.closingOldSession': 'حساب هنوز متصل است: بستن نشست قدیمی و تلاش دوباره...',
   'login.tokenRefused': 'ورود ذخیره‌شده شما منقضی شده است. رمز عبور را وارد کنید.',
+  'login.vipOnly': 'این سرور فقط برای حساب‌های VIP است. در وب‌سایت VIP شوید.',
   'login.tokenUnanswered': 'سرور به ورود ذخیره‌شده پاسخ نداد. رمز عبور را وارد کنید.',
 } satisfies Partial<Record<keyof typeof en, string>>;

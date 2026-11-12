@@ -42,6 +42,12 @@ export default {
   'fidelity.cameraKeepsView': 'Işınlanmada kamera korunur',
   'fidelity.cameraKeepsView.hint':
     'Işınlandığında ya da harita değiştirdiğinde kameranın yakınlaştırması, dönüşü ve eğimi olduğu gibi kalır; görüş değiştiğinde bir Kamerayı sıfırla düğmesi görünür. Klasik: orijinaldeki gibi her harita değişimi kamerayı sıfırlar.',
+  'fidelity.holdWalk': 'Tıklamayı basılı tutarak canavarların arasından yürü',
+  'fidelity.holdWalk.hint':
+    'Sol tuşu yarım saniye basılı tutunca canavarların üstünde bile imlece yürürsün; kısa tıklama saldırır. Klasik: canavara tıklamak her zaman saldırır, orijinaldeki gibi.',
+  'fidelity.shiftWalk': 'Shift + tıkla canavarların arasından yürü',
+  'fidelity.shiftWalk.hint':
+    'Shift basılıyken sol tıklayarak canavar olsa bile oraya yürü. Klasik: canavara tıklamak her zaman saldırır, orijinaldeki gibi.',
   'fidelity.swingFill': 'Savuruşlar vuruş arasını doldurur',
   'fidelity.swingFill.hint':
     'Yüksek saldırı hızında, savuruşun darbeden sonraki kısmı bir sonraki savuruşa kadar sürecek şekilde yavaş oynar; kahraman arada donup kalmaz. Vuruşlar aynı anda isabet eder. Klasik: orijinaldeki gibi savuruş erken biter ve kahraman kıpırdamadan durur.',

@@ -10,5 +10,6 @@ export default {
   'resume.cancelled': 'ยกเลิกการเชื่อมต่อใหม่',
   'login.closingOldSession': 'บัญชียังเชื่อมต่ออยู่: กำลังปิดเซสชันเก่าและลองใหม่...',
   'login.tokenRefused': 'การเข้าสู่ระบบที่บันทึกไว้หมดอายุแล้ว กรอกรหัสผ่าน',
+  'login.vipOnly': 'เซิร์ฟเวอร์นี้สำหรับบัญชี VIP เท่านั้น สมัคร VIP ได้ที่เว็บไซต์',
   'login.tokenUnanswered': 'เซิร์ฟเวอร์ไม่ตอบการเข้าสู่ระบบที่บันทึกไว้ กรอกรหัสผ่าน',
 } satisfies Partial<Record<keyof typeof en, string>>;
