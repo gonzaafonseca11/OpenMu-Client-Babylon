@@ -89,6 +89,11 @@ describe('parseServerManifest', () => {
     expect(parseServerManifest({ version: 1, settings: { jewelBundling: 'yes' } })).toBeNull();
   });
 
+  it('reads englishSkillNames, off on the original', () => {
+    expect(ORIGINAL_SETTINGS.englishSkillNames).toBe(false);
+    expect(parseServerManifest({ version: 1, settings: { englishSkillNames: true } })?.settings.englishSkillNames).toBe(true);
+  });
+
   it('reads englishItemNames, off on the original', () => {
     expect(ORIGINAL_SETTINGS.englishItemNames).toBe(false);
     expect(parseServerManifest({ version: 1, settings: { englishItemNames: true } })?.settings.englishItemNames).toBe(true);

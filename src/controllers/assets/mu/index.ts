@@ -5,6 +5,7 @@ export { downloadDataFile, hasDataFile, resolveDataUrl } from './dataFolder';
 export { findEntranceGateAt, loadGates } from './gates';
 export type { Gate } from './gates';
 export { localisedItemName, setWorldEnglishItemNames } from './itemNameFile';
+export { setWorldEnglishSkillNames } from './skillNameFile';
 export { itemSetTables, loadItemSetTables } from './itemSetFile';
 export type { ItemSet, ItemSetTables, SetOption } from './itemSetFile';
 export { itemOptionTables, loadItemOptionTables } from './itemOptionFiles';

@@ -49,6 +49,8 @@ describe('config file', () => {
     expect(envToConfig({}).englishMapNames).toBe(false);
     expect(configToEnv({ ...config, englishItemNames: true }).MU_ENGLISH_ITEM_NAMES).toBe('on');
     expect(envToConfig({}).englishItemNames).toBe(false);
+    expect(configToEnv({ ...config, englishSkillNames: true }).MU_ENGLISH_SKILL_NAMES).toBe('on');
+    expect(envToConfig({}).englishSkillNames).toBe(false);
   });
 
   it('stores the MU Helper restart as MU_HELPER_AFTER_RECONNECT, off unless set', () => {

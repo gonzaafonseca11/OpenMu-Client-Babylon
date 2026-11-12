@@ -68,6 +68,8 @@ export type Config = {
   englishMapNames: boolean;
   /** `server.json`: item names in English whatever the player's language (off = the original, from the language pack). */
   englishItemNames: boolean;
+  /** `server.json`: skill names in English whatever the player's language (off = the original, from the language pack). */
+  englishSkillNames: boolean;
   /** Optional client modules this world turns off, comma separated (`server.json` `modulesOff`). */
   modulesOff: string;
   /** The owner's ed25519 public key (base64url) baked into the client: modules it signed run in the page. Empty: none. */
@@ -123,6 +125,7 @@ const KEYS: Record<keyof Config, string> = {
   liteAssets: 'MU_LITE_ASSETS',
   englishMapNames: 'MU_ENGLISH_MAP_NAMES',
   englishItemNames: 'MU_ENGLISH_ITEM_NAMES',
+  englishSkillNames: 'MU_ENGLISH_SKILL_NAMES',
   modulesOff: 'MU_MODULES_OFF',
   moduleSigningKey: 'MU_MODULE_SIGNING_KEY',
   mail: 'MU_MAIL',
@@ -174,6 +177,7 @@ export const DEFAULTS: Config = {
   liteAssets: false,
   englishMapNames: false,
   englishItemNames: false,
+  englishSkillNames: false,
   modulesOff: '',
   moduleSigningKey: '',
   mail: false,

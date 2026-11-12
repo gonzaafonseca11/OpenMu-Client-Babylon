@@ -3,7 +3,7 @@ import { ServerConfig, onWorldEntered, type ServerProfile } from './serverConfig
 import { serverManifestUrl } from './serverServices';
 import { setServerModulesOff } from '../module';
 import { MODULE_ID as STREAMED_ID } from '../_api/contract';
-import { setWorldEnglishItemNames } from '../../controllers/assets/mu';
+import { setWorldEnglishItemNames, setWorldEnglishSkillNames } from '../../controllers/assets/mu';
 
 /**
  * A world's `server.json`: what the server decides for every player on it. Fetched when the world
@@ -35,6 +35,8 @@ type ServerSettings = {
   readonly englishMapNames: boolean;
   /** Item names in English whatever the language (ours: the original takes them from the language pack). */
   readonly englishItemNames: boolean;
+  /** Skill names in English whatever the language (ours: the original takes them from the language pack). */
+  readonly englishSkillNames: boolean;
 };
 
 /** One module the world streams to its players (docs/module_streaming.md, phase 5). */
@@ -86,6 +88,7 @@ export const ORIGINAL_SETTINGS: ServerSettings = {
   liteAssets: false,
   englishMapNames: false,
   englishItemNames: false,
+  englishSkillNames: false,
 };
 
 const ORIGINAL: InForce = { settings: ORIGINAL_SETTINGS, loginTokens: false };
@@ -111,6 +114,7 @@ const SETTING_TYPES: { readonly [K in keyof ServerSettings]: 'boolean' } = {
   liteAssets: 'boolean',
   englishMapNames: 'boolean',
   englishItemNames: 'boolean',
+  englishSkillNames: 'boolean',
 };
 
 const CACHE_KEY = 'mu_server_manifests';
@@ -273,6 +277,7 @@ export async function loadServerManifest(
   if (!url) {
     setServerModulesOff([]);
     setWorldEnglishItemNames(false);
+    setWorldEnglishSkillNames(false);
     for (const fn of modulesListeners) fn(profile.id, '', [], []);
     return ORIGINAL_SETTINGS;
   }
@@ -282,11 +287,13 @@ export async function loadServerManifest(
   if (!current.has(url)) current.set(url, inForce(cached));
   setServerModulesOff(cached?.modulesOff ?? []);
   setWorldEnglishItemNames(inForce(cached).settings.englishItemNames);
+  setWorldEnglishSkillNames(inForce(cached).settings.englishSkillNames);
 
   const manifest = await fetchManifest(url);
   current.set(url, inForce(manifest));
   setServerModulesOff(manifest?.modulesOff ?? []);
   setWorldEnglishItemNames(inForce(manifest).settings.englishItemNames);
+  setWorldEnglishSkillNames(inForce(manifest).settings.englishSkillNames);
   writeCache(url, manifest);
   for (const fn of modulesListeners) fn(profile.id, url, manifest?.modules ?? [], manifest?.modulesDropped ?? []);
 

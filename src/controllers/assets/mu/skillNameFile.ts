@@ -31,6 +31,13 @@ const names = observable.box<ReadonlyMap<number, string>>(new Map(), {
   deep: false,
 });
 
+/** The world's `englishSkillNames` (server.json), set by the servers module: English for everyone. */
+const worldEnglish = observable.box(false);
+
+export function setWorldEnglishSkillNames(on: boolean): void {
+  if (worldEnglish.get() !== on) runInAction(() => worldEnglish.set(on));
+}
+
 let pending: Promise<void> | null = null;
 
 function set(map: ReadonlyMap<number, string>): void {
@@ -83,6 +90,7 @@ function loadSkillNames(): Promise<void> {
 
 /** The localised name for a skill number, or undefined for the English one. */
 export function localisedSkillName(number: number): string | undefined {
+  if (worldEnglish.get()) return undefined;
   return names.get().get(number);
 }
 
