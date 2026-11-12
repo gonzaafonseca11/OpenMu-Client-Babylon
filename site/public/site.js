@@ -211,6 +211,7 @@ function characterCard(c) {
 function applySession() {
   $('#account-tab').textContent = me ? 'Mi cuenta' : 'Iniciar sesión';
   $('#register-btn').hidden = !!me;
+  $('#vip-btn').hidden = !me || (!me.vipPay && !me.vip);
   $('#gm-tab').hidden = !me?.moderator;
 }
 
