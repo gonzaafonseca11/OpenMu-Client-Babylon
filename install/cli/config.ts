@@ -38,8 +38,8 @@ export type Config = {
   siteMpWebhookSecret: string;
   /** The VIP subscription's monthly price in pesos. */
   vipPrice: number;
-  /** The community's Discord invite, shown as a button on the website; empty = no button. */
-  siteDiscordUrl: string;
+  /** The website footer's social links, `Name=https://...` pairs comma separated; empty = none. */
+  siteSocialLinks: string;
   band: boolean;
   ping: boolean;
   weather: boolean;
@@ -109,7 +109,7 @@ const KEYS: Record<keyof Config, string> = {
   siteMpToken: 'MU_SITE_MP_TOKEN',
   siteMpWebhookSecret: 'MU_SITE_MP_WEBHOOK_SECRET',
   vipPrice: 'MU_VIP_PRICE',
-  siteDiscordUrl: 'MU_SITE_DISCORD_URL',
+  siteSocialLinks: 'MU_SITE_SOCIAL_LINKS',
   band: 'MU_BAND',
   ping: 'MU_PING',
   weather: 'MU_WEATHER',
@@ -162,7 +162,7 @@ export const DEFAULTS: Config = {
   siteMpToken: '',
   siteMpWebhookSecret: '',
   vipPrice: 5000,
-  siteDiscordUrl: '',
+  siteSocialLinks: '',
   band: true,
   ping: true,
   weather: true,

@@ -111,7 +111,7 @@ export function serviceEnv(c: Config): Partial<Record<Service, Env>> {
       MP_ACCESS_TOKEN: c.siteMpToken,
       MP_WEBHOOK_SECRET: c.siteMpWebhookSecret,
       VIP_PRICE: String(c.vipPrice),
-      SITE_DISCORD_URL: c.siteDiscordUrl,
+      SITE_SOCIAL_LINKS: c.siteSocialLinks,
       SITE_URL: c.mode === 'domain' ? `https://${c.domain}` : `http://${c.publicIp}:${PORTS.siteWeb}`,
       TRUSTED_PROXIES: WEB_IP,
     },

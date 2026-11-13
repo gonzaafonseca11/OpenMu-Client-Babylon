@@ -45,7 +45,7 @@ describe('website', () => {
     expect(serviceEnv({ ...domain, siteMailKey: 're_x', siteMailFrom: 'MU <a@example.com>' }).site?.MAIL_API_KEY).toBe('re_x');
     expect(env?.SITE_PLAY_URL).toBe('https://play.example.com');
     expect(env?.SITE_REGISTER_URL).toBe('https://register.example.com');
-    expect(serviceEnv({ ...domain, siteDiscordUrl: 'https://discord.gg/x' }).site?.SITE_DISCORD_URL).toBe('https://discord.gg/x');
+    expect(serviceEnv({ ...domain, siteSocialLinks: 'Discord=https://discord.gg/x' }).site?.SITE_SOCIAL_LINKS).toBe('Discord=https://discord.gg/x');
     expect(serviceEnv({ ...domain, mode: 'ip', publicIp: '203.0.113.7' }).site?.SITE_SECURE_COOKIE).toBe('off');
     expect(serviceEnv({ ...domain, signupsPerDay: 4 }).register?.RATE_LIMIT).toBe('4');
   });

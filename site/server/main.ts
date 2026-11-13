@@ -13,6 +13,7 @@ import { isEmail } from '../../src/modules/servers/registerRules';
 import { vipAddPaidMonth, vipEndingSoon, vipGrant, vipList, vipMarkReminded, vipOf, vipRecord, vipReminderMail, vipSetSubscription } from './vip';
 import { cancelSubscription, createSubscription, getAuthorizedPayment, getSubscription, paymentApproved, signatureValid, type MpConfig } from './mp';
 import { isTown, moveCharacter } from './move';
+import { socialLinks } from './social';
 import { browseItems, giveItem, giveSet, itemOptions, learnAllSkills, maxMasterTree, onlinePlayers, parseBrowse, readStats, setExcellents, writeStats } from './gm';
 
 /**
@@ -29,7 +30,7 @@ const SECURE_COOKIE = (process.env.SITE_SECURE_COOKIE || 'on') !== 'off';
 const NAME = process.env.SITE_NAME || 'MU';
 const PLAY_URL = process.env.SITE_PLAY_URL || '/';
 const REGISTER_URL = process.env.SITE_REGISTER_URL || '';
-const DISCORD_URL = process.env.SITE_DISCORD_URL || '';
+const SOCIAL_LINKS = process.env.SITE_SOCIAL_LINKS || '';
 /** The site's own SQLite file: the community chat and the news. */
 /** OpenMU's web API, asked who is online before the GM panel writes. Empty: the panel writes nothing. */
 const OPENMU_API_URL = process.env.OPENMU_API_URL || '';
@@ -87,7 +88,7 @@ const INDEX = readFileSync(join(PUBLIC, 'index.html'), 'utf8')
   .replaceAll('{{SITE_URL}}', escapeHtml(SITE_URL))
   .replaceAll('{{PLAY_URL}}', escapeHtml(PLAY_URL))
   .replaceAll('{{REGISTER_URL}}', escapeHtml(REGISTER_URL || PLAY_URL))
-  .replaceAll('{{DISCORD_BUTTON}}', DISCORD_URL ? `<a class="btn btn-discord" href="${escapeHtml(DISCORD_URL)}" target="_blank" rel="noopener">DISCORD</a>` : '')
+  .replaceAll('{{SOCIAL_LINKS}}', socialLinks(SOCIAL_LINKS, escapeHtml))
   // A new start is a new deploy: the page asks for its script and style afresh.
   .replaceAll('{{VERSION}}', Date.now().toString(36));
 
