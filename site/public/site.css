@@ -103,6 +103,8 @@ h1 { margin: 0 0 4px; font-size: 28px; }
 .btn-play:disabled { opacity: 0.6; cursor: wait; }
 .btn-vip { background: linear-gradient(#34d27a, #15944a); color: #fff; box-shadow: 0 0 24px rgba(52, 210, 122, 0.4); }
 .btn-vip:hover { filter: brightness(1.12); }
+.btn-discord { background: linear-gradient(#6f7bf7, #4752c4); color: #fff; box-shadow: 0 0 24px rgba(88, 101, 242, 0.4); }
+.btn-discord:hover { filter: brightness(1.12); }
 .btn-ghost { border-color: #5fe35f; color: #7dff7d; background: transparent; }
 .btn-ghost:hover { background: rgba(95, 227, 95, 0.1); }
 

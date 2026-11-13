@@ -37,7 +37,7 @@ logged-in players (Game Masters delete lines).
 
 `PORT`, `HOSTNAME`, `DATABASE_URL`, `SITE_DB_PATH`, `SITE_SESSION_SECRET` (empty: logins refused),
 `SITE_SECURE_COOKIE` (`off` only without HTTPS), `SITE_NAME`, `SITE_PLAY_URL`,
-`SITE_REGISTER_URL`, `TRUSTED_PROXIES`, `LOGIN_LIMIT`. The installer renders them
+`SITE_REGISTER_URL`, `SITE_DISCORD_URL` (the Discord button, from `MU_SITE_DISCORD_URL`; empty = none), `TRUSTED_PROXIES`, `LOGIN_LIMIT`. The installer renders them
 (`install/cli/render/env.ts`).
 
 ## Run it locally
