@@ -9,6 +9,7 @@ export default {
   'chaos.option': 'Kombinovanje opcija predmeta',
   'chaos.card': 'Kombinovanje Chaos karte',
   'chaos.trainer': 'Kombinacija trenera',
+  'chaos.refinery': 'Rafinerija',
   'chaos.taxRate': 'Porez: {rate}% (menja se uživo)',
   'chaos.successRate': 'Šansa za uspeh: {rate}%',
   'chaos.requiredZen': 'Potrebno Zen: {taxed}({zen})',

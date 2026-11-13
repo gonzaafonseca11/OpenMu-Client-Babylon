@@ -9,6 +9,7 @@ export default {
   'chaos.option': '道具选项合成',
   'chaos.card': '混沌卡合成',
   'chaos.trainer': '驯兽师合成',
+  'chaos.refinery': '精炼',
   'chaos.taxRate': '税率: {rate}% (实时变化)',
   'chaos.successRate': '合成成功率: {rate}%',
   'chaos.requiredZen': '所需金币: {taxed}({zen})',

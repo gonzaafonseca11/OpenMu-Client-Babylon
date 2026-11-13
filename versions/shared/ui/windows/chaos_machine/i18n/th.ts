@@ -9,6 +9,7 @@ export default {
   'chaos.option': 'การผสมออปชันไอเทม',
   'chaos.card': 'การผสมการ์ด Chaos',
   'chaos.trainer': 'การผสมของผู้ฝึก',
+  'chaos.refinery': 'โรงกลั่น',
   'chaos.taxRate': 'อัตราภาษี: {rate}% (เปลี่ยนแบบเรียลไทม์)',
   'chaos.successRate': 'อัตราสำเร็จ: {rate}%',
   'chaos.requiredZen': 'เซนที่ต้องใช้: {taxed}({zen})',

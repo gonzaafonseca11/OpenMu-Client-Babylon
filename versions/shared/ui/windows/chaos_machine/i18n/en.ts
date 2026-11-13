@@ -8,6 +8,7 @@ const en = {
   'chaos.option': 'Item option combination',
   'chaos.card': 'Chaos card combination',
   'chaos.trainer': 'Trainer combination',
+  'chaos.refinery': 'Refinery',
   'chaos.taxRate': 'Tax rate: {rate}% (changed in real-time)',
   'chaos.successRate': 'Combination success rate: {rate}%',
   'chaos.requiredZen': 'Required zen: {taxed}({zen})',

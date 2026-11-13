@@ -9,6 +9,7 @@ export default {
   'chaos.option': 'Σύνθεση επιλογών αντικειμένου',
   'chaos.card': 'Σύνθεση κάρτας Chaos',
   'chaos.trainer': 'Σύνθεση εκπαιδευτή',
+  'chaos.refinery': 'Διυλιστήριο',
   'chaos.taxRate': 'Φόρος: {rate}% (αλλάζει σε πραγματικό χρόνο)',
   'chaos.successRate': 'Πιθανότητα επιτυχίας: {rate}%',
   'chaos.requiredZen': 'Απαιτούμενα Zen: {taxed}({zen})',

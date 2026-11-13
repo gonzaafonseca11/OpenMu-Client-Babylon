@@ -9,6 +9,7 @@ export default {
   'chaos.option': 'Kombinacja opcji',
   'chaos.card': 'Kombinacja karty Chaos',
   'chaos.trainer': 'Kombinacja trenera',
+  'chaos.refinery': 'Rafineria',
   'chaos.taxRate': 'Podatek: {rate}% (zmienia się na bieżąco)',
   'chaos.successRate': 'Szansa powodzenia: {rate}%',
   'chaos.requiredZen': 'Wymagany zen: {taxed}({zen})',

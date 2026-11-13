@@ -10,7 +10,7 @@ vi.hoisted(() => {
 await import('@versions/shared/skills/skillVisuals');
 const { installNet } = await import('./net');
 const { Merchant } = await import('./state');
-const { Economy } = await import('../economy/economy');
+const { Economy, MIX_TYPE } = await import('../economy/economy');
 const { events } = await import('../events');
 const { bloodCastleWindow } = await import('../events/bloodCastle');
 const { Session } = await import('@/modules/session');
@@ -126,5 +126,17 @@ describe('the seed NPCs', () => {
     npcWindow(NpcWindowResponseNpcWindowEnum.SeedResearcher);
     expect(Economy.seedMenu).toBe('researcher');
     expect(sent).not.toContain(CloseNpcRequestPacket.Code);
+  });
+});
+
+// ReceiveTalk: Elpis opens the mix tray as MIXTYPE_ELPIS, moved under OpenMU's Storages.Refinery (6).
+describe('Elpis', () => {
+  it('opens the gemstone refinery tray', () => {
+    npcWindow(NpcWindowResponseNpcWindowEnum.ElphisRefinery);
+    expect(Economy.mixOpen).toBe(true);
+    expect(Economy.mixInventoryType).toBe(MIX_TYPE.elpis);
+    expect(Economy.mixWireStorage).toBe(6);
+    expect(sent).not.toContain(CloseNpcRequestPacket.Code);
+    Economy.closeMix(false);
   });
 });

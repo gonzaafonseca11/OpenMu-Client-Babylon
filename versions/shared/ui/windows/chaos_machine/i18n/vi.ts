@@ -9,6 +9,7 @@ export default {
   'chaos.option': 'Kết hợp tùy chọn',
   'chaos.card': 'Kết hợp thẻ Chaos',
   'chaos.trainer': 'Kết hợp của Huấn luyện viên',
+  'chaos.refinery': 'Tinh luyện',
   'chaos.taxRate': 'Thuế: {rate}% (thay đổi theo thời gian thực)',
   'chaos.successRate': 'Tỉ lệ thành công: {rate}%',
   'chaos.requiredZen': 'Zen cần: {taxed}({zen})',

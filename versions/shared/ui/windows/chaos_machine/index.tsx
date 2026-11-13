@@ -86,6 +86,7 @@ const TITLE: Readonly<Record<number, TextKey>> = {
   [MIX_TYPE.option380]: 'chaos.option',
   [MIX_TYPE.chaosCard]: 'chaos.card',
   [MIX_TYPE.trainer]: 'chaos.trainer',
+  [MIX_TYPE.elpis]: 'chaos.refinery',
   [MIX_TYPE.extractSeed]: 'chaos.extraction',
   [MIX_TYPE.seedSphere]: 'chaos.assembly',
   [MIX_TYPE.attachSocket]: 'chaos.application',

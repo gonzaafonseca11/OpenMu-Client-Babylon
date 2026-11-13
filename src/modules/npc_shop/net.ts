@@ -50,6 +50,10 @@ export function installNet(): void {
         Merchant.dropNpcTalk();
         Economy.openMix('petTrainer');
         break;
+      case NpcWindowResponseNpcWindowEnum.ElphisRefinery:
+        Merchant.dropNpcTalk();
+        Economy.openMix('elpis');
+        break;
       case NpcWindowResponseNpcWindowEnum.ChaosCardCombination:
         Merchant.dropNpcTalk();
         Economy.openMix('chaosCard');

@@ -33,6 +33,9 @@ export const CHAOS_CARD_WIRE_STORAGE = 9;
  */
 export const PET_TRAINER_WIRE_STORAGE = 5;
 
+/** `STORAGE_TYPE::ELPIS_MIX` / OpenMU `Storages.Refinery`: Elpis's gemstone tray, the chaos machine's grid here. */
+export const REFINERY_WIRE_STORAGE = 6;
+
 /**
  * `STORAGE_TYPE::EXTRACT_SEED_MIX` .. `DETACH_SOCKET_MIX` (_define.h:181-184) / OpenMU `SeedCrafting` ..
  * `SeedUnmountCrafting`: the Seed Master's and the Seed Researcher's trays, the chaos machine's grid here.
