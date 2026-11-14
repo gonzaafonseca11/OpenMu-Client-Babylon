@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { migrate, optionsFrom } from './gameOptions';
+import { migrate, offerAutoMana, optionsFrom } from './gameOptions';
 
 const DROPPED = [
   'darkness',
@@ -42,6 +42,22 @@ describe('gameOptions migration', () => {
     expect(migrate(blob)).toBe(false);
     expect(blob).toEqual({ toneMapper: 3, brightness: 4, vignette: 9 });
     expect(info).not.toHaveBeenCalled();
+  });
+
+  it('turns the automatic mana potion on once for a save from before it was offered', () => {
+    const options = optionsFrom({ autoManaPotion: false });
+    expect(offerAutoMana(options, false)).toBe(true);
+    expect(options.autoManaPotion).toBe(true);
+  });
+
+  it('keeps the automatic mana potion off once the player turned it off', () => {
+    const options = optionsFrom({ autoManaPotion: false });
+    expect(offerAutoMana(options, true)).toBe(false);
+    expect(options.autoManaPotion).toBe(false);
+  });
+
+  it('starts a new player with the automatic mana potion on', () => {
+    expect(optionsFrom({}).autoManaPotion).toBe(true);
   });
 
   it('maps toneMapping true to the Standard curve and false to none', () => {

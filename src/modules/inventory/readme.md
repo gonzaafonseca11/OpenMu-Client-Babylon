@@ -47,7 +47,9 @@ items themselves are the hero's (`Hero.items`, `Hero.money`).
 - Automatic mana potion (`autoMana.ts`, ours): where the world's `server.json` sets `autoManaPotion`
   and the player's option of that name is on, mana under a tenth drinks the potion the unbound W
   key would (`findHotkeyItem`, the same `consumeItemRequest`), at most once a second, alive and in
-  the world. The original never drinks by itself, so both default off.
+  the world. The original never drinks by itself, so the world's setting defaults off. The player's
+  option defaults on, since it does nothing until the world allows it; a save from before that was
+  turned on once (`offerAutoMana`, controllers/settings/gameOptions.ts), and a later off is kept.
 
 ## Packets
 - `CharacterInventory`: the full bag, emptied first (WSclient.cpp:1672-1683); slots past `FirstStoreItemSlotIndex` go to `Economy.myShopItems`.

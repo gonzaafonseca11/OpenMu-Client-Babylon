@@ -710,7 +710,7 @@ const DEFAULTS: GameOptions = {
   minimapCorner: true,
   quickItemActions: true,
   confirmValuableItems: true,
-  autoManaPotion: false,
+  autoManaPotion: true,
   autoQuiver: false,
   performanceReadout: false,
   compareTooltips: 2,
@@ -802,8 +802,23 @@ export function optionsFrom(parsed: Record<string, unknown>): GameOptions {
   return loaded;
 }
 
+/** Set once the automatic mana potion was turned on for this browser; a later off is the player's. */
+const MANA_OFFERED_KEY = 'mu_auto_mana_offered';
+
+/**
+ * The automatic mana potion came on with the worlds that allow it, so an "off" saved before was
+ * never chosen: it is turned on once. True when the options changed.
+ */
+export function offerAutoMana(options: GameOptions, offered: boolean): boolean {
+  if (offered || options.autoManaPotion) return false;
+  options.autoManaPotion = true;
+  return true;
+}
+
 function load(): GameOptions {
   const stored = LocalStorage.load(OPTIONS_KEY);
+  const manaOffered = LocalStorage.load(MANA_OFFERED_KEY) !== null;
+  LocalStorage.save(MANA_OFFERED_KEY, '1');
 
   if (!stored) return { ...DEFAULTS };
 
@@ -811,8 +826,9 @@ function load(): GameOptions {
     const parsed = JSON.parse(stored) as Record<string, unknown>;
     const migrated = migrate(parsed);
     const loaded = optionsFrom(parsed);
+    const manaOn = offerAutoMana(loaded, manaOffered);
 
-    if (migrated) LocalStorage.save(OPTIONS_KEY, JSON.stringify(loaded));
+    if (migrated || manaOn) LocalStorage.save(OPTIONS_KEY, JSON.stringify(loaded));
 
     return loaded;
   } catch {
