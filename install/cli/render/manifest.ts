@@ -52,6 +52,14 @@ export function manifestModulesOff(c: Config): string[] {
   return [...new Set(listed)].sort();
 }
 
+/** `extraWarps` as `server.json` rows: `index:name:level:zen` per entry, malformed ones left out. */
+export function manifestWarps(c: Config): { index: number; name: string; level: number; zen: number }[] {
+  return c.extraWarps.split(';').flatMap(spec => {
+    const m = /^\s*(\d{1,3}):([^:;]{1,32}):(\d{1,4}):(\d{1,9})\s*$/.exec(spec);
+    return m ? [{ index: Number(m[1]), name: m[2].trim(), level: Number(m[3]), zen: Number(m[4]) }] : [];
+  });
+}
+
 export function serverManifest(c: Config, modules: readonly ModuleEntry[] = []): string {
   const manifest = {
     version: MANIFEST_VERSION,
@@ -78,6 +86,8 @@ export function serverManifest(c: Config, modules: readonly ModuleEntry[] = []):
     directWorld: c.directWorld,
     // The modules folder (`<state>/modules`, state.ts): streamed to every player (docs/module_streaming.md).
     modules,
+    // Move window rows the client's MoveReq file lacks; each needs its OpenMU WarpInfo.
+    warps: manifestWarps(c),
   };
   return `${JSON.stringify(manifest, null, 2)}\n`;
 }

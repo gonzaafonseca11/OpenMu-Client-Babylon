@@ -167,6 +167,10 @@ everything the stack reads is rendered from `mu.env`, so `mu config` can change 
   `src/modules/` that are not core: events, quests, marketplace, guild, guild_war, party, friends,
   economy, trade, vault, personal_shop, chaos_mix, pets, mu_helper, band, gm.
 
+  `warps` (`MU_EXTRA_WARPS` in `mu.env`, default none) adds Move window rows the client's
+  `MoveReq` file lacks, as `index:name:level:zen` separated by `;` (like `24:Crywolf:200:15000`).
+  Each needs its OpenMU `WarpInfo` with that index, or the server refuses the warp.
+
   `loginTokens` (always `true`, nothing to set) says this world issues login tokens: our OpenMU
   plugin does (`openmu/readme.md`), and it is in every OpenMU image the installer builds. A client
   with "remember" ticked keeps a token instead of the password (Enhanced and Ultra). The tokens live

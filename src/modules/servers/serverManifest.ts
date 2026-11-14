@@ -54,6 +54,14 @@ export type StreamedModuleEntry = {
   readonly signature?: string;
 };
 
+/** A Move window row the world adds to the client's `MoveReq` list (its OpenMU `WarpInfo` must exist). */
+export type ExtraWarp = {
+  readonly index: number;
+  readonly name: string;
+  readonly level: number;
+  readonly zen: number;
+};
+
 type ServerManifest = {
   readonly version: 1;
   readonly settings: ServerSettings;
@@ -69,10 +77,12 @@ type ServerManifest = {
   readonly modules: readonly StreamedModuleEntry[];
   /** The entries left out of `modules`, by id (`#<index>` when the id itself is bad), for the notice. */
   readonly modulesDropped: readonly string[];
+  /** Move window rows the world adds; malformed entries are left out. */
+  readonly warps: readonly ExtraWarp[];
 };
 
 /** What a manifest puts in force for its world. */
-type InForce = Pick<ServerManifest, 'settings' | 'loginTokens'>;
+type InForce = Pick<ServerManifest, 'settings' | 'loginTokens' | 'warps'>;
 
 const SERVER_MANIFEST_VERSION = 1;
 
@@ -91,7 +101,7 @@ export const ORIGINAL_SETTINGS: ServerSettings = {
   englishSkillNames: false,
 };
 
-const ORIGINAL: InForce = { settings: ORIGINAL_SETTINGS, loginTokens: false };
+const ORIGINAL: InForce = { settings: ORIGINAL_SETTINGS, loginTokens: false, warps: [] };
 
 const MODULE_ID = /^[a-z][a-z0-9_]{0,31}$/;
 const MAX_MODULES_OFF = 64;
@@ -154,6 +164,21 @@ function parseStreamed(raw: unknown): StreamedModuleEntry | null {
   return { id, version, api, url, sha256, ...(signature === undefined ? {} : { signature }) };
 }
 
+const isCount = (v: unknown, max: number): v is number => Number.isInteger(v) && (v as number) >= 0 && (v as number) <= max;
+
+/** `warps`: at most 32 well-formed rows, a repeated index kept once; anything else is left out. */
+function parseWarps(raw: unknown): ExtraWarp[] {
+  if (!Array.isArray(raw)) return [];
+  const warps: ExtraWarp[] = [];
+  for (const item of raw.slice(0, 32)) {
+    if (!isObject(item)) continue;
+    const { index, name, level, zen } = item;
+    if (!isCount(index, 255) || !isText(name, 32) || !isCount(level, 1000) || !isCount(zen, 100_000_000)) continue;
+    if (!warps.some(w => w.index === index)) warps.push({ index, name, level, zen });
+  }
+  return warps;
+}
+
 /**
  * `modules`: a malformed entry, a repeated id and anything past 32 entries is dropped and named, never
  * the whole document; a `modules` that is not a list drops everything.
@@ -209,11 +234,12 @@ export function parseServerManifest(raw: unknown): ServerManifest | null {
     directLogin,
     directWorld,
     ...parseModules(raw.modules),
+    warps: parseWarps(raw.warps),
   };
 }
 
 const inForce = (manifest: ServerManifest | null): InForce =>
-  manifest ? { settings: manifest.settings, loginTokens: manifest.loginTokens } : ORIGINAL;
+  manifest ? { settings: manifest.settings, loginTokens: manifest.loginTokens, warps: manifest.warps } : ORIGINAL;
 
 /** What is in force, by manifest URL. */
 const current = new Map<string, InForce>();
@@ -330,6 +356,11 @@ export function serverSetting<K extends keyof ServerSettings>(key: K): ServerSet
 /** Whether the world being played issues login tokens: off unless its `server.json` says `loginTokens: true`. */
 export function serverOffersLoginTokens(): boolean {
   return worldInForce().loginTokens;
+}
+
+/** The Move window rows the world being played adds (its `server.json` `warps`). */
+export function serverWarps(): readonly ExtraWarp[] {
+  return worldInForce().warps;
 }
 
 /** Tests only: forget what this launch fetched. */

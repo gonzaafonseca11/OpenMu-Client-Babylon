@@ -74,6 +74,8 @@ export type Config = {
   englishSkillNames: boolean;
   /** Optional client modules this world turns off, comma separated (`server.json` `modulesOff`). */
   modulesOff: string;
+  /** Move window rows the client file lacks, `index:name:level:zen` separated by `;` (`server.json` `warps`). */
+  extraWarps: string;
   /** The owner's ed25519 public key (base64url) baked into the client: modules it signed run in the page. Empty: none. */
   moduleSigningKey: string;
   /** Host a mail server and webmail at mail.<domain> (domain mode only); its admin mailbox is the certificate e-mail. */
@@ -130,6 +132,7 @@ const KEYS: Record<keyof Config, string> = {
   englishItemNames: 'MU_ENGLISH_ITEM_NAMES',
   englishSkillNames: 'MU_ENGLISH_SKILL_NAMES',
   modulesOff: 'MU_MODULES_OFF',
+  extraWarps: 'MU_EXTRA_WARPS',
   moduleSigningKey: 'MU_MODULE_SIGNING_KEY',
   mail: 'MU_MAIL',
   mailAdminHash: 'MU_MAIL_ADMIN_HASH',
@@ -183,6 +186,7 @@ export const DEFAULTS: Config = {
   englishItemNames: false,
   englishSkillNames: false,
   modulesOff: '',
+  extraWarps: '',
   moduleSigningKey: '',
   mail: false,
   mailAdminHash: '',

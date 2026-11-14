@@ -54,6 +54,7 @@ describe('parseServerManifest', () => {
       directWorld: false,
       modules: [],
       modulesDropped: [],
+      warps: [],
     });
     expect(parseServerManifest({ version: 1, settings: { retryLoginWhenConnected: true } })?.settings).toEqual({
       ...ORIGINAL_SETTINGS,
@@ -62,6 +63,12 @@ describe('parseServerManifest', () => {
   });
 
   // Leaning grants OpenMU's resting regeneration: a wall lean anywhere is the world's to allow.
+  it('reads extra warps, keeping only well-formed ones', () => {
+    const warps = [{ index: 24, name: 'Crywolf', level: 200, zen: 15000 }, { index: 'x', name: 'Bad', level: 1, zen: 1 }];
+    expect(parseServerManifest({ version: 1, settings: {}, warps })?.warps).toEqual([warps[0]]);
+    expect(parseServerManifest({ version: 1, settings: {} })?.warps).toEqual([]);
+  });
+
   it('reads restAnyWall, off on the original', () => {
     expect(ORIGINAL_SETTINGS.restAnyWall).toBe(false);
     expect(parseServerManifest({ version: 1, settings: { restAnyWall: true } })?.settings.restAnyWall).toBe(true);
@@ -122,6 +129,7 @@ describe('parseServerManifest', () => {
       directWorld: false,
       modules: [],
       modulesDropped: [],
+      warps: [],
     });
   });
 

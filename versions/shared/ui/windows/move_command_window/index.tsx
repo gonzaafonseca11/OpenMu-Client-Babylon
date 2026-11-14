@@ -16,7 +16,8 @@ import { EventBus } from '@/core/eventBus';
 import { ENUM_WORLD } from '@/core/types';
 import { playUiSound, uiClick } from '@/controllers/sound/sfx';
 import { loadMoveReqList, type MoveReqEntry } from '@/controllers/assets/mu';
-import { serverSetting } from '@/modules/servers/serverManifest';
+import { serverSetting, serverWarps } from '@/modules/servers/serverManifest';
+import { withServerWarps } from './serverWarps';
 import { WarpFavourites } from '@/modules/warp/warpFavourites';
 import { MuSpriteFrame } from '@/controllers/interface/components/mu_sprite';
 import { MuText } from '@/controllers/interface/components/mu_text';
@@ -251,7 +252,7 @@ export const MoveCommandWindow = observer(() => {
     let cancelled = false;
     loadMoveReqList(serverSetting('englishMapNames')).then(
       list => {
-        if (!cancelled) setEntries(list);
+        if (!cancelled) setEntries(withServerWarps(list, serverWarps()));
       },
       err => console.error('Could not load MoveReq_eng.bmd:', err)
     );

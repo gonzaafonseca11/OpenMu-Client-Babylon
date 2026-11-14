@@ -102,8 +102,14 @@ describe('client build', () => {
 
 describe('server.json', () => {
   it('holds the original behaviour by default, and offers login tokens: the plugin is in every image', () => {
-    expect(JSON.parse(serverManifest(domain))).toEqual({ version: 1, settings: ORIGINAL_SETTINGS, modulesOff: [], loginTokens: true, directLogin: false, directWorld: false, modules: [] });
+    expect(JSON.parse(serverManifest(domain))).toEqual({ version: 1, settings: ORIGINAL_SETTINGS, modulesOff: [], loginTokens: true, directLogin: false, directWorld: false, modules: [], warps: [] });
     expect(parseServerManifest(JSON.parse(serverManifest(domain)))?.loginTokens).toBe(true);
+  });
+
+  it('lists the extra Move window warps the config names, and drops a malformed one', () => {
+    const json = JSON.parse(serverManifest({ ...domain, extraWarps: '24:Crywolf:200:15000; bad; 26:Kalima:300:20000' }));
+    expect(json.warps).toEqual([{ index: 24, name: 'Crywolf', level: 200, zen: 15000 }, { index: 26, name: 'Kalima', level: 300, zen: 20000 }]);
+    expect(parseServerManifest(json)?.warps).toEqual(json.warps);
   });
 
   it('turns off the modules the config lists, and band when its relay is off', () => {
