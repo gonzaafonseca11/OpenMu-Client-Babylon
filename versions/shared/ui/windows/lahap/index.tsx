@@ -3,6 +3,8 @@ import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type 
 import { observer } from 'mobx-react-lite';
 import { t, type TextKey } from '@/i18n';
 import { JewelMix, STACK_SIZES, combineZen } from '@/modules/chaos_mix/jewelMix';
+import { itemNamesInEnglish } from '@/controllers/assets/mu';
+import { ENGLISH_JEWEL_NAMES } from './jewelNames';
 import { isTypingInField } from '@/ecs/systems/keyboardInputSystem';
 import { playUiSound } from '@/controllers/sound/sfx';
 import { MsgBoxFrame, MSGBOX_WIDTH, msgBoxHeight } from '@/controllers/interface/components/msg_box_frame';
@@ -54,7 +56,8 @@ import {
 } from './layout';
 
 /** `GetJewelIndex(.., eGEM_NAME)`: GlobalText 1806, 1807, 3312-3314, 2081, 3315-3318. */
-const jewelName = (jewel: number) => t(`lahap.jewel.${jewel}` as TextKey);
+const jewelName = (jewel: number) =>
+  itemNamesInEnglish() ? ENGLISH_JEWEL_NAMES[jewel] : t(`lahap.jewel.${jewel}` as TextKey);
 
 /** Places a 640x480-stage point on the canvas, scaled like the sheets. */
 function useStage() {
