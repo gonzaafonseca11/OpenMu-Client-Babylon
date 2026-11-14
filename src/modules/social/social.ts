@@ -39,6 +39,7 @@ import {
   type EmojiBubbleId,
 } from '../chat/emojiBubbles';
 import { localCommandOf, partyReplyCommand } from '../chat/chatCommands';
+import { markGmNotice } from '../chat/gmNotice';
 import { MuHelper } from '../mu_helper';
 import {
   chatEmojiAdvance,
@@ -704,7 +705,7 @@ export const Social = new (class _Social {
 
     watchStatCommand(text);
     const prefix = text.startsWith('/') ? '' : CHAT_INPUT_PREFIX[this.chatInputMode];
-    const message = toChatWire(clipChatText(prefix + text, MAX_CHAT_LENGTH));
+    const message = toChatWire(clipChatText(prefix + markGmNotice(text), MAX_CHAT_LENGTH));
 
     // `CheckChatText` (NewUIChatInputBox.cpp:571) runs on the typed line
     // before it is sent, and only for public chat - never for a whisper and

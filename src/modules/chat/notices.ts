@@ -33,6 +33,8 @@ const NOTICE_TIME_MS = (NOTICE_TIME_TICKS / TICKS_PER_SECOND) * 1000;
 const NoticeColor = {
   Gold: 0,
   Guild: 1,
+  /** Ours: a game master's "!" notice (gmNotice.ts). */
+  Gm: 2,
 } as const;
 
 type NoticeLine = {
@@ -43,6 +45,7 @@ type NoticeLine = {
 export const NOTICE_STYLE: Record<number, { color: string; blink: boolean }> = {
   [NoticeColor.Gold]: { color: 'rgb(255,200,80)', blink: true },
   [NoticeColor.Guild]: { color: 'rgb(100,255,200)', blink: false },
+  [NoticeColor.Gm]: { color: 'rgb(110,200,255)', blink: true },
 };
 
 export const NOTICE_BACKGROUND = 'rgba(0,0,0,0.5)';
@@ -94,6 +97,11 @@ export const Notices = new (class _Notices {
   }
 
   /** Type 2: `GlobalText[483]` around the text, colour 1. */
+  /** A game master's "!" notice, in light blue (gmNotice.ts). */
+  createGmNotice(text: string): void {
+    this.create(text, NoticeColor.Gm);
+  }
+
   createGuildNotice(text: string): void {
     this.create(t(GUILD_NOTICE_FORMAT).replace('%s', text), NoticeColor.Guild);
   }

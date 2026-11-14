@@ -7,6 +7,7 @@ import { EventBus } from '@/core/eventBus';
 import { GameOptions } from '@/controllers/settings';
 import { NetStats } from '@/controllers/net/roundTrip';
 import { Notices } from './notices';
+import { readGmNotice } from './gmNotice';
 import { SlideHelp } from '@/controllers/interface/slideHelp';
 import { Social } from '../social/social';
 import { Hero } from '@/modules/hero';
@@ -150,9 +151,12 @@ export function installNet(): void {
     // system log line, 2 = guild notice (banner in green + the guild window).
     // 10..15 are the slide-help marquee, which has no window here yet.
     switch (p.Type) {
-      case 0:
-        Notices.create(translateServerText(text));
+      case 0: {
+        const gm = readGmNotice(text);
+        if (gm !== null) Notices.createGmNotice(gm);
+        else Notices.create(translateServerText(text));
         break;
+      }
       case 1:
         // OpenMU's only self-defense signal is this blue line
         // (SelfDefensePlugIn.cs); keep the state alongside showing it. It reads
