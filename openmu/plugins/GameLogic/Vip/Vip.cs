@@ -16,7 +16,7 @@ using Npgsql;
 /// </summary>
 public static class Vip
 {
-    /// <summary>The VIP game server's id (GameServerDefinition.ServerID): 0 No PvP, 1 Bardo PvP, 2 VIP.</summary>
+    /// <summary>The VIP game server's id (GameServerDefinition.ServerID): 0 PvP, 1 No PvP, 2 VIP.</summary>
     public const byte ServerId = 2;
 
     /// <summary>The reset level on the VIP server; the others keep <see cref="NormalResetLevel"/>.</summary>
