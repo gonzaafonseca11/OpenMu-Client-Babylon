@@ -1,3 +1,4 @@
+import { hoveredDropLabel, setHoveredDropLabel, showsDropTooltip } from './dropTooltip';
 import { observer } from 'mobx-react-lite';
 import { Bag } from '@/modules/inventory';
 import { Drops } from '@/modules/drops';
@@ -119,7 +120,11 @@ const DropLabel = observer(({
   // Money is its own name ("Zen 1234") and a drop whose bytes did not decode
   // has nothing to show, so both keep the label alone.
   const item = entity.droppedItem.isMoney ? undefined : entity.droppedItem.item;
-  const wanted = GameOptions.dropTooltips && !!item && visible && (hovered || onLabel);
+  const wanted =
+    GameOptions.dropTooltips &&
+    !!item &&
+    visible &&
+    showsDropTooltip<object>(entity, { hovered, onLabel, labelOwner: hoveredDropLabel.get() });
 
   useEffect(() => {
     if (!wanted) {
@@ -140,8 +145,17 @@ const DropLabel = observer(({
     if (!visible) {
       labelPointer.current = null;
       setOnLabel(false);
+      if (hoveredDropLabel.get() === entity) setHoveredDropLabel(null);
     }
-  }, [visible]);
+  }, [visible, entity]);
+
+  // A drop picked up under the cursor leaves no label to take the lead.
+  useEffect(
+    () => () => {
+      if (hoveredDropLabel.get() === entity) setHoveredDropLabel(null);
+    },
+    [entity]
+  );
 
   if (!visible) return null;
 
@@ -166,10 +180,12 @@ const DropLabel = observer(({
         onPointerEnter={ev => {
           labelPointer.current = { x: ev.clientX, y: ev.clientY };
           setOnLabel(true);
+          setHoveredDropLabel(entity);
         }}
         onPointerLeave={() => {
           labelPointer.current = null;
           setOnLabel(false);
+          if (hoveredDropLabel.get() === entity) setHoveredDropLabel(null);
         }}
       />
       {anchor && item && (
