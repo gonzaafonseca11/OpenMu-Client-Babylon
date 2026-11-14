@@ -22,7 +22,6 @@ export const SPANISH_DIALOG_PAGES: DialogPageFixes = {
 
 export const PORTUGUESE_DIALOG_PAGES: DialogPageFixes = {
   67: "Você leu o 'Pergaminho do Imperador', não leu? Então você sabe sobre os 3 tesouros registrados nele.",
-  153: 'Destrua os monstros Raio da Morte, Hellmaine e Fênix negra que dominam Tarkan, Aida e Icarus e traga 3 provas de que o fez. Você também pode comprá-las de Thompson, o Mercador, no sul de Aida.',
 };
 
 /** A pack's name for a quest item in its prose -> the English item name. */
