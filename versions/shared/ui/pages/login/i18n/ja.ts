@@ -14,6 +14,9 @@ export default {
   'register.idTooShort': 'IDは{min}文字以上にしてください。',
   'register.idChars': 'IDに使えるのは英数字だけです。',
   'register.passwordTooShort': 'パスワードは{min}文字以上にしてください。',
+  'register.passwordTooLong': 'パスワードは{max}文字以内にしてください。',
+  'register.passwordRules': 'パスワード: 半角英数字・記号で{min}〜{max}文字。スペース不可。',
+  'register.showPassword': 'パスワードを表示',
 
   'register.passwordChars': 'パスワードに使えるのは英数字と基本的な記号だけです。',
   'register.mismatch': 'パスワードが一致しません。',

@@ -193,6 +193,10 @@ export const LoginPage = observer(() => {
             <input
               className="login-input"
               type="text"
+              name="username"
+              autoComplete="username"
+              autoCapitalize="none"
+              spellCheck={false}
               autoFocus={!Session.username}
               value={Session.username}
               onChange={e => {
@@ -213,6 +217,8 @@ export const LoginPage = observer(() => {
             <input
               className="login-input"
               type="password"
+              name="password"
+              autoComplete="current-password"
               autoFocus={!!Session.username}
               placeholder={Session.savedToken ? t('login.savedLogin') : undefined}
               value={Session.password}

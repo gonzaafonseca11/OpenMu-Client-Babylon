@@ -14,6 +14,9 @@ export default {
   'register.idTooShort': '账号至少需要 {min} 个字符。',
   'register.idChars': '账号只能包含字母和数字。',
   'register.passwordTooShort': '密码至少需要 {min} 个字符。',
+  'register.passwordTooLong': '密码最多 {max} 个字符。',
+  'register.passwordRules': '密码：{min} 到 {max} 个英文字母、数字或符号，不能有空格。',
+  'register.showPassword': '显示密码',
 
   'register.passwordChars': '密码只能包含字母、数字和基本符号。',
   'register.mismatch': '两次输入的密码不一致。',

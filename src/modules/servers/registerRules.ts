@@ -45,6 +45,7 @@ export type SignupProblem =
   | 'idShort'
   | 'idChars'
   | 'passwordShort'
+  | 'passwordLong'
   | 'passwordChars'
   | 'mismatch'
   | 'email';
@@ -64,9 +65,13 @@ export function validateSignup(signup: Signup): SignupProblem | null {
   if (username.length < MIN_ACCOUNT_LENGTH) return 'idShort';
   if (!ACCOUNT_RE.test(username)) return 'idChars';
   if (password.length < MIN_ACCOUNT_PASSWORD_LENGTH) return 'passwordShort';
+  if (password.length > MAX_ACCOUNT_PASSWORD_LENGTH) return 'passwordLong';
   if (!PASSWORD_RE.test(password)) return 'passwordChars';
   if (password !== confirm) return 'mismatch';
   if (!isEmail(email.trim())) return 'email';
 
   return null;
 }
+
+/** What the password inputs let through: past the limit, so a long one is refused out loud instead of cut quietly. */
+export const PASSWORD_INPUT_LENGTH = MAX_ACCOUNT_PASSWORD_LENGTH * 2;

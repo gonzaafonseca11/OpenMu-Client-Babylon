@@ -8,6 +8,7 @@ import { registerApiUrl } from '@/modules/servers/serverServices';
 import {
   MAX_ACCOUNT_LENGTH,
   MAX_ACCOUNT_PASSWORD_LENGTH,
+  PASSWORD_INPUT_LENGTH,
   MIN_ACCOUNT_LENGTH,
   MIN_ACCOUNT_PASSWORD_LENGTH,
   MAX_EMAIL_LENGTH,
@@ -81,8 +82,8 @@ const EMPTY: Record<Field, string> = {
 
 const MAX_LENGTH: Record<Field, number> = {
   username: MAX_ACCOUNT_LENGTH,
-  password: MAX_ACCOUNT_PASSWORD_LENGTH,
-  confirm: MAX_ACCOUNT_PASSWORD_LENGTH,
+  password: PASSWORD_INPUT_LENGTH,
+  confirm: PASSWORD_INPUT_LENGTH,
   email: MAX_EMAIL_LENGTH,
 };
 
@@ -99,6 +100,8 @@ function problemText(problem: SignupProblem): string {
       return t('register.passwordTooShort', {
         min: MIN_ACCOUNT_PASSWORD_LENGTH,
       });
+    case 'passwordLong':
+      return t('register.passwordTooLong', { max: MAX_ACCOUNT_PASSWORD_LENGTH });
     case 'passwordChars':
       return t('register.passwordChars');
     case 'mismatch':
@@ -120,6 +123,7 @@ export const RegisterWindow = observer(({ onCreated, onCancel }: RegisterWindowP
   const [values, setValues] = useState<Record<Field, string>>(EMPTY);
   const [error, setError] = useState<string>('');
   const [sending, setSending] = useState(false);
+  const [shown, setShown] = useState(false);
 
   const set = (field: Field, value: string) =>
     setValues(current => ({ ...current, [field]: value }));
@@ -240,9 +244,11 @@ export const RegisterWindow = observer(({ onCreated, onCancel }: RegisterWindowP
               >
                 <input
                   className="login-input"
-                  type={row.type}
+                  type={row.type === 'password' && shown ? 'text' : row.type}
                   autoFocus={i === 0}
-                  autoComplete="off"
+                  autoComplete={row.type === 'password' ? 'new-password' : row.key === 'username' ? 'username' : 'email'}
+                  autoCapitalize="none"
+                  spellCheck={false}
                   value={values[row.key]}
                   onChange={e => set(row.key, e.target.value)}
                   maxLength={MAX_LENGTH[row.key]}
@@ -252,6 +258,19 @@ export const RegisterWindow = observer(({ onCreated, onCancel }: RegisterWindowP
                   }}
                 />
               </MuSpriteFrame>
+              {row.key === 'password' && (
+                <button
+                  type="button"
+                  className="login-eye"
+                  title={t('register.showPassword')}
+                  aria-label={t('register.showPassword')}
+                  aria-pressed={shown}
+                  onClick={() => setShown(v => !v)}
+                  style={{ left: INPUT_X + INPUT_WIDTH + 4, top: top + 3 }}
+                >
+                  {shown ? '🙈' : '👁'}
+                </button>
+              )}
             </div>
           );
         })}
@@ -283,6 +302,9 @@ export const RegisterWindow = observer(({ onCreated, onCancel }: RegisterWindowP
       </form>
 
       {!!error && <p className="login-signup-message">{error}</p>}
+      <p className="login-signup-rules">
+        {t('register.passwordRules', { min: MIN_ACCOUNT_PASSWORD_LENGTH, max: MAX_ACCOUNT_PASSWORD_LENGTH })}
+      </p>
     </MuSpriteFrame>
   );
 });

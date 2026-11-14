@@ -14,6 +14,9 @@ export default {
   'register.idTooShort': 'ID ต้องมีอย่างน้อย {min} ตัวอักษร',
   'register.idChars': 'ID ใช้ได้เฉพาะตัวอักษรและตัวเลข',
   'register.passwordTooShort': 'รหัสผ่านต้องมีอย่างน้อย {min} ตัวอักษร',
+  'register.passwordTooLong': 'รหัสผ่านมีได้ไม่เกิน {max} ตัวอักษร',
+  'register.passwordRules': 'รหัสผ่าน: ตัวอักษรอังกฤษ ตัวเลข หรือสัญลักษณ์ {min} ถึง {max} ตัว ไม่มีช่องว่าง',
+  'register.showPassword': 'แสดงรหัสผ่าน',
 
   'register.passwordChars': 'รหัสผ่านใช้ได้เฉพาะตัวอักษร ตัวเลข และสัญลักษณ์พื้นฐานเท่านั้น',
   'register.mismatch': 'รหัสผ่านไม่ตรงกัน',

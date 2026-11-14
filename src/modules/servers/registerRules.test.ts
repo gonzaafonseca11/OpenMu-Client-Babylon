@@ -36,6 +36,10 @@ describe('validateSignup', () => {
     );
   });
 
+  it('rejects a password over ten instead of cutting it', () => {
+    expect(validateSignup({ ...good, password: 'abcdefghijk', confirm: 'abcdefghijk' })).toBe('passwordLong');
+  });
+
   it('rejects a confirmation that does not match', () => {
     expect(validateSignup({ ...good, confirm: 'secrets' })).toBe('mismatch');
   });

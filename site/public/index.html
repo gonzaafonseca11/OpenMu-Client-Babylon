@@ -251,6 +251,8 @@
               <label>Contraseña actual <input name="password" type="password" maxlength="20" autocomplete="current-password" required></label>
               <label>Contraseña nueva <input name="newPassword" type="password" maxlength="20" autocomplete="new-password" required></label>
               <label>Repetí la contraseña nueva <input name="repeat" type="password" maxlength="20" autocomplete="new-password" required></label>
+              <p class="hint small">De 4 a 10 caracteres: letras, números y símbolos básicos, sin ñ, espacios ni acentos.</p>
+              <label class="show-pass"><input type="checkbox"> Mostrar contraseña</label>
               <button class="btn btn-play" type="submit">Cambiar contraseña</button>
               <p class="error" id="password-error" role="alert"></p>
             </form>
@@ -294,9 +296,10 @@
         <h1>Contraseña nueva</h1>
         <p class="hint" id="reset-for"></p>
         <form id="reset-form">
-          <label>Contraseña nueva <input name="password" type="password" maxlength="10" autocomplete="new-password" required></label>
-          <label>Repetila <input name="confirm" type="password" maxlength="10" autocomplete="new-password" required></label>
-          <p class="hint small">De 4 a 10 caracteres: letras, números y símbolos básicos, sin espacios ni acentos.</p>
+          <label>Contraseña nueva <input name="password" type="password" maxlength="20" autocomplete="new-password" required></label>
+          <label>Repetila <input name="confirm" type="password" maxlength="20" autocomplete="new-password" required></label>
+          <p class="hint small">De 4 a 10 caracteres: letras, números y símbolos básicos, sin ñ, espacios ni acentos.</p>
+          <label class="show-pass"><input type="checkbox"> Mostrar contraseña</label>
           <button class="btn btn-play" type="submit">Cambiar contraseña</button>
           <p class="error" id="reset-error" role="alert"></p>
           <p class="ok" id="reset-ok" role="status"></p>

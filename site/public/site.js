@@ -490,6 +490,12 @@ function showTab() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // "Mostrar contraseña": the form's password fields as plain text, so what is typed is what is kept.
+  for (const box of document.querySelectorAll('.show-pass input')) {
+    box.addEventListener('change', () => {
+      for (const field of box.form.querySelectorAll('input[name$="assword"], input[name="repeat"], input[name="confirm"]')) field.type = box.checked ? 'text' : 'password';
+    });
+  }
   window.addEventListener('hashchange', showTab);
   loadMe().then(showTab);
   setInterval(() => { if (!$('#inicio').hidden) loadOnline(); }, 30_000);

@@ -14,6 +14,9 @@ export default {
   'register.idTooShort': 'ID должен быть не короче {min} символов.',
   'register.idChars': 'ID может содержать только буквы и цифры.',
   'register.passwordTooShort': 'Пароль должен быть не короче {min} символов.',
+  'register.passwordTooLong': 'Пароль может быть не длиннее {max} символов.',
+  'register.passwordRules': 'Пароль: от {min} до {max} латинских букв, цифр или символов. Без пробелов.',
+  'register.showPassword': 'Показать пароль',
 
   'register.passwordChars': 'Пароль может содержать только буквы, цифры и основные символы.',
   'register.mismatch': 'Пароли не совпадают.',

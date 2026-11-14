@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import {
   MAX_ACCOUNT_LENGTH,
-  MAX_ACCOUNT_PASSWORD_LENGTH,
-  MIN_ACCOUNT_LENGTH,
-  MIN_ACCOUNT_PASSWORD_LENGTH,
   MAX_EMAIL_LENGTH,
+  PASSWORD_INPUT_LENGTH,
   validateSignup,
-  type SignupProblem,
 } from '../../src/modules/servers/registerRules';
+import { pageText } from './text';
 import { MuSpriteFrame } from './muSprite';
 import { MuButton } from './muButton';
 
@@ -58,10 +56,10 @@ const API = import.meta.env.VITE_REGISTER_API || '/api/register';
  * being set, and the e-mail a forgotten password is sent to (site/readme.md).
  */
 const ROWS = [
-  { key: 'username', label: 'ID', type: 'text' },
-  { key: 'password', label: 'Password', type: 'password' },
-  { key: 'confirm', label: 'Confirm', type: 'password' },
-  { key: 'email', label: 'E-mail', type: 'email' },
+  { key: 'username', type: 'text' },
+  { key: 'password', type: 'password' },
+  { key: 'confirm', type: 'password' },
+  { key: 'email', type: 'email' },
 ] as const;
 
 type Field = (typeof ROWS)[number]['key'];
@@ -79,24 +77,13 @@ const EMPTY: Record<Field, string> = {
   email: '',
 };
 
-/**
- * The shared reasons, said in the English this page is written in. The client's
- * own register window says the same things through `t()`; the service says them
- * again for anything that POSTs without a form.
- */
-const PROBLEM_TEXT: Record<SignupProblem, string> = {
-  empty: 'Please fill in every field.',
-  idShort: `ID must be at least ${MIN_ACCOUNT_LENGTH} characters.`,
-  idChars: 'ID may contain only letters and numbers.',
-  passwordShort: `Password must be at least ${MIN_ACCOUNT_PASSWORD_LENGTH} characters.`,
-  passwordChars: 'Password may contain only letters, numbers and basic symbols.',
-  mismatch: 'Passwords do not match.',
-  email: 'Enter a valid e-mail. It is how you recover the account.',
-};
+/** The page's words, in the browser's language (text.ts). */
+const TEXT = pageText();
 
 export const RegisterPage = () => {
   const [values, setValues] = useState<Record<Field, string>>(EMPTY);
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
+  const [shown, setShown] = useState(false);
 
   const set = (field: Field, value: string) =>
     setValues(current => ({ ...current, [field]: value }));
@@ -107,7 +94,7 @@ export const RegisterPage = () => {
     const problem = validateSignup(values);
 
     if (problem) {
-      setStatus({ kind: 'error', message: PROBLEM_TEXT[problem] });
+      setStatus({ kind: 'error', message: TEXT.problems[problem] });
       return;
     }
 
@@ -129,7 +116,7 @@ export const RegisterPage = () => {
       if (!response.ok) {
         setStatus({
           kind: 'error',
-          message: body.error || `Registration failed (${response.status}).`,
+          message: body.error || TEXT.failed(response.status),
         });
         return;
       }
@@ -139,7 +126,7 @@ export const RegisterPage = () => {
     } catch {
       // Offline, DNS, CORS - none of which the player can act on beyond
       // trying again.
-      setStatus({ kind: 'error', message: 'Could not reach the server.' });
+      setStatus({ kind: 'error', message: TEXT.unreachable });
     }
   };
 
@@ -166,7 +153,7 @@ export const RegisterPage = () => {
                   className="register-label"
                   style={{ left: LABEL_X, top: top + LABEL_OFFSET_Y }}
                 >
-                  {row.label}
+                  {TEXT.labels[row.key]}
                 </span>
 
                 <MuSpriteFrame
@@ -177,9 +164,11 @@ export const RegisterPage = () => {
                 >
                   <input
                     className="register-input"
-                    type={row.type}
+                    type={row.type === 'password' && shown ? 'text' : row.type}
                     autoFocus={i === 0}
-                    autoComplete="off"
+                    autoComplete={row.type === 'password' ? 'new-password' : row.key === 'username' ? 'username' : 'email'}
+                    autoCapitalize="none"
+                    spellCheck={false}
                     value={values[row.key]}
                     onChange={e => set(row.key, e.target.value)}
                     maxLength={
@@ -187,7 +176,7 @@ export const RegisterPage = () => {
                         ? MAX_ACCOUNT_LENGTH
                         : row.key === 'email'
                           ? MAX_EMAIL_LENGTH
-                          : MAX_ACCOUNT_PASSWORD_LENGTH
+                          : PASSWORD_INPUT_LENGTH
                     }
                     style={{
                       paddingLeft: TEXT_INSET_X,
@@ -195,6 +184,18 @@ export const RegisterPage = () => {
                     }}
                   />
                 </MuSpriteFrame>
+                {row.key === 'password' && (
+                  <button
+                    type="button"
+                    className="register-eye"
+                    title={shown ? TEXT.hide : TEXT.show}
+                    aria-label={shown ? TEXT.hide : TEXT.show}
+                    onClick={() => setShown(v => !v)}
+                    style={{ left: INPUT_X + INPUT_WIDTH + 4, top: top + 3 }}
+                  >
+                    {shown ? '🙈' : '👁'}
+                  </button>
+                )}
               </div>
             );
           })}
@@ -229,9 +230,10 @@ export const RegisterPage = () => {
         )}
         {status.kind === 'done' && (
           <p className="register-message register-ok">
-            Account created. You can log in now.
+            {TEXT.done}
           </p>
         )}
+        <p className="register-rules">{TEXT.rules}</p>
       </MuSpriteFrame>
     </div>
   );
