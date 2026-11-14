@@ -15,6 +15,7 @@ import { cancelSubscription, createSubscription, getAuthorizedPayment, getSubscr
 import { isTown, moveCharacter } from './move';
 import { socialLinks } from './social';
 import { browseItems, giveItem, giveSet, itemOptions, learnAllSkills, maxMasterTree, onlinePlayers, parseBrowse, readStats, setExcellents, writeStats } from './gm';
+import { accountOfBanned, bannedCharacters, unbanBlocker, unbanCharacter } from './bans';
 
 /**
  * The world's own website (site/readme.md): rankings anyone can read, and a player's characters
@@ -206,11 +207,32 @@ async function communityPost(path: string, req: Request): Promise<Response | nul
 }
 
 /** The GM panel (site/readme.md): Game Master accounts only. */
+/** Banned characters (bans.ts): the list, and lifting one while its account is out of the game. */
+async function gmBans(req: Request, path: string, gm: string): Promise<Response | null> {
+  if (req.method === 'GET' && path === '/api/gm/bans') return json(await bannedCharacters(sql));
+  if (req.method !== 'POST' || path !== '/api/gm/unban') return null;
+  const body = await readJson(req);
+  const name = typeof body?.name === 'string' ? body.name.trim() : '';
+  if (!name || name.length > 10) return json({ error: 'Pedido inválido.' }, 400);
+  const characters = await accountOfBanned(sql, name);
+  if (!characters) return json({ error: `${name} no está baneado.` }, 404);
+  const online = OPENMU_API_URL ? await onlinePlayers(OPENMU_API_URL) : null;
+  if (!online) return json({ error: 'No pude ver quién está conectado. Probá de nuevo en un rato.' }, 503);
+  const blocked = unbanBlocker(characters, online);
+  if (blocked) return json({ error: blocked }, 409);
+  const result = await unbanCharacter(sql, name);
+  if ('error' in result) return json(result, 400);
+  process.stdout.write(`gm ${gm} unbanned ${result.name}\n`);
+  return json(result);
+}
+
 async function gmRequest(path: string, req: Request, url: URL): Promise<Response | null> {
   if (!path.startsWith('/api/gm/')) return null;
   const account = await sessionAccount(req);
   if (!account) return notLoggedIn();
   if (!account.moderator) return notAllowed();
+  const bans = await gmBans(req, path, account.login);
+  if (bans) return bans;
   if (req.method === 'GET' && path === '/api/gm/winners') return json(monthly.winners());
   if (req.method === 'GET' && path === '/api/gm/vip') return json(await vipList(sql));
   if (req.method === 'POST' && path === '/api/gm/vip') {

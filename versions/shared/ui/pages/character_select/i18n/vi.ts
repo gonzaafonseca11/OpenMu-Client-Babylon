@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': 'Đang tải nhân vật...',
   'characters.select': 'Chọn nhân vật',
+  'characters.banned': '(bị cấm, gửi báo cáo nếu đây là nhầm lẫn)',
   'characters.hint.select': 'Chọn',
   'characters.hint.zoomIn': 'Phóng to',
   'characters.hint.zoomOut': 'Thu nhỏ',

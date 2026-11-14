@@ -5,7 +5,7 @@ import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
 import { MsgBox, MsgWinCode } from '@/controllers/interface';
-import { confirmDeleteCharacter, CharSelect } from '@/modules/character_select';
+import { confirmDeleteCharacter, CharSelect, isBannedCharacter } from '@/modules/character_select';
 import { characterSelectView } from '@/modules/character_select/characterSelect';
 import { useEventBus } from '@/controllers/interface/hooks';
 import { playUiSound } from '@/controllers/sound/sfx';
@@ -67,8 +67,10 @@ export const CharactersPage = observer(() => {
     'pick'
   );
 
+  const banned = !!selected && isBannedCharacter(selected);
+
   const onConnect = () => {
-    if (!selected || selecting) return;
+    if (!selected || selecting || banned) return;
     setSelecting(true);
     CharSelect.selectCharacterRequest(selected.Name);
   };
@@ -176,9 +178,9 @@ export const CharactersPage = observer(() => {
           }}
         />
 
-        {!selected && (
+        {(!selected || banned) && (
           <div
-            className="char-sel-status"
+            className={banned ? 'char-sel-status is-banned' : 'char-sel-status'}
             style={{
               left: BTN_WIDTH * 2 + BTN_GAP + STATUS_GAP,
               right: BTN_WIDTH * 2 + BTN_GAP + STATUS_GAP,
@@ -186,7 +188,9 @@ export const CharactersPage = observer(() => {
               height: STATUS_HEIGHT,
             }}
           >
-            {status === 'loading'
+            {banned
+              ? t('characters.banned')
+              : status === 'loading'
               ? t('characters.loading')
               : status === 'select'
                 ? t('characters.select')
@@ -199,7 +203,7 @@ export const CharactersPage = observer(() => {
           width={BTN_WIDTH}
           height={BTN_HEIGHT}
           frames={{ ...CREATE_FRAMES, check: 3 }}
-          disabled={!selected || selecting}
+          disabled={!selected || selecting || banned}
           onClick={onConnect}
           style={{
             position: 'absolute',

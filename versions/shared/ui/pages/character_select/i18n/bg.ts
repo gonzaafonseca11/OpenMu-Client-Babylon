@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': 'Зареждат се героите...',
   'characters.select': 'Избери герой',
+  'characters.banned': '(блокиран, изпрати сигнал, ако е грешка)',
   'characters.hint.select': 'Избери',
   'characters.hint.zoomIn': 'Приближи',
   'characters.hint.zoomOut': 'Отдалечи',

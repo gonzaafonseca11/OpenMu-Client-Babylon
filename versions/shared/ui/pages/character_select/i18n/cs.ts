@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': 'Načítání postav...',
   'characters.select': 'Vyber postavu',
+  'characters.banned': '(zablokován, pokud jde o chybu, pošli hlášení)',
   'characters.hint.select': 'Vybrat',
   'characters.hint.zoomIn': 'Přiblížit',
   'characters.hint.zoomOut': 'Oddálit',

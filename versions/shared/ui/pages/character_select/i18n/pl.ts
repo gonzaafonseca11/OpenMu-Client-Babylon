@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': 'Wczytywanie postaci...',
   'characters.select': 'Wybierz postać',
+  'characters.banned': '(zbanowany, wyślij zgłoszenie, jeśli to błąd)',
   'characters.hint.select': 'Wybierz',
   'characters.hint.zoomIn': 'Przybliż',
   'characters.hint.zoomOut': 'Oddal',

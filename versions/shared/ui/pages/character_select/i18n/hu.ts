@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': 'Karakterek betöltése...',
   'characters.select': 'Válassz karaktert',
+  'characters.banned': '(kitiltva, ha tévedés, küldj bejelentést)',
   'characters.hint.select': 'Kiválasztás',
   'characters.hint.zoomIn': 'Nagyítás',
   'characters.hint.zoomOut': 'Kicsinyítés',

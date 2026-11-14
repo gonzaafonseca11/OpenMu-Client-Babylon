@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': 'Pertsonaiak kargatzen...',
   'characters.select': 'Aukeratu pertsonaia bat',
+  'characters.banned': '(debekatuta, bidali txosten bat akatsa bada)',
   'characters.hint.select': 'Aukeratu',
   'characters.hint.zoomIn': 'Hurbildu',
   'characters.hint.zoomOut': 'Urrundu',

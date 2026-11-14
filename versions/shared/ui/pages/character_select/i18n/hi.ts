@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': 'किरदार लोड हो रहे हैं...',
   'characters.select': 'एक किरदार चुनें',
+  'characters.banned': '(प्रतिबंधित, गलती हो तो रिपोर्ट भेजें)',
   'characters.hint.select': 'चुनें',
   'characters.hint.zoomIn': 'ज़ूम इन',
   'characters.hint.zoomOut': 'ज़ूम आउट',

@@ -17,7 +17,11 @@ describe('website', () => {
     expect(sqlText).not.toMatch(/GRANT (DELETE|ALL)/);
     expect(sqlText).toContain('GRANT INSERT ON data."Item", data."ItemOptionLink", data."SkillEntry", data."ItemItemOfItemSet" TO mu_site;');
     expect(sqlText).toContain('GRANT UPDATE ("Value") ON data."StatAttribute" TO mu_site;');
-    expect(sqlText.match(/GRANT (INSERT|UPDATE)[^;]*;/g)).toHaveLength(6);
+    expect(sqlText.match(/GRANT (INSERT|UPDATE)[^;]*;/g)).toHaveLength(7);
+    // The GM panel lifts a character ban: the status, and the reason row, the only thing it may delete.
+    expect(sqlText).toContain('GRANT UPDATE ("CharacterStatus") ON data."Character" TO mu_site;');
+    expect(sqlText).toContain('GRANT SELECT, DELETE ON mu_plugins.character_ban TO mu_site;');
+    expect(sqlText.match(/DELETE/g)).toHaveLength(1);
     expect(sqlText).toContain('GRANT SELECT, INSERT ON mu_plugins.vip_payment TO mu_site;');
     expect(sqlText).toContain('GRANT SELECT, INSERT, UPDATE ON mu_plugins.vip TO mu_site;');
     expect(sqlText).toContain('ADD COLUMN IF NOT EXISTS reminded_for timestamptz');

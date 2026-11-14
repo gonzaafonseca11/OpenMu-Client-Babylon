@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': 'กำลังโหลดตัวละคร...',
   'characters.select': 'เลือกตัวละคร',
+  'characters.banned': '(ถูกแบน แจ้งรายงานหากเป็นความผิดพลาด)',
   'characters.hint.select': 'เลือก',
   'characters.hint.zoomIn': 'ซูมเข้า',
   'characters.hint.zoomOut': 'ซูมออก',

@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': 'جار تحميل الشخصيات...',
   'characters.select': 'اختر شخصية',
+  'characters.banned': '(محظور، أرسل بلاغًا إذا كان ذلك خطأ)',
   'characters.hint.select': 'اختيار',
   'characters.hint.zoomIn': 'تقريب',
   'characters.hint.zoomOut': 'تبعيد',

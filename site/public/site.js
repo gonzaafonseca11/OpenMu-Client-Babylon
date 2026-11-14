@@ -165,6 +165,25 @@ async function loadVip() {
   $('#vip-list').replaceChildren(...(rows.length ? rows : [el('p', { class: 'hint' }, 'Todavía no hay cuentas VIP.')]));
 }
 
+async function loadBans() {
+  const { ok, body } = await api('/api/gm/bans');
+  const rows = (ok ? body : []).map(b => {
+    const button = el('button', { class: 'btn btn-ghost', type: 'button' }, 'Desbanear');
+    button.addEventListener('click', async () => {
+      button.disabled = true;
+      $('#bans-error').textContent = '';
+      const res = await post('/api/gm/unban', { name: b.name });
+      if (!res.ok) { $('#bans-error').textContent = res.body.error || 'No se pudo.'; button.disabled = false; return; }
+      loadBans();
+    });
+    const when = b.bannedAt ? ` · ${dateAr(b.bannedAt)}` : '';
+    return el('article', { class: 'news report-open ban-row' },
+      el('div', {}, el('h3', {}, `${b.name} (cuenta ${b.account})`), el('time', {}, `${b.reason}${when}`)),
+      button);
+  });
+  $('#gm-bans').replaceChildren(...(rows.length ? rows : [el('p', { class: 'hint' }, 'No hay personajes baneados.')]));
+}
+
 async function vipSave(e) {
   e.preventDefault();
   const form = new FormData(e.target);
@@ -483,7 +502,7 @@ function showTab() {
   if (panel === 'cuenta') showAccount();
   if (panel === 'comunidad') showCommunity();
   if (panel === 'inicio') { loadNews(); loadOnline(); }
-  if (panel === 'gm' && me?.moderator) { loadNews(); loadAllReports(); loadWinners(); loadVip(); }
+  if (panel === 'gm' && me?.moderator) { loadNews(); loadAllReports(); loadWinners(); loadVip(); loadBans(); }
   if (panel === 'restablecer') showReset();
   applySession();
 }

@@ -10,7 +10,7 @@ const TABLES = ['data."Character"', 'data."StatAttribute"', 'config."AttributeDe
   'config."ItemDefinition"', 'config."ItemDefinitionCharacterClass"', 'config."ItemDefinitionItemOptionDefinition"', 'config."IncreasableItemOption"', 'config."ItemOptionType"',
   'config."ItemOptionOfLevel"', 'config."PowerUpDefinition"', 'data."Item"', 'data."ItemOptionLink"',
   'config."Skill"', 'config."SkillCharacterClass"', 'config."MasterSkillDefinition"', 'data."SkillEntry"', 'config."ItemOfItemSet"', 'config."ItemSetGroup"', 'data."ItemItemOfItemSet"'];
-/** The only rows the site may add: a GM's item, its options, its ancient set and skills (site/server/gm.ts). Never delete. */
+/** The only rows the site may add: a GM's item, its options, its ancient set and skills (site/server/gm.ts). It deletes only a lifted ban's reason. */
 const INSERT_TABLES = ['data."Item"', 'data."ItemOptionLink"', 'data."SkillEntry"', 'data."ItemItemOfItemSet"'];
 
 /** Idempotent: creates the role when missing, sets its password and its grants every time. */
@@ -27,6 +27,8 @@ export function siteRoleSql(c: Config): string {
     `GRANT SELECT (${ACCOUNT_COLUMNS.map(col => `"${col}"`).join(', ')}) ON data."Account" TO ${role};`,
     `GRANT SELECT ON ${TABLES.join(', ')} TO ${role};`,
     `GRANT INSERT ON ${INSERT_TABLES.join(', ')} TO ${role};`,
+    // Banned characters on the GM panel (site/server/bans.ts): the status, and why (openmu/plugins/GameLogic/Bans).
+    `GRANT UPDATE ("CharacterStatus") ON data."Character" TO ${role};`,
     // The GM stat editor (site/server/gm.ts); InventoryId only for FOR UPDATE while a bag is filled.
     `GRANT UPDATE ("InventoryId", "LevelUpPoints", "MasterLevelUpPoints", "Experience", "CharacterClassId") ON data."Character" TO ${role};`,
     // "Mover personaje" on Mi cuenta (site/server/move.ts).
@@ -51,6 +53,8 @@ export function siteRoleSql(c: Config): string {
     'CREATE TABLE IF NOT EXISTS mu_plugins.vip_payment (id text PRIMARY KEY, account_id uuid NOT NULL, at timestamptz NOT NULL DEFAULT now());',
     `GRANT SELECT, INSERT ON mu_plugins.vip_payment TO ${role};`,
     `GRANT SELECT ON mu_plugins.pvp_kill TO ${role};`,
+    'CREATE TABLE IF NOT EXISTS mu_plugins.character_ban (character_id uuid PRIMARY KEY, character_name text NOT NULL, reason text NOT NULL, banned_at timestamptz NOT NULL DEFAULT now());',
+    `GRANT SELECT, DELETE ON mu_plugins.character_ban TO ${role};`,
     '',
   ].join('\n');
 }

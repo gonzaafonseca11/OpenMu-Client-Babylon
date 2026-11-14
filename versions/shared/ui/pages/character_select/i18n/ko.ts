@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': '캐릭터를 불러오는 중...',
   'characters.select': '캐릭터를 선택하세요',
+  'characters.banned': '(정지됨, 오류라면 신고해 주세요)',
   'characters.hint.select': '선택',
   'characters.hint.zoomIn': '확대',
   'characters.hint.zoomOut': '축소',

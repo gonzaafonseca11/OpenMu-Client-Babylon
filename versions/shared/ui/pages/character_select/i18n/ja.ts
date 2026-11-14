@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': 'キャラクターを読み込んでいます...',
   'characters.select': 'キャラクターを選んでください',
+  'characters.banned': '(BAN済み、誤りの場合は報告してください)',
   'characters.hint.select': '選択',
   'characters.hint.zoomIn': 'ズームイン',
   'characters.hint.zoomOut': 'ズームアウト',

@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': 'Φόρτωση χαρακτήρων...',
   'characters.select': 'Επιλέξτε χαρακτήρα',
+  'characters.banned': '(αποκλεισμένος, στείλε αναφορά αν είναι λάθος)',
   'characters.hint.select': 'Επιλογή',
   'characters.hint.zoomIn': 'Μεγέθυνση',
   'characters.hint.zoomOut': 'Σμίκρυνση',

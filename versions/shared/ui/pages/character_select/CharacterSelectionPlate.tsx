@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
 import { Matrix, Vector3, Viewport } from '@/controllers/render/babylon/exports';
-import { CharSelect } from '@/modules/character_select';
+import { CharSelect, isBannedCharacter } from '@/modules/character_select';
 import { Ecs } from '@/ecs/current';
 import { classFromAppearance } from '@/controllers/actors/deserializeAppearance';
 import { getClassName } from '@/modules/hero/characterStats';
@@ -96,6 +96,7 @@ export const CharacterSelectionPlate = observer(() => {
             {getClassName(classFromAppearance(character.Appearance))} · {t('common.level')}{' '}
             {character.Level}
           </div>
+          {isBannedCharacter(character) && <div className="char-sel-plate-banned">{t('characters.banned')}</div>}
           <div className="char-sel-plate-hint">
             {character.Name !== CharSelect.focusedChar && (
               <span>

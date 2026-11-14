@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': 'S\'estan carregant els personatges...',
   'characters.select': 'Tria un personatge',
+  'characters.banned': '(bandejat, envia un informe si és un error)',
   'characters.hint.select': 'Selecciona',
   'characters.hint.zoomIn': 'Apropa',
   'characters.hint.zoomOut': 'Allunya',

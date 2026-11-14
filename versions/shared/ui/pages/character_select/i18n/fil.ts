@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': 'Naglo-load ng mga karakter...',
   'characters.select': 'Pumili ng karakter',
+  'characters.banned': '(naka-ban, magpadala ng ulat kung ito ay mali)',
   'characters.hint.select': 'Piliin',
   'characters.hint.zoomIn': 'Lapitan',
   'characters.hint.zoomOut': 'Layuan',

@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': 'Karakterler yükleniyor...',
   'characters.select': 'Bir karakter seç',
+  'characters.banned': '(yasaklandı, hata ise bildirim gönder)',
   'characters.hint.select': 'Seç',
   'characters.hint.zoomIn': 'Yakınlaştır',
   'characters.hint.zoomOut': 'Uzaklaştır',

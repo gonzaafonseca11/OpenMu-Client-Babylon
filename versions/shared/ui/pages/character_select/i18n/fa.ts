@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': 'در حال بارگذاری کاراکترها...',
   'characters.select': 'یک کاراکتر انتخاب کنید',
+  'characters.banned': '(مسدود شده، اگر اشتباه است گزارش بدهید)',
   'characters.hint.select': 'انتخاب',
   'characters.hint.zoomIn': 'بزرگ‌نمایی',
   'characters.hint.zoomOut': 'کوچک‌نمایی',

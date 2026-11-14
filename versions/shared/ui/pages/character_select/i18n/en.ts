@@ -3,6 +3,7 @@
 const en = {
   'characters.loading': 'Loading characters...',
   'characters.select': 'Select a character',
+  'characters.banned': '(banned, file a report if this is a mistake)',
   'characters.hint.select': 'Select',
   'characters.hint.zoomIn': 'Zoom in',
   'characters.hint.zoomOut': 'Zoom out',

@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': 'Učitavanje likova...',
   'characters.select': 'Izaberi lika',
+  'characters.banned': '(banovan, pošalji prijavu ako je greška)',
   'characters.hint.select': 'Izaberi',
   'characters.hint.zoomIn': 'Približi',
   'characters.hint.zoomOut': 'Udalji',

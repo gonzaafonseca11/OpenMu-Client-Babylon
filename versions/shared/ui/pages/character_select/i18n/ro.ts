@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': 'Se încarcă personajele...',
   'characters.select': 'Alege un personaj',
+  'characters.banned': '(blocat, trimite o sesizare dacă e o greșeală)',
   'characters.hint.select': 'Selectează',
   'characters.hint.zoomIn': 'Apropie',
   'characters.hint.zoomOut': 'Depărtează',

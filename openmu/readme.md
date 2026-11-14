@@ -100,3 +100,12 @@ Built and run by the installer's end-to-end run: the plugins appear active in
 (`install/cli/loginCheck.ts`) plays the game as the test GM: module frames dropped before the world
 and read in it, and the login tokens (issue, token login reaching the character list, the replaced
 and a junk token refused, the new one working). Nothing here is compiled outside the image.
+
+## Character bans
+
+`plugins/GameLogic/Bans`: the speed check bans the character, not the account. OpenMU's own
+`SpeedHackDetectPlugIn` keeps counting warnings with its AutoBan and DisconnectOnViolation off;
+`CharacterSpeedBanPlugIn` reads that count, and past MaxWarnings sets `CharacterStatus.Banned`, writes
+why to `mu_plugins.character_ban` and disconnects. OpenMU still lets a banned character in, so
+`BannedCharacterGatePlugIn` cancels its entry; the web client greys out Connect for it. The website's GM
+panel lists them and lifts a ban (`site/server/bans.ts`) while the account is out of the game.

@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': 'Memuat karakter...',
   'characters.select': 'Pilih karakter',
+  'characters.banned': '(diblokir, kirim laporan jika ini kesalahan)',
   'characters.hint.select': 'Pilih',
   'characters.hint.zoomIn': 'Perbesar',
   'characters.hint.zoomOut': 'Perkecil',

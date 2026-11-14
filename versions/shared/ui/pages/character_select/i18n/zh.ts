@@ -5,6 +5,7 @@ import type en from './en';
 export default {
   'characters.loading': '正在加载角色...',
   'characters.select': '请选择角色',
+  'characters.banned': '(已封禁，如有误请提交报告)',
   'characters.hint.select': '选择',
   'characters.hint.zoomIn': '拉近',
   'characters.hint.zoomOut': '拉远',
