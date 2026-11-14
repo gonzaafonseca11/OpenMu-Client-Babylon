@@ -109,3 +109,11 @@ and a junk token refused, the new one working). Nothing here is compiled outside
 why to `mu_plugins.character_ban` and disconnects. OpenMU still lets a banned character in, so
 `BannedCharacterGatePlugIn` cancels its entry; the web client greys out Connect for it. The website's GM
 panel lists them and lifts a ban (`site/server/bans.ts`) while the account is out of the game.
+
+## Save guard
+
+OpenMU 0.9.10 fails every later save of a session once an item is deleted while an option link of it is still
+unsaved (issue #1478, fixed upstream by #988): a jewel's new option, or a chaos weapon fresh from a mix, used in
+the next mix. `GameLogic/SaveGuard/SaveBeforeMixPlugIn` saves the player when an item goes into a mix tray, and
+`GameServer/RemoteView/SaveGuard/SaveAfterCraftingResultPlugIn` (OpenMU's crafting result, then a save) after
+each mix, so no mix deletes an unsaved option. Drop both once OpenMU includes #988.
