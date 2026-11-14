@@ -12,6 +12,7 @@ import { observable, runInAction } from 'mobx';
 import type { ENUM_WORLD } from '../../core/types';
 import { i18n, onLanguageChanged } from '../../i18n';
 import {
+  itemNamesInEnglish,
   loadNpcNames,
   loadQuestTables,
   type DialogScript,
@@ -21,6 +22,7 @@ import {
   type QuestTables,
 } from '@/controllers/assets/mu';
 import type { QuestLayer } from './layer';
+import { withEnglishItemNames } from '@/i18n/dialogPages';
 
 // ---- 1. tuning -------------------------------------------------------------
 
@@ -99,9 +101,12 @@ export function questDefinition(index: number): QuestDefinition | undefined {
   return tables.get()?.quests[index];
 }
 
-/** `g_DialogScript[index]`. */
+/** `g_DialogScript[index]`, its quest items named in English where items show in English. */
 export function dialogScript(index: number): DialogScript | undefined {
-  return tables.get()?.dialogs[index];
+  const script = tables.get()?.dialogs[index];
+  const names = i18n.dialogItemNames;
+  if (!script || !names || !itemNamesInEnglish()) return script;
+  return { ...script, text: withEnglishItemNames(script.text, names) };
 }
 
 /** `m_mapQuestProgress[(group << 16) | number]`. */

@@ -9,7 +9,7 @@
 
 import type { PackRepairs } from './packRepairs';
 import type { ItemNameFixes } from './itemNames';
-import type { DialogPageFixes } from './dialogPages';
+import type { DialogItemNames, DialogPageFixes } from './dialogPages';
 
 /**
  * Which flag the selector draws: an ISO 3166-1 alpha-2 region, or an ISO 3166-2 subdivision
@@ -127,4 +127,7 @@ export interface LanguageDataPack {
    * `dialogPages.ts`; applied by `controllers/assets/mu/questFiles.ts` after decoding.
    */
   readonly dialogPages?: DialogPageFixes;
+
+  /** Quest items as the prose names them, said in English where items are shown in English (`dialogPages.ts`). */
+  readonly dialogItemNames?: DialogItemNames;
 }

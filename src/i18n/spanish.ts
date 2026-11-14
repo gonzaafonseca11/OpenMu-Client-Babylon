@@ -7,7 +7,7 @@
 import type { LanguageLayer } from './layer';
 import { SPANISH_PACK_REPAIRS } from './packRepairs';
 import { SPANISH_ITEM_NAMES } from './itemNames';
-import { SPANISH_DIALOG_PAGES } from './dialogPages';
+import { SPANISH_DIALOG_ITEM_NAMES, SPANISH_DIALOG_PAGES } from './dialogPages';
 
 export const spanishLayer: LanguageLayer = {
   name: 'spanish',
@@ -24,5 +24,6 @@ export const spanishLayer: LanguageLayer = {
     repairs: SPANISH_PACK_REPAIRS,
     itemNames: SPANISH_ITEM_NAMES,
     dialogPages: SPANISH_DIALOG_PAGES,
+    dialogItemNames: SPANISH_DIALOG_ITEM_NAMES,
   },
 };

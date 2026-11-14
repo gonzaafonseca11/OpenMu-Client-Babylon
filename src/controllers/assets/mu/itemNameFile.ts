@@ -86,6 +86,11 @@ function loadItemNames(): Promise<void> {
   return pending;
 }
 
+/** Whether items show their English names: the player's option or the world's (observable). */
+export function itemNamesInEnglish(): boolean {
+  return GameOptions.englishItemNames || worldEnglish.get();
+}
+
 /** The localised name for an item code, or undefined to use the item file's `ItemName`. */
 export function localisedItemName(
   group: number,
@@ -95,7 +100,7 @@ export function localisedItemName(
   // a price list reads the item files instead, with the rest of the interface
   // still in their own language. Observable, so every open window redraws the
   // moment it is switched.
-  if (GameOptions.englishItemNames || worldEnglish.get()) return undefined;
+  if (itemNamesInEnglish()) return undefined;
   // A name the pack itself gets wrong, replaced before the table is read.
   return (
     i18n.itemNameFixes?.[`${group}/${index}`] ??

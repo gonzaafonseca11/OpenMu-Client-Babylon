@@ -17,7 +17,7 @@ import { builtInText } from './sources';
 import type { LanguageDataPack, LanguageLayer } from './layer';
 import type { PackRepairs } from './packRepairs';
 import type { ItemNameFixes } from './itemNames';
-import type { DialogPageFixes } from './dialogPages';
+import type { DialogItemNames, DialogPageFixes } from './dialogPages';
 import { LANGUAGE_LAYERS } from './layers';
 
 const LANGUAGE_KEY = 'mu_language';
@@ -219,6 +219,11 @@ class I18n {
   /** Quest dialogue pages the active pack gets wrong, by page number. */
   get dialogPageFixes(): DialogPageFixes | null {
     return this.current.dataPack?.dialogPages ?? null;
+  }
+
+  /** Quest items as the active pack's prose names them, with their English names. */
+  get dialogItemNames(): DialogItemNames | null {
+    return this.current.dataPack?.dialogItemNames ?? null;
   }
 
   /**
