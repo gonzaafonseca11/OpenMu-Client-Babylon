@@ -14,7 +14,6 @@ export default {
   'register.idChars': 'Το ID μπορεί να περιέχει μόνο γράμματα και αριθμούς.',
   'register.passwordTooShort': 'Ο κωδικός πρέπει να έχει τουλάχιστον {min} χαρακτήρες.',
   'register.passwordTooLong': 'Ο κωδικός μπορεί να έχει έως {max} χαρακτήρες.',
-  'register.passwordRules': 'Κωδικός: {min} έως {max} λατινικά γράμματα, αριθμοί ή σύμβολα. Χωρίς κενά.',
   'register.showPassword': 'Εμφάνιση κωδικού',
   'register.passwordChars':
     'Ο κωδικός μπορεί να περιέχει μόνο γράμματα, αριθμούς και βασικά σύμβολα.',

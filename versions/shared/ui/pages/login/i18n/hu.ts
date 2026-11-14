@@ -14,7 +14,6 @@ export default {
   'register.idChars': 'Az ID csak betűket és számokat tartalmazhat.',
   'register.passwordTooShort': 'A jelszó legalább {min} karakter legyen.',
   'register.passwordTooLong': 'A jelszó legfeljebb {max} karakter lehet.',
-  'register.passwordRules': 'Jelszó: {min}-{max} betű, szám vagy jel. Szóköz és ékezet nélkül.',
   'register.showPassword': 'Jelszó megjelenítése',
   'register.passwordChars':
     'A jelszó csak betűket, számokat és egyszerű szimbólumokat tartalmazhat.',

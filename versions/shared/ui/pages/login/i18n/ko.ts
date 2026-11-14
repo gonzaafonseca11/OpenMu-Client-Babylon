@@ -15,7 +15,6 @@ export default {
   'register.idChars': 'ID에는 영문과 숫자만 사용할 수 있습니다.',
   'register.passwordTooShort': '비밀번호는 {min}자 이상이어야 합니다.',
   'register.passwordTooLong': '비밀번호는 {max}자 이하여야 합니다.',
-  'register.passwordRules': '비밀번호: 영문, 숫자, 기호 {min}~{max}자. 공백 불가.',
   'register.showPassword': '비밀번호 표시',
 
   'register.passwordChars': '비밀번호에는 영문과 숫자, 기본 기호만 사용할 수 있습니다.',

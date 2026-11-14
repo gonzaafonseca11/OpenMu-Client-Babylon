@@ -14,7 +14,6 @@ export default {
   'register.idChars': 'ID może zawierać tylko litery i cyfry.',
   'register.passwordTooShort': 'Hasło musi mieć co najmniej tyle znaków: {min}.',
   'register.passwordTooLong': 'Hasło może mieć najwyżej tyle znaków: {max}.',
-  'register.passwordRules': 'Hasło: {min}-{max} liter, cyfr lub symboli. Bez spacji i polskich znaków.',
   'register.showPassword': 'Pokaż hasło',
   'register.passwordChars': 'Hasło może zawierać tylko litery, cyfry i proste symbole.',
   'register.mismatch': 'Hasła nie są zgodne.',

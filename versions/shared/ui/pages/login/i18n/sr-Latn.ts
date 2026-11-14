@@ -14,7 +14,6 @@ export default {
   'register.idChars': 'ID sme da sadrži samo slova i brojeve.',
   'register.passwordTooShort': 'Najmanji broj znakova za lozinku: {min}.',
   'register.passwordTooLong': 'Najveći broj znakova za lozinku: {max}.',
-  'register.passwordRules': 'Lozinka: {min} do {max} slova, brojeva ili simbola. Bez razmaka i kvačica.',
   'register.showPassword': 'Prikaži lozinku',
   'register.passwordChars': 'Lozinka sme da sadrži samo slova, brojeve i osnovne simbole.',
   'register.mismatch': 'Lozinke se ne poklapaju.',

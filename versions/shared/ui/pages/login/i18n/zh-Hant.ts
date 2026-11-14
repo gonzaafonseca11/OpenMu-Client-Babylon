@@ -14,7 +14,6 @@ export default {
   'register.idChars': '帳號只能包含英文字母與數字。',
   'register.passwordTooShort': '密碼至少需要{min}個字元。',
   'register.passwordTooLong': '密碼最多{max}個字元。',
-  'register.passwordRules': '密碼：{min}到{max}個英文字母、數字或符號，不能有空格。',
   'register.showPassword': '顯示密碼',
   'register.passwordChars': '密碼只能包含英文字母、數字與基本符號。',
   'register.mismatch': '兩次輸入的密碼不一致。',

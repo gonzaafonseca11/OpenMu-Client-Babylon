@@ -14,7 +14,6 @@ export default {
   'register.idChars': 'IDak letrak eta zenbakiak soilik izan ditzake.',
   'register.passwordTooShort': 'Pasahitzak gutxienez {min} karaktere izan behar ditu.',
   'register.passwordTooLong': 'Pasahitzak gehienez {max} karaktere izan ditzake.',
-  'register.passwordRules': 'Pasahitza: {min} eta {max} artean letra, zenbaki edo ikur. Zuriunerik eta azenturik gabe.',
   'register.showPassword': 'Erakutsi pasahitza',
   'register.passwordChars':
     'Pasahitzak letrak, zenbakiak eta oinarrizko ikurrak soilik izan ditzake.',

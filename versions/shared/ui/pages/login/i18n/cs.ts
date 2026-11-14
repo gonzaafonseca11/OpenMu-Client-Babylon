@@ -14,7 +14,6 @@ export default {
   'register.idChars': 'ID smí obsahovat jen písmena a číslice.',
   'register.passwordTooShort': 'Minimální délka hesla: {min} zn.',
   'register.passwordTooLong': 'Maximální délka hesla: {max} zn.',
-  'register.passwordRules': 'Heslo: {min} až {max} písmen, číslic nebo symbolů. Bez mezer a diakritiky.',
   'register.showPassword': 'Zobrazit heslo',
   'register.passwordChars': 'Heslo smí obsahovat jen písmena, číslice a základní symboly.',
   'register.mismatch': 'Hesla se neshodují.',

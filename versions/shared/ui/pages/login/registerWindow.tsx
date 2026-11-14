@@ -8,7 +8,6 @@ import { registerApiUrl } from '@/modules/servers/serverServices';
 import {
   MAX_ACCOUNT_LENGTH,
   MAX_ACCOUNT_PASSWORD_LENGTH,
-  PASSWORD_INPUT_LENGTH,
   MIN_ACCOUNT_LENGTH,
   MIN_ACCOUNT_PASSWORD_LENGTH,
   MAX_EMAIL_LENGTH,
@@ -82,8 +81,8 @@ const EMPTY: Record<Field, string> = {
 
 const MAX_LENGTH: Record<Field, number> = {
   username: MAX_ACCOUNT_LENGTH,
-  password: PASSWORD_INPUT_LENGTH,
-  confirm: PASSWORD_INPUT_LENGTH,
+  password: MAX_ACCOUNT_PASSWORD_LENGTH,
+  confirm: MAX_ACCOUNT_PASSWORD_LENGTH,
   email: MAX_EMAIL_LENGTH,
 };
 
@@ -302,9 +301,6 @@ export const RegisterWindow = observer(({ onCreated, onCancel }: RegisterWindowP
       </form>
 
       {!!error && <p className="login-signup-message">{error}</p>}
-      <p className="login-signup-rules">
-        {t('register.passwordRules', { min: MIN_ACCOUNT_PASSWORD_LENGTH, max: MAX_ACCOUNT_PASSWORD_LENGTH })}
-      </p>
     </MuSpriteFrame>
   );
 });

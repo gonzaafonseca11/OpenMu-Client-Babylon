@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {
   MAX_ACCOUNT_LENGTH,
   MAX_EMAIL_LENGTH,
+  MAX_ACCOUNT_PASSWORD_LENGTH,
   PASSWORD_INPUT_LENGTH,
   validateSignup,
 } from '../../src/modules/servers/registerRules';
@@ -233,7 +234,12 @@ export const RegisterPage = () => {
             {TEXT.done}
           </p>
         )}
-        <p className="register-rules">{TEXT.rules}</p>
+        {/* Past the limit the rules line says so as it is typed: the field takes it, the form will not. */}
+        {values.password.length > MAX_ACCOUNT_PASSWORD_LENGTH ? (
+          <p className="register-rules register-error">{TEXT.problems.passwordLong}</p>
+        ) : (
+          <p className="register-rules">{TEXT.rules}</p>
+        )}
       </MuSpriteFrame>
     </div>
   );

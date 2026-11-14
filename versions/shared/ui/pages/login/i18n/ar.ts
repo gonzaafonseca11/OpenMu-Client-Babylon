@@ -14,7 +14,6 @@ export default {
   'register.idChars': 'يمكن أن يحتوي ID على أحرف وأرقام فقط.',
   'register.passwordTooShort': 'يجب أن تتكون كلمة المرور من {min} حرف على الأقل.',
   'register.passwordTooLong': 'يجب ألا تزيد كلمة المرور عن {max} حرف.',
-  'register.passwordRules': 'كلمة المرور: من {min} إلى {max} أحرف لاتينية أو أرقام أو رموز، بدون مسافات.',
   'register.showPassword': 'إظهار كلمة المرور',
   'register.passwordChars': 'يمكن أن تحتوي كلمة المرور على أحرف وأرقام ورموز أساسية فقط.',
   'register.mismatch': 'كلمتا المرور غير متطابقتين.',

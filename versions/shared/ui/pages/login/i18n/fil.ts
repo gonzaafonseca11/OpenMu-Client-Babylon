@@ -14,7 +14,6 @@ export default {
   'register.idChars': 'Mga titik at numero lamang ang maaaring nasa ID.',
   'register.passwordTooShort': 'Dapat ay hindi bababa sa {min} karakter ang password.',
   'register.passwordTooLong': 'Hanggang {max} karakter lang ang password.',
-  'register.passwordRules': 'Password: {min} hanggang {max} titik, numero o simbolo. Walang espasyo o tuldik.',
   'register.showPassword': 'Ipakita ang password',
   'register.passwordChars':
     'Mga titik, numero at simpleng simbolo lamang ang maaaring nasa password.',

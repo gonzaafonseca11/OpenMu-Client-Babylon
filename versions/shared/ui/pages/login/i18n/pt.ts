@@ -15,7 +15,6 @@ export default {
   'register.idChars': 'O ID só pode ter letras e números.',
   'register.passwordTooShort': 'A senha deve ter pelo menos {min} caracteres.',
   'register.passwordTooLong': 'A senha pode ter no máximo {max} caracteres.',
-  'register.passwordRules': 'Senha: de {min} a {max} letras, números ou símbolos. Sem espaços nem acentos.',
   'register.showPassword': 'Mostrar senha',
 
   'register.passwordChars': 'A senha só pode ter letras, números e símbolos básicos.',

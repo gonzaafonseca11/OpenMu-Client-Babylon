@@ -154,3 +154,7 @@ body {
   line-height: 1.4;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.85);
 }
+
+.register-rules.register-error {
+  color: #ff5a5a;
+}

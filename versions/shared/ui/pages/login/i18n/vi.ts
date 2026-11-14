@@ -14,7 +14,6 @@ export default {
   'register.idChars': 'ID chỉ được chứa chữ cái và chữ số.',
   'register.passwordTooShort': 'Mật khẩu phải có ít nhất {min} ký tự.',
   'register.passwordTooLong': 'Mật khẩu có tối đa {max} ký tự.',
-  'register.passwordRules': 'Mật khẩu: {min} đến {max} chữ cái, số hoặc ký hiệu. Không dấu, không khoảng trắng.',
   'register.showPassword': 'Hiện mật khẩu',
   'register.passwordChars': 'Mật khẩu chỉ được chứa chữ cái, chữ số và các ký hiệu cơ bản.',
   'register.mismatch': 'Mật khẩu không khớp.',

@@ -14,7 +14,6 @@ export default {
   'register.idChars': 'ID میں صرف حروف اور اعداد ہو سکتے ہیں۔',
   'register.passwordTooShort': 'پاس ورڈ کم از کم {min} حروف کا ہونا چاہیے۔',
   'register.passwordTooLong': 'پاس ورڈ زیادہ سے زیادہ {max} حروف کا ہو سکتا ہے۔',
-  'register.passwordRules': 'پاس ورڈ: {min} سے {max} لاطینی حروف، ہندسے یا علامات، بغیر اسپیس۔',
   'register.showPassword': 'پاس ورڈ دکھائیں',
   'register.passwordChars': 'پاس ورڈ میں صرف حروف، اعداد اور بنیادی علامات ہو سکتی ہیں۔',
   'register.mismatch': 'پاس ورڈ میل نہیں کھاتے۔',

@@ -14,7 +14,6 @@ export default {
   'register.idChars': 'ID hanya boleh berisi huruf dan angka.',
   'register.passwordTooShort': 'Kata sandi minimal {min} karakter.',
   'register.passwordTooLong': 'Kata sandi maksimal {max} karakter.',
-  'register.passwordRules': 'Kata sandi: {min} sampai {max} huruf, angka, atau simbol. Tanpa spasi.',
   'register.showPassword': 'Tampilkan kata sandi',
   'register.passwordChars': 'Kata sandi hanya boleh berisi huruf, angka, dan simbol dasar.',
   'register.mismatch': 'Kata sandi tidak cocok.',

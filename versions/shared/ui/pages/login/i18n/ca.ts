@@ -14,7 +14,6 @@ export default {
   'register.idChars': 'L\'ID només pot contenir lletres i números.',
   'register.passwordTooShort': 'La contrasenya ha de tenir com a mínim {min} caràcters.',
   'register.passwordTooLong': 'La contrasenya pot tenir com a màxim {max} caràcters.',
-  'register.passwordRules': 'Contrasenya: de {min} a {max} lletres, números o símbols. Sense espais ni accents.',
   'register.showPassword': 'Mostra la contrasenya',
   'register.passwordChars': 'La contrasenya només pot contenir lletres, números i símbols bàsics.',
   'register.mismatch': 'Les contrasenyes no coincideixen.',

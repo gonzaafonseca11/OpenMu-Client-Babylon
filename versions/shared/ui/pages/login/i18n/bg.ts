@@ -15,7 +15,6 @@ export default {
   'register.idChars': 'ID може да съдържа само букви и цифри.',
   'register.passwordTooShort': 'Паролата трябва да е поне {min} символа.',
   'register.passwordTooLong': 'Паролата може да е най-много {max} символа.',
-  'register.passwordRules': 'Парола: от {min} до {max} латински букви, цифри или символи. Без интервали.',
   'register.showPassword': 'Покажи паролата',
 
   'register.passwordChars': 'Паролата може да съдържа само букви, цифри и основни символи.',

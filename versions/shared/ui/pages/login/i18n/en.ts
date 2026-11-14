@@ -19,7 +19,6 @@ const en = {
   'register.idChars': 'ID may contain only letters and numbers.',
   'register.passwordTooShort': 'Password must be at least {min} characters.',
   'register.passwordTooLong': 'Password can have at most {max} characters.',
-  'register.passwordRules': 'Password: {min} to {max} letters, numbers or symbols. No spaces or accents.',
   'register.showPassword': 'Show password',
   'register.passwordChars':
     'Password may contain only letters, numbers and basic symbols.',

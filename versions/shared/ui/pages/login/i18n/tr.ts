@@ -14,7 +14,6 @@ export default {
   'register.idChars': 'ID yalnızca harf ve rakam içerebilir.',
   'register.passwordTooShort': 'Şifre en az {min} karakter olmalı.',
   'register.passwordTooLong': 'Şifre en fazla {max} karakter olabilir.',
-  'register.passwordRules': 'Şifre: {min}-{max} harf, rakam veya sembol. Boşluk ve Türkçe karakter olmadan.',
   'register.showPassword': 'Şifreyi göster',
   'register.passwordChars': 'Şifre yalnızca harf, rakam ve temel simgeler içerebilir.',
   'register.mismatch': 'Şifreler eşleşmiyor.',

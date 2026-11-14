@@ -14,7 +14,6 @@ export default {
   'register.idChars': 'ID में सिर्फ़ अक्षर और अंक हो सकते हैं।',
   'register.passwordTooShort': 'पासवर्ड कम से कम {min} अक्षरों का होना चाहिए।',
   'register.passwordTooLong': 'पासवर्ड अधिकतम {max} अक्षरों का हो सकता है।',
-  'register.passwordRules': 'पासवर्ड: {min} से {max} अंग्रेज़ी अक्षर, अंक या चिह्न, बिना स्पेस।',
   'register.showPassword': 'पासवर्ड दिखाएँ',
   'register.passwordChars': 'पासवर्ड में सिर्फ़ अक्षर, अंक और सामान्य चिह्न हो सकते हैं।',
   'register.mismatch': 'पासवर्ड मेल नहीं खाते।',

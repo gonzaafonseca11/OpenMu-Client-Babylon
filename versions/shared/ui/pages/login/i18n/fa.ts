@@ -14,7 +14,6 @@ export default {
   'register.idChars': 'شناسه فقط می‌تواند حرف و عدد داشته باشد.',
   'register.passwordTooShort': 'رمز عبور باید دست‌کم {min} نویسه باشد.',
   'register.passwordTooLong': 'رمز عبور حداکثر {max} نویسه است.',
-  'register.passwordRules': 'رمز عبور: {min} تا {max} حرف لاتین، عدد یا نماد، بدون فاصله.',
   'register.showPassword': 'نمایش رمز عبور',
   'register.passwordChars': 'رمز عبور فقط می‌تواند حرف، عدد و نمادهای ساده داشته باشد.',
   'register.mismatch': 'رمزهای عبور یکسان نیستند.',
