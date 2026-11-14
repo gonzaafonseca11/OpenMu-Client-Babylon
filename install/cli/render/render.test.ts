@@ -223,6 +223,16 @@ describe('caddyfile', () => {
     expect(text).toContain('play.example.com {');
   });
 
+  it('sends the register page to the game when it is off, keeping the signup the game posts', () => {
+    const on = caddyfile(domain);
+    expect(on).toContain('root * /srv/register');
+    const off = caddyfile({ ...domain, registerPage: false });
+    expect(off).not.toContain('root * /srv/register');
+    expect(off).toContain('handle /api/register* {');
+    expect(off).toContain('redir https://play.example.com');
+    expect(caddyfile({ ...ip, registerPage: false })).toContain(`redir http://${ip.publicIp}/`);
+  });
+
   it('puts the admin panel behind a login', () => {
     for (const c of [domain, ip]) expect(caddyfile(c)).toContain(`basic_auth {\n\t\tadmin ${domain.adminHash}\n\t}`);
   });

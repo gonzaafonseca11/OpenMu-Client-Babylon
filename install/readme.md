@@ -187,6 +187,10 @@ everything the stack reads is rendered from `mu.env`, so `mu config` can change 
   `directLogin` off) hides only the worlds list: Start opens this server's game server list, and
   Cancel, logout and a lost connection come back to it. Read like `directLogin`, no rebuild.
 
+  `registerPage` (`MU_REGISTER_PAGE` in `mu.env`, default on) serves the standalone signup page on
+  the register address. Off, that address sends visitors to the game, and the game's own signup
+  window keeps posting to `/api/register` there.
+
   `channelNames` (`mu config` > Server list entry, `MU_CHANNEL_NAMES`, empty by default) names the
   game servers players pick from, comma separated in server order (`No PvP, Bardo PvP`); they go
   into this world's `serverlist.md` as the channels of its one group. Empty leaves them unnamed.

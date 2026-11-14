@@ -40,10 +40,11 @@ function clientSite(registerOrigin: string): string {
   ].join('\n');
 }
 
-function registerSite(): string {
+/** The signup service the game posts to; then the page itself, or a redirect to the game when it is off. */
+function registerSite(c: Config, playUrl: string): string {
   return [
     `\thandle /api/register* {\n\t\treverse_proxy ${HOSTS.register}:${PORTS.register}\n\t}`,
-    `\thandle {\n\t\troot * ${REGISTER_ROOT}\n\t\tfile_server\n\t}`,
+    c.registerPage ? `\thandle {\n\t\troot * ${REGISTER_ROOT}\n\t\tfile_server\n\t}` : `\thandle {\n\t\tredir ${playUrl}\n\t}`,
   ].join('\n');
 }
 
@@ -69,7 +70,7 @@ export function caddyfile(c: Config): string {
 ${clientSite(`https://register.${d}`)}`),
       block(`api.${d}`, apiRoutes()),
       block(`ws.${d}`, proxySite()),
-      block(`register.${d}`, registerSite()),
+      block(`register.${d}`, registerSite(c, `https://play.${d}`)),
       block(`admin.${d}`, adminSite(c)),
       // Let's Encrypt only, so the mail server finds the certificate at a known path (mail.ts certFiles).
       ...(mailOn(c) ? [block(mailHost(c), `\ttls {\n\t\tissuer acme\n\t}\n\treverse_proxy ${HOSTS.webmail}:${PORTS.webmail}`)] : []),
@@ -79,7 +80,7 @@ ${clientSite(`https://register.${d}`)}`),
     `{\n\tauto_https off\n}\n`,
     block(':80', clientSite(`http://${c.publicIp}:${PORTS.registerSite}`)),
     block(`:${PORTS.proxy}`, proxySite()),
-    block(`:${PORTS.registerSite}`, registerSite()),
+    block(`:${PORTS.registerSite}`, registerSite(c, `http://${c.publicIp}/`)),
     block(`:${PORTS.admin}`, adminSite(c)),
     block(`:${PORTS.siteWeb}`, siteBody),
   ].join('\n');

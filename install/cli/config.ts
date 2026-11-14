@@ -18,6 +18,8 @@ export type Config = {
   directLogin: boolean;
   /** Like `directLogin`, but only the worlds list goes: Start opens this server's game server list (`server.json` `directWorld`). */
   directWorld: boolean;
+  /** The standalone signup page; off sends its address to the game, whose own signup keeps working. */
+  registerPage: boolean;
   postgresPassword: string;
   adminUser: string;
   /** bcrypt of the admin panel password; the password itself is never stored. */
@@ -98,6 +100,7 @@ const KEYS: Record<keyof Config, string> = {
   channelNames: 'MU_CHANNEL_NAMES',
   directLogin: 'MU_DIRECT_LOGIN',
   directWorld: 'MU_DIRECT_WORLD',
+  registerPage: 'MU_REGISTER_PAGE',
   postgresPassword: 'POSTGRES_PASSWORD',
   adminUser: 'MU_ADMIN_USER',
   adminHash: 'MU_ADMIN_HASH',
@@ -152,6 +155,7 @@ export const DEFAULTS: Config = {
   channelNames: '',
   directLogin: false,
   directWorld: false,
+  registerPage: true,
   postgresPassword: '',
   adminUser: 'admin',
   adminHash: '',
