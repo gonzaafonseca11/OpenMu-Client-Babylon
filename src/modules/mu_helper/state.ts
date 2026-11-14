@@ -97,6 +97,16 @@ export const MuHelper = new (class {
     this.sendStatusChange(active);
   }
 
+  /**
+   * Ours: a warp while the helper runs leaves it hunting on the old map's state, so the Move window and
+   * `/move` are refused until it is stopped. True (and says so) when the change must not go out.
+   */
+  blocksMapChange(): boolean {
+    if (!this.active) return false;
+    addNotification(t('notify.helperNoWarp'), 'error');
+    return true;
+  }
+
   /** `CMuHelper::TriggerStop`: ask the server to pause it; its `MuHelperStatusUpdate` answers. */
   triggerStop() {
     this.sendStatusChange(true);

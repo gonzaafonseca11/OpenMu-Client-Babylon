@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': 'เริ่ม MU Helper แล้ว',
   'notify.helperStopped': 'หยุด MU Helper แล้ว',
   'notify.helperSafeZone': 'เริ่ม MU Helper ในเขตปลอดภัยไม่ได้',
+  'notify.helperNoWarp': 'ไม่สามารถเปลี่ยนแผนที่ขณะเปิด MU Helper',
   'notify.helperCost': 'MU Helper ใช้ไป {total} เซน',
   'notify.zenCap': 'คุณพกเซนได้ไม่เกิน 2,000,000,000',
   'notify.cannotSell': 'ไอเทมนี้ขายไม่ได้',

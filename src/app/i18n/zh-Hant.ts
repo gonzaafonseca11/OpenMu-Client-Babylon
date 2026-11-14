@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': 'MU Helper 已啟動',
   'notify.helperStopped': 'MU Helper 已停止',
   'notify.helperSafeZone': 'MU Helper 無法在安全區內啟動',
+  'notify.helperNoWarp': 'MU助手開啟時無法切換地圖',
   'notify.helperCost': 'MU Helper 已花費{total}金幣',
   'notify.zenCap': '攜帶的金幣不能超過2,000,000,000',
   'notify.cannotSell': '此物品無法出售',

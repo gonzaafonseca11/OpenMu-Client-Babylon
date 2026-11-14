@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': 'Το MU Helper ξεκίνησε',
   'notify.helperStopped': 'Το MU Helper σταμάτησε',
   'notify.helperSafeZone': 'Το MU Helper δεν ξεκινά σε ασφαλή ζώνη',
+  'notify.helperNoWarp': 'Δεν μπορείς να αλλάξεις χάρτη με ενεργό το MU Helper',
   'notify.helperCost': 'Το MU Helper κατανάλωσε {total} Zen',
   'notify.zenCap': 'Δεν μπορείτε να κουβαλάτε περισσότερα από 2.000.000.000 Zen',
   'notify.cannotSell': 'Αυτό το αντικείμενο δεν πωλείται',

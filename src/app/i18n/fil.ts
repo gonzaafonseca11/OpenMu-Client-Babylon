@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': 'Sinimulan ang MU Helper',
   'notify.helperStopped': 'Itinigil ang MU Helper',
   'notify.helperSafeZone': 'Hindi masisimulan ang MU Helper sa ligtas na lugar',
+  'notify.helperNoWarp': 'Hindi ka makakalipat ng mapa habang naka-on ang MU Helper',
   'notify.helperCost': 'Nakagamit na ang MU Helper ng {total} Zen',
   'notify.zenCap': 'Hindi ka makapagdadala ng higit sa 2,000,000,000 Zen',
   'notify.cannotSell': 'Hindi maibebenta ang item na ito',

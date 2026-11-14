@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': 'MU Helper je pokrenut',
   'notify.helperStopped': 'MU Helper je zaustavljen',
   'notify.helperSafeZone': 'MU Helper ne može da se pokrene u sigurnoj zoni',
+  'notify.helperNoWarp': 'Ne možeš da promeniš mapu dok je MU Helper uključen',
   'notify.helperCost': 'MU Helper je potrošio {total} Zen',
   'notify.zenCap': 'Ne možeš da nosiš više od 2.000.000.000 Zen',
   'notify.cannotSell': 'Ovaj predmet ne može da se proda',

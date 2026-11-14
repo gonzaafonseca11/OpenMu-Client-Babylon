@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': 'MU Helper запущен',
   'notify.helperStopped': 'MU Helper остановлен',
   'notify.helperSafeZone': 'MU Helper нельзя запустить в безопасной зоне',
+  'notify.helperNoWarp': 'Нельзя сменить карту, пока включён MU Helper',
   'notify.helperCost': 'MU Helper потратил {total} Zen',
   'notify.zenCap': 'Нельзя носить больше 2 000 000 000 Zen',
   'notify.cannotSell': 'Этот предмет нельзя продать',

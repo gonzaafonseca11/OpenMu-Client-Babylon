@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': 'MU Helper شروع ہو گیا',
   'notify.helperStopped': 'MU Helper رک گیا',
   'notify.helperSafeZone': 'محفوظ علاقے میں MU Helper شروع نہیں ہو سکتا',
+  'notify.helperNoWarp': 'MU Helper آن ہونے پر نقشہ تبدیل نہیں ہو سکتا',
   'notify.helperCost': 'MU Helper نے {total} Zen خرچ کیے',
   'notify.zenCap': 'آپ 2,000,000,000 Zen سے زیادہ نہیں اٹھا سکتے',
   'notify.cannotSell': 'یہ آئٹم بیچا نہیں جا سکتا',

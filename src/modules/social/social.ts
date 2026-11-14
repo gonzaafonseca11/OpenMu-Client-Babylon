@@ -39,6 +39,7 @@ import {
   type EmojiBubbleId,
 } from '../chat/emojiBubbles';
 import { localCommandOf, partyReplyCommand } from '../chat/chatCommands';
+import { MuHelper } from '../mu_helper';
 import {
   chatEmojiAdvance,
   chatEmojiBubbleOf,
@@ -679,6 +680,9 @@ export const Social = new (class _Social {
       this.remember(this.whisperHistory, whisperTo);
       return true;
     }
+
+    // `/move` while the helper runs (ours): refused, as the Move window refuses it.
+    if (/^\/move(\s|$)/i.test(text) && MuHelper.blocksMapChange()) return true;
 
     // `/re on|off|auto` (ours): how party invitations are answered; never sent.
     const reply = partyReplyCommand(text);

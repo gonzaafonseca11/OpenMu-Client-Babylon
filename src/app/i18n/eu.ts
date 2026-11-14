@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': 'MU Helper martxan jarri da',
   'notify.helperStopped': 'MU Helper gelditu da',
   'notify.helperSafeZone': 'MU Helper ezin da gune seguruan abiarazi',
+  'notify.helperNoWarp': 'Ezin da mapaz aldatu MU Helper aktibatuta dagoela',
   'notify.helperCost': 'MU Helper: {total} Zen kontsumitu dira',
   'notify.zenCap': 'Ezin duzu 2.000.000.000 Zen baino gehiago eraman',
   'notify.cannotSell': 'Objektu hau ezin da saldu',

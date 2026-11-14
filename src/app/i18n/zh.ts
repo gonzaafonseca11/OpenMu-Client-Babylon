@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': '自动挂机已启动',
   'notify.helperStopped': '自动挂机已停止',
   'notify.helperSafeZone': '安全区内无法启动自动挂机',
+  'notify.helperNoWarp': 'MU助手开启时无法切换地图',
   'notify.helperCost': '自动挂机已消耗 {total} 金币',
   'notify.zenCap': '携带的金币不能超过 2,000,000,000',
   'notify.cannotSell': '这件物品无法出售',

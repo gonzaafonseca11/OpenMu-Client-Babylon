@@ -18,6 +18,19 @@ describe('MuHelper.toggleMuHelper', () => {
   });
 });
 
+describe('MuHelper.blocksMapChange', () => {
+  it('refuses a map change while the helper runs, and lets it through once stopped', () => {
+    runInAction(() => {
+      MuHelper.active = true;
+    });
+    expect(MuHelper.blocksMapChange()).toBe(true);
+    runInAction(() => {
+      MuHelper.active = false;
+    });
+    expect(MuHelper.blocksMapChange()).toBe(false);
+  });
+});
+
 describe('extra items past the 14 characters the blob keeps', () => {
   it('keeps the whole text, per character, only while the player has the item filters on', async () => {
     const { MuHelperState, saveMuHelperConfig } = await import('./state');

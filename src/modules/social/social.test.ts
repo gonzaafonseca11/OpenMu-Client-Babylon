@@ -30,3 +30,23 @@ describe('the System messages switch', () => {
     vi.unstubAllGlobals();
   });
 });
+
+describe('/move while the MU Helper runs', () => {
+  it('is refused and never sent; sent again once the helper stops', async () => {
+    const { MuHelper } = await import('../mu_helper');
+    const { Session } = await import('../session');
+    const { runInAction } = await import('mobx');
+    const send = vi.spyOn(Session, 'sendToGS').mockImplementation(() => undefined);
+    let clock = 1_000_000;
+    vi.spyOn(performance, 'now').mockImplementation(() => (clock += 10_000));
+
+    runInAction(() => (MuHelper.active = true));
+    expect(Social.sendChat('/move lorencia')).toBe(true);
+    expect(send).not.toHaveBeenCalled();
+
+    runInAction(() => (MuHelper.active = false));
+    Social.sendChat('/move lorencia');
+    expect(send).toHaveBeenCalled();
+    vi.restoreAllMocks();
+  });
+});

@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, type WheelEvent } from 'react';
 import { observer } from 'mobx-react-lite';
 import { runInAction } from 'mobx';
 import { warpCommandRequest } from '@/modules/warp';
+import { MuHelper } from '@/modules/mu_helper';
 import { Hero } from '@/modules/hero';
 import { Session } from '@/modules/session';
 import { Ecs } from '@/ecs/current';
@@ -307,6 +308,7 @@ export const MoveCommandWindow = observer(() => {
   };
 
   const warpTo = (entry: MoveReqEntry) => {
+    if (MuHelper.blocksMapChange()) return;
     closeMoveWindow();
     if (Session.isOffline) {
       const map = OFFLINE_MAPS[entry.index];

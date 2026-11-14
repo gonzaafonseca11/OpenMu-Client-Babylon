@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': 'MU ヘルパーを開始しました',
   'notify.helperStopped': 'MU ヘルパーを停止しました',
   'notify.helperSafeZone': '安全地帯では MU ヘルパーを開始できません',
+  'notify.helperNoWarp': 'MUヘルパー稼働中はマップを移動できません',
   'notify.helperCost': 'MU ヘルパーが {total} Zen を消費しました',
   'notify.zenCap': 'Zen は 2,000,000,000 を超えて持てません',
   'notify.cannotSell': 'このアイテムは売却できません',

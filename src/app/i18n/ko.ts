@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': 'MU 헬퍼를 시작했습니다',
   'notify.helperStopped': 'MU 헬퍼를 멈췄습니다',
   'notify.helperSafeZone': '안전 지대에서는 MU 헬퍼를 시작할 수 없습니다',
+  'notify.helperNoWarp': 'MU 헬퍼가 켜져 있으면 맵을 이동할 수 없습니다',
   'notify.helperCost': 'MU 헬퍼가 {total} 젠을 소모했습니다',
   'notify.zenCap': '젠은 2,000,000,000을 넘겨 지닐 수 없습니다',
   'notify.cannotSell': '이 아이템은 팔 수 없습니다',

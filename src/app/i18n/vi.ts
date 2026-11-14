@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': 'MU Helper đã bật',
   'notify.helperStopped': 'MU Helper đã tắt',
   'notify.helperSafeZone': 'Không thể bật MU Helper trong vùng an toàn',
+  'notify.helperNoWarp': 'Không thể đổi bản đồ khi MU Helper đang bật',
   'notify.helperCost': 'MU Helper đã tiêu tốn {total} Zen',
   'notify.zenCap': 'Bạn không thể mang quá 2.000.000.000 Zen',
   'notify.cannotSell': 'Vật phẩm này không thể bán',

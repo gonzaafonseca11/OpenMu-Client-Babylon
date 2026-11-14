@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': 'MU Helper dimulai',
   'notify.helperStopped': 'MU Helper dihentikan',
   'notify.helperSafeZone': 'MU Helper tidak dapat dimulai di zona aman',
+  'notify.helperNoWarp': 'Tidak bisa pindah peta saat MU Helper aktif',
   'notify.helperCost': 'MU Helper telah memakai {total} Zen',
   'notify.zenCap': 'Kamu tidak dapat membawa lebih dari 2.000.000.000 Zen',
   'notify.cannotSell': 'Item ini tidak dapat dijual',

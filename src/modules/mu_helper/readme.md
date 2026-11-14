@@ -90,3 +90,5 @@ the two server packets, with its running state and the raw config blob (`MuHelpe
   only where the world allows it and only when it was running. Switch Character, Select Server and
   a drop nothing resumes stop it; a warp does not. Exit Game, Select Server and Switch Character send
   the stop request before the LogOut only when it runs.
+
+- No map change while it runs (ours, `MuHelper.blocksMapChange`): the Move window and `/move` are refused with a message until the helper is stopped; a warp mid-hunt left it running on the old map's state.

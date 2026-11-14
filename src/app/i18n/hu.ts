@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': 'MU Helper elindítva',
   'notify.helperStopped': 'MU Helper leállítva',
   'notify.helperSafeZone': 'A MU Helper biztonsági zónában nem indítható',
+  'notify.helperNoWarp': 'Bekapcsolt MU Helperrel nem válthatsz térképet',
   'notify.helperCost': 'A MU Helper eddig {total} Zent használt el',
   'notify.zenCap': 'Legfeljebb 2 000 000 000 Zen lehet nálad',
   'notify.cannotSell': 'Ez a tárgy nem adható el',

@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': 'MU Helper চালু হয়েছে',
   'notify.helperStopped': 'MU Helper বন্ধ হয়েছে',
   'notify.helperSafeZone': 'নিরাপদ এলাকায় MU Helper চালু করা যায় না',
+  'notify.helperNoWarp': 'MU Helper চালু থাকলে ম্যাপ বদলানো যায় না',
   'notify.helperCost': 'MU Helper খরচ করেছে {total} Zen',
   'notify.zenCap': 'আপনি 2,000,000,000 Zen-এর বেশি বহন করতে পারবেন না',
   'notify.cannotSell': 'এই আইটেম বিক্রি করা যায় না',

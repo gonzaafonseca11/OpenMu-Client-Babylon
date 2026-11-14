@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': 'MU Helper başlatıldı',
   'notify.helperStopped': 'MU Helper durduruldu',
   'notify.helperSafeZone': 'MU Helper güvenli bölgede başlatılamaz',
+  'notify.helperNoWarp': 'MU Helper açıkken harita değiştiremezsin',
   'notify.helperCost': 'MU Helper {total} Zen harcadı',
   'notify.zenCap': 'En fazla 2.000.000.000 Zen taşıyabilirsin',
   'notify.cannotSell': 'Bu eşya satılamaz',

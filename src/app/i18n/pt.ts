@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': 'MU Helper iniciado',
   'notify.helperStopped': 'MU Helper parado',
   'notify.helperSafeZone': 'O MU Helper não pode começar numa zona segura',
+  'notify.helperNoWarp': 'Não é possível mudar de mapa com o MU Helper ativado',
   'notify.helperCost': 'O MU Helper gastou {total} Zen',
   'notify.zenCap': 'Você não pode carregar mais de 2.000.000.000 de Zen',
   'notify.cannotSell': 'Este item não pode ser vendido',

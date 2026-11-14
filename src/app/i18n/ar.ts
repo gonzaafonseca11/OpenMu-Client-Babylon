@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': 'بدأ تشغيل MU Helper',
   'notify.helperStopped': 'توقف MU Helper',
   'notify.helperSafeZone': 'لا يمكن تشغيل MU Helper في المنطقة الآمنة',
+  'notify.helperNoWarp': 'لا يمكنك تغيير الخريطة أثناء تشغيل MU Helper',
   'notify.helperCost': 'استهلك MU Helper مبلغ {total} Zen',
   'notify.zenCap': 'لا يمكنك حمل أكثر من 2,000,000,000 Zen',
   'notify.cannotSell': 'لا يمكن بيع هذا الغرض',

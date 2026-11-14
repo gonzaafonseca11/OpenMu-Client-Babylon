@@ -9,6 +9,7 @@ export default {
   'notify.helperStarted': 'MU Helper روشن شد',
   'notify.helperStopped': 'MU Helper خاموش شد',
   'notify.helperSafeZone': 'MU Helper در منطقه امن روشن نمی‌شود',
+  'notify.helperNoWarp': 'وقتی MU Helper روشن است نمی‌توانی نقشه را عوض کنی',
   'notify.helperCost': 'هزینه MU Helper تاکنون: {total} Zen',
   'notify.zenCap': 'نمی‌توانید بیش از 2,000,000,000 Zen همراه داشته باشید',
   'notify.cannotSell': 'این آیتم فروختنی نیست',
