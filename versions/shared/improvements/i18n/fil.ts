@@ -81,6 +81,9 @@ export default {
   'fidelity.statCommandNotice': 'Paunawa ng stat command',
   'fidelity.statCommandNotice.hint':
     'Pagkatapos ng /addstr at iba pang stat command, sinasabi ng log ng sistema kung ilang puntos ang napunta sa aling stat. Klasiko: ang sagot lamang ng server, gaya ng orihinal.',
+  'fidelity.shortChatBubbles': 'Maikling chat bubble',
+  'fidelity.shortChatBubbles.hint':
+    'Nananatili sa ulo ang mensahe ng manlalaro nang 10 segundo. Classic: 40 segundo, gaya ng orihinal.',
   'fidelity.loadBarCreep': 'Gumagalaw na loading bar',
   'fidelity.loadBarCreep.hint':
     'Patuloy na umuusad ang mga loading bar sa pagitan ng mga ulat, kaya hindi ito tumitigil habang binubuo ang mapa. Klasiko: ipinapakita ng bar kung gaano na kalayo ang pag-load at naghihintay ito, gaya ng orihinal.',

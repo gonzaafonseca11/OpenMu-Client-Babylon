@@ -82,6 +82,9 @@ export default {
   'fidelity.statCommandNotice': 'Thông báo lệnh cộng điểm',
   'fidelity.statCommandNotice.hint':
     'Sau /addstr và các lệnh cộng điểm khác, nhật ký hệ thống cho biết bao nhiêu điểm đã vào chỉ số nào. Cổ điển: chỉ có phản hồi của máy chủ, như bản gốc.',
+  'fidelity.shortChatBubbles': 'Bong bóng trò chuyện ngắn',
+  'fidelity.shortChatBubbles.hint':
+    'Tin nhắn của người chơi hiện trên đầu trong 10 giây. Cổ điển: 40 giây, như bản gốc.',
   'fidelity.loadBarCreep': 'Thanh tải luôn chuyển động',
   'fidelity.loadBarCreep.hint':
     'Thanh tải tiếp tục nhích lên giữa các lần báo, nên không bao giờ đứng yên khi bản đồ đang dựng. Cổ điển: thanh hiện tiến độ rồi chờ, như bản gốc.',

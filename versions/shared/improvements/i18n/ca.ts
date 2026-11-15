@@ -81,6 +81,9 @@ export default {
   'fidelity.statCommandNotice': 'Avís de les ordres d\'estadístiques',
   'fidelity.statCommandNotice.hint':
     'Després de /addstr i les altres ordres d\'estadístiques, el registre del sistema indica quants punts han anat a cada estadística. Clàssic: només la resposta del servidor, com a l\'original.',
+  'fidelity.shortChatBubbles': 'Missatges de xat curts',
+  'fidelity.shortChatBubbles.hint':
+    "El missatge de xat d'un jugador es queda sobre el cap 10 segons. Clàssic: 40 segons, com a l'original.",
   'fidelity.loadBarCreep': 'Barres de càrrega en moviment',
   'fidelity.loadBarCreep.hint':
     'Les barres de càrrega continuen avançant a poc a poc entre informes, de manera que mai no s\'aturen mentre es construeix un mapa. Clàssic: la barra mostra fins on ha arribat la càrrega i espera, com a l\'original.',

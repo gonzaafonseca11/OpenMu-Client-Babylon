@@ -82,6 +82,9 @@ export default {
   'fidelity.statCommandNotice': 'Anunț pentru comenzile de puncte',
   'fidelity.statCommandNotice.hint':
     'După /addstr și celelalte comenzi de puncte, jurnalul de sistem spune câte puncte au mers în ce atribut. Clasic: doar răspunsul serverului, ca în original.',
+  'fidelity.shortChatBubbles': 'Mesaje de chat scurte',
+  'fidelity.shortChatBubbles.hint':
+    'Mesajul de chat al unui jucător rămâne deasupra capului 10 secunde. Clasic: 40 de secunde, ca în original.',
   'fidelity.loadBarCreep': 'Barele de încărcare se mișcă',
   'fidelity.loadBarCreep.hint':
     'Barele de încărcare continuă să înainteze încet între raportări, așa că nu stau niciodată pe loc cât se construiește o hartă. Clasic: bara arată progresul și așteaptă, ca în original.',

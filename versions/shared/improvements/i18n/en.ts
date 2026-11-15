@@ -79,6 +79,9 @@ const en = {
   'fidelity.statCommandNotice': 'Stat command notice',
   'fidelity.statCommandNotice.hint':
     "After /addstr and the other stat commands, the system log says how many points went into which stat. Classic: the server's answer alone, as in the original.",
+  'fidelity.shortChatBubbles': 'Short chat bubbles',
+  'fidelity.shortChatBubbles.hint':
+    "A player's chat line stays over the head for 10 seconds. Classic: 40 seconds, as in the original.",
   'fidelity.loadBarCreep': 'Load bars keep moving',
   'fidelity.loadBarCreep.hint':
     'Loading bars keep creeping forward between reports, so they never stand still while a map builds. Classic: the bar shows how far the load is and waits, as in the original.',

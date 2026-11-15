@@ -1,5 +1,6 @@
 import { GuildMemberRoleEnum } from '@versions/shared/packets/ServerToClientPackets';
 import { t, type TextKey } from '../../i18n';
+import { isOn } from '@/controllers/fidelity';
 
 /**
  * The original's name/chat "balloons" (`CHAT`, ZzzInterface.cpp:703). A
@@ -29,6 +30,9 @@ export function bubbleLifetime(text: string): number {
 }
 /** `AddChat` flag 1: player chat lasts 1000 ticks. */
 export const CHAT_LIFETIME = 1000;
+/** Player chat ticks: 10 seconds with `shortChatBubbles`, else the original's 40. */
+export const playerChatLifetime = (): number =>
+  isOn('shortChatBubbles') ? 10 * TICKS_PER_SECOND : CHAT_LIFETIME;
 /** Lines of 20+ characters are split in two (`CutText`). */
 export const CUT_TEXT_LENGTH = 20;
 

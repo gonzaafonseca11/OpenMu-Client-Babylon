@@ -81,6 +81,9 @@ export default {
   'fidelity.statCommandNotice': 'Értesítés a tulajdonságparancsokról',
   'fidelity.statCommandNotice.hint':
     'Az /addstr és a többi tulajdonságparancs után a rendszernapló kiírja, hány pont melyik tulajdonságba került. Klasszikus: csak a szerver válasza, mint az eredetiben.',
+  'fidelity.shortChatBubbles': 'Rövid chatbuborékok',
+  'fidelity.shortChatBubbles.hint':
+    'A játékos üzenete 10 másodpercig marad a feje fölött. Klasszikus: 40 másodperc, mint az eredetiben.',
   'fidelity.loadBarCreep': 'Mozgó betöltési sávok',
   'fidelity.loadBarCreep.hint':
     'A betöltési sávok a jelentések között is lassan haladnak, így sosem állnak, amíg a térkép felépül. Klasszikus: a sáv a betöltés állását mutatja és vár, mint az eredetiben.',

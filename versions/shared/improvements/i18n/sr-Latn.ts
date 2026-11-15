@@ -81,6 +81,9 @@ export default {
   'fidelity.statCommandNotice': 'Obaveštenje o komandama atributa',
   'fidelity.statCommandNotice.hint':
     'Posle /addstr i ostalih komandi atributa, sistemski dnevnik kaže koliko je poena otišlo u koji atribut. Klasično: samo odgovor servera, kao u originalu.',
+  'fidelity.shortChatBubbles': 'Kratki oblačići četa',
+  'fidelity.shortChatBubbles.hint':
+    'Poruka igrača ostaje iznad glave 10 sekundi. Klasično: 40 sekundi, kao u originalu.',
   'fidelity.loadBarCreep': 'Trake učitavanja se stalno pomeraju',
   'fidelity.loadBarCreep.hint':
     'Trake učitavanja nastavljaju polako da napreduju između izveštaja, pa nikad ne stoje dok se mapa gradi. Klasično: traka pokazuje dokle je učitavanje stiglo i čeka, kao u originalu.',

@@ -1,10 +1,13 @@
 import { beforeAll, describe, expect, it } from 'vitest';
+import { FIDELITY_CLASSIC, FIDELITY_DEFAULT, setFidelityChoice } from '@/controllers/fidelity';
 import {
   outlawBodyLight,
   heroStateMessage,
   parseSelfDefense,
   pkTextColour,
   PK_MURDERER2_COLOUR,
+  playerChatLifetime,
+  TICKS_PER_SECOND,
 } from './nameTags';
 import { i18n } from '../../i18n';
 
@@ -80,5 +83,14 @@ describe('outlawBodyLight', () => {
     expect(outlawBodyLight(5)).toBeNull();
     expect(outlawBodyLight(3)).toBeNull();
     expect(outlawBodyLight(undefined)).toBeNull();
+  });
+});
+
+describe('playerChatLifetime', () => {
+  it('keeps the original 1000 ticks on Classic and 10 seconds with shortChatBubbles', () => {
+    setFidelityChoice(FIDELITY_CLASSIC, {});
+    expect(playerChatLifetime()).toBe(1000);
+    setFidelityChoice(FIDELITY_DEFAULT, {});
+    expect(playerChatLifetime()).toBe(10 * TICKS_PER_SECOND);
   });
 });

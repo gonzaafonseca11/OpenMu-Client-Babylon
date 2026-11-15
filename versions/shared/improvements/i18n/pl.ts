@@ -82,6 +82,9 @@ export default {
   'fidelity.statCommandNotice': 'Komunikat komend statystyk',
   'fidelity.statCommandNotice.hint':
     'Po /addstr i innych komendach statystyk dziennik systemowy podaje, ile punktów trafiło do której statystyki. Klasyczny: tylko odpowiedź serwera, jak w oryginale.',
+  'fidelity.shortChatBubbles': 'Krótkie dymki czatu',
+  'fidelity.shortChatBubbles.hint':
+    'Wiadomość gracza zostaje nad głową przez 10 sekund. Klasyczny: 40 sekund, jak w oryginale.',
   'fidelity.loadBarCreep': 'Paski ładowania w ruchu',
   'fidelity.loadBarCreep.hint':
     'Paski ładowania przesuwają się powoli między meldunkami, więc nigdy nie stoją w miejscu, gdy mapa się buduje. Klasyczny: pasek pokazuje postęp i czeka, jak w oryginale.',

@@ -82,6 +82,9 @@ export default {
   'fidelity.statCommandNotice': 'Avviso dei comandi punti',
   'fidelity.statCommandNotice.hint':
     "Dopo /addstr e gli altri comandi punti, il registro di sistema dice quanti punti sono andati in quale statistica. Classico: solo la risposta del server, come nell'originale.",
+  'fidelity.shortChatBubbles': 'Fumetti della chat brevi',
+  'fidelity.shortChatBubbles.hint':
+    "Il messaggio di un giocatore resta sopra la testa per 10 secondi. Classico: 40 secondi, come nell'originale.",
   'fidelity.loadBarCreep': 'Barre di caricamento in movimento',
   'fidelity.loadBarCreep.hint':
     "Le barre di caricamento continuano ad avanzare piano tra un aggiornamento e l'altro, così non restano mai ferme mentre una mappa si costruisce. Classico: la barra mostra l'avanzamento e aspetta, come nell'originale.",

@@ -61,6 +61,9 @@ export default {
   'fidelity.muHelperButtons.hint': '在活動計時器下方加入 MU Helper 的開始／停止與設定按鈕。經典：與原版相同，只能用 Home 和 End 鍵。',
   'fidelity.statCommandNotice': '屬性指令通知',
   'fidelity.statCommandNotice.hint': '使用 /addstr 等屬性指令後，系統訊息會說明哪項屬性加了多少點。經典：與原版相同，只有伺服器的回覆。',
+  'fidelity.shortChatBubbles': '簡短聊天氣泡',
+  'fidelity.shortChatBubbles.hint':
+    '玩家的聊天內容在頭頂停留 10 秒。經典：40 秒，與原版相同。',
   'fidelity.loadBarCreep': '讀取條持續前進',
   'fidelity.loadBarCreep.hint': '讀取條在兩次進度回報之間也會緩緩前進，地圖建構時不會停住不動。經典：與原版相同，讀取條顯示實際進度並等待。',
   'fidelity.jewelryUpgrade': '戒指與項鍊可用寶石',

@@ -81,6 +81,9 @@ export default {
   'fidelity.statCommandNotice': 'Pemberitahuan perintah stat',
   'fidelity.statCommandNotice.hint':
     'Setelah /addstr dan perintah stat lainnya, log sistem menyebutkan berapa poin masuk ke stat mana. Klasik: hanya jawaban server, seperti aslinya.',
+  'fidelity.shortChatBubbles': 'Gelembung obrolan singkat',
+  'fidelity.shortChatBubbles.hint':
+    'Pesan obrolan pemain tetap di atas kepala selama 10 detik. Klasik: 40 detik, seperti aslinya.',
   'fidelity.loadBarCreep': 'Bar pemuatan terus bergerak',
   'fidelity.loadBarCreep.hint':
     'Bar pemuatan terus merayap maju di antara laporan, sehingga tidak pernah diam saat peta sedang dibangun. Klasik: bar menunjukkan sejauh mana pemuatan dan menunggu, seperti aslinya.',

@@ -19,3 +19,11 @@ describe('itemIconPackChain with lighter copies', () => {
     expect(itemIconPackChain(kris)).toEqual(['/items/item_0_0_0.webp', ...plain]);
   });
 });
+
+describe('itemIconPackChain for packed jewels', () => {
+  it('has no pack file: those pictures carry a count, and RenderNumberOfItem draws its own over the model', () => {
+    for (const lvl of [0, 1, 2]) {
+      expect(itemIconPackChain({ group: 12, num: 30, lvl } as Parameters<typeof itemIconPackChain>[0])).toEqual([]);
+    }
+  });
+});

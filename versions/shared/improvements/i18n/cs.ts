@@ -81,6 +81,9 @@ export default {
   'fidelity.statCommandNotice': 'Hlášení příkazů atributů',
   'fidelity.statCommandNotice.hint':
     'Po /addstr a dalších příkazech atributů napíše systémový záznam, kolik bodů šlo do kterého atributu. Klasické: jen odpověď serveru, jako v originálu.',
+  'fidelity.shortChatBubbles': 'Krátké bubliny chatu',
+  'fidelity.shortChatBubbles.hint':
+    'Zpráva hráče zůstane nad hlavou 10 sekund. Klasický: 40 sekund, jako v originále.',
   'fidelity.loadBarCreep': 'Ukazatele načítání se stále hýbou',
   'fidelity.loadBarCreep.hint':
     'Ukazatele načítání se mezi hlášeními dál posouvají, takže při sestavování mapy nikdy nestojí. Klasické: ukazatel ukáže stav načítání a čeká, jako v originálu.',

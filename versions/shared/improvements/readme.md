@@ -39,6 +39,7 @@ asks `isOn('<id>')`. Classic turns them all off and runs the original.
 | `soccerBoardClock` | Enhanced | `ui/hud/soccer_score` (the clock line), `ui/hud/match_time` (off while it is on) | the Battle Soccer time is a line at the screen centre and the board has no clock (`RenderTournamentInterface`, ZzzInterface.cpp:3740-3790) |
 | `muHelperButtons` | Enhanced | `ui/hud/mu_helper_buttons` | the helper starts and stops on Home and opens its settings on End; no HUD buttons |
 | `statCommandNotice` | Enhanced | `modules/social/statCommandNotice.ts`, called by `Social.sendChat` | a stat command gets only the server's answer (OpenMU sends no text) |
+| `shortChatBubbles` | Enhanced | `controllers/interface/nameTags.ts` (`playerChatLifetime`), read by `ecs/systems/nameTagSystem.ts` | a player's chat line stays over the head 1000 ticks, 40 seconds (`AddChat` flag 1) |
 | `loadBarCreep` | Enhanced | `controllers/loading/creep.ts` (`barMotion`), read by `loading/classic/progressBar.tsx` and the preloader's `loadingRunner.tsx` | a load bar shows the last report and waits for the next |
 | `warpFade` | Enhanced | `controllers/loading/fade` (`warpFades`, `WarpFade`), started by `app/boot.tsx`; `App.tsx` hides the classic screen for it; `terrain/loadMapIntoScene.ts` lets one frame draw for the still | the loading screen art covers every map change |
 | `openRooms` | Ultra | `controllers/render/scenes/roomMask.ts` (`syncRoomMask`) | inside a room everything outside it is black (the room mask) |
@@ -88,6 +89,7 @@ asks `isOn('<id>')`. Classic turns them all off and runs the original.
   has no clock; `soccerBoardClock` moves it onto the board.
 - `ui/hud/mu_helper_buttons/index.test.tsx`: no helper buttons on Classic.
 - `modules/social/statCommandNotice.test.ts`: no notice after `/addstr` on Classic.
+- `controllers/interface/nameTags.test.ts`: on Classic a chat line lasts the original 1000 ticks.
 - `controllers/loading/creep.test.ts`: on Classic a load bar shows the report as it is.
 - `controllers/loading/fade/index.test.tsx`: on Classic no warp fades.
 - `modules/inventory/jewelUpgrade.test.ts`: on Classic, with the option off, or on a world that does not allow it, a ring refuses Bless.

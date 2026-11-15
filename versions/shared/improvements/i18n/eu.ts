@@ -81,6 +81,9 @@ export default {
   'fidelity.statCommandNotice': 'Ezaugarri-komandoen oharra',
   'fidelity.statCommandNotice.hint':
     '/addstr eta gainerako ezaugarri-komandoen ondoren, sistema-erregistroak zenbat puntu zein ezaugarritara joan diren adierazten du. Klasikoa: zerbitzariaren erantzuna soilik, jatorrizkoan bezala.',
+  'fidelity.shortChatBubbles': 'Txat-mezu laburrak',
+  'fidelity.shortChatBubbles.hint':
+    'Jokalari baten txat-mezua 10 segundoz geratzen da buruaren gainean. Klasikoa: 40 segundo, jatorrizkoan bezala.',
   'fidelity.loadBarCreep': 'Karga-barrak mugimenduan',
   'fidelity.loadBarCreep.hint':
     'Karga-barrek aurrera egiten jarraitzen dute txostenen artean, mapa bat eraikitzen den bitartean inoiz geldi gera ez daitezen. Klasikoa: barrak karga zenbat aurreratu den erakusten du eta itxaron egiten du, jatorrizkoan bezala.',

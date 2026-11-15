@@ -81,6 +81,9 @@ export default {
   'fidelity.statCommandNotice': 'Nitelik komutu bildirimi',
   'fidelity.statCommandNotice.hint':
     '/addstr ve diğer nitelik komutlarından sonra sistem kaydı hangi niteliğe kaç puan gittiğini söyler. Klasik: orijinaldeki gibi yalnızca sunucunun yanıtı.',
+  'fidelity.shortChatBubbles': 'Kısa sohbet balonları',
+  'fidelity.shortChatBubbles.hint':
+    'Bir oyuncunun sohbet satırı başının üstünde 10 saniye kalır. Klasik: 40 saniye, orijinaldeki gibi.',
   'fidelity.loadBarCreep': 'Yükleme çubukları ilerler',
   'fidelity.loadBarCreep.hint':
     'Yükleme çubukları raporlar arasında da yavaşça ilerler, böylece harita oluşurken hiç durmaz. Klasik: orijinaldeki gibi çubuk yüklemenin ne kadar ilerlediğini gösterir ve bekler.',

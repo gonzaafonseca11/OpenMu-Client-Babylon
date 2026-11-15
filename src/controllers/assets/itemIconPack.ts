@@ -1,6 +1,6 @@
 import type { Item } from '../../ecs/world';
 import { hasItemIconFile, type Variant } from './itemIconFiles';
-import { itemLevelLook } from '@/controllers/item_rules';
+import { isPackedJewel, itemLevelLook } from '@/controllers/item_rules';
 import { liteUrl } from './liteAssets';
 
 /**
@@ -31,6 +31,8 @@ function packUrl(group: number, num: number, tint: number, variant: Variant): st
  */
 export function itemIconPackChain(item: Item): string[] {
   const { group, num } = item;
+  // The pack's packed jewels have a count drawn in; the model has none (RenderNumberOfItem adds it).
+  if (isPackedJewel(group, num)) return [];
   const look = itemLevelLook(group, num, item.lvl);
   const tint = itemIconTint(item.lvl ?? 0);
   const variant: Variant = item.isExcellent ? '_e' : item.isAncient ? '_a' : '';
