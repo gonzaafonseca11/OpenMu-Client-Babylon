@@ -102,7 +102,7 @@ describe('client build', () => {
 
 describe('server.json', () => {
   it('holds the original behaviour by default, and offers login tokens: the plugin is in every image', () => {
-    expect(JSON.parse(serverManifest(domain))).toEqual({ version: 1, settings: ORIGINAL_SETTINGS, modulesOff: [], loginTokens: true, directLogin: false, directWorld: false, modules: [], warps: [] });
+    expect(JSON.parse(serverManifest(domain))).toEqual({ version: 1, settings: ORIGINAL_SETTINGS, modulesOff: [], loginTokens: true, directLogin: false, directWorld: false, modules: [], warps: [], dialogPages: {} });
     expect(parseServerManifest(JSON.parse(serverManifest(domain)))?.loginTokens).toBe(true);
   });
 
@@ -110,6 +110,12 @@ describe('server.json', () => {
     const json = JSON.parse(serverManifest({ ...domain, extraWarps: '24:Crywolf:200:15000; bad; 26:Kalima:300:20000' }));
     expect(json.warps).toEqual([{ index: 24, name: 'Crywolf', level: 200, zen: 15000 }, { index: 26, name: 'Kalima', level: 300, zen: 20000 }]);
     expect(parseServerManifest(json)?.warps).toEqual(json.warps);
+  });
+
+  it('writes the dialog pages the config replaces, and drops a malformed one', () => {
+    const json = JSON.parse(serverManifest({ ...domain, dialogPages: '152=Thompson sells them, south of Aida.| bad |153=Go.' }));
+    expect(json.dialogPages).toEqual({ 152: 'Thompson sells them, south of Aida.', 153: 'Go.' });
+    expect(parseServerManifest(json)?.dialogPages).toEqual(json.dialogPages);
   });
 
   it('turns off the modules the config lists, and band when its relay is off', () => {

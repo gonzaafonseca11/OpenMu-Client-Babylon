@@ -171,6 +171,10 @@ everything the stack reads is rendered from `mu.env`, so `mu config` can change 
   `MoveReq` file lacks, as `index:name:level:zen` separated by `;` (like `24:Crywolf:200:15000`).
   Each needs its OpenMU `WarpInfo` with that index, or the server refuses the warp.
 
+  `dialogPages` (`MU_DIALOG_PAGES` in `mu.env`, default none) replaces quest dialog pages
+  (Dialog.bmd, 0-199) with the world's own words, as `page=text` separated by `|` (like
+  `152=Thompson sells them, south of Aida.`). A page past 199 or an empty text is left out.
+
   `loginTokens` (always `true`, nothing to set) says this world issues login tokens: our OpenMU
   plugin does (`openmu/readme.md`), and it is in every OpenMU image the installer builds. A client
   with "remember" ticked keeps a token instead of the password (Enhanced and Ultra). The tokens live

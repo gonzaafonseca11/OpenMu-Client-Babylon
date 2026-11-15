@@ -60,6 +60,16 @@ export function manifestWarps(c: Config): { index: number; name: string; level: 
   });
 }
 
+/** `dialogPages` as `server.json` texts by page: `page=text` per entry, a page past 199 or an empty text left out. */
+export function manifestDialogPages(c: Config): Record<number, string> {
+  return Object.fromEntries(
+    c.dialogPages.split('|').flatMap(spec => {
+      const m = /^\s*(\d{1,3})=(.{1,300})$/.exec(spec.trimEnd());
+      return m && Number(m[1]) < 200 && m[2].trim() ? [[Number(m[1]), m[2].trim()]] : [];
+    })
+  );
+}
+
 export function serverManifest(c: Config, modules: readonly ModuleEntry[] = []): string {
   const manifest = {
     version: MANIFEST_VERSION,
@@ -88,6 +98,8 @@ export function serverManifest(c: Config, modules: readonly ModuleEntry[] = []):
     modules,
     // Move window rows the client's MoveReq file lacks; each needs its OpenMU WarpInfo.
     warps: manifestWarps(c),
+    // Quest dialog pages with the world's own words (its NPCs, its maps).
+    dialogPages: manifestDialogPages(c),
   };
   return `${JSON.stringify(manifest, null, 2)}\n`;
 }

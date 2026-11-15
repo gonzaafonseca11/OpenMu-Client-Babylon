@@ -79,10 +79,12 @@ type ServerManifest = {
   readonly modulesDropped: readonly string[];
   /** Move window rows the world adds; malformed entries are left out. */
   readonly warps: readonly ExtraWarp[];
+  /** Dialog.bmd pages the world rewrites, by page (`g_DialogScript`, 0-199): its own NPCs, its own words. */
+  readonly dialogPages: Readonly<Record<number, string>>;
 };
 
 /** What a manifest puts in force for its world. */
-type InForce = Pick<ServerManifest, 'settings' | 'loginTokens' | 'warps'>;
+type InForce = Pick<ServerManifest, 'settings' | 'loginTokens' | 'warps' | 'dialogPages'>;
 
 const SERVER_MANIFEST_VERSION = 1;
 
@@ -101,7 +103,7 @@ export const ORIGINAL_SETTINGS: ServerSettings = {
   englishSkillNames: false,
 };
 
-const ORIGINAL: InForce = { settings: ORIGINAL_SETTINGS, loginTokens: false, warps: [] };
+const ORIGINAL: InForce = { settings: ORIGINAL_SETTINGS, loginTokens: false, warps: [], dialogPages: {} };
 
 const MODULE_ID = /^[a-z][a-z0-9_]{0,31}$/;
 const MAX_MODULES_OFF = 64;
@@ -179,6 +181,16 @@ function parseWarps(raw: unknown): ExtraWarp[] {
   return warps;
 }
 
+/** `dialogPages`: page 0-199 to a text of 1-300 characters (`DIALOG_SCRIPT.m_lpszText`); anything else is left out. */
+function parseDialogPages(raw: unknown): Record<number, string> {
+  if (!isObject(raw)) return {};
+  const pages: Record<number, string> = {};
+  for (const [key, text] of Object.entries(raw)) {
+    if (/^\d{1,3}$/.test(key) && Number(key) < 200 && isText(text, 300)) pages[Number(key)] = text;
+  }
+  return pages;
+}
+
 /**
  * `modules`: a malformed entry, a repeated id and anything past 32 entries is dropped and named, never
  * the whole document; a `modules` that is not a list drops everything.
@@ -235,11 +247,14 @@ export function parseServerManifest(raw: unknown): ServerManifest | null {
     directWorld,
     ...parseModules(raw.modules),
     warps: parseWarps(raw.warps),
+    dialogPages: parseDialogPages(raw.dialogPages),
   };
 }
 
 const inForce = (manifest: ServerManifest | null): InForce =>
-  manifest ? { settings: manifest.settings, loginTokens: manifest.loginTokens, warps: manifest.warps } : ORIGINAL;
+  manifest
+    ? { settings: manifest.settings, loginTokens: manifest.loginTokens, warps: manifest.warps, dialogPages: manifest.dialogPages }
+    : ORIGINAL;
 
 /** What is in force, by manifest URL. */
 const current = new Map<string, InForce>();
@@ -361,6 +376,11 @@ export function serverOffersLoginTokens(): boolean {
 /** The Move window rows the world being played adds (its `server.json` `warps`). */
 export function serverWarps(): readonly ExtraWarp[] {
   return worldInForce().warps;
+}
+
+/** The world's own text for a Dialog.bmd page (its `server.json` `dialogPages`), or undefined. */
+export function serverDialogPage(page: number): string | undefined {
+  return worldInForce().dialogPages[page];
 }
 
 /** Tests only: forget what this launch fetched. */

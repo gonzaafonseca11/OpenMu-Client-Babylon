@@ -173,6 +173,9 @@ connect server's own list (`Servers.serverList`) is filled by `session/net.ts`.
   missing means it does not, and the client then never sends a token request or a token login
   (`serverOffersLoginTokens`). The installer always writes it (the plugin is in every image it
   builds); the proxy's own answer (`proxy/serverManifest.ts`, a proxy run alone) leaves it out.
+- `dialogPages` maps a Dialog.bmd page (0-199) to the world's own text for it, 1-300 characters, so
+  a quest NPC can name the world's own NPCs and maps (`serverDialogPage`, read by
+  `quests/questData.ts` `dialogScript`). Anything else is left out; missing means the pack's text.
 - Fetched from the root of the world's proxy host (`https://ws.<domain>/server.json`, or
   `http://<ip>:3000/server.json`), the one address every profile has (Caddy answers it on an
   installed server; the proxy itself answers it from `MU_HELD_HIT_REQUEST`, `MU_MODULES_OFF` and

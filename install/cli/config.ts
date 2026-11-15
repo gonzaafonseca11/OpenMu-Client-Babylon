@@ -78,6 +78,8 @@ export type Config = {
   modulesOff: string;
   /** Move window rows the client file lacks, `index:name:level:zen` separated by `;` (`server.json` `warps`). */
   extraWarps: string;
+  /** Dialog.bmd pages this world rewrites, `page=text` separated by `|` (`server.json` `dialogPages`). */
+  dialogPages: string;
   /** The owner's ed25519 public key (base64url) baked into the client: modules it signed run in the page. Empty: none. */
   moduleSigningKey: string;
   /** Host a mail server and webmail at mail.<domain> (domain mode only); its admin mailbox is the certificate e-mail. */
@@ -136,6 +138,7 @@ const KEYS: Record<keyof Config, string> = {
   englishSkillNames: 'MU_ENGLISH_SKILL_NAMES',
   modulesOff: 'MU_MODULES_OFF',
   extraWarps: 'MU_EXTRA_WARPS',
+  dialogPages: 'MU_DIALOG_PAGES',
   moduleSigningKey: 'MU_MODULE_SIGNING_KEY',
   mail: 'MU_MAIL',
   mailAdminHash: 'MU_MAIL_ADMIN_HASH',
@@ -191,6 +194,7 @@ export const DEFAULTS: Config = {
   englishSkillNames: false,
   modulesOff: '',
   extraWarps: '',
+  dialogPages: '',
   moduleSigningKey: '',
   mail: false,
   mailAdminHash: '',

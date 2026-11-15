@@ -22,6 +22,7 @@ import {
   type QuestTables,
 } from '@/controllers/assets/mu';
 import type { QuestLayer } from './layer';
+import { serverDialogPage } from '../servers/serverManifest';
 import { withEnglishItemNames } from '@/i18n/dialogPages';
 
 // ---- 1. tuning -------------------------------------------------------------
@@ -101,9 +102,11 @@ export function questDefinition(index: number): QuestDefinition | undefined {
   return tables.get()?.quests[index];
 }
 
-/** `g_DialogScript[index]`, its quest items named in English where items show in English. */
+/** `g_DialogScript[index]` (its text the world's own where `server.json` rewrites the page), items in English where items show in English. */
 export function dialogScript(index: number): DialogScript | undefined {
-  const script = tables.get()?.dialogs[index];
+  const page = tables.get()?.dialogs[index];
+  const own = serverDialogPage(index);
+  const script = page && own ? { ...page, text: own } : page;
   const names = i18n.dialogItemNames;
   if (!script || !names || !itemNamesInEnglish()) return script;
   return { ...script, text: withEnglishItemNames(script.text, names) };

@@ -55,6 +55,7 @@ describe('parseServerManifest', () => {
       modules: [],
       modulesDropped: [],
       warps: [],
+      dialogPages: {},
     });
     expect(parseServerManifest({ version: 1, settings: { retryLoginWhenConnected: true } })?.settings).toEqual({
       ...ORIGINAL_SETTINGS,
@@ -67,6 +68,12 @@ describe('parseServerManifest', () => {
     const warps = [{ index: 24, name: 'Crywolf', level: 200, zen: 15000 }, { index: 'x', name: 'Bad', level: 1, zen: 1 }];
     expect(parseServerManifest({ version: 1, settings: {}, warps })?.warps).toEqual([warps[0]]);
     expect(parseServerManifest({ version: 1, settings: {} })?.warps).toEqual([]);
+  });
+
+  it('reads dialog page texts, keeping only pages 0-199 with a short text', () => {
+    const dialogPages = { '152': 'Thompson sells them.', '300': 'too far', '7': '', x: 'bad' };
+    expect(parseServerManifest({ version: 1, settings: {}, dialogPages })?.dialogPages).toEqual({ 152: 'Thompson sells them.' });
+    expect(parseServerManifest({ version: 1, settings: {}, dialogPages: 'nope' })?.dialogPages).toEqual({});
   });
 
   it('reads restAnyWall, off on the original', () => {
@@ -130,6 +137,7 @@ describe('parseServerManifest', () => {
       modules: [],
       modulesDropped: [],
       warps: [],
+      dialogPages: {},
     });
   });
 
