@@ -14,7 +14,7 @@ using MUnique.OpenMU.PlugIns;
 /// <summary>
 /// The speed check's ban, on the character instead of the account. OpenMU's own check
 /// (<see cref="SpeedHackDetectPlugIn"/>) keeps counting the warnings, with its AutoBan and DisconnectOnViolation
-/// off; past its MaxWarnings this one bans the playing character, records why and disconnects.
+/// off; past its MaxWarnings on a walk this one bans the playing character, records why and disconnects.
 /// </summary>
 [PlugIn]
 [Display(Name = "Speed check: ban the character", Description = "Past the speed check's warning limit, bans the character (not the account) and records why.")]
@@ -26,8 +26,8 @@ public class CharacterSpeedBanPlugIn : ISpeedHackCheatCheckPlugIn
         this.BanIfOverLimitAsync(player, "caminar");
 
     /// <inheritdoc />
-    public ValueTask AttackCheatCheckAsync(Player player, SpeedHackCheckEventArgs eventArgs) =>
-        this.BanIfOverLimitAsync(player, "atacar");
+    /// <remarks>Fast skill presses trip the attack check without any cheat, so attacks never ban.</remarks>
+    public ValueTask AttackCheatCheckAsync(Player player, SpeedHackCheckEventArgs eventArgs) => ValueTask.CompletedTask;
 
     /// <inheritdoc />
     public ValueTask ResetMovementStateAsync(Player player) => ValueTask.CompletedTask;
