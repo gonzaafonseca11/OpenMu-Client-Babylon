@@ -58,7 +58,9 @@ the client-to-server encryption, the login fields and the offline flag.
   A game server that never answers `GameServerEntered` within 4 s (or closes at once) is dialled
   again on the fallback host. A socket we did not close sends the player back to the server list
   (`onSocketLost`), unless the resume takes the loss over. It reads the page and the message box
-  from the app and the interface, never a module above it.
+  from the app and the interface, never a module above it. `connectToGameServer` closes the socket
+  it replaces: one left open (the server list clicked twice, a resume) stays a player on OpenMU,
+  which sends `/post` to every connected player, so each post showed twice.
 - `sessionStats.ts` listens to `experienceGained` and watches `Hero.money`; it starts
   only when a panel calls `watch()`. A new character name resets it.
 - Other modules it reads: `Hero` (id, name), `CharSelect` (select after a resume), `Merchant`

@@ -44,3 +44,28 @@ describe('Session.cancelLogin', () => {
     expect(Session.username).toBe('hero');
   });
 });
+
+// A second ConnectionInfo (the server list clicked twice, a resume) must not leave the first socket
+// open: OpenMU keeps it as a player, and every /post then reaches this client twice.
+describe('Session.connectToGameServer', () => {
+  it('closes the game-server socket it replaces', () => {
+    class FakeSocket {
+      static OPEN = 1;
+      readyState = 0;
+      binaryType = '';
+      addEventListener() {}
+      close() {}
+      send() {}
+    }
+    vi.stubGlobal('WebSocket', FakeSocket);
+    const close = vi.fn();
+    Session.gsSocket = { close } as unknown as WebSocket;
+
+    Session.connectToGameServer('127.0.0.1', 55901);
+
+    expect(close).toHaveBeenCalled();
+    expect(Session.gsSocket).toBeInstanceOf(FakeSocket);
+    Session.disconnectFromGameServer();
+    vi.unstubAllGlobals();
+  });
+});

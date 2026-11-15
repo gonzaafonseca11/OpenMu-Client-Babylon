@@ -353,6 +353,10 @@ export const Session = new (class {
    * (the one the server advertised, the connect-server host) goes first.
    */
   connectToGameServer(ip: string, port: number, fallbackHost: string | null = null) {
+    // A socket left open stays a player on OpenMU and gets every /post again (readme.md).
+    if (this.gsAttempt?.timer) clearTimeout(this.gsAttempt.timer);
+    this.gsSocket?.close();
+
     runInAction(() => {
       this.connectionLost = false;
     });
