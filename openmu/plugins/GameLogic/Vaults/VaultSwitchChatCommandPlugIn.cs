@@ -116,6 +116,8 @@ public class VaultSwitchChatCommandPlugIn : IChatCommandPlugIn
                 return;
             }
 
+            await Storage.KeptStorage.KeepAsync(currentId, targetId).ConfigureAwait(false);
+
             // The old vault is saved and no longer the account's: let it go, so loading it again later is clean.
             if (current is not null)
             {

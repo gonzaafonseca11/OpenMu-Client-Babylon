@@ -263,6 +263,7 @@ public class MarketplaceEscrowAction
             return new EscrowResult(token.Operation, EscrowStatus.Failed, token.ListingId, token.BoxId, null, 0);
         }
 
+        await Storage.KeptStorage.KeepAsync(token.BoxId).ConfigureAwait(false);
         await player.InvokeViewPlugInAsync<IItemRemovedPlugIn>(p => p.RemoveItemAsync(slot)).ConfigureAwait(false);
 
         // The box is not this player's any more: another session may move its item or its money
