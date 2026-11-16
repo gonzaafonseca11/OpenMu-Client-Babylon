@@ -32,6 +32,8 @@ type ServerSettings = {
   readonly jewelBundling: boolean;
   /** The client served here has lighter copies of its files (ours: WebP, Opus; `tools/liteAssets.ts`); the original reads the originals. */
   readonly liteAssets: boolean;
+  /** The lighter copies go to Classic players too, unless they turn them off (ours: the original reads the originals). */
+  readonly liteAssetsAllTiers: boolean;
   /** Map names in English whatever the language (ours: the original takes them from the language pack): the entry banner and the Move window. */
   readonly englishMapNames: boolean;
   /** Item names in English whatever the language (ours: the original takes them from the language pack). */
@@ -101,6 +103,7 @@ export const ORIGINAL_SETTINGS: ServerSettings = {
   jewelryUpgrade: false,
   jewelBundling: false,
   liteAssets: false,
+  liteAssetsAllTiers: false,
   englishMapNames: false,
   englishItemNames: false,
   englishSkillNames: false,
@@ -127,6 +130,7 @@ const SETTING_TYPES: { readonly [K in keyof ServerSettings]: 'boolean' } = {
   jewelryUpgrade: 'boolean',
   jewelBundling: 'boolean',
   liteAssets: 'boolean',
+  liteAssetsAllTiers: 'boolean',
   englishMapNames: 'boolean',
   englishItemNames: 'boolean',
   englishSkillNames: 'boolean',

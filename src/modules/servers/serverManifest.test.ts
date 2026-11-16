@@ -107,6 +107,12 @@ describe('parseServerManifest', () => {
     expect(parseServerManifest({ version: 1, settings: { liteAssets: 'yes' } })).toBeNull();
   });
 
+  // A world for light machines may hand the copies to Classic players too.
+  it('reads liteAssetsAllTiers, off on the original', () => {
+    expect(ORIGINAL_SETTINGS.liteAssetsAllTiers).toBe(false);
+    expect(parseServerManifest({ version: 1, settings: { liteAssetsAllTiers: true } })?.settings.liteAssetsAllTiers).toBe(true);
+  });
+
   it('reads jewelBundling, off on the original', () => {
     expect(ORIGINAL_SETTINGS.jewelBundling).toBe(false);
     expect(parseServerManifest({ version: 1, settings: { jewelBundling: true } })?.settings.jewelBundling).toBe(true);

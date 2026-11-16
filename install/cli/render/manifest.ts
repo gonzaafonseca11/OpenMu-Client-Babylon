@@ -94,6 +94,7 @@ export function serverManifest(c: Config, modules: readonly ModuleEntry[] = []):
       jewelryUpgrade: c.jewelryUpgrade,
       jewelBundling: c.jewelBundling,
       liteAssets: c.liteAssets,
+      liteAssetsAllTiers: c.liteAssetsAllTiers,
       englishMapNames: c.englishMapNames,
       englishItemNames: c.englishItemNames,
       englishSkillNames: c.englishSkillNames,

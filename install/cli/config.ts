@@ -68,6 +68,8 @@ export type Config = {
   jewelBundling: boolean;
   /** The client build also writes lighter copies (WebP, Opus) beside the originals, and `server.json` tells players to read them (off = the originals only). */
   liteAssets: boolean;
+  /** `server.json`: the lighter copies go to Classic players too, unless they turn them off (off = only to Enhanced and up). */
+  liteAssetsAllTiers: boolean;
   /** `server.json`: map names in English whatever the player's language (off = the original, from the language pack). */
   englishMapNames: boolean;
   /** `server.json`: item names in English whatever the player's language (off = the original, from the language pack). */
@@ -135,6 +137,7 @@ const KEYS: Record<keyof Config, string> = {
   jewelryUpgrade: 'MU_JEWELRY_UPGRADE',
   jewelBundling: 'MU_JEWEL_BUNDLING',
   liteAssets: 'MU_LITE_ASSETS',
+  liteAssetsAllTiers: 'MU_LITE_ASSETS_ALL_TIERS',
   englishMapNames: 'MU_ENGLISH_MAP_NAMES',
   englishItemNames: 'MU_ENGLISH_ITEM_NAMES',
   englishSkillNames: 'MU_ENGLISH_SKILL_NAMES',
@@ -192,6 +195,7 @@ export const DEFAULTS: Config = {
   jewelryUpgrade: false,
   jewelBundling: false,
   liteAssets: false,
+  liteAssetsAllTiers: false,
   englishMapNames: false,
   englishItemNames: false,
   englishSkillNames: false,

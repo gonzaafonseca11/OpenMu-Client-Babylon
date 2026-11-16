@@ -151,6 +151,11 @@ everything the stack reads is rendered from `mu.env`, so `mu config` can change 
   downloads, slightly lower quality. The originals stay served, and a player can keep them (Options >
   Fidelity, or Classic). Changing it rebuilds the client.
 
+  `liteAssetsAllTiers` (`mu config` > Features, asked only with `liteAssets` on,
+  `MU_LITE_ASSETS_ALL_TIERS`, default off) gives the lighter copies to Classic players too, so the
+  lightest look also reads the lightest files. A player who turns the improvement off in Options keeps
+  the originals.
+
   `englishMapNames` (`mu config` > Features, `MU_ENGLISH_MAP_NAMES`, default off) shows the map
   names in English whatever the player's language: the banner on entering a map takes the `Eng`
   picture and the Move window the `MoveReq_eng.bmd` rows. Everything else stays in the language.

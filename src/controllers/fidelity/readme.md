@@ -11,6 +11,8 @@ the code that deviates from the original asks `isOn('<id>')` and keeps the origi
   refusal while it is off, and the site reads `serverSetting` beside `isOn`.
 - `registerImprovements(defs)`: called by `versions/shared/improvements/all.ts`; an id twice in
   one call throws.
+- `improvementChoice(id)`: the player's own choice for one improvement, undefined while it follows
+  the preset (the servers module's lighter-assets gate tells "never touched" from "turned off").
 - `isOn(id)`: whether that deviation runs. One `Map` read, no allocation, safe per frame. An id
   nothing registers is off (Classic).
 - `FIDELITY_CLASSIC` / `FIDELITY_ENHANCED` / `FIDELITY_ULTRA` (0 / 1 / 2), `FIDELITY_MAX`,

@@ -87,6 +87,12 @@ describe('config file', () => {
     expect(envToConfig({}).liteAssets).toBe(false);
   });
 
+  it('stores the lighter assets on every tier as MU_LITE_ASSETS_ALL_TIERS, off unless set', () => {
+    expect(configToEnv({ ...config, liteAssetsAllTiers: true }).MU_LITE_ASSETS_ALL_TIERS).toBe('on');
+    expect(envToConfig({ MU_LITE_ASSETS_ALL_TIERS: 'on' }).liteAssetsAllTiers).toBe(true);
+    expect(envToConfig({}).liteAssetsAllTiers).toBe(false);
+  });
+
   it('stores the automatic quiver as MU_AUTO_QUIVER, off unless set', () => {
     expect(configToEnv({ ...config, autoQuiver: true }).MU_AUTO_QUIVER).toBe('on');
     expect(envToConfig({}).autoQuiver).toBe(false);

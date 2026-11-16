@@ -110,6 +110,11 @@ export function setFidelityChoice(level: number, choices: FidelityOverrides): vo
   refresh();
 }
 
+/** The player's own choice for an improvement, undefined when it follows the preset. */
+export function improvementChoice(id: string): boolean | undefined {
+  return overrides[id];
+}
+
 /** Whether a deliberate deviation from the original runs. One map read; Classic when unknown. */
 export function isOn(id: string): boolean {
   return on.get(id) === true;
