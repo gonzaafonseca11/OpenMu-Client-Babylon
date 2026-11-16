@@ -4,43 +4,37 @@
 
 namespace MUnique.OpenMU.GameServer.SessionSweep;
 
-using System.Collections.Concurrent;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.Logging;
 using MUnique.OpenMU.GameLogic;
 using MUnique.OpenMU.GameLogic.PlugIns;
-using MUnique.OpenMU.GameServer.RemoteView;
-using MUnique.OpenMU.Network;
 using MUnique.OpenMU.PlugIns;
 
 /// <summary>
-/// Frees accounts whose session lost its connection but never left the server (a stuck teardown):
-/// such an account answers "already connected" on every server until a restart. See ../../readme.md.
+/// Frees accounts the login server still holds for this game server while no player of that account is on it: such an
+/// account answers "already connected" on every server until a restart. See ../../readme.md (Ghost sessions).
 /// </summary>
 [PlugIn]
-[Display(Name = "Ghost Session Sweep", Description = "Every 30 s, frees accounts whose connection is gone but which still count as online.")]
+[Display(Name = "Ghost Session Sweep", Description = "Every 30 s, logs off accounts the login server holds for this server while nobody of that account is on it.")]
 [Guid("3f0c1a9e-5b27-4d84-a6e3-8c91d2f4b7a5")]
 public class GhostSessionSweepPlugIn : IPeriodicTaskPlugIn
 {
     private static readonly TimeSpan Interval = TimeSpan.FromSeconds(30);
 
-    /// <summary>How long a session may stay without a connection before it is freed; a normal teardown takes milliseconds.</summary>
+    /// <summary>How long an account may be held with nobody on the server; a login takes a moment, not a minute.</summary>
     private static readonly TimeSpan Grace = TimeSpan.FromSeconds(60);
-
-    private static readonly TimeSpan StepTimeout = TimeSpan.FromSeconds(10);
-
-    /// <summary>`RemotePlayer.Connection` is internal to OpenMU; read once by reflection, as the login token view does.</summary>
-    private static readonly PropertyInfo ConnectionProperty =
-        typeof(RemotePlayer).GetProperty("Connection", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-        ?? throw new MissingMemberException(nameof(RemotePlayer), "Connection");
 
     private readonly ConditionalWeakTable<GameContext, ContextState> _states = new();
 
     /// <inheritdoc />
     public ValueTask ExecuteTaskAsync(GameContext gameContext)
     {
+        if (gameContext is not GameServerContext server)
+        {
+            return ValueTask.CompletedTask;
+        }
+
         var state = this._states.GetValue(gameContext, _ => new ContextState());
         var now = DateTime.UtcNow;
         if (now < state.NextRunUtc || Interlocked.CompareExchange(ref state.Running, 1, 0) != 0)
@@ -49,17 +43,15 @@ public class GhostSessionSweepPlugIn : IPeriodicTaskPlugIn
         }
 
         state.NextRunUtc = now + Interval;
-
-        // Off the 1 s task timer: a stuck teardown may hang here too.
         _ = Task.Run(async () =>
         {
             try
             {
-                await SweepAsync(gameContext, state).ConfigureAwait(false);
+                await SweepAsync(server, state).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                gameContext.LoggerFactory.CreateLogger(nameof(GhostSessionSweepPlugIn)).LogError(ex, "Ghost session sweep failed.");
+                server.LoggerFactory.CreateLogger(nameof(GhostSessionSweepPlugIn)).LogError(ex, "Ghost session sweep failed.");
             }
             finally
             {
@@ -75,78 +67,51 @@ public class GhostSessionSweepPlugIn : IPeriodicTaskPlugIn
     {
     }
 
-    /// <summary>A remote player whose connection is gone, or whose teardown started, is a ghost while it stays in the list.</summary>
-    private static bool IsGhost(RemotePlayer player) =>
-        player.PlayerState.CurrentState.IsDisconnectedOrFinished()
-        || ConnectionProperty.GetValue(player) is not IConnection { Connected: true };
-
-    private static async Task SweepAsync(GameContext gameContext, ContextState state)
+    private static async Task SweepAsync(GameServerContext server, ContextState state)
     {
         var now = DateTime.UtcNow;
-        var players = await gameContext.GetPlayersAsync().ConfigureAwait(false);
-        var ghosts = players.OfType<RemotePlayer>().Where(IsGhost).ToList();
+        var held = (await server.LoginServer.GetSnapshotAsync().ConfigureAwait(false))
+            .Where(entry => entry.Value == server.Id)
+            .Select(entry => entry.Key)
+            .ToList();
 
-        // Forget players that recovered or left the list.
-        foreach (var known in state.FirstSeen.Keys.Where(p => !ghosts.Contains(p)).ToList())
+        var present = (await server.GetPlayersAsync().ConfigureAwait(false))
+            .Select(p => p.Account?.LoginName)
+            .OfType<string>()
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        var orphans = held.Where(account => !present.Contains(account) && !server.OfflinePlayerManager.IsActive(account)).ToList();
+
+        // Forget accounts that got their player (a login in progress) or left the login server.
+        foreach (var known in state.FirstSeen.Keys.Except(orphans, StringComparer.OrdinalIgnoreCase).ToList())
         {
-            state.FirstSeen.TryRemove(known, out _);
+            state.FirstSeen.Remove(known);
         }
 
-        foreach (var ghost in ghosts)
+        var logger = server.LoggerFactory.CreateLogger(nameof(GhostSessionSweepPlugIn));
+        foreach (var account in orphans)
         {
-            var since = state.FirstSeen.GetOrAdd(ghost, now);
-            if (now - since >= Grace)
+            if (!state.FirstSeen.TryGetValue(account, out var since))
             {
-                state.FirstSeen.TryRemove(ghost, out _);
-                await FreeAsync(gameContext, ghost).ConfigureAwait(false);
+                state.FirstSeen[account] = now;
+                continue;
             }
-        }
-    }
 
-    private static async Task FreeAsync(GameContext gameContext, RemotePlayer player)
-    {
-        var logger = gameContext.LoggerFactory.CreateLogger(nameof(GhostSessionSweepPlugIn));
-        var account = player.Account?.LoginName ?? "?";
-        var stateName = player.PlayerState.CurrentState.Name;
-
-        // First the regular teardown (it saves); it does nothing when one already started and hangs.
-        try
-        {
-            await player.DisconnectAsync().AsTask().WaitAsync(StepTimeout).ConfigureAwait(false);
-        }
-        catch (Exception ex)
-        {
-            logger.LogWarning(ex, "Ghost session of {Account}: the regular disconnect did not finish.", account);
-        }
-
-        // Whatever is still left: out of the player list, and off at the login server.
-        try
-        {
-            await gameContext.RemovePlayerAsync(player).AsTask().WaitAsync(StepTimeout).ConfigureAwait(false);
-        }
-        catch (Exception ex)
-        {
-            logger.LogWarning(ex, "Ghost session of {Account}: could not remove it from the player list.", account);
-        }
-
-        if (gameContext is GameServerContext server && player.ReleaseLoginServerRegistration() is { } loginName)
-        {
-            try
+            if (now - since < Grace)
             {
-                await server.LoginServer.LogOffAsync(loginName, server.Id).AsTask().WaitAsync(StepTimeout).ConfigureAwait(false);
+                continue;
             }
-            catch (Exception ex)
-            {
-                logger.LogWarning(ex, "Ghost session of {Account}: could not log it off at the login server.", account);
-            }
-        }
 
-        logger.LogWarning("Ghost session freed: account {Account} (state {State}) had no connection for over {Grace} s.", account, stateName, Grace.TotalSeconds);
+            state.FirstSeen.Remove(account);
+            await server.LoginServer.LogOffAsync(account, server.Id).ConfigureAwait(false);
+            logger.LogWarning("Ghost session freed: account {Account} was held on game server {ServerId} for over {Grace} s with nobody of it there.", account, server.Id, Grace.TotalSeconds);
+        }
     }
 
     private sealed class ContextState
     {
-        public readonly ConcurrentDictionary<RemotePlayer, DateTime> FirstSeen = new();
+        /// <summary>Only touched by the sweep, which never runs twice at once (<see cref="Running"/>).</summary>
+        public readonly Dictionary<string, DateTime> FirstSeen = new(StringComparer.OrdinalIgnoreCase);
 
         public DateTime NextRunUtc = DateTime.UtcNow + Interval;
 

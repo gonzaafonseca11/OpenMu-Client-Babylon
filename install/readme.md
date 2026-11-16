@@ -286,7 +286,9 @@ it makes the DKIM key first if there is none yet.
   character list, a login token (E7 03/04), a module packet (0xE8) sent at the character list dropped
   unread while one sent in the world reaches the handler, then after a reconnect a token login (E7 05)
   reaching the character list with the token replaced, the proxy naming that socket for the cash
-  shop, the replaced token and a junk one refused, and the new token logging in.
+  shop, the replaced token and a junk one refused, the new token logging in, and a password login right
+  after that token session leaves (it left the account "already connected" when the token login did not
+  register the account on the player, see `openmu/readme.md`).
 
 ## Troubleshooting
 

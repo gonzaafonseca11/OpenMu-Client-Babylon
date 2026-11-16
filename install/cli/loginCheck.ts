@@ -318,6 +318,11 @@ export async function loginCheck(target: LoginCheckTarget): Promise<Check[]> {
         await expectLogin(line.client, tokenLogin(target.login, second), LoginResponseLoginResultEnum.Okay);
         await tokenAnswer(line.client);
       }],
+      // OpenMU logs a leaving player off at the login server only through the registration its login left on it;
+      // a token login without one kept the account "already connected" on every server until a restart.
+      ['a token session that leaves frees the account', async () => {
+        await expectLogin(await line.redial(), passwordLogin(target.login, target.password), LoginResponseLoginResultEnum.Okay);
+      }],
     ]);
   } finally {
     line.close();

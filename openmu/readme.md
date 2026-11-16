@@ -69,10 +69,12 @@ web client's saved login, so no password is kept in a browser.
   password change voids every token of the account. 30 days, at most 10 per account. Backups: the
   table is in the database `mu backup` dumps (`openmu.dump`).
 - `LoginTokenAction`: E7 03 issues a token at the character list (once per connection); E7 05 logs in
-  with one, step for step as OpenMU's `LoginAction` (v0.9.10), then replaces it and sends the new one
-  (E7 04) behind the login result. `LoginAction` holds the state machine's lock across the login
-  server call through a context whose `Allowed` setter is internal; the plugin checks the transition
-  first, makes it last, and logs the account off the login server if it then fails.
+  with one, step for step as OpenMU's `LoginAction` (master, 64c534a), then replaces it and sends the new
+  one (E7 04) behind the login result. Like `LoginAction` it reserves the account at the login server
+  before loading it and remembers that on the player (`SetLoginServerRegistration`): OpenMU logs a
+  leaving player off only through that registration (see Ghost sessions). `LoginAction` holds the state
+  machine's lock across the login server call through a context whose `Allowed` setter is internal; the
+  plugin checks the transition first, makes it last, and releases the registration (once) if it then fails.
 - `LoginTokenUpkeepPlugIn` (a periodic task): creates the table at start when it is missing and
   drops expired tokens hourly. The store creates it on first use too.
 - The client offers tokens only on a world whose `server.json` says `loginTokens: true`; the
@@ -120,11 +122,15 @@ each mix, so no mix deletes an unsaved option. Drop both once OpenMU includes #9
 
 ## Ghost sessions
 
-A session whose teardown hangs stays in the game server's player list with no connection: its state stays
-Disconnected (or its socket is gone), the admin panel's Disconnect does nothing, and the account answers
-"already connected" on every server until a restart. Seen live: 29 listed players for 25 sockets.
-`GameServer/SessionSweep/GhostSessionSweepPlugIn` (a periodic task, every 30 s per game server) marks a
-`RemotePlayer` with no live connection or a started teardown, and after 60 s in that state runs the regular
-disconnect (10 s limit), then removes it from the player list and logs the account off at the login server.
-Each one freed is a warning in the log ("Ghost session freed"), which is where to look for the cause.
-Offline (MU helper) sessions are not `RemotePlayer`s and are left alone.
+An account the login server holds while nobody of it is on any game server answers "already connected"
+everywhere until a restart. The admin panel's Online Accounts is the login server's list (an empty Character
+there is an account at the character list, or one held by nobody), and its Disconnect logs the account off there.
+
+The cause seen live: OpenMU master logs a leaving player off only through the registration its login left on
+the player (`ReleaseLoginServerRegistration`, `GameServer.OnPlayerDisconnectedAsync`). Our token login was
+written against 0.9.10, which logged off by the account, and never set it: every session opened with a token
+("remember me", and the client's reconnect) kept its account held after it left. `LoginTokenAction` sets it now.
+
+`GameServer/SessionSweep/GhostSessionSweepPlugIn` (a periodic task, every 30 s per game server) is the safety
+net: an account the login server holds for that server with no player of it there (and no offline session)
+for over 60 s is logged off, with a warning in the log ("Ghost session freed").
