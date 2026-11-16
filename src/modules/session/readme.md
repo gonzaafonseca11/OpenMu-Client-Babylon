@@ -43,6 +43,10 @@ the client-to-server encryption, the login fields and the offline flag.
 - `sessionResume.ts`: when a game-server socket drops while a character is in the world (and the
   `autoReconnect` option is on), it redials `Session.lastGameServer`, sends the same login and selects
   the same character, with backoff 1, 2, 4, 8, 15 s. `boot.tsx` wires it as `Session.resumeHook`.
+  After the login it asks for the character list before the select, as the original does: OpenMU selects
+  only from there, and a bare select left the account logged in on the open socket, the character never
+  back ("account already connected" everywhere). A character not back 15 s after the login gives up,
+  which closes that socket.
 - Login tokens (phase 6, [docs/module_streaming.md](../../../docs/module_streaming.md)): on a world
   whose `server.json` offers them, with the improvement `loginTokens` on (Enhanced, Ultra) and
   "remember" ticked (`keepsLoginTokens`), a password login asks for a token (E7 03) and each token the
@@ -102,6 +106,8 @@ the client-to-server encryption, the login fields and the offline flag.
 - change retry count or backoff: `BACKOFF` in `sessionResume.ts`.
 
 ## Tests
+- `sessionResume.test.ts`: after the login the resume asks for the character list, then selects; a character
+  not back in 15 s gives up and closes the socket.
 - `state.test.ts`: `sendToGS` sends only the bytes its DataView covers (a view into a larger buffer, as a module's
   packet can be); `cancelLogin` goes back to the server list and keeps the fields; a 10-character password
   goes out in the long login packet, a shorter one in the short.

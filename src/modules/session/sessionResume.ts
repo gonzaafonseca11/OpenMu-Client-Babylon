@@ -13,6 +13,9 @@ const BACKOFF = [1000, 2000, 4000, 8000, 15000];
 
 const MAX_ATTEMPTS = BACKOFF.length;
 
+/** How long the character may take to be back in the world after the login. */
+const SELECT_TIMEOUT_MS = 15000;
+
 type Step = 'idle' | 'connecting' | 'logging-in' | 'selecting';
 
 export const SessionResume = new (class _SessionResume {
@@ -131,7 +134,15 @@ export const SessionResume = new (class _SessionResume {
       this.step = 'selecting';
     });
     Session.disconnectFromConnectServer();
+    // OpenMU selects only from the character list, as the original always asks for it first (readme.md).
+    CharSelect.requestCharacterList();
     CharSelect.selectCharacterRequest(this.character);
+    // A select that never lands would keep the account logged in on this socket.
+    if (this.timer) clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      this.timer = null;
+      this.giveUp('failed');
+    }, SELECT_TIMEOUT_MS);
     return true;
   }
 

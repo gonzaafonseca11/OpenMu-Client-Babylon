@@ -14,7 +14,7 @@ select, create and delete actions (`CharSelect`).
 - `createCharacterSelectBackdrop(scene)`: the backdrop card; returns `{ dispose() }`.
 - `CharSelect` (`state.ts`, through `index.ts`, the door): `charactersList`, `loadingCharactersList`,
   `focusedChar`, `creationUnlockFlags`, the create form (`newCharName`, `newCharClass`,
-  `charCreationPending`), `deletingChar`; `refreshCharactersListRequest()`, `focusCharacterRequest`,
+  `charCreationPending`), `deletingChar`; `refreshCharactersListRequest()` (`requestCharacterList()`: the packet alone, for the session resume), `focusCharacterRequest`,
   `selectCharacterRequest` (also sets the hero's name, class and level), `createCharacterRequest`,
   `deleteCharacterRequest`, `addCreatedCharacter`. The character list component takes it as `source`.
 - `confirmDeleteCharacter(name)` (`index.ts`, the door): the delete button's two boxes (confirm, then

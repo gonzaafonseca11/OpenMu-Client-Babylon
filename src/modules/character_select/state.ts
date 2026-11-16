@@ -43,6 +43,11 @@ export const CharSelect = new (class {
     runInAction(() => {
       this.loadingCharactersList = true;
     });
+    this.requestCharacterList();
+  }
+
+  /** The list request alone: the session resume needs OpenMU at the character list, not the screen. */
+  requestCharacterList(): void {
     const packet = RequestCharacterListPacket.createPacket();
     packet.Language = 0;
     Session.sendToGS(packet.buffer);
