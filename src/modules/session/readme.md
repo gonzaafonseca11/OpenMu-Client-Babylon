@@ -61,6 +61,11 @@ the client-to-server encryption, the login fields and the offline flag.
   from the app and the interface, never a module above it. `connectToGameServer` closes the socket
   it replaces: one left open (the server list clicked twice, a resume) stays a player on OpenMU,
   which sends `/post` to every connected player, so each post showed twice.
+- The login goes out as `LoginShortPassword` (10-byte password, the original's). OpenMU's
+  `LogInHandlerPlugIn` reads every login of 42 bytes or more as `LoginLongPassword` (20-byte password),
+  and this one is 50: a password under 10 characters ends at its zero, but a full 10-character one ran
+  on into the tick count and was refused, while the website took it. That one goes out as
+  `LoginLongPassword`.
 - `sessionStats.ts` listens to `experienceGained` and watches `Hero.money`; it starts
   only when a panel calls `watch()`. A new character name resets it.
 - Other modules it reads: `Hero` (id, name), `CharSelect` (select after a resume), `Merchant`
@@ -98,7 +103,8 @@ the client-to-server encryption, the login fields and the offline flag.
 
 ## Tests
 - `state.test.ts`: `sendToGS` sends only the bytes its DataView covers (a view into a larger buffer, as a module's
-  packet can be); `cancelLogin` goes back to the server list and keeps the fields.
+  packet can be); `cancelLogin` goes back to the server list and keeps the fields; a 10-character password
+  goes out in the long login packet, a shorter one in the short.
 - `sessionExit.test.ts`: Escape in the world opens the system menu, once, not Options, and nothing off the world;
   Select Server on the character screen sends `LogOut(2)` and leaves on the answer.
 - `net.test.ts`: "account already connected" shows the refusal by default and retries only where the

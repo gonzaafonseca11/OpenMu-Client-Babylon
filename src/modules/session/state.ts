@@ -12,6 +12,7 @@ import {
 import { MsgBox } from '@/controllers/interface';
 import { isOn } from '@/controllers/fidelity';
 import {
+  LoginLongPasswordPacket,
   LoginShortPasswordPacket,
   LoginTokenRequestPacket,
   ServerChangeAuthenticationPacket,
@@ -540,20 +541,22 @@ export const Session = new (class {
   }
 
   private sendLogin(username: string, password: string) {
+    // OpenMU reads this 50-byte packet as the long one: a full 10-character password needs a zero after it (readme.md).
+    const Packet = password.length >= MAX_PASSWORD_LENGTH ? LoginLongPasswordPacket : LoginShortPasswordPacket;
     const usernameBytes = stringToBytes(username, MAX_USERNAME_LENGTH);
-    const passwordBytes = stringToBytes(password, MAX_PASSWORD_LENGTH);
+    const passwordBytes = stringToBytes(password, Packet === LoginLongPasswordPacket ? 20 : MAX_PASSWORD_LENGTH);
 
     Xor3Byte(usernameBytes);
     Xor3Byte(passwordBytes);
 
-    const loginShortPasswordPacket = LoginShortPasswordPacket.createPacket();
-    loginShortPasswordPacket.setUsername(usernameBytes, usernameBytes.length);
-    loginShortPasswordPacket.setPassword(passwordBytes, passwordBytes.length);
-    loginShortPasswordPacket.setClientVersion(gameVersion.clientVersionBytes);
-    loginShortPasswordPacket.setClientSerial(gameVersion.serialBytes);
+    const packet = Packet.createPacket();
+    packet.setUsername(usernameBytes, usernameBytes.length);
+    packet.setPassword(passwordBytes, passwordBytes.length);
+    packet.setClientVersion(gameVersion.clientVersionBytes);
+    packet.setClientSerial(gameVersion.serialBytes);
 
     console.log(`send login`);
-    this.sendToGS(loginShortPasswordPacket.buffer);
+    this.sendToGS(packet.buffer);
   }
 
   /** The account name Xor3-encoded as in the login, the token, the client version. */

@@ -45,6 +45,30 @@ describe('Session.cancelLogin', () => {
   });
 });
 
+// OpenMU reads every login of 42 bytes or more as LoginLongPassword (20-byte password, LogInHandlerPlugIn):
+// a 10-character password has no terminating zero in the short packet, so the bytes after it joined it.
+describe('Session.loginRequest', () => {
+  const sendLogin = async (password: string) => {
+    const { Xor3Byte } = await import('@/controllers/net/encryption/xor3');
+    const sent: Uint8Array[] = [];
+    // Before Xor32: the packet as the client builds it.
+    const spy = vi.spyOn(Session, 'sendToGS').mockImplementation(v => void sent.push(new Uint8Array(v.buffer, v.byteOffset, v.byteLength)));
+    Session.loginRequest('hero', password);
+    spy.mockRestore();
+    const field = sent[0].slice(14, 34);
+    Xor3Byte(field);
+    return { length: sent[0].byteLength, password: new TextDecoder().decode(field.slice(0, field.indexOf(0))) };
+  };
+
+  it('keeps the short packet for a password under 10 characters', async () => {
+    expect((await sendLogin('abc123')).length).toBe(50);
+  });
+
+  it('sends a 10-character password in the long packet, ended by a zero', async () => {
+    expect(await sendLogin('abcdefghij')).toEqual({ length: 60, password: 'abcdefghij' });
+  });
+});
+
 // A second ConnectionInfo (the server list clicked twice, a resume) must not leave the first socket
 // open: OpenMU keeps it as a player, and every /post then reaches this client twice.
 describe('Session.connectToGameServer', () => {
