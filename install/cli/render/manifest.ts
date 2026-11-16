@@ -70,9 +70,9 @@ export function manifestDialogPages(c: Config): Record<number, string> {
   );
 }
 
-/** `optionDefaults` as `server.json` numbers: `fidelity` 0-2 and `fpsLimit` 0-6 (FPS_LIMIT_STEPS), anything else left out. */
+/** `optionDefaults` as `server.json` numbers: `fidelity`, `lightingQuality`, `materialQuality` 0-2 and `fpsLimit` 0-6 (FPS_LIMIT_STEPS), anything else left out. */
 export function manifestOptionDefaults(c: Config): Record<string, number> {
-  const max: Record<string, number> = { fidelity: 2, fpsLimit: 6 };
+  const max: Record<string, number> = { fidelity: 2, fpsLimit: 6, lightingQuality: 2, materialQuality: 2 };
   return Object.fromEntries(
     c.optionDefaults.split(',').flatMap(spec => {
       const m = /^\s*(\w+)\s*=\s*(\d)\s*$/.exec(spec);

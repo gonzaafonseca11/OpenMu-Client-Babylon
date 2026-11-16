@@ -78,9 +78,10 @@ describe('parseServerManifest', () => {
   });
 
   // The world's starting graphics for light machines: only the known options, whole numbers in range.
-  it('reads option defaults, keeping only fidelity and fpsLimit in range', () => {
-    const optionDefaults = { fidelity: 0, fpsLimit: 1, shadows: false, bloom: 9 };
-    expect(parseServerManifest({ version: 1, settings: {}, optionDefaults })?.optionDefaults).toEqual({ fidelity: 0, fpsLimit: 1 });
+  it('reads option defaults, keeping only fidelity, fpsLimit and the quality tiers in range', () => {
+    const optionDefaults = { fidelity: 1, fpsLimit: 1, lightingQuality: 0, materialQuality: 0, shadows: false, bloom: 9 };
+    expect(parseServerManifest({ version: 1, settings: {}, optionDefaults })?.optionDefaults).toEqual({ fidelity: 1, fpsLimit: 1, lightingQuality: 0, materialQuality: 0 });
+    expect(parseServerManifest({ version: 1, settings: {}, optionDefaults: { lightingQuality: 3 } })?.optionDefaults).toEqual({});
     expect(parseServerManifest({ version: 1, settings: {}, optionDefaults: { fidelity: 7, fpsLimit: 1.5 } })?.optionDefaults).toEqual({});
     expect(parseServerManifest({ version: 1, settings: {}, optionDefaults: 'nope' })?.optionDefaults).toEqual({});
   });

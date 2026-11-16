@@ -119,8 +119,8 @@ describe('server.json', () => {
   });
 
   it('writes the starting options the config names (Classic, 30 FPS), and drops an unknown or bad one', () => {
-    const json = JSON.parse(serverManifest({ ...domain, optionDefaults: 'fidelity=0, fpsLimit=1, bloom=3, fpsLimit=x' }));
-    expect(json.optionDefaults).toEqual({ fidelity: 0, fpsLimit: 1 });
+    const json = JSON.parse(serverManifest({ ...domain, optionDefaults: 'fidelity=1, fpsLimit=1, lightingQuality=0, materialQuality=0, materialQuality=5, bloom=3, fpsLimit=x' }));
+    expect(json.optionDefaults).toEqual({ fidelity: 1, fpsLimit: 1, lightingQuality: 0, materialQuality: 0 });
     expect(parseServerManifest(json)?.optionDefaults).toEqual(json.optionDefaults);
   });
 

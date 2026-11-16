@@ -10,7 +10,7 @@ modules. The gameplay side of options (the server's saved hot keys, the mobile s
 - `setGameOption(key, value)`: sets one option, saves all of them, calls the listeners.
 - `onGameOptionsChanged(listener)`: subscribe; returns the unsubscribe.
 - `defaultGameOption(key)`: the fresh-install value (the Options window's Defaults).
-- `offerOptionDefaults(defaults)`: a world's `server.json` `optionDefaults` (`fidelity`, `fpsLimit`),
+- `offerOptionDefaults(defaults)`: a world's `server.json` `optionDefaults` (`fidelity`, `fpsLimit`, `lightingQuality`, `materialQuality`),
   applied once per browser (stamp in localStorage `mu_option_defaults`), again only when they change.
 - `uiScaleFactor(step)`, `UI_SCALE_MAX`, `TONE_MAPPER_MAX`, `BRIGHTNESS_MIN` / `BRIGHTNESS_MAX`.
 - `optionsFrom(parsed)` and `migrate(stored)` (`gameOptions.ts`, for its tests): a stored blob over

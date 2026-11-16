@@ -80,7 +80,7 @@ export type Config = {
   extraWarps: string;
   /** Dialog.bmd pages this world rewrites, `page=text` separated by `|` (`server.json` `dialogPages`). */
   dialogPages: string;
-  /** Starting options for new players, `option=value` separated by `,`: `fidelity` 0-2, `fpsLimit` step 0-6 (`server.json` `optionDefaults`). */
+  /** Starting options for new players, `option=value` separated by `,`: `fidelity`, `lightingQuality`, `materialQuality` 0-2, `fpsLimit` step 0-6 (`server.json` `optionDefaults`). */
   optionDefaults: string;
   /** The owner's ed25519 public key (base64url) baked into the client: modules it signed run in the page. Empty: none. */
   moduleSigningKey: string;

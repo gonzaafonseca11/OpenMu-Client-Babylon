@@ -194,8 +194,8 @@ function parseDialogPages(raw: unknown): Record<number, string> {
   return pages;
 }
 
-/** `optionDefaults`: Fidelity 0-2 and the FPS cap step 0-6 (`FPS_LIMIT_STEPS`), whole numbers; anything else is left out. */
-const OPTION_DEFAULT_RANGES = { fidelity: 2, fpsLimit: 6 } as const;
+/** `optionDefaults`: Fidelity 0-2, the FPS cap step 0-6 (`FPS_LIMIT_STEPS`) and the lighting / material tiers 0-2, whole numbers; anything else is left out. */
+const OPTION_DEFAULT_RANGES = { fidelity: 2, fpsLimit: 6, lightingQuality: 2, materialQuality: 2 } as const;
 
 function parseOptionDefaults(raw: unknown): OptionDefaults {
   if (!isObject(raw)) return {};

@@ -816,7 +816,7 @@ export function offerAutoMana(options: GameOptions, offered: boolean): boolean {
 }
 
 /** The options a world's `server.json` may start a browser on (`optionDefaults`). */
-export type OptionDefaults = Partial<Pick<GameOptions, 'fidelity' | 'fpsLimit'>>;
+export type OptionDefaults = Partial<Pick<GameOptions, 'fidelity' | 'fpsLimit' | 'lightingQuality' | 'materialQuality'>>;
 
 /** The last `optionDefaults` this browser took, as JSON: taken once, again only when the world changes them. */
 const OPTION_DEFAULTS_KEY = 'mu_option_defaults';
