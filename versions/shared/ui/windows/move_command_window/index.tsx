@@ -117,18 +117,6 @@ function effectiveMoveLevel(reqLevel: number, cls: BaseClass): number {
   return Math.trunc((reqLevel * (100 - LEVEL_REDUCTION_PERCENT)) / 100);
 }
 
-/**
- * `MoveReq_eng.bmd` index → OpenMU `WarpInfo.Index` where the two disagree.
- * The Season 6 `Gates.cs` warp list numbers every row the same as the file
- * (1 Arena, 2 Lorencia, 3 Noria, 4 Devias, 31 Elveland, 23 Icarus, …)
- * except Vulcanus, which the file calls 42 (the original's gens `anStrifeIndex`)
- * and OpenMU seeds as 37. OpenMU's 44 LorenMarket / 48 LaCleon have no row in
- * the Eng file (34 LaCleon maps to OpenMU's 34 "Raklion", the same gate).
- */
-const SERVER_INDEX: Readonly<Record<number, number>> = {
-  42: 37,
-};
-
 /** The staged maps an offline click can still land on, by the file's `index`. */
 const OFFLINE_MAPS: Readonly<Record<number, ENUM_WORLD>> = {
   2: ENUM_WORLD.WD_0LORENCIA,
@@ -315,7 +303,8 @@ export const MoveCommandWindow = observer(() => {
       if (map !== undefined) EventBus.emit('requestWarp', { map });
       return;
     }
-    warpCommandRequest(SERVER_INDEX[entry.index] ?? entry.index);
+    // The file's index is OpenMU master's `WarpInfo.Index` for every row, Vulcanus 42 included (0.9.10 seeded it 37).
+    warpCommandRequest(entry.index);
   };
 
   return (
