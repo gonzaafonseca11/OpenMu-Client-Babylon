@@ -70,6 +70,17 @@ export function manifestDialogPages(c: Config): Record<number, string> {
   );
 }
 
+/** `optionDefaults` as `server.json` numbers: `fidelity` 0-2 and `fpsLimit` 0-6 (FPS_LIMIT_STEPS), anything else left out. */
+export function manifestOptionDefaults(c: Config): Record<string, number> {
+  const max: Record<string, number> = { fidelity: 2, fpsLimit: 6 };
+  return Object.fromEntries(
+    c.optionDefaults.split(',').flatMap(spec => {
+      const m = /^\s*(\w+)\s*=\s*(\d)\s*$/.exec(spec);
+      return m && m[1] in max && Number(m[2]) <= max[m[1]] ? [[m[1], Number(m[2])]] : [];
+    })
+  );
+}
+
 export function serverManifest(c: Config, modules: readonly ModuleEntry[] = []): string {
   const manifest = {
     version: MANIFEST_VERSION,
@@ -100,6 +111,8 @@ export function serverManifest(c: Config, modules: readonly ModuleEntry[] = []):
     warps: manifestWarps(c),
     // Quest dialog pages with the world's own words (its NPCs, its maps).
     dialogPages: manifestDialogPages(c),
+    // What a player's browser starts on (light machines: Classic, 30 FPS), taken once; their own picks stay.
+    optionDefaults: manifestOptionDefaults(c),
   };
   return `${JSON.stringify(manifest, null, 2)}\n`;
 }

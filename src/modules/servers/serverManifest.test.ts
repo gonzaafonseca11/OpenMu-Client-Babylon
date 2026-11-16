@@ -56,6 +56,7 @@ describe('parseServerManifest', () => {
       modulesDropped: [],
       warps: [],
       dialogPages: {},
+      optionDefaults: {},
     });
     expect(parseServerManifest({ version: 1, settings: { retryLoginWhenConnected: true } })?.settings).toEqual({
       ...ORIGINAL_SETTINGS,
@@ -74,6 +75,14 @@ describe('parseServerManifest', () => {
     const dialogPages = { '152': 'Thompson sells them.', '300': 'too far', '7': '', x: 'bad' };
     expect(parseServerManifest({ version: 1, settings: {}, dialogPages })?.dialogPages).toEqual({ 152: 'Thompson sells them.' });
     expect(parseServerManifest({ version: 1, settings: {}, dialogPages: 'nope' })?.dialogPages).toEqual({});
+  });
+
+  // The world's starting graphics for light machines: only the known options, whole numbers in range.
+  it('reads option defaults, keeping only fidelity and fpsLimit in range', () => {
+    const optionDefaults = { fidelity: 0, fpsLimit: 1, shadows: false, bloom: 9 };
+    expect(parseServerManifest({ version: 1, settings: {}, optionDefaults })?.optionDefaults).toEqual({ fidelity: 0, fpsLimit: 1 });
+    expect(parseServerManifest({ version: 1, settings: {}, optionDefaults: { fidelity: 7, fpsLimit: 1.5 } })?.optionDefaults).toEqual({});
+    expect(parseServerManifest({ version: 1, settings: {}, optionDefaults: 'nope' })?.optionDefaults).toEqual({});
   });
 
   it('reads restAnyWall, off on the original', () => {
@@ -138,6 +147,7 @@ describe('parseServerManifest', () => {
       modulesDropped: [],
       warps: [],
       dialogPages: {},
+      optionDefaults: {},
     });
   });
 

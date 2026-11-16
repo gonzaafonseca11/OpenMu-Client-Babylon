@@ -176,6 +176,10 @@ connect server's own list (`Servers.serverList`) is filled by `session/net.ts`.
 - `dialogPages` maps a Dialog.bmd page (0-199) to the world's own text for it, 1-300 characters, so
   a quest NPC can name the world's own NPCs and maps (`serverDialogPage`, read by
   `quests/questData.ts` `dialogScript`). Anything else is left out; missing means the pack's text.
+- `optionDefaults` is what a player's browser starts on: `fidelity` 0-2 and `fpsLimit` 0-6 (whole
+  numbers; anything else is left out). Once the fetch answers, `offerOptionDefaults`
+  (`controllers/settings`) applies them once per browser and again only when they change, so a
+  world for light machines starts everyone on Classic at 30 FPS and the player's own picks stay.
 - Fetched from the root of the world's proxy host (`https://ws.<domain>/server.json`, or
   `http://<ip>:3000/server.json`), the one address every profile has (Caddy answers it on an
   installed server; the proxy itself answers it from `MU_HELD_HIT_REQUEST`, `MU_MODULES_OFF` and

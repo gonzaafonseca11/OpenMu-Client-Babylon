@@ -815,6 +815,29 @@ export function offerAutoMana(options: GameOptions, offered: boolean): boolean {
   return true;
 }
 
+/** The options a world's `server.json` may start a browser on (`optionDefaults`). */
+export type OptionDefaults = Partial<Pick<GameOptions, 'fidelity' | 'fpsLimit'>>;
+
+/** The last `optionDefaults` this browser took, as JSON: taken once, again only when the world changes them. */
+const OPTION_DEFAULTS_KEY = 'mu_option_defaults';
+
+/**
+ * A world's own starting options (light machines: Classic, 30 FPS), put in once per browser like the
+ * mana potion above; what the player picks afterwards stays. True when they were applied.
+ */
+export function offerOptionDefaults(defaults: OptionDefaults): boolean {
+  const entries = Object.entries(defaults).sort(([a], [b]) => (a < b ? -1 : 1)) as [keyof OptionDefaults, number][];
+  const stamp = JSON.stringify(entries);
+  if (!entries.length || LocalStorage.load(OPTION_DEFAULTS_KEY) === stamp) return false;
+
+  for (const [key, value] of entries) {
+    const [min, max] = RANGES[key] ?? [value, value];
+    setGameOption(key, Math.max(min, Math.min(max, value)));
+  }
+  LocalStorage.save(OPTION_DEFAULTS_KEY, stamp);
+  return true;
+}
+
 function load(): GameOptions {
   const stored = LocalStorage.load(OPTIONS_KEY);
   const manaOffered = LocalStorage.load(MANA_OFFERED_KEY) !== null;

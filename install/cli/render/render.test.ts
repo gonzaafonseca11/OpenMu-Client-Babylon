@@ -102,7 +102,7 @@ describe('client build', () => {
 
 describe('server.json', () => {
   it('holds the original behaviour by default, and offers login tokens: the plugin is in every image', () => {
-    expect(JSON.parse(serverManifest(domain))).toEqual({ version: 1, settings: ORIGINAL_SETTINGS, modulesOff: [], loginTokens: true, directLogin: false, directWorld: false, modules: [], warps: [], dialogPages: {} });
+    expect(JSON.parse(serverManifest(domain))).toEqual({ version: 1, settings: ORIGINAL_SETTINGS, modulesOff: [], loginTokens: true, directLogin: false, directWorld: false, modules: [], warps: [], dialogPages: {}, optionDefaults: {} });
     expect(parseServerManifest(JSON.parse(serverManifest(domain)))?.loginTokens).toBe(true);
   });
 
@@ -116,6 +116,12 @@ describe('server.json', () => {
     const json = JSON.parse(serverManifest({ ...domain, dialogPages: '152=Thompson sells them, south of Aida.| bad |153=Go.' }));
     expect(json.dialogPages).toEqual({ 152: 'Thompson sells them, south of Aida.', 153: 'Go.' });
     expect(parseServerManifest(json)?.dialogPages).toEqual(json.dialogPages);
+  });
+
+  it('writes the starting options the config names (Classic, 30 FPS), and drops an unknown or bad one', () => {
+    const json = JSON.parse(serverManifest({ ...domain, optionDefaults: 'fidelity=0, fpsLimit=1, bloom=3, fpsLimit=x' }));
+    expect(json.optionDefaults).toEqual({ fidelity: 0, fpsLimit: 1 });
+    expect(parseServerManifest(json)?.optionDefaults).toEqual(json.optionDefaults);
   });
 
   it('turns off the modules the config lists, and band when its relay is off', () => {

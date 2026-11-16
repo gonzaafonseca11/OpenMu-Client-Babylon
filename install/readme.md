@@ -175,6 +175,11 @@ everything the stack reads is rendered from `mu.env`, so `mu config` can change 
   (Dialog.bmd, 0-199) with the world's own words, as `page=text` separated by `|` (like
   `152=Thompson sells them, south of Aida.`). A page past 199 or an empty text is left out.
 
+  `optionDefaults` (`MU_OPTION_DEFAULTS` in `mu.env`, default none) is what a player's browser
+  starts on, as `option=value` separated by `,`: `fidelity` 0-2 (Classic, Enhanced, Ultra) and
+  `fpsLimit` 0-6 (uncapped, 30, 45, 60, 90, 120, 144 FPS); `fidelity=0,fpsLimit=1` suits light
+  machines. Each browser takes them once (again when they change); the player's own picks stay.
+
   `loginTokens` (always `true`, nothing to set) says this world issues login tokens: our OpenMU
   plugin does (`openmu/readme.md`), and it is in every OpenMU image the installer builds. A client
   with "remember" ticked keeps a token instead of the password (Enhanced and Ultra). The tokens live

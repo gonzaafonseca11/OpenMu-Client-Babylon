@@ -1,5 +1,50 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { migrate, offerAutoMana, optionsFrom } from './gameOptions';
+import { GameOptions, migrate, offerAutoMana, offerOptionDefaults, optionsFrom, setGameOption } from './gameOptions';
+
+// A world's `server.json` `optionDefaults` (light machines: Classic, 30 FPS) go in once per browser;
+// what the player picks afterwards stays, until the world changes its defaults.
+describe('offerOptionDefaults', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  const stubStorage = () => {
+    const items = new Map<string, string>();
+    vi.stubGlobal('localStorage', {
+      getItem: (k: string) => items.get(k) ?? null,
+      setItem: (k: string, v: string) => void items.set(k, v),
+      removeItem: (k: string) => void items.delete(k),
+    });
+  };
+
+  it('applies the defaults once, then leaves the player choice alone', () => {
+    stubStorage();
+    setGameOption('fidelity', 1);
+    setGameOption('fpsLimit', 0);
+
+    expect(offerOptionDefaults({ fidelity: 0, fpsLimit: 1 })).toBe(true);
+    expect([GameOptions.fidelity, GameOptions.fpsLimit]).toEqual([0, 1]);
+
+    setGameOption('fidelity', 2);
+    expect(offerOptionDefaults({ fidelity: 0, fpsLimit: 1 })).toBe(false);
+    expect(GameOptions.fidelity).toBe(2);
+  });
+
+  it('applies them again when the world changes them', () => {
+    stubStorage();
+    offerOptionDefaults({ fidelity: 0, fpsLimit: 1 });
+
+    expect(offerOptionDefaults({ fidelity: 0, fpsLimit: 3 })).toBe(true);
+    expect(GameOptions.fpsLimit).toBe(3);
+  });
+
+  it('does nothing for a world without defaults', () => {
+    stubStorage();
+    setGameOption('fpsLimit', 0);
+    expect(offerOptionDefaults({})).toBe(false);
+    expect(GameOptions.fpsLimit).toBe(0);
+  });
+});
 
 const DROPPED = [
   'darkness',

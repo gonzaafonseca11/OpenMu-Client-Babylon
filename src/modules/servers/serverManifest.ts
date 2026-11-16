@@ -4,6 +4,7 @@ import { serverManifestUrl } from './serverServices';
 import { setServerModulesOff } from '../module';
 import { MODULE_ID as STREAMED_ID } from '../_api/contract';
 import { setWorldEnglishItemNames, setWorldEnglishSkillNames } from '../../controllers/assets/mu';
+import { offerOptionDefaults, type OptionDefaults } from '../../controllers/settings';
 
 /**
  * A world's `server.json`: what the server decides for every player on it. Fetched when the world
@@ -81,6 +82,8 @@ type ServerManifest = {
   readonly warps: readonly ExtraWarp[];
   /** Dialog.bmd pages the world rewrites, by page (`g_DialogScript`, 0-199): its own NPCs, its own words. */
   readonly dialogPages: Readonly<Record<number, string>>;
+  /** Starting options for this world's players (light machines: Classic, 30 FPS), taken once per browser. */
+  readonly optionDefaults: OptionDefaults;
 };
 
 /** What a manifest puts in force for its world. */
@@ -191,6 +194,19 @@ function parseDialogPages(raw: unknown): Record<number, string> {
   return pages;
 }
 
+/** `optionDefaults`: Fidelity 0-2 and the FPS cap step 0-6 (`FPS_LIMIT_STEPS`), whole numbers; anything else is left out. */
+const OPTION_DEFAULT_RANGES = { fidelity: 2, fpsLimit: 6 } as const;
+
+function parseOptionDefaults(raw: unknown): OptionDefaults {
+  if (!isObject(raw)) return {};
+  const defaults: Record<string, number> = {};
+  for (const [key, max] of Object.entries(OPTION_DEFAULT_RANGES)) {
+    const value = raw[key];
+    if (Number.isInteger(value) && (value as number) >= 0 && (value as number) <= max) defaults[key] = value as number;
+  }
+  return defaults;
+}
+
 /**
  * `modules`: a malformed entry, a repeated id and anything past 32 entries is dropped and named, never
  * the whole document; a `modules` that is not a list drops everything.
@@ -248,6 +264,7 @@ export function parseServerManifest(raw: unknown): ServerManifest | null {
     ...parseModules(raw.modules),
     warps: parseWarps(raw.warps),
     dialogPages: parseDialogPages(raw.dialogPages),
+    optionDefaults: parseOptionDefaults(raw.optionDefaults),
   };
 }
 
@@ -336,6 +353,7 @@ export async function loadServerManifest(
   setWorldEnglishItemNames(inForce(manifest).settings.englishItemNames);
   setWorldEnglishSkillNames(inForce(manifest).settings.englishSkillNames);
   writeCache(url, manifest);
+  offerOptionDefaults(manifest?.optionDefaults ?? {});
   for (const fn of modulesListeners) fn(profile.id, url, manifest?.modules ?? [], manifest?.modulesDropped ?? []);
 
   return inForce(manifest).settings;
