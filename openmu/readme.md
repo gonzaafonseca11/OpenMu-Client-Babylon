@@ -117,3 +117,14 @@ unsaved (issue #1478, fixed upstream by #988): a jewel's new option, or a chaos 
 the next mix. `GameLogic/SaveGuard/SaveBeforeMixPlugIn` saves the player when an item goes into a mix tray, and
 `GameServer/RemoteView/SaveGuard/SaveAfterCraftingResultPlugIn` (OpenMU's crafting result, then a save) after
 each mix, so no mix deletes an unsaved option. Drop both once OpenMU includes #988.
+
+## Ghost sessions
+
+A session whose teardown hangs stays in the game server's player list with no connection: its state stays
+Disconnected (or its socket is gone), the admin panel's Disconnect does nothing, and the account answers
+"already connected" on every server until a restart. Seen live: 29 listed players for 25 sockets.
+`GameServer/SessionSweep/GhostSessionSweepPlugIn` (a periodic task, every 30 s per game server) marks a
+`RemotePlayer` with no live connection or a started teardown, and after 60 s in that state runs the regular
+disconnect (10 s limit), then removes it from the player list and logs the account off at the login server.
+Each one freed is a warning in the log ("Ghost session freed"), which is where to look for the cause.
+Offline (MU helper) sessions are not `RemotePlayer`s and are left alone.
