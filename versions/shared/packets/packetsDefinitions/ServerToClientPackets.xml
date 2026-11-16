@@ -6146,8 +6146,15 @@
         </Field>
         <Field>
           <Index>6</Index>
-          <Type>ShortLittleEndian</Type>
+          <Type>Byte</Type>
           <Name>MapId</Name>
+        </Field>
+        <Field>
+          <Index>7</Index>
+          <Type>Byte</Type>
+          <Name>Direction</Name>
+          <Description>The direction the character faces (the client rotates by (Direction - 1) * 45 degrees).</Description>
+          <DefaultValue>0</DefaultValue>
         </Field>
         <Field>
           <Index>8</Index>

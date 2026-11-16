@@ -10084,11 +10084,19 @@ export class CharacterInformationPacket {
     const oldByte = this.buffer.getUint8(5);
     this.buffer.setUint8(5, SetByteValue(oldByte, value, 8, 0));
   }
-  get MapId(){
-    return this.buffer.getUint16(6, true);
+  get MapId() {
+    return GetByteValue(this.buffer.getUint8(6), 8, 0);
   }
-  set MapId(value: number){
-    this.buffer.setUint16(6, value, true);
+  set MapId(value: number) {
+    const oldByte = this.buffer.getUint8(6);
+    this.buffer.setUint8(6, SetByteValue(oldByte, value, 8, 0));
+  }
+  get Direction() {
+    return GetByteValue(this.buffer.getUint8(7), 8, 0);
+  }
+  set Direction(value: number) {
+    const oldByte = this.buffer.getUint8(7);
+    this.buffer.setUint8(7, SetByteValue(oldByte, value, 8, 0));
   }
   get CurrentExperience(){
     return this.buffer.getBigUint64(8, false);

@@ -13,6 +13,12 @@ connect server.
   `src/Network/Packets/{ServerToClient,ClientToServer,ConnectServer}/*.xml`, with one change:
   `AddNpcsToScope`'s `NpcData` carries its effect list after `EffectCount`, as the original reads it
   (WSclient.cpp:2958-2964, :3059); OpenMU's fixed 10 bytes misread every NPC after one with effects.
+- The copy predates the OpenMU master the servers run (64c534a). `CharacterInformation` is synced
+  with it: `MapId` is one byte and `Direction` the next, as in the original's `PMSG_CHARMAPJOINRESULT`.
+  Read as one 16-bit value, a character saved facing anything but 0 entered map `(dir << 8) | map`
+  (Noria facing 3 was 771): a load that failed, the character screen's scenery left on a black floor
+  until the next warp. Other packets still differ from master (Castle Siege, Illusion Temple, duel,
+  letters, `DeleteCharacter`, `ItemRepair`, `AddMasterSkillPoint`, vault PIN): recopy and check each.
 - `bun run generate` runs `generate.ts`. It reads each XML with `HTMLRewriter`, builds the matching
   `.ts` file in memory and writes it over the old one (no index: `src/controllers/net/packets.ts`
   picks the active version's set). A class keeps only the read helpers (`_readString`, `_readDataView`) its getters call and a file only
@@ -34,5 +40,5 @@ connect server.
 - change the output shape: edit `generate.ts` and regenerate.
 
 ## Tests
-- None in this folder. `versions/v097d/variantRank.test.ts` and `versions/registry.test.ts` check
+- `characterInformation.test.ts`: the map is one byte, the direction beside it. `versions/v097d/variantRank.test.ts` and `versions/registry.test.ts` check
   variant choice by class name.
