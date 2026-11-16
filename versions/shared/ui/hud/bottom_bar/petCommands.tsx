@@ -4,8 +4,7 @@ import { Pets } from '@/modules/pets';
 import { Hero } from '@/modules/hero';
 import { addNotification } from '@/modules/chat';
 import { Ecs } from '@/ecs/current';
-import { PET_GROUP } from '@versions/shared/items/petItems';
-import { InventoryConstants } from '@/core/inventoryConstants';
+import { ravenEquipped } from '@versions/shared/items/petItems';
 import { PetCommandModeEnum } from '@versions/shared/packets/ClientToServerPackets';
 import { uiClick } from '@/controllers/sound/sfx';
 import { MuSpriteFrame } from '@/controllers/interface/components/mu_sprite';
@@ -13,7 +12,7 @@ import { MuSpriteFrame } from '@/controllers/interface/components/mu_sprite';
 /**
  * `CNewUISkillList::RenderPetSkill` + `giPetManager::SendPetCommand`: the four
  * Dark Raven command boxes at (353, 352) on the 640×480 screen, drawn only
- * while a raven sits in the left hand (`Hero->m_pPet`). A click sends the
+ * while a raven sits in its slot (`Hero->m_pPet`, `ravenEquipped`). A click sends the
  * command straight away (the original selects it and fires on right click);
  * Target takes the hero's current attack target. The lit box is the mode the
  * server confirmed with `PetMode` (`IMAGE_SKILLBOX_USE`).
@@ -27,8 +26,6 @@ const BOX_HEIGHT = 38;
 /** `newui_skillbox.jpg`: the plain box; `newui_skillbox2` the lit one. */
 const BOX_SPRITE = 'newui_skillbox.OZJ';
 const BOX_USE_SPRITE = 'newui_skillbox2.OZJ';
-/** Dark Raven: group 13 index 5, worn in the left hand. */
-const DARK_RAVEN_INDEX = 5;
 /** `kInvalidTargetKey`. */
 const NO_TARGET = 0xffff;
 
@@ -47,9 +44,8 @@ const COMMANDS: readonly {
 /** The bottom bar's local Y of a 640×480 screen Y. */
 const BAR_TOP = 480 - 51;
 
-function ravenEquipped(): boolean {
-  const item = Hero.items[InventoryConstants.LeftHandSlot];
-  return !!item && item.group === PET_GROUP && item.num === DARK_RAVEN_INDEX;
+function heroHasRaven(): boolean {
+  return ravenEquipped(Hero.items);
 }
 
 /** Shared with the pet info window's command boxes. */
@@ -66,7 +62,7 @@ export function sendRavenCommand(mode: PetCommandModeEnum): void {
 }
 
 export const PetCommandBar = observer(() => {
-  if (!ravenEquipped()) return null;
+  if (!heroHasRaven()) return null;
   const current = Pets.petMode;
 
   return (

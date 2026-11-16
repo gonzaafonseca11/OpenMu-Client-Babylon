@@ -7,6 +7,14 @@ export const HORN_OF_UNIRIA = 2;
 export const HORN_OF_DINORANT = 3;
 export const DARK_HORSE = 4;
 export const DARK_RAVEN = 5;
+/** Where a Dark Lord wears the raven: the second hand (`EQUIPMENT_WEAPON_LEFT`, OpenMU's slot 1). */
+export const DARK_RAVEN_SLOT = 1;
+
+/** Whether the equipment holds a Dark Raven in its slot (`Hero->m_pPet` in the original). */
+export function ravenEquipped(items: readonly ({ group: number; num: number } | null | undefined)[]): boolean {
+  const item = items[DARK_RAVEN_SLOT];
+  return !!item && item.group === PET_GROUP && item.num === DARK_RAVEN;
+}
 /**
  * `MODEL_HORN_OF_FENRIR`. One item number, four mounts: the horn's option
  * bits pick the red / blue / black / gold model (`GetFenrirType`,

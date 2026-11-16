@@ -5,7 +5,7 @@ import { runInAction } from 'mobx';
 import { t, type TextKey } from '@/i18n';
 import { Pets, type PetInfo } from '@/modules/pets';
 import { Hero } from '@/modules/hero';
-import { DARK_HORSE, DARK_RAVEN, PET_GROUP } from '@versions/shared/items/petItems';
+import { DARK_HORSE, DARK_RAVEN, DARK_RAVEN_SLOT, PET_GROUP } from '@versions/shared/items/petItems';
 import { InventoryConstants } from '@/core/inventoryConstants';
 import {
   PetCommandModeEnum,
@@ -93,10 +93,7 @@ const TABS: readonly { pet: PetTypeEnum; nameKey: TextKey }[] = [
 ];
 
 function equippedSlotOf(pet: PetTypeEnum): number | null {
-  const slot =
-    pet === PetTypeEnum.DarkHorse
-      ? InventoryConstants.PetSlot
-      : InventoryConstants.LeftHandSlot;
+  const slot = pet === PetTypeEnum.DarkHorse ? InventoryConstants.PetSlot : DARK_RAVEN_SLOT;
   const num = pet === PetTypeEnum.DarkHorse ? DARK_HORSE : DARK_RAVEN;
   const item = Hero.items[slot];
   return item && item.group === PET_GROUP && item.num === num ? slot : null;

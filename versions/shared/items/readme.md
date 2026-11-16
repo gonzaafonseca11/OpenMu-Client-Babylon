@@ -24,6 +24,9 @@ petItems.ts           pet and mount item numbers in group 13 (PET_GROUP, DARK_HO
   carried: every arrow mesh draws bright, since our opaque blend-mesh path left the arrows unseen in flight.
 - `petItems.ts`: `PET_GROUP` and the pet, mount and follower item numbers. Pure data, read by the item
   rules, the actors controller, the pets module and maps (it was `modules/pets/petConstants.ts`).
+  `DARK_RAVEN_SLOT` (1, `EQUIPMENT_WEAPON_LEFT`, where OpenMU keeps it) and `ravenEquipped(items)`: the one
+  place the pet window and the bottom bar's raven commands ask; reading slot 0 said "not equipped"
+  (`petItems.test.ts`).
 
 ## How it works
 - The items controller (`src/controllers/items`) owns the record type (`ItemRecord`), `defineItem`
