@@ -8,6 +8,15 @@ const BOX_OF_LUCK = 11;
 const name = (lvl: number) => itemLevelName(POTION, BOX_OF_LUCK, lvl, 'Box of Luck');
 const icon = (lvl: number) => itemIconUrl({ group: POTION, num: BOX_OF_LUCK, lvl });
 
+// Loch's Feather +1 is the Crest of Monarch, named without a level (`GetItemName`, ZzzInventory.cpp).
+describe("Loch's Feather by level", () => {
+  it('names level 1 the Crest of Monarch and keeps the feather at 0', () => {
+    expect(itemLevelName(13, 14, 0, "Loch's Feather")).toBe("Loch's Feather");
+    expect(itemLevelName(13, 14, 1, "Loch's Feather")).toBe('Crest of Monarch');
+    expect(itemIconUrl({ group: 13, num: 14, lvl: 1 })).toBe('/items/item_13_14_1.png');
+  });
+});
+
 describe('Box of Luck by level', () => {
   it('names each level as the item it is', () => {
     expect(name(0)).toBe('Box of Luck');

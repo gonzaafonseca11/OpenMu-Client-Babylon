@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'همیشه',
   'item.ringOfGlory': 'انگشتر شکوه',
   'item.darkStone': 'سنگ تیره',
+  'item.crestOfMonarch': 'نشان پادشاه',
   'item.starOfSacredBirth': 'ستاره میلاد مقدس',
   'item.firecracker': 'ترقه',
   'item.heartOfLove': 'قلب عشق',

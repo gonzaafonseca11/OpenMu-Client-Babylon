@@ -7,6 +7,7 @@ export default {
   'options.compare.always': '始终',
   'item.ringOfGlory': '荣耀之戒',
   'item.darkStone': '暗黑石',
+  'item.crestOfMonarch': '君主纹章',
   'item.starOfSacredBirth': '圣诞之星',
   'item.firecracker': '爆竹',
   'item.heartOfLove': '爱之心',

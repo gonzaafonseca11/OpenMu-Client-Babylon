@@ -20,6 +20,8 @@ type ItemLevelLook = {
 const LEVEL_LOOKS: Record<string, ItemLevelLook> = {
   '14_23_1': { nameKey: 'item.ringOfGlory', icon: 'item_14_23_1' },
   '14_24_1': { nameKey: 'item.darkStone', icon: 'item_14_24_1' },
+  // Loch's Feather +1 is the Crest of Monarch (`GetItemName`, ZzzInventory.cpp).
+  '13_14_1': { nameKey: 'item.crestOfMonarch', icon: 'item_13_14_1' },
 };
 
 /**

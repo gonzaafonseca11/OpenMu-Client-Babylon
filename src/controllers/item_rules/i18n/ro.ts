@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'Mereu',
   'item.ringOfGlory': 'Inelul Gloriei',
   'item.darkStone': 'Piatra Întunecată',
+  'item.crestOfMonarch': 'Blazonul Monarhului',
   'item.starOfSacredBirth': 'Steaua Nașterii Sfinte',
   'item.firecracker': 'Petardă',
   'item.heartOfLove': 'Inima Iubirii',

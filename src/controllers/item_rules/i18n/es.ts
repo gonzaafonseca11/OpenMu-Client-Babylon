@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'Siempre',
   'item.ringOfGlory': 'Anillo de Gloria',
   'item.darkStone': 'Piedra Oscura',
+  'item.crestOfMonarch': 'Emblema del Monarca',
   'item.starOfSacredBirth': 'Estrella del Santo Nacimiento',
   'item.firecracker': 'Petardo',
   'item.heartOfLove': 'Corazón del Amor',

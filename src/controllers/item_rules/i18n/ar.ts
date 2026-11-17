@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'دائما',
   'item.ringOfGlory': 'خاتم المجد',
   'item.darkStone': 'الحجر المظلم',
+  'item.crestOfMonarch': 'شعار الملك',
   'item.starOfSacredBirth': 'نجمة الميلاد المقدس',
   'item.firecracker': 'مفرقعة',
   'item.heartOfLove': 'قلب الحب',

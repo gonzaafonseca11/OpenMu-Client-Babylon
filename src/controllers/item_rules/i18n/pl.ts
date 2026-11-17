@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'Zawsze',
   'item.ringOfGlory': 'Pierścień Chwały',
   'item.darkStone': 'Mroczny Kamień',
+  'item.crestOfMonarch': 'Herb Monarchy',
   'item.starOfSacredBirth': 'Gwiazda Świętych Narodzin',
   'item.firecracker': 'Petarda',
   'item.heartOfLove': 'Serce Miłości',

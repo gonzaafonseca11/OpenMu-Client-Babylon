@@ -7,6 +7,7 @@ export default {
   'options.compare.always': '항상',
   'item.ringOfGlory': '영광의 반지',
   'item.darkStone': '다크 스톤',
+  'item.crestOfMonarch': '군주의 문장',
   'item.starOfSacredBirth': '성탄의 별',
   'item.firecracker': '폭죽',
   'item.heartOfLove': '사랑의 하트',

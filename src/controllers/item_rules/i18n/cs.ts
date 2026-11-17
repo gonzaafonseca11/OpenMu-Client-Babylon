@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'Vždy',
   'item.ringOfGlory': 'Prsten slávy',
   'item.darkStone': 'Temný kámen',
+  'item.crestOfMonarch': 'Erb panovníka',
   'item.starOfSacredBirth': 'Hvězda svatého zrození',
   'item.firecracker': 'Petarda',
   'item.heartOfLove': 'Srdce lásky',

@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'Πάντα',
   'item.ringOfGlory': 'Δαχτυλίδι της δόξας',
   'item.darkStone': 'Σκοτεινή πέτρα',
+  'item.crestOfMonarch': 'Έμβλημα του Μονάρχη',
   'item.starOfSacredBirth': 'Αστέρι της Ιερής Γέννησης',
   'item.firecracker': 'Κροτίδα',
   'item.heartOfLove': 'Καρδιά της αγάπης',

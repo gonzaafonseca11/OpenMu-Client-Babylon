@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'हमेशा',
   'item.ringOfGlory': 'गौरव की अंगूठी',
   'item.darkStone': 'काला पत्थर',
+  'item.crestOfMonarch': 'सम्राट का प्रतीक',
   'item.starOfSacredBirth': 'पवित्र जन्म का तारा',
   'item.firecracker': 'पटाखा',
   'item.heartOfLove': 'प्रेम का दिल',

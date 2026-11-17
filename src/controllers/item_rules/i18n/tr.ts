@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'Her zaman',
   'item.ringOfGlory': 'Şan Yüzüğü',
   'item.darkStone': 'Kara Taş',
+  'item.crestOfMonarch': 'Hükümdarın Arması',
   'item.starOfSacredBirth': 'Kutsal Doğum Yıldızı',
   'item.firecracker': 'Havai Fişek',
   'item.heartOfLove': 'Aşk Kalbi',

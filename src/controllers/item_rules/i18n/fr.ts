@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'Toujours',
   'item.ringOfGlory': 'Anneau de Gloire',
   'item.darkStone': 'Pierre Sombre',
+  'item.crestOfMonarch': 'Blason du Monarque',
   'item.starOfSacredBirth': 'Étoile de la Nativité',
   'item.firecracker': 'Pétard',
   'item.heartOfLove': "Cœur d'Amour",

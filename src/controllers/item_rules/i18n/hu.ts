@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'Mindig',
   'item.ringOfGlory': 'Dicsőség gyűrűje',
   'item.darkStone': 'Sötét kő',
+  'item.crestOfMonarch': 'Az uralkodó címere',
   'item.starOfSacredBirth': 'Szent születés csillaga',
   'item.firecracker': 'Petárda',
   'item.heartOfLove': 'Szeretet szíve',

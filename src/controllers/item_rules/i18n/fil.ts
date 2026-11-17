@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'Palagi',
   'item.ringOfGlory': 'Singsing ng Kaluwalhatian',
   'item.darkStone': 'Batong Madilim',
+  'item.crestOfMonarch': 'Sagisag ng Monarka',
   'item.starOfSacredBirth': 'Bituin ng Banal na Pagsilang',
   'item.firecracker': 'Paputok',
   'item.heartOfLove': 'Puso ng Pag-ibig',

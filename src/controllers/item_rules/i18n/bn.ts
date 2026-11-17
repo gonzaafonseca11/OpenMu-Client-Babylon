@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'সবসময়',
   'item.ringOfGlory': 'গৌরবের আংটি',
   'item.darkStone': 'অন্ধকার পাথর',
+  'item.crestOfMonarch': 'রাজার প্রতীক',
   'item.starOfSacredBirth': 'Star of Sacred Birth',
   'item.firecracker': 'আতশবাজি',
   'item.heartOfLove': 'Heart of Love',

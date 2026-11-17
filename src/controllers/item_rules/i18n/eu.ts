@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'Beti',
   'item.ringOfGlory': 'Aintzaren eraztuna',
   'item.darkStone': 'Harri iluna',
+  'item.crestOfMonarch': 'Monarkaren ikurra',
   'item.starOfSacredBirth': 'Jaiotza sakratuaren izarra',
   'item.firecracker': 'Petardoa',
   'item.heartOfLove': 'Maitasunaren bihotza',

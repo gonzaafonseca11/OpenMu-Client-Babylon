@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'Uvek',
   'item.ringOfGlory': 'Prsten slave',
   'item.darkStone': 'Tamni kamen',
+  'item.crestOfMonarch': 'Grb monarha',
   'item.starOfSacredBirth': 'Zvezda svetog rođenja',
   'item.firecracker': 'Petarda',
   'item.heartOfLove': 'Srce ljubavi',

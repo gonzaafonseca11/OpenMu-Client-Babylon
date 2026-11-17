@@ -5,6 +5,7 @@ const en = {
   'options.compare.always': 'Always',
   'item.ringOfGlory': 'Ring of Glory',
   'item.darkStone': 'Dark Stone',
+  'item.crestOfMonarch': 'Crest of Monarch',
   'item.starOfSacredBirth': 'Star of Sacred Birth',
   'item.firecracker': 'Firecracker',
   'item.heartOfLove': 'Heart of Love',

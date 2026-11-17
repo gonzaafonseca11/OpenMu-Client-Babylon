@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'Immer',
   'item.ringOfGlory': 'Ring des Ruhms',
   'item.darkStone': 'Dunkler Stein',
+  'item.crestOfMonarch': 'Wappen des Monarchen',
   'item.starOfSacredBirth': 'Stern der Heiligen Geburt',
   'item.firecracker': 'Feuerwerkskörper',
   'item.heartOfLove': 'Herz der Liebe',

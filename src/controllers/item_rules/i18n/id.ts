@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'Selalu',
   'item.ringOfGlory': 'Ring of Glory',
   'item.darkStone': 'Dark Stone',
+  'item.crestOfMonarch': 'Lambang Raja',
   'item.starOfSacredBirth': 'Bintang Kelahiran Suci',
   'item.firecracker': 'Petasan',
   'item.heartOfLove': 'Hati Cinta',

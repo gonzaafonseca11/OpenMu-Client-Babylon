@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'Завжди',
   'item.ringOfGlory': 'Перстень слави',
   'item.darkStone': 'Темний камінь',
+  'item.crestOfMonarch': 'Герб монарха',
   'item.starOfSacredBirth': 'Зірка Святого Різдва',
   'item.firecracker': 'Петарда',
   'item.heartOfLove': 'Серце кохання',

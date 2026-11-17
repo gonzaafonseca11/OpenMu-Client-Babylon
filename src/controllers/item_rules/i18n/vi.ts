@@ -7,6 +7,7 @@ export default {
   'options.compare.always': 'Luôn luôn',
   'item.ringOfGlory': 'Nhẫn Vinh Quang',
   'item.darkStone': 'Hắc Thạch',
+  'item.crestOfMonarch': 'Huy hiệu Quân vương',
   'item.starOfSacredBirth': 'Ngôi Sao Giáng Sinh',
   'item.firecracker': 'Pháo Hoa',
   'item.heartOfLove': 'Trái Tim Tình Yêu',
