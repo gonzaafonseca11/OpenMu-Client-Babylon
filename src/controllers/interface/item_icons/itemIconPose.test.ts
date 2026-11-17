@@ -127,6 +127,13 @@ describe('the bag angle and offset: potions and scrolls', () => {
     expect(pose(14, 21, 3).model).toBeNull();
   });
 
+  it("Loch's Feather +1 is drawn as the Crest of Monarch, MODEL_EVENT + 16 (ItemDisplay.cpp OtherModelInventoryDisplays)", () => {
+    expect(pose(13, 14, 0).model).toBeNull();
+    expect(pose(13, 14, 1).model).toEqual({ file: 'Item/DarkLordSleeve.glb', scale: 0.002 });
+    expect(angle(13, 14, 1)).toEqual([-90, 0, 0]);
+    expect(anchor(13, 14, 1)).toEqual([0.55, 0.85]);
+  });
+
   it('the Box of Luck turns as its level model (RenderItem3D, ZzzInventory.cpp 6817-6848)', () => {
     expect(pose(14, 11, 0).model).toBeNull();
     expect(pose(14, 11, 4).model).toBeNull();
