@@ -6,4 +6,6 @@ export default {
   'perf.fps': 'FPS',
   'perf.frame': 'Khung hình',
   'perf.ping': 'Ping',
+  'perf.memory': 'Bộ nhớ',
+  'perf.scene': 'Cảnh',
 } satisfies Partial<Record<keyof typeof en, string>>;

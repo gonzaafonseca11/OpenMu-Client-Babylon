@@ -6,4 +6,6 @@ export default {
   'perf.fps': 'FPS',
   'perf.frame': '影格',
   'perf.ping': '延遲',
+  'perf.memory': '記憶體',
+  'perf.scene': '場景',
 } satisfies Partial<Record<keyof typeof en, string>>;

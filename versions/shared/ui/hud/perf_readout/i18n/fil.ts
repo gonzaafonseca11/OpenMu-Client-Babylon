@@ -6,4 +6,6 @@ export default {
   'perf.fps': 'FPS',
   'perf.frame': 'Frame',
   'perf.ping': 'Ping',
+  'perf.memory': 'Mem',
+  'perf.scene': 'Eksena',
 } satisfies Partial<Record<keyof typeof en, string>>;

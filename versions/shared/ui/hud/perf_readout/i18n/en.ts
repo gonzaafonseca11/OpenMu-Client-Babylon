@@ -4,6 +4,8 @@ const en = {
   'perf.fps': 'FPS',
   'perf.frame': 'Frame',
   'perf.ping': 'Ping',
+  'perf.memory': 'Mem',
+  'perf.scene': 'Scene',
 };
 
 export default en;

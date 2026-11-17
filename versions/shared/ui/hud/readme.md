@@ -23,7 +23,7 @@ Always-on interface elements, one folder per element, same shape as a window. Re
 | `damage_numbers` | damage_numbers (world, 30) | floating damage, miss and shield numbers | `objectDamaged` events |
 | `target_health_bar` | target_health_bar (hud, 10) | the target's name and health bar | Ecs.world |
 | `map_name_banner` | map_name_banner (hud, 20) | the map name picture on entering a map | Loading.sceneLoading, events |
-| `perf_readout` | perf_readout (hud, 30) | frames, frame time and server round trip | Ecs.world, options |
+| `perf_readout` | perf_readout (hud, 30) | frames, frame time, server round trip, page memory (Chrome) and the scene's meshes / textures / materials, to see what grows over a long session | Ecs.world, options |
 | `notices` | notices (hud, 40) | the centred notice stack | chat |
 | `slide_help` | slide_help (hud, 50) | the scrolling help band at the top | options |
 | `buff_bar` | buff_bar (hud, 60) | the hero's buffs and debuffs with tooltips | skills |

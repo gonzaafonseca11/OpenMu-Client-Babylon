@@ -11,10 +11,11 @@ import { useEventBus } from '@/controllers/interface/hooks';
 import { MuText } from '@/controllers/interface/components/mu_text';
 import { useUiStageScale } from '@/controllers/interface/components/ui_stage';
 import { t } from '@/i18n';
+import { formatHeap, formatScene, pageHeap } from './memory';
 
 /**
- * Frames, frame time and the server round trip, in the top left under the
- * map name banner. No original analog and no window: three lines of HUD text
+ * Frames, frame time, the server round trip, the page memory and what the scene holds, in the top left under the
+ * map name banner. No original analog and no window: five lines of HUD text
  * with the usual shadow, the way the coordinates the original prints there
  * are drawn.
  *
@@ -36,19 +37,21 @@ const LABEL_WIDTH = 42;
 
 const LABEL_COLOR = 'rgb(127, 178, 255)';
 
-type Reading = { fps: number; frameMs: number; roundTripMs: number | null };
+type Reading = { fps: number; frameMs: number; roundTripMs: number | null; heap: string; scene: string };
 
-const EMPTY: Reading = { fps: 0, frameMs: 0, roundTripMs: null };
+const EMPTY: Reading = { fps: 0, frameMs: 0, roundTripMs: null, heap: '-', scene: '-' };
 
 function read(): Reading {
   const engine = Ecs.world?.scene.getEngine();
-  if (!engine) return { ...EMPTY, roundTripMs: NetStats.roundTripMs };
+  if (!engine) return { ...EMPTY, roundTripMs: NetStats.roundTripMs, heap: formatHeap(pageHeap()) };
 
   return {
     // The frames drawn, not the engine's count of animation frames (they differ under an FPS limit).
     fps: framePacer.fps,
     frameMs: framePacer.fps > 0 ? 1000 / framePacer.fps : engine.getDeltaTime(),
     roundTripMs: NetStats.roundTripMs,
+    heap: formatHeap(pageHeap()),
+    scene: formatScene(Ecs.world?.scene),
   };
 }
 
@@ -97,6 +100,8 @@ export const PerfReadout = observer(() => {
       <Line label={t('perf.fps')} value={reading.fps.toFixed(0)} index={0} />
       <Line label={t('perf.frame')} value={`${reading.frameMs.toFixed(1)} ms`} index={1} />
       <Line label={t('perf.ping')} value={formatRoundTrip(reading.roundTripMs)} index={2} />
+      <Line label={t('perf.memory')} value={reading.heap} index={3} />
+      <Line label={t('perf.scene')} value={reading.scene} index={4} />
     </div>
   );
 });
