@@ -123,6 +123,36 @@ describe('writeLiteAssets', () => {
     expect(existsSync(join(root, 'game-assets/Music/Devias.opus.ogg'))).toBe(false);
   });
 
+  // A server update builds in a fresh tree every time: the cache keeps the copies from one build to the next.
+  it('reuses the copies a cache kept from an earlier build, encoding nothing again', async () => {
+    const cache = mkdtempSync(join(tmpdir(), 'lite-cache-'));
+    let encoded = 0;
+    const music = async (_source: string, out: string) => (encoded++, writeFileSync(out, 'OpusHead'), true);
+    await writeLiteAssets(root, { music, cache });
+    const first = Object.fromEntries(files().map(f => [f, new Uint8Array(readFileSync(join(root, f)))]));
+
+    for (const f of files()) if (liteSourceOf(f)) rmSync(join(root, f));
+    encoded = 0;
+    const stats = await writeLiteAssets(root, { music, cache });
+
+    expect(encoded).toBe(0);
+    expect(stats.written).toBe(4);
+    expect(stats.reused).toBe(4);
+    for (const [file, bytes] of Object.entries(first)) expect(new Uint8Array(readFileSync(join(root, file))), file).toEqual(bytes);
+    rmSync(cache, { recursive: true, force: true });
+  });
+
+  it('remembers a copy that came out no smaller', async () => {
+    const cache = mkdtempSync(join(tmpdir(), 'lite-cache-'));
+    let tries = 0;
+    const music = async () => (tries++, false);
+    await writeLiteAssets(root, { music, cache });
+    await writeLiteAssets(root, { music, cache });
+    expect(tries).toBe(1);
+    expect(existsSync(join(root, 'game-assets/Music/Devias.opus.ogg'))).toBe(false);
+    rmSync(cache, { recursive: true, force: true });
+  });
+
   it('leaves out a copy that is not smaller, and drops one whose original is gone', async () => {
     await writeLiteAssets(root, { music: async () => false });
     expect(existsSync(join(root, 'game-assets/Music/Devias.opus.ogg'))).toBe(false);

@@ -9,9 +9,13 @@
 // `Interface/` stays lossless; a copy that is not smaller than what the original costs on the wire
 // is not written. The music needs `ffmpeg` with libopus; without it the music gets no copies.
 //
+// `MU_LITE_CACHE=<dir>` keeps each copy there by its original's content, so a build in a fresh tree (every
+// server update) reuses the copies of unchanged files instead of encoding them all again.
+//
 // Usage: MU_LITE_ASSETS=on bun run tools/liteAssets.ts [--root dist] [--bitrate 48k]
 
-import { existsSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'fs';
+import { createHash } from 'crypto';
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'fs';
 import { cpus } from 'os';
 import { join, resolve } from 'path';
 import sharp from 'sharp';
@@ -22,9 +26,31 @@ import { decodeTGA } from '../src/controllers/assets/mu/tga';
 const TREES = ['Data', 'Data-v097d', 'game-assets', 'game-assets-v097d'];
 
 /** `music(source, out)`: writes the Opus copy, true when it did. */
-type Options = { music?: (source: string, out: string) => Promise<boolean> };
+type Options = { music?: (source: string, out: string) => Promise<boolean>; cache?: string };
 
-type Stats = { written: number; kept: number; before: number; after: number };
+type Stats = { written: number; reused: number; kept: number; before: number; after: number };
+type Make = (source: string, out: string) => Promise<boolean>;
+
+/**
+ * `make` through a cache of copies keyed by what they are made from: `kind` (bump it when the encoding
+ * changes) and the original's bytes. A `.none` entry remembers a copy that came out no smaller.
+ */
+function cached(dir: string, kind: string, make: Make, hit: () => void): Make {
+  mkdirSync(dir, { recursive: true });
+  return async (source, out) => {
+    const key = join(dir, `${kind}-${createHash('sha1').update(new Uint8Array(readFileSync(source))).digest('hex')}`);
+    if (existsSync(key)) {
+      copyFileSync(key, out);
+      hit();
+      return true;
+    }
+    if (existsSync(`${key}.none`)) return false;
+    const made = await make(source, out);
+    if (made) copyFileSync(out, key);
+    else writeFileSync(`${key}.none`, '');
+    return made;
+  };
+}
 
 /** Asked for by the installer (`MU_LITE_ASSETS=on`) or by hand (`--on`). */
 export function liteAssetsWanted(env: Record<string, string | undefined>, argv: readonly string[]): boolean {
@@ -110,7 +136,7 @@ function originals(root: string): { textures: string[]; icons: string[]; music: 
  * (`liteVariantOf`), and a copy whose original is gone, or that is no longer smaller, is removed.
  */
 export async function writeLiteAssets(root: string, options: Options = {}): Promise<Stats> {
-  const stats: Stats = { written: 0, kept: 0, before: 0, after: 0 };
+  const stats: Stats = { written: 0, reused: 0, kept: 0, before: 0, after: 0 };
   const { textures, icons, music } = originals(root);
 
   // A copy left from an earlier build whose original was dropped.
@@ -120,7 +146,8 @@ export async function writeLiteAssets(root: string, options: Options = {}): Prom
   }
 
   const jobs: (() => Promise<void>)[] = [];
-  const add = (source: string, make: (source: string, out: string) => Promise<boolean>) => {
+  const add = (source: string, kind: string, encode: Make) => {
+    const make = options.cache ? cached(options.cache, kind, encode, () => stats.reused++) : encode;
     const out = liteVariantOf(source.split('\\').join('/'));
     if (!out || out === source || fresh(source, out)) return;
     jobs.push(async () => {
@@ -140,9 +167,10 @@ export async function writeLiteAssets(root: string, options: Options = {}): Prom
     return !!made;
   };
 
-  for (const path of textures) add(path, bytes(textureCopy));
-  for (const path of icons) add(path, bytes(iconCopy));
-  if (options.music) for (const path of music) add(path, options.music);
+  // Interface textures are encoded lossless: their own kind, so a twin elsewhere never shares their copy.
+  for (const path of textures) add(path, /[\\/]Interface[\\/]/i.test(path) ? 'texture1-lossless' : 'texture1', bytes(textureCopy));
+  for (const path of icons) add(path, 'icon1', bytes(iconCopy));
+  if (options.music) for (const path of music) add(path, 'music1', options.music);
 
   let next = 0;
   await Promise.all(
@@ -166,9 +194,10 @@ async function main(): Promise<void> {
   const music = ffmpegOpus(arg('--bitrate', '48k'));
   if (!music) console.warn('lite-assets: no ffmpeg with libopus on the PATH; the music gets no Opus copies');
 
-  const { written, kept, before, after } = await writeLiteAssets(root, { music });
+  const cache = process.env.MU_LITE_CACHE || undefined;
+  const { written, reused, kept, before, after } = await writeLiteAssets(root, { music, cache });
   const mb = (n: number) => (n / 1048576).toFixed(1);
-  console.log(`lite-assets: ${root}\n  ${written} copies, ${mb(before)} MB -> ${mb(after)} MB; ${kept} not smaller, left out`);
+  console.log(`lite-assets: ${root}\n  ${written} copies (${reused} from the cache), ${mb(before)} MB -> ${mb(after)} MB; ${kept} not smaller, left out`);
 }
 
 if (import.meta.main) await main();

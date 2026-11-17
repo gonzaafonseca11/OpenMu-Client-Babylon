@@ -149,7 +149,9 @@ everything the stack reads is rendered from `mu.env`, so `mu config` can change 
   write lighter copies beside the original files (`tools/liteAssets.ts`: WebP textures and item
   icons, Opus music; the web image then installs ffmpeg for the music) and tells players to read them: smaller
   downloads, slightly lower quality. The originals stay served, and a player can keep them (Options >
-  Fidelity, or Classic). Changing it rebuilds the client.
+  Fidelity, or Classic). Changing it rebuilds the client. The web image keeps the copies in a build
+  cache (`MU_LITE_CACHE`, keyed by each original's content), so an update encodes only new or changed
+  files instead of all of them again.
 
   `liteAssetsAllTiers` (`mu config` > Features, asked only with `liteAssets` on,
   `MU_LITE_ASSETS_ALL_TIERS`, default off) gives the lighter copies to Classic players too, so the
