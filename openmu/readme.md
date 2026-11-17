@@ -134,3 +134,12 @@ written against 0.9.10, which logged off by the account, and never set it: every
 `GameServer/SessionSweep/GhostSessionSweepPlugIn` (a periodic task, every 30 s per game server) is the safety
 net: an account the login server holds for that server with no player of it there (and no offline session)
 for over 60 s is logged off, with a warning in the log ("Ghost session freed").
+
+## Socket drops
+
+`plugins/GameLogic/SocketExcellentDrop`: LaCleon and Vulcanus monsters drop an excellent socket item 1
+in 200 kills (OpenMU never makes one). `plugins/GameLogic/SocketCount`: every socket item a monster drops
+(OpenMU's own drops and that plugin's) gets its socket count again from a falling scale, 1: 50 %,
+2: 30 %, 3: 15 %, 4: 4 %, 5: 1 %, capped by the item's `MaximumSockets`; OpenMU rolls it evenly. It runs
+as the drop is added to the map (`IObjectAddedToMapPlugIn`) and leaves items players drop alone (those
+are no `TemporaryItem`). Turn it off in the admin panel: "Socket count by chance".
