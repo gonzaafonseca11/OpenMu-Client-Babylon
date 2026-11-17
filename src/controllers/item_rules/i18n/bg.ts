@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': 'Пръстен на славата',
   'item.darkStone': 'Тъмен камък',
   'item.crestOfMonarch': 'Герб на монарха',
+  'item.spiritOfDarkHorse': 'Дух на Тъмния кон',
+  'item.spiritOfDarkRaven': 'Дух на Тъмния гарван',
   'item.starOfSacredBirth': 'Звезда на Свещеното Рождество',
   'item.firecracker': 'Фойерверк',
   'item.heartOfLove': 'Сърце на Любовта',

@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': 'خاتم المجد',
   'item.darkStone': 'الحجر المظلم',
   'item.crestOfMonarch': 'شعار الملك',
+  'item.spiritOfDarkHorse': 'روح الحصان المظلم',
+  'item.spiritOfDarkRaven': 'روح الغراب المظلم',
   'item.starOfSacredBirth': 'نجمة الميلاد المقدس',
   'item.firecracker': 'مفرقعة',
   'item.heartOfLove': 'قلب الحب',

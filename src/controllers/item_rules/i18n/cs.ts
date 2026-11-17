@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': 'Prsten slávy',
   'item.darkStone': 'Temný kámen',
   'item.crestOfMonarch': 'Erb panovníka',
+  'item.spiritOfDarkHorse': 'Duch Temného koně',
+  'item.spiritOfDarkRaven': 'Duch Temného havrana',
   'item.starOfSacredBirth': 'Hvězda svatého zrození',
   'item.firecracker': 'Petarda',
   'item.heartOfLove': 'Srdce lásky',

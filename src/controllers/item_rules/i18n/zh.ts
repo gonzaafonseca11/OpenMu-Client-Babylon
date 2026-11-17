@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': '荣耀之戒',
   'item.darkStone': '暗黑石',
   'item.crestOfMonarch': '君主纹章',
+  'item.spiritOfDarkHorse': '黑王马之魂',
+  'item.spiritOfDarkRaven': '黑鸟之魂',
   'item.starOfSacredBirth': '圣诞之星',
   'item.firecracker': '爆竹',
   'item.heartOfLove': '爱之心',

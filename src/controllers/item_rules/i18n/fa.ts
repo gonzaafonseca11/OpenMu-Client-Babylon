@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': 'انگشتر شکوه',
   'item.darkStone': 'سنگ تیره',
   'item.crestOfMonarch': 'نشان پادشاه',
+  'item.spiritOfDarkHorse': 'روح اسب تاریک',
+  'item.spiritOfDarkRaven': 'روح کلاغ تاریک',
   'item.starOfSacredBirth': 'ستاره میلاد مقدس',
   'item.firecracker': 'ترقه',
   'item.heartOfLove': 'قلب عشق',

@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': 'แหวนแห่งเกียรติยศ',
   'item.darkStone': 'หินแห่งความมืด',
   'item.crestOfMonarch': 'ตราแห่งกษัตริย์',
+  'item.spiritOfDarkHorse': 'วิญญาณม้าดำ',
+  'item.spiritOfDarkRaven': 'วิญญาณอีกาดำ',
   'item.starOfSacredBirth': 'ดาวแห่งการประสูติอันศักดิ์สิทธิ์',
   'item.firecracker': 'ประทัด',
   'item.heartOfLove': 'หัวใจแห่งความรัก',

@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': 'شان کی انگوٹھی',
   'item.darkStone': 'سیاہ پتھر',
   'item.crestOfMonarch': 'بادشاہ کا نشان',
+  'item.spiritOfDarkHorse': 'تاریک گھوڑے کی روح',
+  'item.spiritOfDarkRaven': 'تاریک کوے کی روح',
   'item.starOfSacredBirth': 'مقدس ولادت کا ستارہ',
   'item.firecracker': 'پٹاخا',
   'item.heartOfLove': 'محبت کا دل',

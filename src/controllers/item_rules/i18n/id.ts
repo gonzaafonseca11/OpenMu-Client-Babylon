@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': 'Ring of Glory',
   'item.darkStone': 'Dark Stone',
   'item.crestOfMonarch': 'Lambang Raja',
+  'item.spiritOfDarkHorse': 'Roh Kuda Kegelapan',
+  'item.spiritOfDarkRaven': 'Roh Gagak Kegelapan',
   'item.starOfSacredBirth': 'Bintang Kelahiran Suci',
   'item.firecracker': 'Petasan',
   'item.heartOfLove': 'Hati Cinta',

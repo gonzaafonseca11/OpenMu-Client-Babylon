@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': 'Singsing ng Kaluwalhatian',
   'item.darkStone': 'Batong Madilim',
   'item.crestOfMonarch': 'Sagisag ng Monarka',
+  'item.spiritOfDarkHorse': 'Espiritu ng Madilim na Kabayo',
+  'item.spiritOfDarkRaven': 'Espiritu ng Madilim na Uwak',
   'item.starOfSacredBirth': 'Bituin ng Banal na Pagsilang',
   'item.firecracker': 'Paputok',
   'item.heartOfLove': 'Puso ng Pag-ibig',

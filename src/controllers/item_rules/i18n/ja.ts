@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': '栄光の指輪',
   'item.darkStone': 'ダークストーン',
   'item.crestOfMonarch': '君主の紋章',
+  'item.spiritOfDarkHorse': 'ダークホースの魂',
+  'item.spiritOfDarkRaven': 'ダークレイヴンの魂',
   'item.starOfSacredBirth': '聖誕の星',
   'item.firecracker': '爆竹',
   'item.heartOfLove': '愛の心',

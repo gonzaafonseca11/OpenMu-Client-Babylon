@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': 'Pierścień Chwały',
   'item.darkStone': 'Mroczny Kamień',
   'item.crestOfMonarch': 'Herb Monarchy',
+  'item.spiritOfDarkHorse': 'Duch Mrocznego Konia',
+  'item.spiritOfDarkRaven': 'Duch Mrocznego Kruka',
   'item.starOfSacredBirth': 'Gwiazda Świętych Narodzin',
   'item.firecracker': 'Petarda',
   'item.heartOfLove': 'Serce Miłości',

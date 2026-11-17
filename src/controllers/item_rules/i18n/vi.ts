@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': 'Nhẫn Vinh Quang',
   'item.darkStone': 'Hắc Thạch',
   'item.crestOfMonarch': 'Huy hiệu Quân vương',
+  'item.spiritOfDarkHorse': 'Linh hồn Hắc Mã',
+  'item.spiritOfDarkRaven': 'Linh hồn Quạ Đen',
   'item.starOfSacredBirth': 'Ngôi Sao Giáng Sinh',
   'item.firecracker': 'Pháo Hoa',
   'item.heartOfLove': 'Trái Tim Tình Yêu',

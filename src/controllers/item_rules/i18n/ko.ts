@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': '영광의 반지',
   'item.darkStone': '다크 스톤',
   'item.crestOfMonarch': '군주의 문장',
+  'item.spiritOfDarkHorse': '다크호스의 영혼',
+  'item.spiritOfDarkRaven': '다크레이븐의 영혼',
   'item.starOfSacredBirth': '성탄의 별',
   'item.firecracker': '폭죽',
   'item.heartOfLove': '사랑의 하트',

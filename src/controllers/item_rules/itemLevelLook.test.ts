@@ -17,6 +17,14 @@ describe("Loch's Feather by level", () => {
   });
 });
 
+// The Spirit is the Dark Horse's at level 0 and the Dark Raven's at 1 (`GetItemName`, ZzzInventory.cpp).
+describe('Spirit by level', () => {
+  it('names the Dark Horse and the Dark Raven spirits without a level', () => {
+    expect(itemLevelName(13, 31, 0, 'Spirit')).toBe('Spirit of Dark Horse');
+    expect(itemLevelName(13, 31, 1, 'Spirit')).toBe('Spirit of Dark Raven');
+  });
+});
+
 describe('Box of Luck by level', () => {
   it('names each level as the item it is', () => {
     expect(name(0)).toBe('Box of Luck');

@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': 'Dicsőség gyűrűje',
   'item.darkStone': 'Sötét kő',
   'item.crestOfMonarch': 'Az uralkodó címere',
+  'item.spiritOfDarkHorse': 'A Sötét ló szelleme',
+  'item.spiritOfDarkRaven': 'A Sötét holló szelleme',
   'item.starOfSacredBirth': 'Szent születés csillaga',
   'item.firecracker': 'Petárda',
   'item.heartOfLove': 'Szeretet szíve',

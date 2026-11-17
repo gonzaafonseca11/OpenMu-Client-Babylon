@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': 'Şan Yüzüğü',
   'item.darkStone': 'Kara Taş',
   'item.crestOfMonarch': 'Hükümdarın Arması',
+  'item.spiritOfDarkHorse': 'Karanlık Atın Ruhu',
+  'item.spiritOfDarkRaven': 'Karanlık Kuzgunun Ruhu',
   'item.starOfSacredBirth': 'Kutsal Doğum Yıldızı',
   'item.firecracker': 'Havai Fişek',
   'item.heartOfLove': 'Aşk Kalbi',

@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': 'Δαχτυλίδι της δόξας',
   'item.darkStone': 'Σκοτεινή πέτρα',
   'item.crestOfMonarch': 'Έμβλημα του Μονάρχη',
+  'item.spiritOfDarkHorse': 'Πνεύμα του Σκοτεινού Αλόγου',
+  'item.spiritOfDarkRaven': 'Πνεύμα του Σκοτεινού Κόρακα',
   'item.starOfSacredBirth': 'Αστέρι της Ιερής Γέννησης',
   'item.firecracker': 'Κροτίδα',
   'item.heartOfLove': 'Καρδιά της αγάπης',

@@ -6,6 +6,8 @@ const en = {
   'item.ringOfGlory': 'Ring of Glory',
   'item.darkStone': 'Dark Stone',
   'item.crestOfMonarch': 'Crest of Monarch',
+  'item.spiritOfDarkHorse': 'Spirit of Dark Horse',
+  'item.spiritOfDarkRaven': 'Spirit of Dark Raven',
   'item.starOfSacredBirth': 'Star of Sacred Birth',
   'item.firecracker': 'Firecracker',
   'item.heartOfLove': 'Heart of Love',

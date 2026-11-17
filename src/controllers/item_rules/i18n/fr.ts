@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': 'Anneau de Gloire',
   'item.darkStone': 'Pierre Sombre',
   'item.crestOfMonarch': 'Blason du Monarque',
+  'item.spiritOfDarkHorse': 'Esprit du Cheval Noir',
+  'item.spiritOfDarkRaven': 'Esprit du Corbeau Noir',
   'item.starOfSacredBirth': 'Étoile de la Nativité',
   'item.firecracker': 'Pétard',
   'item.heartOfLove': "Cœur d'Amour",

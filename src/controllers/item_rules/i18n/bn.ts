@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': 'গৌরবের আংটি',
   'item.darkStone': 'অন্ধকার পাথর',
   'item.crestOfMonarch': 'রাজার প্রতীক',
+  'item.spiritOfDarkHorse': 'অন্ধকার ঘোড়ার আত্মা',
+  'item.spiritOfDarkRaven': 'অন্ধকার কাকের আত্মা',
   'item.starOfSacredBirth': 'Star of Sacred Birth',
   'item.firecracker': 'আতশবাজি',
   'item.heartOfLove': 'Heart of Love',

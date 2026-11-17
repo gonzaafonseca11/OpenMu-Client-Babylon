@@ -22,6 +22,9 @@ const LEVEL_LOOKS: Record<string, ItemLevelLook> = {
   '14_24_1': { nameKey: 'item.darkStone', icon: 'item_14_24_1' },
   // Loch's Feather +1 is the Crest of Monarch (`GetItemName`, ZzzInventory.cpp).
   '13_14_1': { nameKey: 'item.crestOfMonarch', icon: 'item_13_14_1' },
+  // The Spirit: the Dark Horse's at level 0, the Dark Raven's at 1 (`GetItemName`); the pack has one icon.
+  '13_31_0': { nameKey: 'item.spiritOfDarkHorse', icon: 'item_13_31_0' },
+  '13_31_1': { nameKey: 'item.spiritOfDarkRaven', icon: 'item_13_31_0' },
 };
 
 /**

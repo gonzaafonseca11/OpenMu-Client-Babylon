@@ -8,6 +8,8 @@ export default {
   'item.ringOfGlory': 'Prsten slave',
   'item.darkStone': 'Tamni kamen',
   'item.crestOfMonarch': 'Grb monarha',
+  'item.spiritOfDarkHorse': 'Duh Mračnog konja',
+  'item.spiritOfDarkRaven': 'Duh Mračnog gavrana',
   'item.starOfSacredBirth': 'Zvezda svetog rođenja',
   'item.firecracker': 'Petarda',
   'item.heartOfLove': 'Srce ljubavi',
