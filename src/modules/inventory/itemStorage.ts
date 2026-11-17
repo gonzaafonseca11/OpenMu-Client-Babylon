@@ -42,6 +42,12 @@ export const REFINERY_WIRE_STORAGE = 6;
  */
 export const SEED_WIRE_STORAGES: readonly number[] = [11, 12, 13, 14];
 
+/** Every mix tray's wire byte is the chaos machine's grid here; the other storages are their own byte. */
+const MIX_WIRE_STORAGES: readonly number[] = [CHAOS_CARD_WIRE_STORAGE, PET_TRAINER_WIRE_STORAGE, REFINERY_WIRE_STORAGE, ...SEED_WIRE_STORAGES];
+export function localStorageOfWire(wire: number): StorageKind {
+  return (MIX_WIRE_STORAGES.includes(wire) ? StorageKind.ChaosMachine : wire) as StorageKind;
+}
+
 /** `COLUMN_*_INVENTORY` / `ROW_*_INVENTORY` (_define.h:150-155). */
 export const VAULT_COLUMNS = InventoryConstants.RowSize;
 export const VAULT_ROWS = InventoryConstants.WarehouseRows;

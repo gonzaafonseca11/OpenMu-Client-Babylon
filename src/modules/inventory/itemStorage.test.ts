@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { storageBan, StorageKind } from './itemStorage';
+import {
+  CHAOS_CARD_WIRE_STORAGE,
+  localStorageOfWire,
+  PET_TRAINER_WIRE_STORAGE,
+  REFINERY_WIRE_STORAGE,
+  SEED_WIRE_STORAGES,
+  storageBan,
+  StorageKind,
+} from './itemStorage';
 import { ItemGroup } from '../../controllers/item_rules/itemStats';
 import { EN_TEXT } from '../../i18n';
 import type { Item } from '../../ecs/world';
@@ -22,5 +30,20 @@ describe('storageBan', () => {
   it('lets an ordinary item through', () => {
     expect(storageBan(StorageKind.Vault, item())).toBeNull();
     expect(storageBan(StorageKind.Inventory, item({ group: ItemGroup.Potion, num: 21 }))).toBeNull();
+  });
+});
+
+describe('localStorageOfWire', () => {
+  // A gemstone put in Elpis's refinery vanished: its tray's byte was not mapped to the mix grid.
+  it('lands every mix tray in the chaos machine grid', () => {
+    for (const wire of [CHAOS_CARD_WIRE_STORAGE, PET_TRAINER_WIRE_STORAGE, REFINERY_WIRE_STORAGE, ...SEED_WIRE_STORAGES]) {
+      expect(localStorageOfWire(wire), String(wire)).toBe(StorageKind.ChaosMachine);
+    }
+  });
+
+  it('keeps the other storages as they are', () => {
+    for (const kind of [StorageKind.Inventory, StorageKind.Trade, StorageKind.Vault, StorageKind.ChaosMachine, StorageKind.PersonalShop]) {
+      expect(localStorageOfWire(kind)).toBe(kind);
+    }
   });
 });
