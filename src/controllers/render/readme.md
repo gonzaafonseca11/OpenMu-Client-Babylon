@@ -12,6 +12,10 @@ There is no `index.ts` facade; other folders import the modules directly.
   `projectWorldPositionToScreenRef`. `babylon/emptyTexture.ts`: `getEmptyTexture`.
 - `babylon/spriteLinear.ts`: `installSpriteLinearDecode()` (called by `fx/core.ts`).
 - `babylon/compileWait.ts`: `patientCompileWait()` (called by `createEngine`): never gives a slow shader up.
+- `babylon/programDelete.ts`: `deferDeletingCompilingPrograms(engine)` (called by `createEngine`): a
+  program still compiling is deleted once its compile ends.
+- `babylon/greasedLineBuffers.ts`: `installGreasedLineBufferRelease()` (called by `createEngine`): frees a
+  GreasedLine's old line buffers on `setPoints` and `dispose`.
 - `modelObject.ts`: `ModelObject`, the base class of every drawn model (actors, map objects, npcs,
   drops, pets); `PartPose`, `BodyShine` (with `ShineMesh` or `ShineMeshes` and `ShineLight`, the shine mesh lit by
   the shine's tint), `HIDDEN_MESH_ALL`, `BLEND_MESH_ALL`.
@@ -164,6 +168,9 @@ There is no `index.ts` facade; other folders import the modules directly.
 - `staticClips.test.ts`: still animation detection and `settleStillAnimations`.
 - `viewPlanes.test.ts`: `viewDepth`, matching `BoundingSphere.isInFrustum`.
 - `babylon/bitmapDecode.test.ts`: decode options, bitmap closing, the install probe.
+- `babylon/greasedLineBuffers.test.ts`: `setPoints` and `dispose` free the four line buffers.
+- `babylon/programDelete.test.ts`: a compiling program waits; the late delete leaves a newer program of
+  the same name alone.
 - `babylon/compileWait.test.ts`: a compiling shader is not given up while the page is hidden; shown,
   Babylon's 30 s wait stands and a compile error is reported at once.
 - `babylon/spriteReplay.test.ts`: `renderWithReplay` reuses the frame's upload, and when it rebuilds.
@@ -249,6 +256,16 @@ There is no `index.ts` facade; other folders import the modules directly.
   under the 40-tile light, with no limit: the tallest monsters it shadows (Selupan's highest key is 26
   tiles up, the Hydra 16, the golden dragons 9) streak as they do there. A clamp once kept every vertex
   within 5 tiles, from when every map object cast.
+- `babylon/programDelete.ts`: Babylon caches pipelines by name and its delete disposes whatever is cached
+  under the deleted one's name. Deferred, that delete came after a map reload had cached a newer program
+  of the same name, which then never read ready: the hero vanished on Enhanced after a few `/move`s. A
+  late delete whose name now holds another pipeline drops the name first.
+- `babylon/greasedLineBuffers.ts`: `GreasedLineMesh` builds its four line buffers (`grl_previousAndSide`,
+  `grl_nextAndCounters`, `grl_widths`, `grl_colorPointers`) as `Buffer`s and gives the mesh vertex buffers
+  that only borrow them, so neither replacing them (`setPoints`) nor disposing the mesh freed them. The
+  item crackle re-points every frame: about 110 GPU buffers a second were lost while a +high item was
+  worn, and Chrome's GPU process grew to 7 GB over a long session. Measured live with a WebGL
+  create/delete count; the JS heap and scene counts never showed it.
 - `babylon/compileWait.ts`: Babylon waits for a program with 1875 checks 16 ms apart (`Effect._checkIsReady`),
   a count, not a time. A hidden page runs them once a second or slower and the GPU does not compile
   for it, so a long AFK ran the count out and the materials came back black. The countdown stops

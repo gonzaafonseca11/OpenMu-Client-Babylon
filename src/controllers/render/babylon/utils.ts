@@ -1,6 +1,8 @@
 import { Engine, Scene } from './exports';
 import { devQuery } from '@/core/devSeams';
 import { installBitmapDecode } from './bitmapDecode';
+import { installGreasedLineBufferRelease } from './greasedLineBuffers';
+import { deferDeletingCompilingPrograms } from './programDelete';
 import { patientCompileWait } from './compileWait';
 
 export async function addInspectorForScene(scene: Scene) {
@@ -40,48 +42,6 @@ export async function addInspectorForScene(scene: Scene) {
       }
 
       switchDebugLayer();
-    }
-  });
-}
-
-/**
- * ANGLE cannot abandon a link in flight, so deleting a program that is still
- * compiling blocks the GPU process until the compile ends: a second or more
- * when a map is unloaded right after it loaded. Such a program is deleted
- * once its compile completes instead.
- */
-function deferDeletingCompilingPrograms(engine: Engine): void {
-  // `?programDelete=now`: delete at once, as Babylon does, for the A/B.
-  if (devQuery('programDelete') === 'now') return;
-
-  const gl = engine._gl;
-  const parallel = gl.getExtension('KHR_parallel_shader_compile');
-  if (!parallel) return;
-
-  type PipelineContext = Parameters<Engine['_deletePipelineContext']>[0];
-  const remove = engine._deletePipelineContext.bind(engine);
-  const waiting: PipelineContext[] = [];
-
-  const compiling = (context: PipelineContext): boolean => {
-    const program = (context as unknown as { program?: WebGLProgram | null })
-      .program;
-    return (
-      !!program &&
-      !gl.isContextLost() &&
-      !gl.getProgramParameter(program, parallel.COMPLETION_STATUS_KHR)
-    );
-  };
-
-  engine._deletePipelineContext = (context: PipelineContext) => {
-    if (compiling(context)) waiting.push(context);
-    else remove(context);
-  };
-
-  engine.onEndFrameObservable.add(() => {
-    for (let i = waiting.length - 1; i >= 0; i--) {
-      if (compiling(waiting[i])) continue;
-      remove(waiting[i]);
-      waiting.splice(i, 1);
     }
   });
 }
@@ -173,6 +133,7 @@ export function createEngine(
   patientCompileWait();
 
   void installBitmapDecode(engine);
+  installGreasedLineBufferRelease();
 
   return { engine, canvas };
 }
