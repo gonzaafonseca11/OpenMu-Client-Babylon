@@ -7,12 +7,10 @@ vi.hoisted(() => {
   g.location ??= { href: 'http://localhost/', search: '', hostname: 'localhost', protocol: 'http:' };
 });
 
-/** The world's `autoManaPotion`, set per test. */
-const world = vi.hoisted(() => ({ allows: true }));
-vi.mock('../servers/serverManifest', async importOriginal => ({
-  ...(await importOriginal<typeof import('../servers/serverManifest')>()),
-  serverSetting: (key: string) => (key === 'autoManaPotion' ? world.allows : false),
-}));
+/** The world's `autoManaPotion`, set per test. A spy, since the test setup has loaded the manifest module already. */
+const world = { allows: true };
+const manifest = await import('../servers/serverManifest');
+vi.spyOn(manifest, 'serverSetting').mockImplementation(key => (key === 'autoManaPotion' ? world.allows : false));
 
 // Skills first: they keep the app import cycle in order (versions/shared/skills/readme.md).
 await import('@versions/shared/skills/skillVisuals');

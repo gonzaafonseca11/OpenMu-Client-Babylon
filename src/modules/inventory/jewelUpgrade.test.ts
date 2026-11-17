@@ -4,11 +4,10 @@ import { FIDELITY_CLASSIC, FIDELITY_DEFAULT, setFidelityChoice } from '@/control
 import type { Item } from '../../ecs/world';
 
 vi.stubGlobal('location', { search: '', hostname: 'localhost', href: 'http://localhost/' });
-/** The world's `jewelryUpgrade`, set per test; every other setting is the original's. */
-const server = vi.hoisted(() => ({ jewelryUpgrade: true }));
-vi.mock('../servers/serverManifest', () => ({
-  serverSetting: (key: string) => (key === 'jewelryUpgrade' ? server.jewelryUpgrade : false),
-}));
+/** The world's `jewelryUpgrade`, set per test. A spy, since the test setup has loaded the manifest module already. */
+const server = { jewelryUpgrade: true };
+const manifest = await import('../servers/serverManifest');
+vi.spyOn(manifest, 'serverSetting').mockImplementation(key => (key === 'jewelryUpgrade' ? server.jewelryUpgrade : false));
 const { jewelTargetError } = await import('./jewelUpgrade');
 const { jewelryUpgradeAllowed } = await import('./jewelryUpgrade');
 
