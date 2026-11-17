@@ -7,6 +7,27 @@ const { blockerOf } = await import('./gating');
 
 const rows = CATEGORIES.flatMap(c => c.pages.flatMap(p => p.sections.flatMap(s => s.rows)));
 
+// A world for light machines may leave only the presets: mixing the tiers by hand is what it hides.
+describe('the lighting and material rows', () => {
+  it('hide on a world whose server.json leaves only the presets, and stay elsewhere', async () => {
+    const manifest = await import('@/modules/servers/serverManifest');
+    const { hiddenRow } = await import('./gating');
+    const section = CATEGORIES.flatMap(c => c.pages.flatMap(p => p.sections)).find(s => s.titleKey === 'options.section.lightingAndMaterials');
+    if (!section) throw new Error('no lighting and materials section');
+    const keyOf = (r: (typeof rows)[number]) => ('key' in r ? r.key : r.kind);
+
+    const spy = vi.spyOn(manifest, 'serverSetting').mockImplementation(key => key === 'qualityPresetsOnly');
+    expect(section.rows.filter(r => !hiddenRow(r)).map(keyOf)).toEqual(['texturePack']);
+    const presets = rows.find(r => r.kind === 'presets');
+    if (!presets) throw new Error('no presets row');
+    expect(hiddenRow(presets)).toBe(false);
+
+    spy.mockImplementation(() => false);
+    expect(section.rows.filter(r => !hiddenRow(r)).map(keyOf)).toContain('lightingQuality');
+    spy.mockRestore();
+  });
+});
+
 // `/re on|off|auto` (ours) and this row are the same setting.
 describe('the party invitations row', () => {
   it('picks ask (the classic prompt), decline or accept', () => {

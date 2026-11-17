@@ -226,3 +226,6 @@ connect server's own list (`Servers.serverList`) is filled by `session/net.ts`.
 - `liteAssetsAllTiers`: the copies also go to Classic players (whose preset leaves the improvement
   off) unless the player turned it off by hand (`improvementChoice`). Off (the original), only
   Enhanced and Ultra take them. The Options box still shows the preset's choice on Classic.
+- `qualityPresetsOnly`: Options > Quality keeps only the presets; the rows marked `presetsDecide`
+  (lighting, materials and their sliders) are hidden (`options/gating.ts` `hiddenRow`). Off (the
+  original), every row shows.

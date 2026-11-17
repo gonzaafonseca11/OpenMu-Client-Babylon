@@ -70,6 +70,7 @@ export async function ask(c: Config, group: Group): Promise<Config> {
       next.jewelBundling = await ui.confirm('Let players bundle and unbundle jewels with a right click, without Lahap? Only if this server supports it; stock OpenMU packs only at Lahap (off = the original)', c.jewelBundling);
       next.liteAssets = await ui.confirm('Serve lighter assets (WebP textures, Opus music)? Smaller downloads, slightly lower quality; the originals stay available and players can choose them (off = the originals only)', c.liteAssets);
       next.liteAssetsAllTiers = next.liteAssets && (await ui.confirm('Give the lighter assets to players on Classic too? They can still turn them off (off = only Enhanced and Ultra take them)', c.liteAssetsAllTiers));
+      next.qualityPresetsOnly = await ui.confirm('Leave only the quality presets (Low, Classic, Enhanced, Ultra) in Options, hiding the lighting and material rows? (off = every row, the original)', c.qualityPresetsOnly);
       next.englishMapNames = await ui.confirm('Show map names in English whatever the player\'s language (the entry banner and the Move window)? (off = the original, from the language pack)', c.englishMapNames);
       next.englishItemNames = await ui.confirm('Show item names in English whatever the player\'s language? (off = the original, from the language pack)', c.englishItemNames);
       next.englishSkillNames = await ui.confirm("Show skill names in English whatever the player's language? (off = the original, from the language pack)", c.englishSkillNames);

@@ -87,6 +87,12 @@ describe('config file', () => {
     expect(envToConfig({}).liteAssets).toBe(false);
   });
 
+  it('stores the presets-only quality page as MU_QUALITY_PRESETS_ONLY, off unless set', () => {
+    expect(configToEnv({ ...config, qualityPresetsOnly: true }).MU_QUALITY_PRESETS_ONLY).toBe('on');
+    expect(envToConfig({ MU_QUALITY_PRESETS_ONLY: 'on' }).qualityPresetsOnly).toBe(true);
+    expect(envToConfig({}).qualityPresetsOnly).toBe(false);
+  });
+
   it('stores the lighter assets on every tier as MU_LITE_ASSETS_ALL_TIERS, off unless set', () => {
     expect(configToEnv({ ...config, liteAssetsAllTiers: true }).MU_LITE_ASSETS_ALL_TIERS).toBe('on');
     expect(envToConfig({ MU_LITE_ASSETS_ALL_TIERS: 'on' }).liteAssetsAllTiers).toBe(true);

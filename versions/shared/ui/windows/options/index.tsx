@@ -42,7 +42,7 @@ import {
   type Row,
   type Section,
 } from './catalogue';
-import { blockerOf, hiddenByStyle, type Blocker } from './gating';
+import { blockerOf, hiddenRow, type Blocker } from './gating';
 import { matchesQuery } from './search';
 import { OptionsFrame } from './frame';
 import { FitText, OptionsButton } from './controls';
@@ -96,9 +96,7 @@ function sectionsOf(page: Page): Section[] {
   return page.sections
     .map(section => ({
       ...section,
-      rows: section.rows.filter(
-        row => row.kind === 'key' || !hiddenByStyle(row.needs)
-      ),
+      rows: section.rows.filter(row => !hiddenRow(row)),
     }))
     .filter(section => section.rows.length > 0);
 }
@@ -116,7 +114,7 @@ function searchTexts(row: Row, page: Page, section: Section): string[] {
 function search(query: string): Match[] {
   return ALL_PAGES.flatMap(page => {
     const rows = page.sections.flatMap(section =>
-      section.rows.filter(row => matchesQuery(query, searchTexts(row, page, section)))
+      section.rows.filter(row => !hiddenRow(row) && matchesQuery(query, searchTexts(row, page, section)))
     );
     return rows.length ? [{ page, rows }] : [];
   });

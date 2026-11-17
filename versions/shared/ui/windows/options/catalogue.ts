@@ -98,6 +98,8 @@ type RowBase = {
   indent?: boolean;
   /** Said under the help when a change waits for something. */
   appliesKey?: TextKey;
+  /** Hidden where the world leaves only the quality presets (`qualityPresetsOnly`). */
+  presetsDecide?: boolean;
 };
 
 type ToggleRow = RowBase & { kind: 'toggle'; key: BoolKey };
@@ -501,21 +503,24 @@ export const CATEGORIES: Category[] = [
                 'lightingQuality',
                 LIGHTING_QUALITY_MAX,
                 named(LIGHTING_QUALITY_LABEL_KEYS),
-                { appliesKey: 'options.applies.partlyMapLoad' }
+                { appliesKey: 'options.applies.partlyMapLoad', presetsDecide: true }
               ),
               choice(
                 'materialQuality',
                 MATERIAL_QUALITY_MAX,
-                named(MATERIAL_QUALITY_LABEL_KEYS)
+                named(MATERIAL_QUALITY_LABEL_KEYS),
+                { presetsDecide: true }
               ),
               slider('materialDetail', MATERIAL_DETAIL_MAX, off, {
                 indent: true,
                 needs: [{ kind: 'materials' }],
+                presetsDecide: true,
               }),
               ...MATERIAL_LOOK_KEYS.map(key =>
                 slider(key, MATERIAL_LOOK_MAX, off, {
                   indent: true,
                   needs: [{ kind: 'materials' }],
+                  presetsDecide: true,
                 })
               ),
               {

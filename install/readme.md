@@ -156,6 +156,10 @@ everything the stack reads is rendered from `mu.env`, so `mu config` can change 
   lightest look also reads the lightest files. A player who turns the improvement off in Options keeps
   the originals.
 
+  `qualityPresetsOnly` (`mu config` > Features, `MU_QUALITY_PRESETS_ONLY`, default off) leaves
+  only the preset row (Low, Classic, Enhanced, Ultra) in Options > Quality: the lighting, material
+  and material-look rows are hidden, so players cannot mix the tiers by hand.
+
   `englishMapNames` (`mu config` > Features, `MU_ENGLISH_MAP_NAMES`, default off) shows the map
   names in English whatever the player's language: the banner on entering a map takes the `Eng`
   picture and the Move window the `MoveReq_eng.bmd` rows. Everything else stays in the language.

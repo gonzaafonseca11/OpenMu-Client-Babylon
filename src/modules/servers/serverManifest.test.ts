@@ -107,6 +107,12 @@ describe('parseServerManifest', () => {
     expect(parseServerManifest({ version: 1, settings: { liteAssets: 'yes' } })).toBeNull();
   });
 
+  // A world for light machines may leave only the quality presets in Options.
+  it('reads qualityPresetsOnly, off on the original', () => {
+    expect(ORIGINAL_SETTINGS.qualityPresetsOnly).toBe(false);
+    expect(parseServerManifest({ version: 1, settings: { qualityPresetsOnly: true } })?.settings.qualityPresetsOnly).toBe(true);
+  });
+
   // A world for light machines may hand the copies to Classic players too.
   it('reads liteAssetsAllTiers, off on the original', () => {
     expect(ORIGINAL_SETTINGS.liteAssetsAllTiers).toBe(false);

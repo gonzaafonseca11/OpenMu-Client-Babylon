@@ -224,6 +224,12 @@ export function blockerOf(needs: readonly Need[] | undefined): Blocker | null {
  * rather than greyed: the Style page shows what the chosen style has.
  * Search still finds it, greyed, with its reason.
  */
+/** A row the window leaves out: the style lacks its cap, or the world leaves only the presets. */
+export function hiddenRow(row: { kind: string; needs?: readonly Need[]; presetsDecide?: boolean }): boolean {
+  if (row.kind === 'key') return false;
+  return hiddenByStyle(row.needs) || (!!row.presetsDecide && serverSetting('qualityPresetsOnly'));
+}
+
 export function hiddenByStyle(needs: readonly Need[] | undefined): boolean {
   if (!needs) return false;
 

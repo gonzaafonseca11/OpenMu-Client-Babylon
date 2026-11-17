@@ -34,6 +34,8 @@ type ServerSettings = {
   readonly liteAssets: boolean;
   /** The lighter copies go to Classic players too, unless they turn them off (ours: the original reads the originals). */
   readonly liteAssetsAllTiers: boolean;
+  /** Options > Quality keeps only the presets: the lighting and material rows are hidden (ours: the original has every row). */
+  readonly qualityPresetsOnly: boolean;
   /** Map names in English whatever the language (ours: the original takes them from the language pack): the entry banner and the Move window. */
   readonly englishMapNames: boolean;
   /** Item names in English whatever the language (ours: the original takes them from the language pack). */
@@ -104,6 +106,7 @@ export const ORIGINAL_SETTINGS: ServerSettings = {
   jewelBundling: false,
   liteAssets: false,
   liteAssetsAllTiers: false,
+  qualityPresetsOnly: false,
   englishMapNames: false,
   englishItemNames: false,
   englishSkillNames: false,
@@ -131,6 +134,7 @@ const SETTING_TYPES: { readonly [K in keyof ServerSettings]: 'boolean' } = {
   jewelBundling: 'boolean',
   liteAssets: 'boolean',
   liteAssetsAllTiers: 'boolean',
+  qualityPresetsOnly: 'boolean',
   englishMapNames: 'boolean',
   englishItemNames: 'boolean',
   englishSkillNames: 'boolean',
