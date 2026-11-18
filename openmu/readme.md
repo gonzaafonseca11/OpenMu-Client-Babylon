@@ -143,3 +143,11 @@ in 200 kills (OpenMU never makes one). `plugins/GameLogic/SocketCount`: every so
 2: 30 %, 3: 15 %, 4: 4 %, 5: 1 %, capped by the item's `MaximumSockets`; OpenMU rolls it evenly. It runs
 before the drop lands (`IMonsterItemDropPlugIn`), so the floor shows the bag's count (as the drop was added it was too late: the floor kept the first roll), and leaves items players drop alone (those
 are no `TemporaryItem`). Turn it off in the admin panel: "Socket count by chance".
+
+## VIP Blood Castle experience
+OpenMU gives a mini game's experience reward as configured (`MiniGameRewardService`), past every
+experience rate, so the VIP server's x2 never reached it. `plugins/GameLogic/Vip/VipBloodCastleExperiencePlugIn.cs`
+gives each finisher on the VIP server the flat Blood Castle experience rewards again when the game ends
+(`IMiniGameEndedPlugIn`): those for everyone, plus the winners' or the losers' ones. The experience per
+remaining second is not repeated (the remaining time is not public). Turn it off in the admin panel:
+"VIP Blood Castle experience".
