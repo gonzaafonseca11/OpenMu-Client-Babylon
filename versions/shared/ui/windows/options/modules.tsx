@@ -6,9 +6,13 @@
 import { observer } from 'mobx-react-lite';
 import { t, type TextKey } from '@/i18n';
 import { StreamedModules, forgetModuleConsent, moduleConsent } from '@/modules/_api/streamPorts';
+import type { Page } from './catalogue';
 import { OptionsButton } from './controls';
 
 const FORGET_WIDTH = 64;
+
+/** The page tree leaves Modules out while the world streams none. */
+export const pageShown = (page: Page): boolean => page.id !== 'modules' || StreamedModules.list.length > 0;
 
 function consentKey(firstParty: boolean, consent: boolean | undefined): TextKey {
   if (firstParty) return 'options.modules.notNeeded';

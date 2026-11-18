@@ -9,7 +9,7 @@ vi.hoisted(() => {
 
 // Skills first: they keep the app import cycle in order (versions/shared/skills/readme.md).
 await import('@versions/shared/skills/skillVisuals');
-const { ModulesList } = await import('./modules');
+const { ModulesList, pageShown } = await import('./modules');
 const { ALL_PAGES } = await import('./catalogue');
 const { StreamedModules, forgetModuleConsent, moduleConsent } = await import('@/modules/_api/streamPorts');
 
@@ -36,6 +36,15 @@ afterEach(() => {
 describe('the Modules page', () => {
   it('is a page of the options window', () => {
     expect(ALL_PAGES.find(p => p.id === 'modules')?.sections[0].rows[0].kind).toBe('modules');
+  });
+
+  // The last page of the tree was cut off at the bottom, and a world that streams nothing has no use for it.
+  it('is left out of the tree while the world streams none', () => {
+    const page = ALL_PAGES.find(p => p.id === 'modules')!;
+    expect(pageShown(page)).toBe(false);
+    show('list:7', [{ id: 'first', version: '1.2.0', firstParty: true, loaded: true }]);
+    expect(pageShown(page)).toBe(true);
+    expect(pageShown(ALL_PAGES[0])).toBe(true);
   });
 
   it('says when the world streams none', () => {

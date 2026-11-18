@@ -3,6 +3,7 @@ import { MuSpriteFrame } from '@/controllers/interface/components/mu_sprite';
 import { uiClick } from '@/controllers/sound/sfx';
 import { t } from '@/i18n';
 import { CATEGORIES, type Page } from './catalogue';
+import { pageShown } from './modules';
 import { FitText } from './controls';
 
 const SEARCH_PLATE = 'delete_secret_number.OZT';
@@ -76,7 +77,7 @@ export const PageTree = observer(
           <div className="options-tree-category">
             <FitText align="left">{t(category.labelKey)}</FitText>
           </div>
-          {category.pages.map(page => {
+          {category.pages.filter(pageShown).map(page => {
             const current = page === active;
 
             return (

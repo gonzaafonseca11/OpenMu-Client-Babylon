@@ -164,6 +164,7 @@ Phase 5 of [docs/module_streaming.md](../../../docs/module_streaming.md): the mo
   world's modules that got as far as loading (`modules()`, mirrored in `StreamedModules` through the
   streamer's `changed`): version, first party or sandboxed, the stored consent. Forget clears that
   answer, so the next entry into the world asks again; a module already running stays until then.
+  The page tree leaves the page out while the world streams none (`pageShown`).
 - The file format (`streamed.ts`): an ES module whose default export is `defineStreamedModule({ api,
   install })`. `install(api, where)` awaits every call, so the same code runs in process and over
   messages; `where` is `'page'` (a window may `draw` a component) or `'frame'` (its own document is
