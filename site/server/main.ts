@@ -11,7 +11,7 @@ import { chatBanned, chatMessage, chatTooFast, clean, isBanned, isModerator, new
 import { normalEmail, openMuHash, openRecovery, passwordProblem, recoveryMail, recoveryTargets, sendMail } from './recovery';
 import { isEmail } from '../../src/modules/servers/registerRules';
 import { vipAddPaidMonth, vipEndingSoon, vipGrant, vipList, vipMarkReminded, vipOf, vipRecord, vipReminderMail, vipSetSubscription } from './vip';
-import { cancelSubscription, createSubscription, getAuthorizedPayment, getSubscription, paymentApproved, signatureValid, type MpConfig } from './mp';
+import { cancelSubscription, createSubscription, getAuthorizedPayment, getSubscription, paymentApproved, paymentPending, signatureValid, type MpConfig } from './mp';
 import { isTown, moveCharacter } from './move';
 import { socialLinks } from './social';
 import { browseItems, giveItem, giveSet, itemOptions, learnAllSkills, maxMasterTree, onlinePlayers, parseBrowse, readStats, setExcellents, writeStats } from './gm';
@@ -422,6 +422,9 @@ async function mpWebhook(req: Request, url: URL): Promise<Response> {
           const until = await vipAddPaidMonth(sql, sub.external_reference, `ap-${pay.id}`);
           if (until) process.stdout.write(`vip paid ${sub.external_reference} until ${until.toISOString()}\n`);
         }
+      } else if (paymentPending(pay)) {
+        process.stdout.write(`mp payment ${pay.id} still ${pay.status}/${pay.payment?.status ?? '-'}; asking for the notice again\n`);
+        return json({ error: 'reintentar' }, 500);
       }
     }
   } catch (err) {

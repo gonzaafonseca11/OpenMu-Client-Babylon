@@ -1,6 +1,6 @@
 import { createHmac } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
-import { paymentApproved, signatureValid } from './mp';
+import { paymentApproved, paymentPending, signatureValid } from './mp';
 
 describe('Mercado Pago', () => {
   it('accepts only notifications signed with the webhook secret', () => {
@@ -16,5 +16,14 @@ describe('Mercado Pago', () => {
     expect(paymentApproved({ id: 1, preapproval_id: 'p', status: 'processed', payment: { status: 'approved' } })).toBe(true);
     expect(paymentApproved({ id: 1, preapproval_id: 'p', status: 'processed', payment: { status: 'rejected' } })).toBe(false);
     expect(paymentApproved({ id: 1, preapproval_id: 'p', status: 'scheduled' })).toBe(false);
+  });
+
+  // mipz1k paid and got no VIP: both notices came while the charge was still going through, and were answered as done.
+  it('asks for the notice again while the charge is still going through', () => {
+    expect(paymentPending({ id: 1, preapproval_id: 'p', status: 'scheduled' })).toBe(true);
+    expect(paymentPending({ id: 1, preapproval_id: 'p', status: 'processed', payment: { status: 'in_process' } })).toBe(true);
+    expect(paymentPending({ id: 1, preapproval_id: 'p', status: 'processed', payment: { status: 'approved' } })).toBe(false);
+    expect(paymentPending({ id: 1, preapproval_id: 'p', status: 'processed', payment: { status: 'rejected' } })).toBe(false);
+    expect(paymentPending({ id: 1, preapproval_id: 'p', status: 'cancelled' })).toBe(false);
   });
 });

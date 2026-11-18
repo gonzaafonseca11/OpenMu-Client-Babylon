@@ -58,6 +58,10 @@ export const getAuthorizedPayment = (cfg: MpConfig, id: string) => mp<Authorized
 /** Whether an authorized payment was really charged. */
 export const paymentApproved = (p: AuthorizedPayment) => p.status === 'processed' && (p.payment?.status ?? 'approved') === 'approved';
 
+/** A charge still going through: the notice is answered with an error, so Mercado Pago sends it again later. */
+export const paymentPending = (p: AuthorizedPayment) =>
+  p.status === 'scheduled' || (p.status === 'processed' && ['pending', 'in_process', 'authorized'].includes(p.payment?.status ?? ''));
+
 /**
  * Mercado Pago's webhook signature: `x-signature: ts=...,v1=...` is the HMAC-SHA256, with the webhook
  * secret, of `id:<data.id>;request-id:<x-request-id>;ts:<ts>;` (a part with no value is left out).
