@@ -45,7 +45,7 @@ describe('writeAssetBundles', () => {
 
     const index = JSON.parse(readFileSync(join(root, 'assets-index.json'), 'utf8'));
     const { bundle } = index.groups[0];
-    expect(bundle).toEqual({ url: './bundles/season6-map_1.bin', bytes: expect.any(Number) });
+    expect(bundle).toEqual({ url: './bundles/season6-map_1.bin', bytes: expect.any(Number), hash: expect.stringMatching(/^[0-9a-f]{16}$/) });
 
     const bytes = new Uint8Array(readFileSync(join(root, 'bundles/season6-map_1.bin')));
     expect(bytes.length).toBe(bundle.bytes);
@@ -71,5 +71,19 @@ describe('writeAssetBundles', () => {
     put('assets-index-v097d.json', JSON.stringify(INDEX));
     await writeAssetBundles(root);
     expect(existsSync(join(root, 'bundles/v097d-map_1.bin'))).toBe(true);
+  });
+});
+
+describe('a bundle hash', () => {
+  // Every server update re-downloaded every bundle: the player keeps one whose hash did not change.
+  it('names what the bundle holds: the same files give the same hash, a changed file another', async () => {
+    const hashOf = async () => {
+      await writeAssetBundles(root);
+      return JSON.parse(readFileSync(join(root, 'assets-index.json'), 'utf8')).groups[0].bundle.hash as string;
+    };
+    const first = await hashOf();
+    expect(await hashOf()).toBe(first);
+    writeFileSync(join(root, 'Data/World1/mini_map.OZT'), 'changed!');
+    expect(await hashOf()).not.toBe(first);
   });
 });

@@ -3,6 +3,7 @@ import { Sound } from '@babylonjs/core/Audio/sound';
 import { SoundTrack } from '@babylonjs/core/Audio/soundTrack';
 import { Engine, PointerEventTypes, type Scene } from '../render/babylon/exports';
 import { isMusicKey, soundUrl, type Sounds } from './recipes';
+import { GameOptions } from '../settings/gameOptions';
 
 /** Dev switch: false keeps the background music silent. */
 const ENABLE_BG_MUSIC = true;
@@ -121,7 +122,20 @@ export class SoundsManager {
 
   static scene: Scene | null = null;
 
-  static pageInteracted = false;
+  /** The browser unlocked the audio context (the first click or key). */
+  static unlocked = false;
+
+  /**
+   * Sound may play: unlocked, and the volume above 0. Ours: the game starts silent (volume 0), and
+   * while it is, nothing plays, so no sound file is fetched (readme, Silent start).
+   */
+  static get pageInteracted(): boolean {
+    return this.unlocked && GameOptions.volume > 0;
+  }
+
+  static set pageInteracted(on: boolean) {
+    this.unlocked = on;
+  }
 
   static currentMusic: Sounds | null = null;
 
@@ -164,19 +178,19 @@ export class SoundsManager {
     if (
       Engine.audioEngine &&
       Engine.audioEngine.onAudioUnlockedObservable &&
-      !this.pageInteracted
+      !this.unlocked
     ) {
       Engine.audioEngine.onAudioUnlockedObservable.addOnce(() => {
         console.log(`sounds inited`);
 
-        this.pageInteracted = true;
+        this.unlocked = true;
       });
     }
 
     // The browser unlocks the context on the first user gesture, wherever it
     // lands: the login page's DOM controls as much as the canvas.
     const unlock = () => {
-      if (this.pageInteracted) return;
+      if (this.unlocked) return;
       try {
         Engine.audioEngine && Engine.audioEngine.unlock();
       } catch (e) {
@@ -185,7 +199,7 @@ export class SoundsManager {
     };
 
     const sub = scene.onPointerObservable.add(ev => {
-      if (this.pageInteracted) return;
+      if (this.unlocked) return;
       if (ev.type !== PointerEventTypes.POINTERUP) return;
       unlock();
       sub && sub.remove();
@@ -205,7 +219,7 @@ export class SoundsManager {
    * which `initializeSounds` listens for.
    */
   static tryUnlock() {
-    if (this.pageInteracted) return;
+    if (this.unlocked) return;
     try {
       Engine.audioEngine && Engine.audioEngine.unlock();
     } catch (e) {

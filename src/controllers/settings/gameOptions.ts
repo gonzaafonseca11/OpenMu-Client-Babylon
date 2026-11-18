@@ -641,7 +641,7 @@ const DEFAULTS: GameOptions = {
   animeSpeedLines: 0,
   animeFilm: 3,
   animeImpacts: true,
-  volume: 5,
+  volume: 0,
   musicVolume: 10,
   effectsVolume: 10,
   combatVolume: 10,

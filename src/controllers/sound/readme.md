@@ -196,3 +196,10 @@ folder or its body file), `teleport` (the Nightmare), `stormSkill` (the meteorit
   shots, music, town tracks, object loops and monster cues. `mapSound.test.ts`: a registered
   entry's rows are heard without a reload, gates answer the event state, reach turns into tiles,
   unguarded hooks voice every map.
+
+## Silent start (ours)
+The game starts with the master volume at 0 (`gameOptions.ts`), and `SoundsManager.pageInteracted` is
+true only while the audio is unlocked and the volume is above 0: every play path checks it, so a silent
+game fetches no sound file at all. Raising the volume starts the music and the beds where the map plays
+them, and `ui/components/auto_download` downloads the sounds in the background. A player's saved volume
+is kept: only a new player starts silent.

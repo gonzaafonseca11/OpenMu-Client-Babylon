@@ -141,6 +141,16 @@ describe('bundles', () => {
     expect(await part.text()).toBe('ef');
   });
 
+  // A bundle is named by its hash (assetDownload.ts re-stamps a marker whose hash did not change),
+  // so a new build keeps it instead of downloading the same bytes again.
+  it('keeps the bundles and their markers across builds', async () => {
+    const stores = bundled('b1');
+    await worker('b2', stores).activate();
+    const assets = stores.get('mu-assets-v1');
+    expect(assets?.has('/bundles/season6-map_1.bin')).toBe(true);
+    expect(assets?.has('/__mu-bundle/map:1')).toBe(true);
+  });
+
   it('never answers from another build bundle', async () => {
     const w = worker('b2', bundled('b1'));
     expect(await (await answer(w, '/Data/World1/Tile.OZJ.webp')).text()).toBe('net');

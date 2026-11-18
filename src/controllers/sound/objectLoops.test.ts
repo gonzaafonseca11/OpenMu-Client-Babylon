@@ -4,6 +4,7 @@ import { ENUM_WORLD } from '../../core/types';
 import { KALIMA_WORLDS } from '../assets/worldAssets';
 import type { World } from '../../ecs/world';
 import { SoundsManager } from './soundsManager';
+import { setGameOption } from '../settings/gameOptions';
 import { attachListener } from './listener';
 import {
   OBJECT_LOOPS,
@@ -67,6 +68,7 @@ describe('object loop copies', () => {
     instances.clear();
     hero.transform.pos.x = 100;
     SoundsManager.pageInteracted = true;
+    setGameOption('volume', 5); // the game starts silent (soundsManager.ts)
     attachListener({
       playerEntity: hero,
       getTerrainFlag: () => 0,
@@ -100,6 +102,7 @@ describe('object loop copies', () => {
     objectLoopsLayer.reset!();
     vi.restoreAllMocks();
     SoundsManager.pageInteracted = false;
+    setGameOption('volume', 0);
   });
 
   // 1 channel (MapManager.cpp:380-383), no object (GM_Kanturu_1st.cpp:69, :97).

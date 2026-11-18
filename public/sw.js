@@ -27,8 +27,11 @@ const BUILD = new URL(self.location.href).searchParams.get('build') || '';
 const META = 'mu-meta';
 const BUILD_KEY = '/__mu-build';
 
-/** Kept across builds: the biggest download, and it does not change. */
-const KEPT_ACROSS_BUILDS = /\/Music\/|\.(mp3|ogg|wav)$/i;
+/**
+ * Kept across builds: the music (the biggest download, and it does not change) and the bundles with
+ * their markers, which carry their own hash (assetDownload.ts re-stamps an unchanged one).
+ */
+const KEPT_ACROSS_BUILDS = /\/Music\/|\.(mp3|ogg|wav)$|^\/(bundles|__mu-bundle)\//i;
 
 /** Assets this worker has already asked the server about. */
 const revalidated = new Set();

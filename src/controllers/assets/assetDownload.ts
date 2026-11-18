@@ -32,7 +32,7 @@ export type AssetGroup = {
   /** Bytes over the wire with every copy taken. */
   liteTransfer?: number;
   /** The whole group as one file of the urls a lighter-assets player reads (`tools/assetBundles.ts`). */
-  bundle?: { url: string; bytes: number };
+  bundle?: { url: string; bytes: number; hash?: string };
 };
 
 type AssetsIndex = {
@@ -393,11 +393,17 @@ export async function storeBundle(
   received: (bytes: number) => void
 ): Promise<boolean> {
   if (!group.bundle) return false;
-  const { url, bytes: size } = group.bundle;
+  const { url, bytes: size, hash } = group.bundle;
   const marker = BUNDLE_MARKER + group.id;
 
-  const stored = (await (await cache.match(marker))?.json().catch(() => null)) as { build?: string } | null;
+  const stored = (await (await cache.match(marker))?.json().catch(() => null)) as { build?: string; hash?: string; bundle?: string } | null;
   if (stored?.build === build) {
+    received(size);
+    return true;
+  }
+  // Another build stored the same bytes (the sw keeps bundles across builds): re-stamp, no download.
+  if (stored && hash && stored.hash === hash && stored.bundle === url && (await cache.match(url))) {
+    await cache.put(marker, new Response(JSON.stringify({ ...stored, build })));
     received(size);
     return true;
   }
@@ -432,7 +438,7 @@ export async function storeBundle(
       at += bytes;
       return entry;
     });
-    await cache.put(marker, new Response(JSON.stringify({ build, bundle: url, files })));
+    await cache.put(marker, new Response(JSON.stringify({ build, hash, bundle: url, files })));
     return true;
   } catch (e) {
     console.warn('[assetDownload] bundle failed, fetching its files:', (e as Error).message);

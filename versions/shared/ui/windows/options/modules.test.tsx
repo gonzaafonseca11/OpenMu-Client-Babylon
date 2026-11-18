@@ -40,7 +40,8 @@ describe('the Modules page', () => {
 
   // The last page of the tree was cut off at the bottom, and a world that streams nothing has no use for it.
   it('is left out of the tree while the world streams none', () => {
-    const page = ALL_PAGES.find(p => p.id === 'modules')!;
+    const page = ALL_PAGES.find(p => p.id === 'modules') ?? ALL_PAGES[0];
+    expect(page.id).toBe('modules');
     expect(pageShown(page)).toBe(false);
     show('list:7', [{ id: 'first', version: '1.2.0', firstParty: true, loaded: true }]);
     expect(pageShown(page)).toBe(true);

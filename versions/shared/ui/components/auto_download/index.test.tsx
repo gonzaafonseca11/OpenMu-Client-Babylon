@@ -2,8 +2,9 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { runInAction } from 'mobx';
 import { AppState, UIState } from '@/controllers/interface/uiState';
-import { assetDownload } from '@/controllers/assets/assetDownload';
-import { AutoDownload } from '.';
+import { assetDownload, type AssetGroup } from '@/controllers/assets/assetDownload';
+import { setGameOption } from '@/controllers/settings';
+import { AutoDownload, wantedNow } from '.';
 
 const set = (state: UIState, running: boolean) =>
   runInAction(() => {
@@ -11,21 +12,26 @@ const set = (state: UIState, running: boolean) =>
     assetDownload.running = running;
   });
 
-afterEach(() => set(UIState.Preloader, false));
+afterEach(() => {
+  set(UIState.Preloader, false);
+  setGameOption('volume', 0);
+});
 
 describe('the first-run download (AutoDownload)', () => {
-  it('draws nothing on the worlds page or while nothing downloads', () => {
-    set(UIState.Preloader, true);
-    expect(renderToStaticMarkup(<AutoDownload />)).toBe('');
-    set(UIState.Login, false);
-    expect(renderToStaticMarkup(<AutoDownload />)).toBe('');
+  // The screen and the panel are gone: the download runs in the background, unseen, and never pauses the game.
+  it('draws nothing and never holds the game, even while the essentials download', () => {
+    for (const state of [UIState.Preloader, UIState.Login]) {
+      set(state, true);
+      expect(renderToStaticMarkup(<AutoDownload />)).toBe('');
+      expect(assetDownload.blocking).toBe(false);
+    }
   });
 
-  it('covers the login with the screen while the essentials download', () => {
-    set(UIState.Login, true);
-    const html = renderToStaticMarkup(<AutoDownload />);
-    expect(html).toContain('auto-download-screen');
-    expect(html).toContain('Preparing your adventure');
-    expect(html).toContain('Enter anyway');
+  it('leaves the sounds out while the volume is 0 and takes them once it is raised', () => {
+    const audio = { kind: 'audio' } as AssetGroup;
+    const map = { kind: 'map' } as AssetGroup;
+    expect([wantedNow(audio), wantedNow(map)]).toEqual([false, true]);
+    setGameOption('volume', 3);
+    expect(wantedNow(audio)).toBe(true);
   });
 });

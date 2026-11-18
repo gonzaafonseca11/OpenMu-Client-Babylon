@@ -168,6 +168,29 @@ describe('bundles', () => {
     vi.unstubAllGlobals();
   });
 
+  // Every server update re-downloaded every bundle: one whose hash is unchanged is kept, its marker re-stamped.
+  it('keeps a bundle another build stored when its hash is the same, and fetches a changed one', async () => {
+    vi.resetModules();
+    const { storeBundle } = await import('./assetDownload');
+    const hashed = (hash: string) => group({ bundle: { url: './bundles/season6-map_1.bin', bytes: bytes.length, hash } });
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(bytes.slice())));
+    const { store, cache } = memoryCache();
+    expect(await storeBundle(hashed('aaaa'), cache, 'b1', () => {})).toBe(true);
+
+    const fetched = vi.fn(async () => new Response(bytes.slice()));
+    vi.stubGlobal('fetch', fetched);
+    const received = vi.fn();
+    expect(await storeBundle(hashed('aaaa'), cache, 'b2', received)).toBe(true);
+    expect(fetched).not.toHaveBeenCalled();
+    expect(received).toHaveBeenCalledWith(bytes.length);
+    const marker = await (store.get('./__mu-bundle/map:1') as Response).clone().json();
+    expect(marker).toMatchObject({ build: 'b2', hash: 'aaaa' });
+
+    expect(await storeBundle(hashed('bbbb'), cache, 'b3', () => {})).toBe(true);
+    expect(fetched).toHaveBeenCalledTimes(1);
+    vi.unstubAllGlobals();
+  });
+
   it('gives up on a bundle that is short or not a bundle, so the group comes file by file', async () => {
     vi.resetModules();
     const { storeBundle } = await import('./assetDownload');

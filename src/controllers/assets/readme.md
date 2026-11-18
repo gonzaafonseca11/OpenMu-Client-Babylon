@@ -181,7 +181,9 @@ From gonzaPollini/mu-season1-client. With lighter assets the build packs each gr
 `bundleUsable` (the player reads the copies, which is what a bundle holds, and the sidecars agree):
 `storeBundle` streams it into the cache whole and writes a `./__mu-bundle/<group>` marker (the build,
 each file's key, offset and length). The cache worker answers a file it does not hold on its own by
-slicing the stored bundle's Blob (`public/sw.js`, this build's markers only); a new build drops both.
+slicing the stored bundle's Blob (`public/sw.js`, this build's markers only). A bundle carries its hash
+(`tools/assetBundles.ts`), so a new build keeps the bundles and markers (`KEPT_ACROSS_BUILDS`) and
+`storeBundle` re-stamps a marker whose hash is unchanged instead of downloading the same bytes again.
 A bundle that fails leaves nothing behind and its group comes file by file.
 
 ### compressedAssets.ts

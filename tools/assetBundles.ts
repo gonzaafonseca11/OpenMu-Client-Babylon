@@ -13,6 +13,7 @@
 // Runs LAST in `bun run build`, after `assets-index`.
 // Usage: MU_LITE_ASSETS=on bun run tools/assetBundles.ts [--root dist]
 
+import { createHash } from 'crypto';
 import { closeSync, existsSync, mkdirSync, openSync, readdirSync, readFileSync, statSync, writeFileSync, writeSync } from 'fs';
 import { join, resolve } from 'path';
 import { COMPRESSED_SUFFIX, isCompressedAsset } from '../src/controllers/assets/compressedAssets';
@@ -20,7 +21,7 @@ import { liteVariantOf } from '../src/controllers/assets/liteAssets';
 import { liteAssetsWanted } from './liteAssets';
 
 type Dirs = [string, [string, number][]][];
-type Group = { id: string; dirs: Dirs; lite?: Dirs; bundle?: { url: string; bytes: number } };
+type Group = { id: string; dirs: Dirs; lite?: Dirs; bundle?: { url: string; bytes: number; hash: string } };
 
 const MAGIC = 'MUB1';
 const urls = (dirs: Dirs = []) => dirs.flatMap(([dir, files]) => files.map(([name]) => dir + name));
@@ -62,11 +63,17 @@ export async function writeAssetBundles(root: string): Promise<{ version: string
       // One body at a time: a group can be hundreds of MB.
       const file = `${version}-${group.id.replace(/[^a-z0-9]+/gi, '_')}.bin`;
       const fd = openSync(join(out, file), 'w');
+      // The hash names what the bundle holds, so a player keeps one that did not change (assetDownload.ts).
+      const sha = createHash('sha1').update(head).update(header);
       let bytes = writeSync(fd, head) + writeSync(fd, header);
-      for (const key of keys) bytes += writeSync(fd, new Uint8Array(readFileSync(onDisk(key))));
+      for (const key of keys) {
+        const body = new Uint8Array(readFileSync(onDisk(key)));
+        sha.update(body);
+        bytes += writeSync(fd, body);
+      }
       closeSync(fd);
 
-      group.bundle = { url: `./bundles/${file}`, bytes };
+      group.bundle = { url: `./bundles/${file}`, bytes, hash: sha.digest('hex').slice(0, 16) };
       total += bytes;
     }
 
