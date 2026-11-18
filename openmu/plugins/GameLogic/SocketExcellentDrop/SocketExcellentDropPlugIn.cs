@@ -11,6 +11,7 @@ using MUnique.OpenMU.DataModel.Entities;
 using MUnique.OpenMU.GameLogic.Attributes;
 using MUnique.OpenMU.GameLogic.NPC;
 using MUnique.OpenMU.GameLogic.PlugIns;
+using MUnique.OpenMU.GameLogic.SocketCount;
 using MUnique.OpenMU.PlugIns;
 
 /// <summary>
@@ -63,7 +64,7 @@ public class SocketExcellentDropPlugIn : IAttackableGotKilledPlugIn
 
         var definition = candidates[Random.Shared.Next(candidates.Count)];
         var item = new TemporaryItem { Definition = definition };
-        item.SocketCount = Random.Shared.Next(1, definition.MaximumSockets + 1);
+        item.SocketCount = SocketCountDropPlugIn.RollFor(definition);
         item.HasSkill = definition.Skill is not null;
         AddExcellentOptions(item);
         item.Durability = item.GetMaximumDurabilityOfOnePiece();

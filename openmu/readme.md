@@ -141,5 +141,5 @@ for over 60 s is logged off, with a warning in the log ("Ghost session freed").
 in 200 kills (OpenMU never makes one). `plugins/GameLogic/SocketCount`: every socket item a monster drops
 (OpenMU's own drops and that plugin's) gets its socket count again from a falling scale, 1: 50 %,
 2: 30 %, 3: 15 %, 4: 4 %, 5: 1 %, capped by the item's `MaximumSockets`; OpenMU rolls it evenly. It runs
-as the drop is added to the map (`IObjectAddedToMapPlugIn`) and leaves items players drop alone (those
+before the drop lands (`IMonsterItemDropPlugIn`), so the floor shows the bag's count (as the drop was added it was too late: the floor kept the first roll), and leaves items players drop alone (those
 are no `TemporaryItem`). Turn it off in the admin panel: "Socket count by chance".
