@@ -32,7 +32,8 @@ const DEBUG_LOGS = ['console.log', 'console.debug', 'console.trace'];
 export default defineConfig(({ command }) => ({
   base: './',
   plugins: [buildManifest()],
-  esbuild: command === 'build' ? { pure: DEBUG_LOGS } : undefined,
+  // keepNames: the performance overlay names each ECS system by its function name (render/perfOverlay.ts).
+  esbuild: command === 'build' ? { pure: DEBUG_LOGS, keepNames: true } : undefined,
   resolve: { alias },
   /**
    * The two services the UI talks to, each its own process. Proxied here so

@@ -39,3 +39,13 @@ describe('production builds carry no debug logging', () => {
     expect(strayDebugLogs('const l=console.log.bind(console);console.warn(1)')).toEqual([]);
   });
 });
+
+describe('production builds keep function names', () => {
+  // The performance overlay names each ECS system by its function name; minified it read `uUt`.
+  it('a system factory keeps its name through the minifier', async () => {
+    const esbuild = configFor('build').esbuild;
+    const out = await transform('export const RenderSystem = (world) => world;', { ...(esbuild as object), loader: 'ts', minify: true, format: 'esm' });
+    // The binding is renamed; its `name` is set back to the original.
+    expect(out.code).toContain('"RenderSystem")');
+  });
+});
