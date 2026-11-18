@@ -359,6 +359,7 @@ export default {
   'options.partyInviteReply.decline': 'Ukatu',
   'options.partyInviteReply.accept': 'Onartu',
   'options.chatSystemMessages': 'Sistema-mezuak',
+  'options.systemLinesCorner': 'Sistemaren mezuak goian ezkerrean',
   'options.clearCache': 'Cachean gordetako joko-fitxategiak',
   'options.materialMetal': 'Metala',
   'options.materialPlate': 'Plaka margotua',
@@ -374,6 +375,8 @@ export default {
     'Zer egiten duen talde-gonbidapen batek: galdetu, jatorrizkoan bezala, edo berez ukatu edo onartu. /re on, /re off eta /re auto txat-komandoek gauza bera ezartzen dute.',
   'options.help.chatSystemMessages':
     'Sistema- eta errore-lerroak txat-erregistroan; txat-koadroko botoiaren etengailu bera, saioen artean gordea.',
+  'options.help.systemLinesCorner':
+    'Sistemaren eta erroreen mezuak txatetik ateratzen dira eta goian ezkerrean ikusten dira, azken hirurak; txata txaterako bakarrik geratzen da.',
   'options.help.presets':
     'Argiztapena, Materialak, Xehetasuna eta Irudia orri osoa bat datorren maila batean jartzen ditu. Baxuak gauza garesti guztiak itzaltzen ditu, jendetzak barne, eta errendatze-eskala ehuneko 75 ezartzen du, makina motelentzat.',
   'options.help.materialMetal':

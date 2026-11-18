@@ -349,6 +349,7 @@ export default {
   'options.partyInviteReply.decline': 'Reddet',
   'options.partyInviteReply.accept': 'Kabul et',
   'options.chatSystemMessages': 'Sistem mesajları',
+  'options.systemLinesCorner': 'Sistem mesajları sol üstte',
   'options.clearCache': 'Önbellekteki oyun dosyaları',
   'options.materialMetal': 'Metal',
   'options.materialPlate': 'Boyalı plaka',
@@ -364,6 +365,8 @@ export default {
     'Grup davetine ne olacağı: orijinaldeki gibi sor ya da kendiliğinden reddet veya kabul et. /re on, /re off ve /re auto sohbet komutları da aynı ayarı yapar.',
   'options.help.chatSystemMessages':
     'Sohbet kaydındaki sistem ve hata satırları; sohbet kutusundaki düğmeyle aynı ayardır ve oturumlar arasında korunur.',
+  'options.help.systemLinesCorner':
+    'Sistem ve hata mesajları sohbetten çıkar ve sol üstte görünür, son üçü; sohbet yalnızca sohbet için kalır.',
   'options.help.presets':
     'Aydınlatma, Malzemeler, Ayrıntı ve tüm Görüntü sayfasını uyumlu tek bir düzeye ayarlar. Düşük, kalabalıklar dahil maliyetli her şeyi de kapatır ve yavaş makineler için 75% çözünürlükte çizer.',
   'options.help.materialMetal':

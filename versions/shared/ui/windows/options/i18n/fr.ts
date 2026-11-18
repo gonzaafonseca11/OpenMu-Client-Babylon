@@ -64,6 +64,7 @@ export default {
   'options.confirmValuableItems': 'Demander avant de jeter ou vendre un objet de valeur',
   'options.chatTimestamps': 'Horodatage du chat',
   'options.chatSystemMessages': 'Messages système',
+  'options.systemLinesCorner': 'Messages système en haut à gauche',
   'options.chatEmojis': 'Emojis du chat',
   'options.chatEmojiSize': 'Taille des emojis du chat',
   'options.blockBrowserKeys': 'Bloquer les raccourcis du navigateur',
@@ -221,6 +222,8 @@ export default {
   'options.help.chatTimestamps': 'Affiche l’heure, par exemple 14:03, devant chaque ligne du chat.',
   'options.help.chatSystemMessages':
     'Les lignes système et d’erreur dans le chat ; le même interrupteur que le bouton du chat, conservé d’une session à l’autre.',
+  'options.help.systemLinesCorner':
+    'Les messages système et d\'erreur quittent le chat et s\'affichent en haut à gauche, les trois derniers ; le chat ne garde que le chat.',
   'options.help.whisperBeep': 'Émet un son quand quelqu’un vous envoie un chuchotement.',
   'options.help.chatEmojiSize':
     'La taille des emojis dans le journal du chat. Une ligne avec un emoji s’agrandit pour le contenir ; sur Petite, chaque ligne garde sa hauteur normale, comme dans le journal classique.',

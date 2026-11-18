@@ -348,6 +348,7 @@ export default {
   'options.partyInviteReply.decline': 'Elutasít',
   'options.partyInviteReply.accept': 'Elfogad',
   'options.chatSystemMessages': 'Rendszerüzenetek',
+  'options.systemLinesCorner': 'Rendszerüzenetek bal felül',
   'options.clearCache': 'Gyorsítótárazott játékfájlok',
   'options.materialMetal': 'Fém',
   'options.materialPlate': 'Festett lemez',
@@ -363,6 +364,8 @@ export default {
     'Mi történjen egy csapatmeghívással: rákérdezés, mint az eredetiben, vagy automatikus elutasítás vagy elfogadás. A /re on, /re off és /re auto csevegőparancs ugyanezt állítja.',
   'options.help.chatSystemMessages':
     'Rendszer- és hibaüzenetek a csevegésnaplóban; ugyanaz a kapcsoló, mint a csevegőablak gombja, és munkamenetek között is megmarad.',
+  'options.help.systemLinesCorner':
+    'A rendszer- és hibaüzenetek kikerülnek a chatből, és bal felül látszanak, az utolsó három; a chatben csak a beszélgetés marad.',
   'options.help.presets':
     'A Megvilágítást, az Anyagokat, a Részletességet és a teljes Kép oldalt egyetlen összeillő szintre állítja. Az Alacsony minden költséges dolgot kikapcsol, a tömegeket is, és 75%-on renderel, lassú gépekhez.',
   'options.help.materialMetal':

@@ -337,6 +337,7 @@ export default {
   'options.partyInviteReply.decline': 'প্রত্যাখ্যান',
   'options.partyInviteReply.accept': 'গ্রহণ',
   'options.chatSystemMessages': 'সিস্টেম বার্তা',
+  'options.systemLinesCorner': 'সিস্টেম বার্তা উপরে বাঁদিকে',
   'options.clearCache': 'ক্যাশে রাখা গেম ফাইল',
   'options.materialMetal': 'ধাতু',
   'options.materialPlate': 'রং করা পাত',
@@ -352,6 +353,8 @@ export default {
     'পার্টির আমন্ত্রণে কী হবে: মূল গেমের মতো জিজ্ঞাসা, অথবা নিজে থেকেই প্রত্যাখ্যান বা গ্রহণ। চ্যাট কমান্ড /re on, /re off এবং /re auto একই কাজ করে।',
   'options.help.chatSystemMessages':
     'চ্যাট লগে সিস্টেম ও ত্রুটির লাইন, চ্যাট বক্সের বোতামের মতো একই সুইচ, সেশনের মাঝেও মনে রাখা হয়।',
+  'options.help.systemLinesCorner':
+    'সিস্টেম ও ত্রুটির বার্তা চ্যাট থেকে সরে উপরে বাঁদিকে দেখা যায়, শেষ তিনটি; চ্যাট শুধু চ্যাটের জন্য থাকে।',
   'options.help.presets':
     'আলো, ম্যাটেরিয়াল, খুঁটিনাটি এবং পুরো "ছবি" পাতাকে একই মানানসই স্তরে সেট করে। "নিম্ন" ধীর মেশিনের জন্য ভিড়সহ সব ব্যয়বহুল জিনিস বন্ধ করে এবং 75% রেজোলিউশনে আঁকে।',
   'options.help.materialMetal':

@@ -63,6 +63,7 @@ export default {
   'options.confirmValuableItems': 'قیمتی آئٹم گرانے یا بیچنے سے پہلے پوچھیں',
   'options.chatTimestamps': 'چیٹ میں وقت',
   'options.chatSystemMessages': 'سسٹم پیغامات',
+  'options.systemLinesCorner': 'سسٹم پیغامات اوپر بائیں',
   'options.chatEmojis': 'چیٹ ایموجی',
   'options.chatEmojiSize': 'چیٹ ایموجی کا سائز',
   'options.blockBrowserKeys': 'براؤزر شارٹ کٹس بلاک کریں',
@@ -218,6 +219,8 @@ export default {
   'options.help.chatTimestamps': 'ہر چیٹ سطر کے آگے وقت دکھاتا ہے، جیسے 14:03۔',
   'options.help.chatSystemMessages':
     'چیٹ ریکارڈ میں سسٹم اور خرابی کی سطریں، چیٹ باکس کے بٹن والا ہی سوئچ، سیشنز کے درمیان محفوظ۔',
+  'options.help.systemLinesCorner':
+    'سسٹم اور خرابی کے پیغامات چیٹ سے نکل کر اوپر بائیں دکھائی دیتے ہیں، آخری تین؛ چیٹ صرف چیٹ کے لیے رہتی ہے۔',
   'options.help.whisperBeep': 'کوئی آپ سے سرگوشی کرے تو آواز بجاتا ہے۔',
   'options.help.chatEmojiSize':
     'چیٹ ریکارڈ میں ایموجی کتنے بڑے دکھیں۔ ایموجی والی سطر اس کے مطابق بڑی ہو جاتی ہے؛ چھوٹا ہر سطر کو ایک قطار اونچا رکھتا ہے، پرانے ریکارڈ کی طرح۔',

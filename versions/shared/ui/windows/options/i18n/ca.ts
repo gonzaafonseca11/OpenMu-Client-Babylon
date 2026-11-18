@@ -361,6 +361,7 @@ export default {
   'options.partyInviteReply.decline': 'Rebutja',
   'options.partyInviteReply.accept': 'Accepta',
   'options.chatSystemMessages': 'Missatges del sistema',
+  'options.systemLinesCorner': 'Avisos del sistema a dalt a l\'esquerra',
   'options.clearCache': 'Fitxers del joc a la memòria cau',
   'options.materialMetal': 'Metall',
   'options.materialPlate': 'Plaques pintades',
@@ -376,6 +377,8 @@ export default {
     'Què fa una invitació de grup: preguntar, com a l\'original, o rebutjar-la o acceptar-la sola. Les ordres de xat /re on, /re off i /re auto canvien el mateix.',
   'options.help.chatSystemMessages':
     'Les línies de sistema i d\'error al registre del xat; el mateix interruptor que el botó del quadre del xat, desat entre sessions.',
+  'options.help.systemLinesCorner':
+    'Els missatges del sistema i d\'error surten del xat i es veuen a dalt a l\'esquerra, els tres últims; el xat queda només per al xat.',
   'options.help.presets':
     'Posa Il·luminació, Materials, Detall i tota la pàgina Imatge en un mateix nivell. Baixa, a més, apaga tot el que és costós, multituds incloses, i renderitza al 75%, per a ordinadors lents.',
   'options.help.materialMetal':

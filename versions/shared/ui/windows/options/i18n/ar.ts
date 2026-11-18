@@ -330,6 +330,7 @@ export default {
   'options.partyInviteReply.decline': 'ارفض',
   'options.partyInviteReply.accept': 'اقبل',
   'options.chatSystemMessages': 'رسائل النظام',
+  'options.systemLinesCorner': 'رسائل النظام أعلى اليسار',
   'options.clearCache': 'ملفات اللعبة المخزنة',
   'options.materialMetal': 'المعدن',
   'options.materialPlate': 'الصفائح المطلية',
@@ -345,6 +346,8 @@ export default {
     'ما يحدث لدعوة الفريق: السؤال كما في الأصل، أو رفضها أو قبولها تلقائيا. أوامر الدردشة /re on و/re off و/re auto تضبط الشيء نفسه.',
   'options.help.chatSystemMessages':
     'أسطر النظام والأخطاء في سجل الدردشة، وهو المفتاح نفسه الذي في زر صندوق الدردشة، ويحفظ بين الجلسات.',
+  'options.help.systemLinesCorner':
+    'تخرج رسائل النظام والأخطاء من الدردشة وتظهر أعلى اليسار، آخر ثلاث رسائل؛ وتبقى الدردشة للدردشة فقط.',
   'options.help.presets':
     'يضبط «الإضاءة» و«المواد» و«التفاصيل» وصفحة «الصورة» كاملة على مستوى واحد متناسق. «منخفض» يوقف أيضا كل ما هو مكلف، بما في ذلك الحشود، ويرسم بدقة 75%، للأجهزة البطيئة.',
   'options.help.materialMetal':

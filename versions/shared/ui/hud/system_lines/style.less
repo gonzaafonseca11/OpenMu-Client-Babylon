@@ -1,0 +1,15 @@
+// systemLinesCorner: three lines at the top left, left of the buff bar.
+.system-lines {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+  z-index: 5;
+
+  .mu-text {
+    padding: 0 2px;
+    white-space: nowrap;
+  }
+}

@@ -63,6 +63,7 @@ export default {
   'options.confirmValuableItems': '貴重品を捨てる/売る前に確認する',
   'options.chatTimestamps': 'チャットの時刻',
   'options.chatSystemMessages': 'システムメッセージ',
+  'options.systemLinesCorner': 'システムメッセージを左上に',
   'options.chatEmojis': 'チャットの絵文字',
   'options.chatEmojiSize': 'チャットの絵文字サイズ',
   'options.blockBrowserKeys': 'ブラウザのショートカットを無効化',
@@ -211,6 +212,8 @@ export default {
   'options.help.chatTimestamps': 'チャットの各行の先頭に 14:03 のような時刻を表示します。',
   'options.help.chatSystemMessages':
     'チャット欄のシステム・エラー行。チャット欄のボタンと同じ切り替えで、次回以降も保存されます。',
+  'options.help.systemLinesCorner':
+    'システムメッセージとエラーをチャット欄から外し、左上に最新の3行を表示します。チャット欄はチャット専用になります。',
   'options.help.whisperBeep': 'ささやきを受けたときに音を鳴らします。',
   'options.help.chatEmojiSize': 'チャットログに表示する絵文字の大きさです。絵文字を含む行は、それに合わせて高くなります。「小」ならどの行も1行分の高さのままで、クラシックのログと同じです。',
   'options.help.chatEmojis': '絵文字コード（2つのコロンで名前を囲んだもの）を、チャットとキャラクターの頭上に画像で表示し、チャット欄に絵文字ボタンを追加します。オフならコードをそのまま文字で表示します。',

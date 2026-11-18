@@ -63,6 +63,7 @@ export default {
   'options.confirmValuableItems': 'Питай преди изхвърляне или продажба на ценни',
   'options.chatTimestamps': 'Час в чата',
   'options.chatSystemMessages': 'Системни съобщения',
+  'options.systemLinesCorner': 'Системни съобщения горе вляво',
   'options.chatEmojis': 'Емоджи в чата',
   'options.chatEmojiSize': 'Размер на емоджи в чата',
   'options.blockBrowserKeys': 'Блокирай клавишите на браузъра',
@@ -218,6 +219,8 @@ export default {
   'options.help.chatTimestamps': 'Показва часа, например 14:03, пред всеки ред в чата.',
   'options.help.chatSystemMessages':
     'Системните редове и грешките в чата; същият превключвател като бутона в чата, запазен между сесиите.',
+  'options.help.systemLinesCorner':
+    'Системните съобщения и грешките излизат от чата и се виждат горе вляво, последните три; чатът остава само за чат.',
   'options.help.whisperBeep': 'Пуска звук, когато някой ти прошепне.',
   'options.help.chatEmojiSize':
     'Колко големи се рисуват емоджи в дневника на чата. Ред с емоджи става по-висок, за да го побере; при Малък всеки ред запазва обичайната си височина, като в класическия дневник.',

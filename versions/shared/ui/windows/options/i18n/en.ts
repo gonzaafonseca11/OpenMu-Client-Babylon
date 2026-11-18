@@ -64,6 +64,7 @@ const en = {
   'options.confirmValuableItems': 'Ask before dropping or selling valuables',
   'options.chatTimestamps': 'Chat timestamps',
   'options.chatSystemMessages': 'System messages',
+  'options.systemLinesCorner': 'System lines at the top left',
   'options.chatEmojis': 'Chat emojis',
   'options.chatEmojiSize': 'Chat emoji size',
   'options.blockBrowserKeys': 'Block browser shortcuts',
@@ -229,6 +230,8 @@ const en = {
     'Shows the time, like 14:03, in front of every chat line.',
   'options.help.chatSystemMessages':
     'System and error lines in the chat log, the same switch as the chat box button, kept between sessions.',
+  'options.help.systemLinesCorner':
+    'System and error lines leave the chat log and show at the top left, the last three; the chat log keeps only the chat.',
   'options.help.whisperBeep': 'Plays a sound when someone whispers to you.',
   'options.help.chatEmojiSize':
     'How big emojis are drawn in the chat log. A line with an emoji grows to fit it; Small keeps every line one row tall, like the classic log.',

@@ -63,6 +63,7 @@ export default {
   'options.confirmValuableItems': 'پرسش پیش از انداختن یا فروش آیتم‌های ارزشمند',
   'options.chatTimestamps': 'زمان پیام‌های گفتگو',
   'options.chatSystemMessages': 'پیام‌های سیستم',
+  'options.systemLinesCorner': 'پیام‌های سیستم بالا سمت چپ',
   'options.chatEmojis': 'شکلک در گفتگو',
   'options.chatEmojiSize': 'اندازه شکلک گفتگو',
   'options.blockBrowserKeys': 'مسدود کردن میان‌برهای مرورگر',
@@ -219,6 +220,8 @@ export default {
   'options.help.chatTimestamps': 'زمان را، مانند 14:03، جلوی هر خط گفتگو نشان می‌دهد.',
   'options.help.chatSystemMessages':
     'خطوط سیستم و خطا در گزارش گفتگو؛ همان کلید دکمه پنجره گفتگو، که میان نشست‌ها حفظ می‌شود.',
+  'options.help.systemLinesCorner':
+    'پیام‌های سیستم و خطا از گفتگو خارج می‌شوند و بالا سمت چپ نمایش داده می‌شوند، سه پیام آخر؛ گفتگو فقط برای گفتگو می‌ماند.',
   'options.help.whisperBeep': 'وقتی کسی به شما نجوا می‌کند، صدایی پخش می‌شود.',
   'options.help.chatEmojiSize':
     'اندازه شکلک‌ها در گزارش گفتگو. خطی که شکلک دارد برای جا دادن آن بلندتر می‌شود؛ «کوچک» هر خط را یک ردیف نگه می‌دارد، مانند گزارش کلاسیک.',

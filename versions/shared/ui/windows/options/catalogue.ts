@@ -399,6 +399,7 @@ export const CATEGORIES: Category[] = [
             rows: [
               toggle('chatTimestamps'),
               toggle('chatSystemMessages'),
+              toggle('systemLinesCorner'),
               toggle('chatEmojis'),
               choice(
                 'chatEmojiSize',

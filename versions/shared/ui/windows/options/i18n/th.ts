@@ -63,6 +63,7 @@ export default {
   'options.confirmValuableItems': 'ถามก่อนทิ้งหรือขายของมีค่า',
   'options.chatTimestamps': 'เวลาในแชท',
   'options.chatSystemMessages': 'ข้อความระบบ',
+  'options.systemLinesCorner': 'ข้อความระบบที่มุมซ้ายบน',
   'options.chatEmojis': 'อีโมจิในแชท',
   'options.chatEmojiSize': 'ขนาดอีโมจิในแชท',
   'options.blockBrowserKeys': 'บล็อกคีย์ลัดของเบราว์เซอร์',
@@ -218,6 +219,8 @@ export default {
   'options.help.chatTimestamps': 'แสดงเวลา เช่น 14:03 ไว้หน้าข้อความแชททุกบรรทัด',
   'options.help.chatSystemMessages':
     'บรรทัดระบบและข้อผิดพลาดในแชต สวิตช์เดียวกับปุ่มในกล่องแชต และจำไว้ข้ามเซสชัน',
+  'options.help.systemLinesCorner':
+    'ข้อความระบบและข้อผิดพลาดจะออกจากแชทไปแสดงที่มุมซ้ายบน สามข้อความล่าสุด แชทจะเหลือไว้สำหรับแชทเท่านั้น',
   'options.help.whisperBeep': 'เล่นเสียงเมื่อมีคนส่งข้อความกระซิบถึงคุณ',
   'options.help.chatEmojiSize':
     'ขนาดของอีโมจิที่แสดงในบันทึกแชท บรรทัดที่มีอีโมจิจะสูงขึ้นให้พอดี ถ้าเลือก "เล็ก" ทุกบรรทัดจะสูงเท่าเดิม เหมือนบันทึกแชทแบบคลาสสิก',

@@ -64,6 +64,7 @@ export default {
   'options.confirmValuableItems': 'Chiedi prima di gettare o vendere oggetti di valore',
   'options.chatTimestamps': 'Orario nella chat',
   'options.chatSystemMessages': 'Messaggi di sistema',
+  'options.systemLinesCorner': 'Messaggi di sistema in alto a sinistra',
   'options.chatEmojis': 'Emoji nella chat',
   'options.chatEmojiSize': 'Dimensione emoji nella chat',
   'options.blockBrowserKeys': 'Blocca le scorciatoie del browser',
@@ -225,6 +226,8 @@ export default {
     'Mostra l’ora, ad esempio 14:03, davanti a ogni riga della chat.',
   'options.help.chatSystemMessages':
     'Le righe di sistema e di errore nella chat; lo stesso interruttore del pulsante della chat, conservato tra le sessioni.',
+  'options.help.systemLinesCorner':
+    'I messaggi di sistema e di errore escono dalla chat e appaiono in alto a sinistra, gli ultimi tre; la chat resta solo per la chat.',
   'options.help.whisperBeep': 'Riproduce un suono quando ricevi un sussurro.',
   'options.help.chatEmojiSize':
     'Quanto sono grandi le emoji nel registro della chat. Una riga con un’emoji diventa più alta per contenerla; su Piccola ogni riga mantiene l’altezza normale, come nel registro classico.',

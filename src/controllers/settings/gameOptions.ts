@@ -371,6 +371,8 @@ export type GameOptions = {
    * kept here so it survives a reload (ours: the original starts every session with them on).
    */
   chatSystemMessages: boolean;
+  /** Ours: system and error lines leave the chat log for a three-line box at the top left. */
+  systemLinesCorner: boolean;
   /**
    * Chat emoji codes (`:dk_love:`) drawn as their pictures in the log and
    * over the speaker, plus the emoji button in the chat box (ours). Off shows
@@ -697,6 +699,7 @@ const DEFAULTS: GameOptions = {
   lootZen: 0,
   chatTimestamps: false,
   chatSystemMessages: true,
+  systemLinesCorner: false,
   chatEmojis: true,
   chatEmojiSize: 2,
   uiScale: 3,

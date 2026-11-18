@@ -63,6 +63,7 @@ export default {
   'options.confirmValuableItems': 'Magtanong bago ihulog o ibenta ang mahalaga',
   'options.chatTimestamps': 'Oras sa chat',
   'options.chatSystemMessages': 'Mensahe ng sistema',
+  'options.systemLinesCorner': 'Mga mensahe ng system sa kaliwang itaas',
   'options.chatEmojis': 'Emoji sa chat',
   'options.chatEmojiSize': 'Laki ng emoji sa chat',
   'options.blockBrowserKeys': 'Harangin ang shortcut ng browser',
@@ -224,6 +225,8 @@ export default {
     'Ipinapakita ang oras, gaya ng 14:03, sa unahan ng bawat linya ng chat.',
   'options.help.chatSystemMessages':
     'Mga linya ng sistema at error sa chat log, kapareho ng button sa chat box, naaalala sa bawat session.',
+  'options.help.systemLinesCorner':
+    'Lumalabas sa chat ang mga mensahe ng system at error at makikita sa kaliwang itaas, ang huling tatlo; para sa chat lang ang chat.',
   'options.help.whisperBeep': 'Tumutunog kapag may bumulong sa iyo.',
   'options.help.chatEmojiSize':
     'Gaano kalaki iginuguhit ang emoji sa chat log. Lumalaki ang linyang may emoji para magkasya ito; sa Maliit, isang hilera lang ang bawat linya, gaya ng klasikong log.',

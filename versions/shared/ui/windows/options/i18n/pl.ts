@@ -63,6 +63,7 @@ export default {
   'options.confirmValuableItems': 'Pytaj przed wyrzuceniem lub sprzedażą cennych rzeczy',
   'options.chatTimestamps': 'Godzina w czacie',
   'options.chatSystemMessages': 'Komunikaty systemowe',
+  'options.systemLinesCorner': 'Komunikaty systemowe w lewym górnym rogu',
   'options.chatEmojis': 'Emoji w czacie',
   'options.chatEmojiSize': 'Rozmiar emoji w czacie',
   'options.blockBrowserKeys': 'Blokuj skróty przeglądarki',
@@ -220,6 +221,8 @@ export default {
   'options.help.chatTimestamps': 'Pokazuje godzinę, np. 14:03, przed każdą linią czatu.',
   'options.help.chatSystemMessages':
     'Linie systemowe i błędy w czacie; ten sam przełącznik co przycisk czatu, zapamiętany między sesjami.',
+  'options.help.systemLinesCorner':
+    'Komunikaty systemowe i błędy znikają z czatu i pojawiają się w lewym górnym rogu, ostatnie trzy; czat zostaje tylko dla rozmów.',
   'options.help.whisperBeep': 'Odtwarza dźwięk, gdy ktoś do ciebie szepcze.',
   'options.help.chatEmojiSize':
     'Jak duże są emoji w dzienniku czatu. Linia z emoji rośnie, żeby je zmieścić; Mały zostawia każdej linii zwykłą wysokość, jak w klasycznym dzienniku.',

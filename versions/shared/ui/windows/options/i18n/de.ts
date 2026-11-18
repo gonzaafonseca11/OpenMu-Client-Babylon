@@ -64,6 +64,7 @@ export default {
   'options.confirmValuableItems': 'Vor dem Wegwerfen oder Verkaufen von Wertsachen fragen',
   'options.chatTimestamps': 'Uhrzeit im Chat',
   'options.chatSystemMessages': 'Systemmeldungen',
+  'options.systemLinesCorner': 'Systemmeldungen oben links',
   'options.chatEmojis': 'Emojis im Chat',
   'options.chatEmojiSize': 'Emoji-Größe im Chat',
   'options.blockBrowserKeys': 'Browser-Tastenkürzel blockieren',
@@ -229,6 +230,8 @@ export default {
     'Zeigt vor jeder Chatzeile die Uhrzeit an, etwa 14:03.',
   'options.help.chatSystemMessages':
     'System- und Fehlerzeilen im Chatverlauf; derselbe Schalter wie die Taste im Chatfenster, über Sitzungen hinweg gespeichert.',
+  'options.help.systemLinesCorner':
+    'System- und Fehlermeldungen verlassen das Chatprotokoll und erscheinen oben links, die letzten drei; im Chat bleibt nur der Chat.',
   'options.help.whisperBeep':
     'Spielt einen Ton ab, wenn dir jemand etwas zuflüstert.',
   'options.help.chatEmojiSize':

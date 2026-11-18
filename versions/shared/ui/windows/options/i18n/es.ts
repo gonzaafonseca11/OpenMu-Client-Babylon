@@ -64,6 +64,7 @@ export default {
   'options.confirmValuableItems': 'Preguntar antes de tirar o vender objetos valiosos',
   'options.chatTimestamps': 'Hora en el chat',
   'options.chatSystemMessages': 'Mensajes del sistema',
+  'options.systemLinesCorner': 'Avisos del sistema arriba a la izquierda',
   'options.chatEmojis': 'Emojis en el chat',
   'options.chatEmojiSize': 'Tamaño de los emojis en el chat',
   'options.blockBrowserKeys': 'Bloquear atajos del navegador',
@@ -229,6 +230,8 @@ export default {
     'Muestra la hora (por ejemplo, 14:03) delante de cada línea del chat.',
   'options.help.chatSystemMessages':
     'Las líneas de sistema y de error en el chat; el mismo interruptor que el botón del chat, guardado entre sesiones.',
+  'options.help.systemLinesCorner':
+    'Los mensajes del sistema y de error salen del chat y se ven arriba a la izquierda, los últimos tres; el chat queda solo para el chat.',
   'options.help.whisperBeep':
     'Reproduce un sonido cuando alguien te susurra.',
   'options.help.chatEmojiSize':

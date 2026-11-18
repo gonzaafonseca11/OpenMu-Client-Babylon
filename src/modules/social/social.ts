@@ -266,6 +266,7 @@ export const Social = new (class _Social {
       chatLines: observable.shallow,
       chatFilter: observable,
       visibleChatLines: computed,
+      cornerSystemLines: computed,
       chatInputOpen: observable,
       chatInputMode: observable,
       whisperTarget: observable,
@@ -511,7 +512,7 @@ export const Social = new (class _Social {
   get visibleChatLines(): ChatLine[] {
     const tab = CHAT_FILTERS.find(f => f.key === this.chatFilter);
     const types = tab?.types ?? null;
-    const showSystem = this.showSystemMessages;
+    const showSystem = this.showSystemMessages && !GameOptions.systemLinesCorner;
     if (!types && showSystem) return this.chatLines;
     return this.chatLines.filter(line => {
       if (types && !types.includes(line.type)) return false;
@@ -520,6 +521,17 @@ export const Social = new (class _Social {
       }
       return true;
     });
+  }
+
+  /** `systemLinesCorner` (ours): the last three system / error rows, for the top-left box. */
+  get cornerSystemLines(): ChatLine[] {
+    if (!GameOptions.systemLinesCorner) return [];
+    const out: ChatLine[] = [];
+    for (let i = this.chatLines.length - 1; i >= 0 && out.length < 3; i--) {
+      const line = this.chatLines[i];
+      if (line.type === ChatLineType.System || line.type === ChatLineType.Error) out.unshift(line);
+    }
+    return out;
   }
 
   /** The input box's on/off buttons. */

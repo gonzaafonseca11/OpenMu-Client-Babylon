@@ -351,6 +351,7 @@ export default {
   'options.partyInviteReply.decline': 'Tolak',
   'options.partyInviteReply.accept': 'Terima',
   'options.chatSystemMessages': 'Pesan sistem',
+  'options.systemLinesCorner': 'Pesan sistem di kiri atas',
   'options.clearCache': 'File game tersimpan',
   'options.materialMetal': 'Logam',
   'options.materialPlate': 'Pelat berwarna',
@@ -366,6 +367,8 @@ export default {
     'Apa yang terjadi dengan undangan party: bertanya, seperti aslinya, atau menolak maupun menerimanya otomatis. Perintah chat /re on, /re off, dan /re auto mengatur hal yang sama.',
   'options.help.chatSystemMessages':
     'Baris sistem dan kesalahan di log chat, sakelar yang sama dengan tombol di kotak chat, tersimpan antarsesi.',
+  'options.help.systemLinesCorner':
+    'Pesan sistem dan kesalahan keluar dari obrolan dan tampil di kiri atas, tiga yang terakhir; obrolan hanya untuk mengobrol.',
   'options.help.presets':
     'Mengatur Pencahayaan, Material, Detail, dan seluruh halaman Gambar ke satu tingkat yang serasi. Rendah juga mematikan semua yang berat, termasuk keramaian, dan merender pada 75%, untuk komputer lambat.',
   'options.help.materialMetal':

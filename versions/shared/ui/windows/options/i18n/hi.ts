@@ -343,6 +343,7 @@ export default {
   'options.partyInviteReply.decline': 'ठुकराएं',
   'options.partyInviteReply.accept': 'स्वीकारें',
   'options.chatSystemMessages': 'सिस्टम संदेश',
+  'options.systemLinesCorner': 'सिस्टम संदेश ऊपर बाईं ओर',
   'options.clearCache': 'कैश की गई गेम फ़ाइलें',
   'options.materialMetal': 'धातु',
   'options.materialPlate': 'रंगी हुई प्लेट',
@@ -358,6 +359,8 @@ export default {
     'पार्टी न्योता मिलने पर क्या हो: मूल की तरह पूछना, या उसे अपने आप ठुकराना या स्वीकारना। /re on, /re off और /re auto चैट कमांड भी यही सेट करते हैं।',
   'options.help.chatSystemMessages':
     'चैट लॉग में सिस्टम और त्रुटि पंक्तियां, चैट बॉक्स के बटन वाला ही स्विच, सेशन के बीच याद रहता है।',
+  'options.help.systemLinesCorner':
+    'सिस्टम और त्रुटि संदेश चैट से हटकर ऊपर बाईं ओर दिखते हैं, आख़िरी तीन; चैट केवल चैट के लिए रहती है।',
   'options.help.presets':
     'रोशनी, मटीरियल, डिटेल और पूरे इमेज पेज को एक ही मेल खाते स्तर पर सेट करता है। कम हर महंगी चीज़ बंद करता है, भीड़ समेत, और 75% पर रेंडर करता है, धीमी मशीनों के लिए।',
   'options.help.materialMetal':

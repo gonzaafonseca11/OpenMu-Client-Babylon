@@ -63,6 +63,7 @@ export default {
   'options.confirmValuableItems': 'Hỏi trước khi vứt hoặc bán đồ quý',
   'options.chatTimestamps': 'Hiện giờ trong trò chuyện',
   'options.chatSystemMessages': 'Tin nhắn hệ thống',
+  'options.systemLinesCorner': 'Tin hệ thống ở góc trên bên trái',
   'options.chatEmojis': 'Hiện emoji trong trò chuyện',
   'options.chatEmojiSize': 'Cỡ emoji trong trò chuyện',
   'options.blockBrowserKeys': 'Chặn phím tắt trình duyệt',
@@ -219,6 +220,8 @@ export default {
   'options.help.chatTimestamps': 'Hiện giờ, ví dụ 14:03, trước mỗi dòng trò chuyện.',
   'options.help.chatSystemMessages':
     'Các dòng hệ thống và lỗi trong khung chat; cùng công tắc với nút ở khung chat, được giữ giữa các phiên.',
+  'options.help.systemLinesCorner':
+    'Tin hệ thống và lỗi rời khỏi khung chat và hiện ở góc trên bên trái, ba tin gần nhất; khung chat chỉ còn để trò chuyện.',
   'options.help.whisperBeep': 'Phát âm thanh khi có người nhắn riêng cho bạn.',
   'options.help.chatEmojiSize':
     'Độ lớn của emoji trong nhật ký chat. Dòng có emoji sẽ cao lên cho vừa; Nhỏ thì mọi dòng giữ chiều cao bình thường, như nhật ký chat cổ điển.',

@@ -64,6 +64,7 @@ export default {
   'options.confirmValuableItems': 'Întreabă înainte de a arunca sau vinde obiecte valoroase',
   'options.chatTimestamps': 'Ora în chat',
   'options.chatSystemMessages': 'Mesaje de sistem',
+  'options.systemLinesCorner': 'Mesaje de sistem în stânga sus',
   'options.chatEmojis': 'Emoji în chat',
   'options.chatEmojiSize': 'Mărime emoji în chat',
   'options.blockBrowserKeys': 'Blochează scurtăturile browserului',
@@ -225,6 +226,8 @@ export default {
     'Afișează ora, de exemplu 14:03, la începutul fiecărui rând din chat.',
   'options.help.chatSystemMessages':
     'Liniile de sistem și de eroare din chat; același comutator ca butonul din chat, păstrat între sesiuni.',
+  'options.help.systemLinesCorner':
+    'Mesajele de sistem și de eroare ies din chat și apar în stânga sus, ultimele trei; chatul rămâne doar pentru chat.',
   'options.help.whisperBeep': 'Redă un sunet când cineva îți trimite o șoaptă.',
   'options.help.chatEmojiSize':
     'Cât de mari apar emoji-urile în jurnalul conversației. Un rând cu emoji crește ca să îl cuprindă; pe Mică, fiecare rând își păstrează înălțimea obișnuită, ca în jurnalul clasic.',

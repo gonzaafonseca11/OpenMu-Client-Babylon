@@ -64,6 +64,7 @@ export default {
   'options.confirmValuableItems': 'Perguntar antes de largar ou vender itens valiosos',
   'options.chatTimestamps': 'Horário no chat',
   'options.chatSystemMessages': 'Mensagens do sistema',
+  'options.systemLinesCorner': 'Avisos do sistema no canto superior esquerdo',
   'options.chatEmojis': 'Emojis no chat',
   'options.chatEmojiSize': 'Tamanho dos emojis no chat',
   'options.blockBrowserKeys': 'Bloquear atalhos do navegador',
@@ -222,6 +223,8 @@ export default {
   'options.help.chatTimestamps': 'Mostra a hora, como 14:03, antes de cada linha do chat.',
   'options.help.chatSystemMessages':
     'As linhas de sistema e de erro no chat; o mesmo interruptor do botão do chat, guardado entre sessões.',
+  'options.help.systemLinesCorner':
+    'As mensagens do sistema e de erro saem do chat e aparecem no canto superior esquerdo, as últimas três; o chat fica só para o chat.',
   'options.help.whisperBeep': 'Toca um som quando alguém sussurra para você.',
   'options.help.chatEmojiSize':
     'O tamanho dos emojis no registro do chat. Uma linha com emoji cresce para caber nele; no Pequeno, cada linha mantém a altura normal, como no registro clássico.',

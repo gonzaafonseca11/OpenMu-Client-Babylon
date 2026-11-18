@@ -341,6 +341,7 @@ export default {
   'options.partyInviteReply.decline': 'Odmítat',
   'options.partyInviteReply.accept': 'Přijímat',
   'options.chatSystemMessages': 'Systémové zprávy',
+  'options.systemLinesCorner': 'Systémové zprávy vlevo nahoře',
   'options.clearCache': 'Herní soubory v mezipaměti',
   'options.materialMetal': 'Kov',
   'options.materialPlate': 'Malované pláty',
@@ -356,6 +357,8 @@ export default {
     'Co se stane s pozvánkou do družiny: zeptat se, jako v originálu, nebo ji samo odmítnout či přijmout. Totéž nastavují příkazy /re on, /re off a /re auto v chatu.',
   'options.help.chatSystemMessages':
     'Systémové a chybové řádky v chatu, stejný přepínač jako tlačítko v okně chatu, pamatuje se mezi relacemi.',
+  'options.help.systemLinesCorner':
+    'Systémové a chybové zprávy odcházejí z chatu a zobrazují se vlevo nahoře, poslední tři; chat zůstává jen pro chat.',
   'options.help.presets':
     'Nastaví Osvětlení, Materiály, Detaily a celou stránku Obraz na jednu odpovídající úroveň. Nízké navíc vypne vše náročné včetně davů a vykresluje na 75%, pro pomalé počítače.',
   'options.help.materialMetal':

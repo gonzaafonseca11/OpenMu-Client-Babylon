@@ -63,6 +63,7 @@ export default {
   'options.confirmValuableItems': '丟棄或出售貴重物品前先確認',
   'options.chatTimestamps': '聊天時間戳記',
   'options.chatSystemMessages': '系統訊息',
+  'options.systemLinesCorner': '系統訊息顯示在左上角',
   'options.chatEmojis': '聊天表情符號',
   'options.chatEmojiSize': '聊天表情符號大小',
   'options.blockBrowserKeys': '封鎖瀏覽器快速鍵',
@@ -207,6 +208,8 @@ export default {
   'options.help.lootZen': '數量達到此值的金幣堆會顯示名稱。關閉時所有金幣堆都顯示名稱。',
   'options.help.chatTimestamps': '在每行聊天訊息前顯示時間，例如14:03。',
   'options.help.chatSystemMessages': '聊天紀錄中的系統與錯誤訊息；與聊天框的按鈕是同一個開關，會跨遊戲階段保留。',
+  'options.help.systemLinesCorner':
+    '系統與錯誤訊息不再出現在聊天欄，而是在左上角顯示最近三條；聊天欄只留聊天。',
   'options.help.whisperBeep': '有人密語你時播放提示音。',
   'options.help.chatEmojiSize': '表情符號在聊天紀錄中顯示的大小。含有表情符號的行會自動加高；設為「小」時每行都維持單行高度，與經典聊天紀錄相同。',
   'options.help.chatEmojis': '將表情符號代碼（兩個冒號之間的名稱）以圖片顯示在聊天與角色頭上，並在聊天框加入表情符號按鈕。關閉時代碼以純文字顯示。',

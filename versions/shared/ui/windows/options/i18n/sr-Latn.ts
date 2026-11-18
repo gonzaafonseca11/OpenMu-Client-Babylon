@@ -338,6 +338,7 @@ export default {
   'options.partyInviteReply.decline': 'Odbij',
   'options.partyInviteReply.accept': 'Prihvati',
   'options.chatSystemMessages': 'Sistemske poruke',
+  'options.systemLinesCorner': 'Sistemske poruke gore levo',
   'options.clearCache': 'Keširane datoteke igre',
   'options.materialMetal': 'Metal',
   'options.materialPlate': 'Obojene ploče',
@@ -353,6 +354,8 @@ export default {
     'Šta se dešava sa pozivom u grupu: pitanje, kao u originalu, ili se sam odbija ili prihvata. Komande /re on, /re off i /re auto u četu podešavaju isto.',
   'options.help.chatSystemMessages':
     'Sistemski redovi i greške u dnevniku četa, isti prekidač kao dugme u polju četa, pamti se između sesija.',
+  'options.help.systemLinesCorner':
+    'Sistemske poruke i greške izlaze iz četa i vide se gore levo, poslednje tri; čet ostaje samo za čet.',
   'options.help.presets':
     'Postavlja Osvetljenje, Materijale, Detalje i celu stranicu Slika na jedan odgovarajući nivo. Nisko takođe isključuje sve zahtevno, uključujući gužve, i renderuje na 75%, za spore računare.',
   'options.help.materialMetal':
