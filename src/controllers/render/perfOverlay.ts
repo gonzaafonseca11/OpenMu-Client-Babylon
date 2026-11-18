@@ -8,6 +8,7 @@ import { texturePacks } from '../assets/texturePacks';
 import { propBatchStats } from './propBatches';
 import { configFingerprintLines } from './configFingerprint';
 import { framePacer } from './fpsLimit';
+import { hookRenderTargets, passesLine, resetPasses, samplePasses, topSources } from './drawBreakdown';
 
 /**
  * Render-budget overlay. Shift+Ctrl+Alt+P toggles it.
@@ -370,6 +371,12 @@ function countPlayingAnimations(scene: Scene): number {
   return playing;
 }
 
+/** The frame's active meshes as a plain list (a SmartArray is not iterable). */
+function activeMeshes(scene: Scene) {
+  const list = scene.getActiveMeshes();
+  return list.data.slice(0, list.length);
+}
+
 function countEnabledMeshes(scene: Scene): number {
   let enabled = 0;
   for (const mesh of scene.meshes) if (mesh.isEnabled(false)) enabled++;
@@ -647,6 +654,8 @@ function render(scene: Scene): void {
     `cpu        ${cpuMs.toFixed(2)} ms   ecs ${updateMs.toFixed(2)} ms`,
     gpuMsLine(),
     `draw calls ${drawCallsTotal < 0 ? '?' : drawCallsPerFrame.toFixed(0)} a frame`,
+    passesLine(drawCallsPerFrame),
+    `sources    ${topSources(activeMeshes(scene), 5).map(([s, n]) => `${s.slice(0, 18)} ${n}`).join('  ')}`,
     `meshes     ${scene.getActiveMeshes().length} act / ${
       countEnabledMeshes(scene)
     } on / ${scene.meshes.length} total`,
@@ -697,6 +706,7 @@ export function installPerfOverlay(scene: Scene): void {
     // either side of a hidden overlay are not next to each other.
     drawCallsTotal = -1;
     drawCallsPerFrame = 0;
+    resetPasses();
 
     startGpuTimer(scene);
     void probeAdapterName();
@@ -714,10 +724,14 @@ export function installPerfOverlay(scene: Scene): void {
     // the overlay's own cost (two scene walks) off the frame budget.
     sampleGpuTime();
     sampleDrawCalls(scene);
+    samplePasses();
 
     sinceRefresh += scene.getEngine().getDeltaTime();
     if (sinceRefresh < 200) return;
     sinceRefresh = 0;
+
+    // A shadow map or glow target made since the last refresh starts being counted.
+    hookRenderTargets(scene);
 
     render(scene);
   });

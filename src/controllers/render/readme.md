@@ -50,7 +50,7 @@ There is no `index.ts` facade; other folders import the modules directly.
   render row, `MapLayer.render`.
 - helpers: `boneLink.ts` (bone-link matrices), `meshAnimation.ts` (`meshAnimationFor`),
   `renderAngles.ts` (`toRenderAngles`, `angleMatrixQuaternion`, `renderAnglesQuaternion`), `viewPlanes.ts`, `frameSnapshot.ts`, `textureScript.ts`,
-  `sceneCover.ts`, `blendMeshes.ts`, `effectOnlyObjects.ts`, `perfOverlay.ts` (Shift+Ctrl+Alt+P; `systemTimesSnapshot` for `app/bench.ts`).
+  `sceneCover.ts`, `blendMeshes.ts`, `effectOnlyObjects.ts`, `perfOverlay.ts` (Shift+Ctrl+Alt+P; `systemTimesSnapshot` for `app/bench.ts`), `drawBreakdown.ts` (the overlay's `passes` line: draws per render target, the main pass the rest; `sources`: the roots with the most active meshes).
 - `configFingerprint.ts`: `configFingerprintLines()` and friends, every game option packed into a hex
   string for the perf overlay.
 - `iconShot.ts`: `iconShots(scene).shoot(job)`, a one-shot picture of a model as an image URL (the bag
@@ -121,6 +121,7 @@ There is no `index.ts` facade; other folders import the modules directly.
 
 ## Tests
 - `perfOverlay.test.ts`: the per-system rows the bench reads, slowest first with their worst tick.
+- `drawBreakdown.test.ts`: a frame split between its passes, a mesh named by its root, the busiest sources first.
 - `configFingerprint.test.ts`: `configuration_hex.md` matches the options, the layout and lengths,
   the number bias round trip, and the pack digest.
 - `fpsLimit.test.ts`: uncapped draws every frame; a cap holds on a faster monitor, averages a rate it does
