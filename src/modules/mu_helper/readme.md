@@ -54,6 +54,10 @@ the two server packets, with its running state and the raw config blob (`MuHelpe
   as the server's ended with the old session. Where the world's `server.json` sets
   `muHelperAfterReconnect`, it is asked to start again (`toggleMuHelper`) 3 s after the resume is
   back in, if it was running at the drop.
+- Stuck swings (ours): OpenMU can refuse a walk stop ("Keeping the walk") and finish the walk without telling the
+  client, so it looks for an automatic-hits area skill's targets (Twisting Slash, range 2) around another tile and
+  every swing hits nothing. After `STUCK_SECONDS` (4) of attacking with no hit on any monster answered
+  (`objectDamaged`, a miss too, net.ts `noteMonsterHit`), the loop walks to its target's tile, which resyncs both.
 
 ## Packets
 - `MuHelperStatusUpdate` (BF 51): starts or pauses the helper; reports the zen it cost.

@@ -88,8 +88,20 @@ let lastTimerBuffSecond = -1;
 let repairCooldown = 0;
 let stopRequestCooldown = 0;
 let moveReissueCooldown = 0;
+/** Ours: the helper's clock, and when the server last answered a hit on a monster (any, a miss too). */
+let clock = 0;
+let lastMonsterHit = 0;
+
+/** Seconds of swinging with no hit answered before the helper steps to its target (ours, see readme). */
+const STUCK_SECONDS = 4;
+
+/** A hit on a monster came back from the server (`objectDamaged`, net.ts). */
+export function noteMonsterHit(): void {
+  lastMonsterHit = clock;
+}
 
 function resetRuntime(): void {
+  lastMonsterHit = clock;
   lastHeroTile = null;
   tickAccum = 0;
   loopCounter = 0;
@@ -441,9 +453,20 @@ function attack(world: World, hero: Entity, config: MuHelperConfig): void {
   ) {
     currentTarget = null;
   }
-  if (!currentTarget) currentTarget = nearestTarget(world, hero, huntDistance);
+  if (!currentTarget) {
+    currentTarget = nearestTarget(world, hero, huntDistance);
+    lastMonsterHit = clock;
+  }
   if (!currentTarget) {
     comboState = 0;
+    return;
+  }
+
+  // The server can keep a walk the client stopped and look for targets around another tile: every
+  // swing then hits nothing. A step to the target puts both on the same tile again.
+  if (clock - lastMonsterHit >= STUCK_SECONDS) {
+    lastMonsterHit = clock;
+    walkTo(hero, entityTile(currentTarget));
     return;
   }
 
@@ -536,6 +559,7 @@ export function updateMuHelperLoop(world: World, dt: number): void {
     currentTarget = null;
   }
 
+  clock += dt;
   repairCooldown -= dt;
   stopRequestCooldown -= dt;
   moveReissueCooldown -= dt;

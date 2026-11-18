@@ -1,26 +1,29 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { World } from '../../ecs/world';
 
-const watched: string[] = [];
-const on = vi.hoisted(() => ({ module: false, helper: { active: false }, state: {} as Record<string, unknown> }));
-vi.mock('../module', () => ({ moduleOn: (id: string) => id !== 'mu_helper' || on.module }));
-/** The item file row the pickup filter reads the drop's name from. */
-vi.mock('@/controllers/item_rules', async importOriginal => {
-  const real = await importOriginal<typeof import('@/controllers/item_rules')>();
-  return { ...real, itemDef: (g: number, i: number) => (g === 6 && i === 4 ? { name: 'Guardian Shield' } : real.itemDef(g, i)) };
-});
-vi.mock('./state', () => ({
-  ensureMuHelperWatching: () => watched.push('watch'),
-  MuHelperState: on.state,
-  MuHelper: on.helper,
-}));
-
-// The setup file's maps already loaded the loop against the real modules: load
-// it again, on a fresh version handle, so the two mocks above are what it sees.
 vi.stubGlobal('location', { search: '', hostname: 'localhost', href: 'http://localhost/' });
-vi.resetModules();
-await (await import('../../version')).loadGameVersion('season6');
-const { updateMuHelperLoop } = await import('./loop');
+
+// The setup file has loaded the loop and its modules already, so a vi.mock never reaches it:
+// the module switch and the server-driven state are spied on and set on the real objects.
+const watched: string[] = [];
+const moduleSwitch = { on: false };
+const mod = await import('../module');
+vi.spyOn(mod, 'moduleOn').mockImplementation(id => id !== 'mu_helper' || moduleSwitch.on);
+const helperState = await import('./state');
+vi.spyOn(helperState, 'ensureMuHelperWatching').mockImplementation(() => void watched.push('watch'));
+const on = {
+  set module(v: boolean) {
+    moduleSwitch.on = v;
+  },
+  helper: helperState.MuHelper as { active: boolean },
+  state: helperState.MuHelperState as unknown as Record<string, unknown>,
+};
+const itemRules = await import('@/controllers/item_rules');
+const realItemDef = itemRules.itemDef;
+/** The item file row the pickup filter reads the drop's name from. */
+vi.spyOn(itemRules, 'itemDef').mockImplementation((g, i) => (g === 6 && i === 4 ? ({ name: 'Guardian Shield' } as never) : realItemDef(g, i)));
+
+const { updateMuHelperLoop, noteMonsterHit } = await import('./loop');
 const { defaultMuHelperConfig } = await import('./config');
 const { HeroSkills } = await import('../skills');
 const { GameOptions } = await import('@/controllers/settings');
@@ -149,5 +152,48 @@ describe('updateMuHelperLoop', () => {
     expect(extraItemTick('Guardian Shield +Luck', true, false)).toBe(false);
     expect(extraItemTick('Guardian Shield +Luck', true, true)).toBe(true);
     expect(extraItemTick('Guardian Shield +Luck', false, true)).toBe(false);
+  });
+});
+
+describe('a helper that hits nothing', () => {
+  // MATAVIEJAS swung Twisting Slash for 20 minutes in LaCleon: the server kept a walk the client
+  // had stopped, so it looked for targets around another tile and hit none. A step resyncs it.
+
+  function attackFor(seconds: number, hitEvery: number | null) {
+    on.module = true;
+    on.state.config = { ...defaultMuHelperConfig(), skills: [41, 0, 0] };
+    HeroSkills.setSkillList([{ index: 0, number: 41, level: 0 }]);
+    const mammoth = { netId: 647, npcType: 455, transform: { pos: { x: 180, z: 187 } } };
+    const moveTo = { point: { x: 0, y: 0 }, handled: true, sendToServer: false };
+    const hero = { transform: { pos: { x: 182, z: 187 } }, attributeSystem: { isAboveZero: () => false }, playerMoveTo: moveTo };
+    const world = {
+      playerEntity: hero,
+      mapIndex: 0,
+      castRequest: null,
+      pickupTarget: null,
+      netObjsQuery: { entities: [mammoth] },
+      playersQuery: { entities: [] },
+      getTerrainFlag: () => 0,
+    } as unknown as World;
+    on.helper.active = true;
+    let walked = false;
+    for (let t = 0; t < seconds; t += 0.25) {
+      world.castRequest = null;
+      if (hitEvery && Math.round(t * 4) % Math.round(hitEvery * 4) === 0) noteMonsterHit();
+      updateMuHelperLoop(world, 0.25);
+      if (moveTo.sendToServer) walked = true;
+    }
+    on.helper.active = false;
+    updateMuHelperLoop(world, 0.25);
+    return { walked, to: moveTo.point };
+  }
+
+  it('steps toward its target after 4 seconds without a single hit', () => {
+    expect(attackFor(3, null).walked).toBe(false);
+    expect(attackFor(5, null)).toEqual({ walked: true, to: { x: 180, y: 187 } });
+  });
+
+  it('stands and swings while the server keeps confirming hits', () => {
+    expect(attackFor(10, 1).walked).toBe(false);
   });
 });

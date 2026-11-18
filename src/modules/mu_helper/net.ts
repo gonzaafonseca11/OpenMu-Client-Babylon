@@ -1,9 +1,15 @@
 import { EventBus } from '@/core/eventBus';
 import { MuHelperConfigurationDataPacket, MuHelperStatusUpdatePacket } from '@versions/shared/packets/ServerToClientPackets';
 import { MuHelper } from './state';
+import { noteMonsterHit } from './loop';
 
 /** Registers this module's packet listeners (see ../module.ts). */
 export function installNet(): void {
+  // Ours: any hit the server answers on a monster tells the loop its swings land (loop.ts, STUCK_SECONDS).
+  EventBus.on('objectDamaged', ({ entity }) => {
+    if (entity?.npcType !== undefined) noteMonsterHit();
+  });
+
   /**
    * BF 51 - `ReceiveMuHelperStatusUpdate`: `Pause` stops the helper, otherwise
    * it starts; with `ConsumeMoney` the server charged `Money` zen for it (the
