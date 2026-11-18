@@ -54,6 +54,8 @@ describe('/move while the MU Helper runs', () => {
 describe('system lines in the top-left corner (ours)', () => {
   it('moves the system and error lines out of the log into the last three of the corner', async () => {
     const { ChatLineType } = await import('../chat/chat');
+    expect(GameOptions.systemLinesCorner).toBe(true);
+    setGameOption('systemLinesCorner', false);
     Social.chatLines = [];
     Social.addChatLine('Ana', 'hola', ChatLineType.Chat);
     for (const text of ['uno', 'dos', 'tres', 'cuatro']) Social.addChatLine('', text, ChatLineType.System);
@@ -65,8 +67,6 @@ describe('system lines in the top-left corner (ours)', () => {
     setGameOption('systemLinesCorner', true);
     expect(Social.cornerSystemLines.map(l => l.text)).toEqual(['tres', 'cuatro', 'error']);
     expect(Social.visibleChatLines.map(l => l.text)).toEqual(['hola']);
-
-    setGameOption('systemLinesCorner', false);
     Social.chatLines = [];
   });
 });

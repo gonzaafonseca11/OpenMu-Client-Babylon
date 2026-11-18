@@ -25,7 +25,7 @@ Always-on interface elements, one folder per element, same shape as a window. Re
 | `map_name_banner` | map_name_banner (hud, 20) | the map name picture on entering a map | Loading.sceneLoading, events |
 | `perf_readout` | perf_readout (hud, 30) | frames, frame time, server round trip, page memory (Chrome) and the scene's meshes / textures / materials, to see what grows over a long session | Ecs.world, options |
 | `notices` | notices (hud, 40) | the centred notice stack | chat |
-| `system_lines` | system_lines (hud, 45) | the last three system and error lines at the top left, out of the chat log (ours, `systemLinesCorner`, off by default) | social, options |
+| `system_lines` | system_lines (hud, 45) | the last three system and error lines at the top left, out of the chat log (ours, `systemLinesCorner`, on by default) | social, options |
 | `slide_help` | slide_help (hud, 50) | the scrolling help band at the top | options |
 | `buff_bar` | buff_bar (hud, 60) | the hero's buffs and debuffs with tooltips | skills |
 | `bottom_bar` | bottom_bar (hud, 70) | main frame: orbs, potion slots (as many as `features.itemHotkeys.slots`), skill hotkeys and fan, exp bar | Hero, skills, inventory |

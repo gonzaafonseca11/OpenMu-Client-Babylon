@@ -699,7 +699,7 @@ const DEFAULTS: GameOptions = {
   lootZen: 0,
   chatTimestamps: false,
   chatSystemMessages: true,
-  systemLinesCorner: false,
+  systemLinesCorner: true,
   chatEmojis: true,
   chatEmojiSize: 2,
   uiScale: 3,
