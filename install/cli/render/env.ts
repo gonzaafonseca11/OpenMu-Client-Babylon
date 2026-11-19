@@ -50,6 +50,8 @@ export function serviceEnv(c: Config): Partial<Record<Service, Env>> {
       LOG_PACKETS: 'off',
       TRACK: 'on',
       TRACK_DB_PATH: DATA.track,
+      // A busy x500 server journals about 2 GB a day; 30 days filled a 96 GB disk.
+      TRACK_RETAIN_DAYS: '3',
       BAND: onOff(c.band),
       PING: onOff(c.ping),
       WEATHER: onOff(c.weather),
