@@ -105,6 +105,9 @@ const WALK_EVENT_MS = 5000;
 const ATTACK_EVENT_MS = 3000;
 /** A pickup / drop / buy request is matched with its answer inside this window. */
 const PENDING_MS = 3000;
+/** Monster kills and experience are journaled as one summary per this window. */
+const GRIND_MS = 60_000;
+type Grind = { since: number; exp: number; gains: number; kills: Map<string, number> };
 /** The same potion slot inside this window is one line. */
 const CONSUME_EVENT_MS = 5000;
 /** The scope and the drops are bounded; a stream that never removes is capped. */
@@ -194,6 +197,7 @@ export class TrackedSession {
   private lastAttack = { target: -1, at: 0 };
   private lastSkill = { skill: -1, target: -1, at: 0 };
   private lastConsume = { slot: -1, at: 0 };
+  private grind: Grind | null = null;
 
   constructor(
     readonly nonce: string | null,
@@ -269,6 +273,7 @@ export class TrackedSession {
   close(): void {
     if (this.closed) return;
     this.closed = true;
+    this.flushGrind();
     if (this.identified) this.emit('logout', 'disconnected');
   }
 
@@ -616,6 +621,11 @@ export class TrackedSession {
       });
     } else if (killer === this.objectId) {
       const victim = this.scope.get(killed);
+      if (victim && victim.kind !== 'player') {
+        const kills = this.grinding().kills;
+        kills.set(victim.name, (kills.get(victim.name) ?? 0) + 1);
+        return;
+      }
       const what = victim ? (victim.kind === 'player' ? `player ${victim.name}` : victim.name) : `#${killed}`;
       this.emit('kill', `killed ${what}`, {
         victim: victim?.name ?? null,
@@ -628,11 +638,27 @@ export class TrackedSession {
   private onExperience(p: ExperienceGainedPacket): void {
     const exp = p.AddedExperience;
     if (!exp) return;
-    const from = this.scope.get(p.KilledObjectId & ID_MASK);
-    this.emit('exp', `+${exp} exp${from ? ` (${from.name})` : ''}`, {
-      exp,
-      from: from?.name ?? null,
-    });
+    const grind = this.grinding();
+    grind.exp += exp;
+    grind.gains++;
+  }
+
+  /** The minute's monster kills and experience, summed: a line per hit was 90% of the journal, about 70 MB a player a day at x500. */
+  private grinding(): Grind {
+    if (this.grind && this.now() - this.grind.since >= GRIND_MS) this.flushGrind();
+    return (this.grind ??= { since: this.now(), exp: 0, gains: 0, kills: new Map() });
+  }
+
+  private flushGrind(): void {
+    const grind = this.grind;
+    this.grind = null;
+    if (!grind) return;
+    if (grind.gains) this.emit('exp', `+${grind.exp} exp from ${grind.gains} gains`, { exp: grind.exp, gains: grind.gains });
+    let count = 0;
+    for (const n of grind.kills.values()) count += n;
+    if (!count) return;
+    const top = [...grind.kills].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([name, n]) => `${name} x${n}`);
+    this.emit('kill', `killed ${count} monsters (${top.join(', ')})`, { count, monsters: Object.fromEntries(grind.kills) });
   }
 
   private onItemsDropped(p: ItemsDroppedPacket): void {

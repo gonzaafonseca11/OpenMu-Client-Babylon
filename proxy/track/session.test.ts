@@ -202,17 +202,62 @@ describe('TrackedSession', () => {
     expect(h.kinds().filter(k => k === 'attack')).toHaveLength(1);
     expect(h.last().text).toBe('attacked Bull Fighter');
 
+    // A monster's kill and its experience wait for the minute's summary (grinding tests below).
     h.server(objectKilled(500, 77));
-    expect(h.last().kind).toBe('kill');
-    expect(h.last().text).toBe('killed Bull Fighter');
-
     h.server(experience(500, 240));
-    expect(h.last().kind).toBe('exp');
-    expect(h.last().text).toBe('+240 exp (Bull Fighter)');
+    expect(h.kinds()).not.toContain('kill');
+    expect(h.kinds()).not.toContain('exp');
 
     h.server(objectKilled(77, 600));
     expect(h.last().kind).toBe('death');
     expect(h.last().text).toBe('was killed by Bobby');
+  });
+
+  // One line per monster and per experience gain was 90% of the journal: about 2 GB a day for 30 players at x500.
+  describe('grinding', () => {
+    const grind = (h: ReturnType<typeof harness>, times: number) => {
+      for (let i = 0; i < times; i++) {
+        h.server(objectKilled(500, 77));
+        h.server(experience(500, 100));
+      }
+    };
+    const setup = () => {
+      const h = harness();
+      h.enter();
+      h.server(npcsInScope([{ id: 500, type: 0, x: 131, y: 121 }]));
+      return h;
+    };
+
+    it('sums a minute of monster kills and experience into one line each', () => {
+      const h = setup();
+      grind(h, 3);
+      h.tick(59_000);
+      grind(h, 1);
+      expect(h.kinds().filter(k => k === 'exp' || k === 'kill')).toEqual([]);
+
+      // The first gain past the minute closes it and starts the next.
+      h.tick(1_000);
+      grind(h, 1);
+      const exp = h.events.filter(e => e.kind === 'exp');
+      const kill = h.events.filter(e => e.kind === 'kill');
+      expect(exp.map(e => e.text)).toEqual(['+400 exp from 4 gains']);
+      expect(exp[0].data).toEqual({ exp: 400, gains: 4 });
+      expect(kill.map(e => e.text)).toEqual(['killed 4 monsters (Bull Fighter x4)']);
+    });
+
+    it('says what is pending when the player leaves', () => {
+      const h = setup();
+      grind(h, 2);
+      h.session.close();
+      expect(h.kinds().slice(-3)).toEqual(['exp', 'kill', 'logout']);
+    });
+
+    it('still names a player kill as it happens', () => {
+      const h = setup();
+      h.server(playersInScope([{ id: 600, name: 'Bobby', x: 132, y: 122 }]));
+      h.server(objectKilled(600, 77));
+      expect(h.last().text).toBe('killed player Bobby');
+    });
   });
 
   it('matches a pickup with the item the server then hands over', () => {
