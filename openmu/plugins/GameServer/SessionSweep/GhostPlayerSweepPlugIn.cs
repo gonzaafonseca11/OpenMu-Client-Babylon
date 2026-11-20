@@ -90,7 +90,8 @@ public class GhostPlayerSweepPlugIn : IPeriodicTaskPlugIn
             return !manager.TryGetPlayer(account.LoginName, out var held) || !ReferenceEquals(held, player);
         }
 
-        return player is RemotePlayer && ConnectionOf?.GetValue(player) is IConnection { Connected: false };
+        // The disconnect clears the connection (null), so a missing one is gone too.
+        return player is RemotePlayer && ConnectionOf is not null && ConnectionOf.GetValue(player) is not IConnection { Connected: true };
     }
 
     private static async Task SweepAsync(GameServerContext server, ContextState state)

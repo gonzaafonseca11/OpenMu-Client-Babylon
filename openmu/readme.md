@@ -135,7 +135,9 @@ session the offline manager no longer held kept playing a copy beside the real c
 pet broke and was deleted, every save of the copy failed on that pet (`Save conflict for "Item" ... state
 Modified`, 766 times). How the copy outlived its handover was not found. `GameServer/SessionSweep/
 GhostPlayerSweepPlugIn` takes out, every 30 s and after a minute of grace, an `OfflinePlayer` that is not the
-one the manager holds for its account, and a `RemotePlayer` whose connection is gone. It disposes them, which
+one the manager holds for its account, and a `RemotePlayer` whose connection is closed or already cleared (the
+disconnect sets it to null: after `/offlevel` the player it handed over to the offline session stayed listed
+like that, counted as online until a restart). It disposes them, which
 removes them from the game and drops their context: a ghost's stale copy is never saved over the real one.
 Each removal is logged as "Ghost player removed".
 
