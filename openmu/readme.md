@@ -128,6 +128,17 @@ Elf Soldier's Ancient Stick +4. `GameLogic/SaveGuard/SaveUnsavedDropPlugIn` save
 dropped for, as it lands; a player's own drop was saved before it fell, and a generated drop is a
 `TemporaryItem`, so neither is touched.
 
+## Ghost players
+
+One account's character was on the server twice for over a day (the status API listed it twice): an offline
+session the offline manager no longer held kept playing a copy beside the real character. When the real one's
+pet broke and was deleted, every save of the copy failed on that pet (`Save conflict for "Item" ... state
+Modified`, 766 times). How the copy outlived its handover was not found. `GameServer/SessionSweep/
+GhostPlayerSweepPlugIn` takes out, every 30 s and after a minute of grace, an `OfflinePlayer` that is not the
+one the manager holds for its account, and a `RemotePlayer` whose connection is gone. It disposes them, which
+removes them from the game and drops their context: a ghost's stale copy is never saved over the real one.
+Each removal is logged as "Ghost player removed".
+
 ## Ghost sessions
 
 An account the login server holds while nobody of it is on any game server answers "already connected"
