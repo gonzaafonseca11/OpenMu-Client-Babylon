@@ -120,6 +120,14 @@ the next mix. `GameLogic/SaveGuard/SaveBeforeMixPlugIn` saves the player when an
 `GameServer/RemoteView/SaveGuard/SaveAfterCraftingResultPlugIn` (OpenMU's crafting result, then a save) after
 each mix, so no mix deletes an unsaved option. Drop both once OpenMU includes #988.
 
+The same failure came from the ground: a quest reward on a full inventory (`QuestCompletionAction`, and the
+event rewards that drop a `CreateNew` item) lies there unsaved, and the pickup attaches it as if it were
+saved, so every later save tries to insert its option links for an item row that does not exist (FK
+`FK_ItemOptionLink_Item_ItemId`). One player lost a reset, a shield and hours of play to it, twice, from the
+Elf Soldier's Ancient Stick +4. `GameLogic/SaveGuard/SaveUnsavedDropPlugIn` saves the player such an item is
+dropped for, as it lands; a player's own drop was saved before it fell, and a generated drop is a
+`TemporaryItem`, so neither is touched.
+
 ## Ghost sessions
 
 An account the login server holds while nobody of it is on any game server answers "already connected"
