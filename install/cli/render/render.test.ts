@@ -28,7 +28,7 @@ describe('service env', () => {
   it('pins the proxy to OpenMU and turns the dev switches off', () => {
     expect(env.proxy).toMatchObject({ LOG_PACKETS: 'off', ADMIN_OPEN: 'off', ADMIN_DEMO: 'off', HOSTNAME: '0.0.0.0' });
     // The journal grows about 2 GB a day on a busy x500 server (one line per experience gain).
-    expect(env.proxy.TRACK_RETAIN_DAYS).toBe('3');
+    expect(env.proxy?.TRACK_RETAIN_DAYS).toBe('3');
     const rules = parseAllowTargets(allowTargets());
     expect(rules).toHaveLength(13);
     expect(rules.every(r => r.host === '127.0.0.1' && r.port !== null)).toBe(true);

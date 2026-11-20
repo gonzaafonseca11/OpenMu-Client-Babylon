@@ -9,6 +9,7 @@ export default {
   'resume.failed': 'Reconectarea a eșuat',
   'resume.cancelled': 'Reconectare anulată',
   'login.closingOldSession': 'Contul este încă conectat: se închide sesiunea veche și se reîncearcă...',
+  'login.loggedInElsewhere': 'Contul tău s-a conectat din altă filă sau de pe alt dispozitiv.',
   'login.tokenRefused': 'Autentificarea salvată a expirat. Introdu parola.',
   'login.vipOnly': 'Acest server este doar pentru conturi VIP. Devino VIP pe site.',
   'login.tokenUnanswered': 'Serverul nu a răspuns la autentificarea salvată. Introdu parola.',

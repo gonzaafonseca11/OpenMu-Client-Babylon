@@ -10,6 +10,7 @@ export default {
   'resume.cancelled': 'Reconnexió cancel·lada',
   'login.closingOldSession':
     'El compte encara està connectat: es tanca la sessió anterior i es torna a provar...',
+  'login.loggedInElsewhere': 'El teu compte ha iniciat sessió des d’una altra pestanya o dispositiu.',
   'login.tokenRefused': 'L\'inici de sessió desat ha caducat. Escriu la contrasenya.',
   'login.vipOnly': 'Aquest servidor és només per a comptes VIP. Fes-te VIP al web.',
   'login.tokenUnanswered':

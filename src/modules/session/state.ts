@@ -141,6 +141,14 @@ export const Session = new (class {
     this.playOnline();
   }
 
+  /** Another login of this account was refused because of us: leave on purpose (no resume) so its retry gets in. */
+  yieldToNewLogin() {
+    this.disconnectFromGameServer();
+    this.loginProcessing = false;
+    this.playOnline();
+    this.loginError = t('login.loggedInElsewhere');
+  }
+
   /**
    * A socket we did not close ourselves went away (`wsClosed` / `wsError`
    * from `createSocket`). Deliberate closes clear `gsSocket` / `csSocket`
@@ -601,6 +609,7 @@ export const Session = new (class {
       rememberLogin: observable,
       playOnline: action,
       cancelLogin: action,
+      yieldToNewLogin: action,
       onSocketLost: action,
     });
 

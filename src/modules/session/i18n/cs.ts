@@ -9,6 +9,7 @@ export default {
   'resume.failed': 'Nepodařilo se znovu připojit',
   'resume.cancelled': 'Opětovné připojení zrušeno',
   'login.closingOldSession': 'Účet je stále připojen: ukončuji starou relaci a zkouším to znovu...',
+  'login.loggedInElsewhere': 'Tvůj účet se přihlásil z jiné karty nebo zařízení.',
   'login.tokenRefused': 'Tvoje uložené přihlášení vypršelo. Zadej heslo.',
   'login.vipOnly': 'Tento server je jen pro VIP účty. Staňte se VIP na webu.',
   'login.tokenUnanswered': 'Server na uložené přihlášení neodpověděl. Zadej heslo.',

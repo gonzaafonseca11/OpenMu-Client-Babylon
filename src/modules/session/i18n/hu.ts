@@ -10,6 +10,7 @@ export default {
   'resume.cancelled': 'Újracsatlakozás megszakítva',
   'login.closingOldSession':
     'A fiók még csatlakozva van: a régi munkamenet bezárása és újrapróbálkozás...',
+  'login.loggedInElsewhere': 'A fiókod egy másik lapon vagy eszközön jelentkezett be.',
   'login.tokenRefused': 'A mentett bejelentkezés lejárt. Add meg a jelszavadat.',
   'login.vipOnly': 'Ez a szerver csak VIP fiókoknak szól. Legyél VIP a weboldalon.',
   'login.tokenUnanswered':

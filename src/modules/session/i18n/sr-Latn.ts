@@ -9,6 +9,7 @@ export default {
   'resume.failed': 'Ponovno povezivanje nije uspelo',
   'resume.cancelled': 'Ponovno povezivanje je otkazano',
   'login.closingOldSession': 'Nalog je još povezan: zatvaram staru sesiju i pokušavam ponovo...',
+  'login.loggedInElsewhere': 'Tvoj nalog se prijavio sa druge kartice ili uređaja.',
   'login.tokenRefused': 'Tvoja sačuvana prijava je istekla. Unesi lozinku.',
   'login.vipOnly': 'Ovaj server je samo za VIP naloge. Postani VIP na sajtu.',
   'login.tokenUnanswered': 'Server nije odgovorio na sačuvanu prijavu. Unesi lozinku.',

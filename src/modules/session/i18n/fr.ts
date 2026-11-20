@@ -9,6 +9,7 @@ export default {
   'resume.failed': 'Reconnexion impossible',
   'resume.cancelled': 'Reconnexion annulée',
   'login.closingOldSession': 'Compte encore connecté : fermeture de l’ancienne session et nouvel essai...',
+  'login.loggedInElsewhere': 'Ton compte s’est connecté depuis un autre onglet ou appareil.',
   'login.tokenRefused': 'Votre connexion enregistrée a expiré. Saisissez votre mot de passe.',
   'login.vipOnly': 'Ce serveur est réservé aux comptes VIP. Deviens VIP sur le site.',
   'login.tokenUnanswered': 'Le serveur n’a pas répondu à la connexion enregistrée. Saisissez votre mot de passe.',

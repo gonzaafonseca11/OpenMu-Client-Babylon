@@ -9,6 +9,7 @@ export default {
   'resume.failed': 'اتصال دوباره ممکن نشد',
   'resume.cancelled': 'اتصال دوباره لغو شد',
   'login.closingOldSession': 'حساب هنوز متصل است: بستن نشست قدیمی و تلاش دوباره...',
+  'login.loggedInElsewhere': 'حساب شما از زبانه یا دستگاه دیگری وارد شد.',
   'login.tokenRefused': 'ورود ذخیره‌شده شما منقضی شده است. رمز عبور را وارد کنید.',
   'login.vipOnly': 'این سرور فقط برای حساب‌های VIP است. در وب‌سایت VIP شوید.',
   'login.tokenUnanswered': 'سرور به ورود ذخیره‌شده پاسخ نداد. رمز عبور را وارد کنید.',

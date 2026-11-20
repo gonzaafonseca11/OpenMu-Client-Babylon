@@ -9,6 +9,7 @@ export default {
   'resume.failed': 'Tidak dapat menyambung ulang',
   'resume.cancelled': 'Penyambungan ulang dibatalkan',
   'login.closingOldSession': 'Akun masih terhubung: menutup sesi lama dan mencoba lagi...',
+  'login.loggedInElsewhere': 'Akunmu masuk dari tab atau perangkat lain.',
   'login.tokenRefused': 'Login tersimpanmu sudah kedaluwarsa. Masukkan kata sandimu.',
   'login.vipOnly': 'Server ini hanya untuk akun VIP. Jadilah VIP di situs web.',
   'login.tokenUnanswered': 'Server tidak menjawab login tersimpan. Masukkan kata sandimu.',

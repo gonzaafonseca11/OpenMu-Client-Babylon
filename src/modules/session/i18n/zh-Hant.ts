@@ -9,6 +9,7 @@ export default {
   'resume.failed': '無法重新連線',
   'resume.cancelled': '已取消重新連線',
   'login.closingOldSession': '帳號仍在線上：正在關閉舊的連線並重試……',
+  'login.loggedInElsewhere': '你的帳號已從其他分頁或裝置登入。',
   'login.tokenRefused': '已儲存的登入資訊已過期，請輸入密碼。',
   'login.vipOnly': '此伺服器僅限 VIP 帳號。請到網站成為 VIP。',
   'login.tokenUnanswered': '伺服器沒有回應已儲存的登入資訊，請輸入密碼。',

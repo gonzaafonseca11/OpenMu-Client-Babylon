@@ -45,6 +45,29 @@ describe('Session.cancelLogin', () => {
   });
 });
 
+// A session left open in another tab held the account for 17 minutes while the player was told
+// "already connected" 15 times; told of the new login, it now steps aside so the retry gets in.
+describe('Session.yieldToNewLogin', () => {
+  it('closes the game server on purpose, without a resume, and says why on the server list', async () => {
+    const { AppState, UIState } = await import('@/controllers/interface/uiState');
+    const dial = vi.spyOn(Session, 'connectToConnectServer').mockImplementation(() => undefined);
+    const resume = vi.fn(() => true);
+    Session.resumeHook = resume;
+    const close = vi.fn();
+    Session.gsSocket = { close } as unknown as WebSocket;
+    AppState.uiState = UIState.World;
+
+    Session.yieldToNewLogin();
+
+    expect(close).toHaveBeenCalled();
+    expect(Session.gsSocket).toBeUndefined();
+    expect(resume).not.toHaveBeenCalled();
+    expect(dial).toHaveBeenCalled();
+    expect(AppState.uiState).toBe(UIState.Servers);
+    expect(Session.loginError).toContain('another');
+  });
+});
+
 // OpenMU reads every login of 42 bytes or more as LoginLongPassword (20-byte password, LogInHandlerPlugIn):
 // a 10-character password has no terminating zero in the short packet, so the bytes after it joined it.
 describe('Session.loginRequest', () => {

@@ -10,6 +10,7 @@ export default {
   'resume.cancelled': 'Kinansela ang muling pagkonekta',
   'login.closingOldSession':
     'Nakakonekta pa ang account: isinasara ang lumang session at sinusubukan muli...',
+  'login.loggedInElsewhere': 'Nag-log in ang account mo mula sa ibang tab o device.',
   'login.tokenRefused': 'Nag-expire na ang naka-save mong login. Ilagay ang iyong password.',
   'login.vipOnly': 'Para lang sa mga VIP account ang server na ito. Maging VIP sa website.',
   'login.tokenUnanswered':

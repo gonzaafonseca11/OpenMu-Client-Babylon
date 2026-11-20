@@ -9,6 +9,7 @@ export default {
   'resume.failed': 'Yeniden bağlanılamadı',
   'resume.cancelled': 'Yeniden bağlanma iptal edildi',
   'login.closingOldSession': 'Hesap hâlâ bağlı: eski oturum kapatılıp yeniden deneniyor...',
+  'login.loggedInElsewhere': 'Hesabına başka bir sekmeden veya cihazdan giriş yapıldı.',
   'login.tokenRefused': 'Kayıtlı girişinin süresi doldu. Şifreni gir.',
   'login.vipOnly': 'Bu sunucu yalnızca VIP hesaplar içindir. Web sitesinden VIP ol.',
   'login.tokenUnanswered': 'Sunucu kayıtlı girişe yanıt vermedi. Şifreni gir.',

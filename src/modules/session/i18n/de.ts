@@ -9,6 +9,7 @@ export default {
   'resume.failed': 'Neuverbindung fehlgeschlagen',
   'resume.cancelled': 'Neuverbindung abgebrochen',
   'login.closingOldSession': 'Konto noch verbunden: alte Sitzung wird geschlossen, neuer Versuch...',
+  'login.loggedInElsewhere': 'Dein Konto hat sich in einem anderen Tab oder auf einem anderen Gerät angemeldet.',
   'login.tokenRefused': 'Deine gespeicherte Anmeldung ist abgelaufen. Gib dein Passwort ein.',
   'login.vipOnly': 'Dieser Server ist nur für VIP-Konten. Werde VIP auf der Website.',
   'login.tokenUnanswered': 'Der Server hat auf die gespeicherte Anmeldung nicht geantwortet. Gib dein Passwort ein.',

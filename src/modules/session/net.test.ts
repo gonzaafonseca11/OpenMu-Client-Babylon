@@ -6,12 +6,14 @@ vi.hoisted(() => {
 });
 
 /** The world's `retryLoginWhenConnected` and `loginTokens`, set per test. */
-const world = vi.hoisted(() => ({ retryLogin: false, tokens: false }));
-vi.mock('../servers/serverManifest', async importOriginal => ({
-  ...(await importOriginal<typeof import('../servers/serverManifest')>()),
-  serverSetting: (key: string) => (key === 'retryLoginWhenConnected' ? world.retryLogin : false),
-  serverOffersLoginTokens: () => world.tokens,
-}));
+const world = { retryLogin: false, tokens: false };
+// Spies, not vi.mock: the setup file loads the manifest before a mock could replace it.
+const manifest = await import('../servers/serverManifest');
+const spyWorld = () => {
+  vi.spyOn(manifest, 'serverSetting').mockImplementation(((key: string) => (key === 'retryLoginWhenConnected' ? world.retryLogin : false)) as typeof manifest.serverSetting);
+  vi.spyOn(manifest, 'serverOffersLoginTokens').mockImplementation(() => world.tokens);
+};
+beforeEach(spyWorld);
 
 // Skills first: they keep the app import cycle in order (versions/shared/skills/readme.md).
 await import('@versions/shared/skills/skillVisuals');
@@ -271,5 +273,33 @@ describe('login tokens', () => {
     const again = send.mock.calls.at(-1)?.[0] as DataView;
     expect([again.getUint8(0), again.getUint8(2), again.getUint8(3)]).toEqual([0xc3, 0xe7, 0x05]);
     expect(new Uint8Array(again.buffer, again.byteOffset + 14, 32)).toEqual(NEXT);
+  });
+});
+
+// OpenMU sends the logged-in session this line when the right password is refused as "already connected".
+describe('the login attempt warning', () => {
+  const WARNING = "000000000Another user attempted to login this account. If it wasn't you, we suggest you to change your password.";
+  const warn = async () => {
+    const { ServerMessagePacket } = await import('@versions/shared/packets/ServerToClientPackets');
+    const p = ServerMessagePacket.createPacket(4 + WARNING.length + 1);
+    p.Type = 1;
+    p.setMessage(WARNING);
+    EventBus.emit('ServerMessage', p.buffer);
+  };
+
+  afterEach(() => vi.restoreAllMocks());
+
+  it('makes this session step aside where the world retries a refused login', async () => {
+    world.retryLogin = true;
+    const yieldTo = vi.spyOn(Session, 'yieldToNewLogin').mockImplementation(() => undefined);
+    await warn();
+    expect(yieldTo).toHaveBeenCalledTimes(1);
+  });
+
+  it('only shows the line, as the original, by default', async () => {
+    world.retryLogin = false;
+    const yieldTo = vi.spyOn(Session, 'yieldToNewLogin').mockImplementation(() => undefined);
+    await warn();
+    expect(yieldTo).not.toHaveBeenCalled();
   });
 });

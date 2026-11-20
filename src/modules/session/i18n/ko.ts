@@ -9,6 +9,7 @@ export default {
   'resume.failed': '재접속하지 못했습니다',
   'resume.cancelled': '재접속을 취소했습니다',
   'login.closingOldSession': '계정이 아직 접속 중입니다. 이전 세션을 닫고 다시 시도하는 중...',
+  'login.loggedInElsewhere': '다른 탭이나 기기에서 계정에 로그인했습니다.',
   'login.tokenRefused': '저장된 로그인이 만료되었습니다. 비밀번호를 입력하세요.',
   'login.vipOnly': '이 서버는 VIP 계정 전용입니다. 웹사이트에서 VIP가 되세요.',
   'login.tokenUnanswered': '서버가 저장된 로그인에 응답하지 않았습니다. 비밀번호를 입력하세요.',

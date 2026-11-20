@@ -8,7 +8,9 @@ import {
   LoginTokenAnswerLoginTokenStatusEnum,
   LoginTokenAnswerPacket,
   LogoutResponsePacket,
+  ServerMessagePacket,
 } from '@versions/shared/packets/ServerToClientPackets';
+import { isLoginAttemptWarning } from '../chat';
 import { SessionExit } from './sessionExit';
 import { SessionResume } from './sessionResume';
 import { Merchant } from '@/modules/npc_shop';
@@ -155,6 +157,14 @@ export function installNet(): void {
       Session.loginError = tokenRefused ? t('login.tokenRefused') : vipOnly ? t('login.vipOnly') : `Error: ${LoginResponseLoginResultEnum[p.Success]}`;
       AppState.uiState = UIState.Login;
     });
+  });
+
+  // The other half of `retryLoginWhenConnected`: told a login of this account was refused, step aside for its retry.
+  EventBus.on('ServerMessage', bytes => {
+    const p = new ServerMessagePacket(bytes);
+    if (p.Type !== 1 || !serverSetting('retryLoginWhenConnected')) return;
+    // OpenMU's nine-zero prefix and the packet padding off, as chat/net.ts reads it.
+    if (isLoginAttemptWarning(p.Message.replace(/\0[\s\S]*$/, '').replace(/^0{9}/, ''))) Session.yieldToNewLogin();
   });
 
   // E7 04 (our OpenMU plugin): a new login token, kept in place of the one the world had.

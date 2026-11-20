@@ -10,6 +10,7 @@ export default {
   'resume.cancelled': 'Birkonexioa bertan behera utzi da',
   'login.closingOldSession':
     'Kontua oraindik konektatuta dago: saio zaharra ixten eta berriro saiatzen...',
+  'login.loggedInElsewhere': 'Zure kontuak beste fitxa edo gailu batetik saioa hasi du.',
   'login.tokenRefused': 'Gordetako saioa iraungi da. Idatzi zure pasahitza.',
   'login.vipOnly': 'Zerbitzari hau VIP kontuentzat bakarrik da. Egin zaitez VIP webgunean.',
   'login.tokenUnanswered': 'Zerbitzariak ez dio gordetako saioari erantzun. Idatzi zure pasahitza.',
