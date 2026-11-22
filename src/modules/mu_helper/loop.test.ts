@@ -85,6 +85,12 @@ describe('updateMuHelperLoop', () => {
     expect(buffTick(360, [8])).toBe(false);
   });
 
+  it('casts the Berserker the master tree raised, which OpenMU shows as the Berserker buff (81)', () => {
+    expect(buffTick(470, [])).toBe(true);
+    expect(buffTick(470, [81])).toBe(false);
+    expect(buffTick(472, [])).toBe(true);
+  });
+
   it('never casts a skill BuffTarget does not list', () => {
     expect(buffTick(422, [])).toBe(false);
   });

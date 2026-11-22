@@ -54,7 +54,7 @@ const BUFF_RULES: Readonly<Record<number, readonly [effect: number, timed: boole
   48: [8, true, false], 356: [8, true, false], 360: [8, true, false], // Swell Life
   233: [82, false, false], 380: [82, false, false], 383: [82, false, false], // Expansion of Wizardry
   64: [5, false, false], 511: [5, false, false], 515: [5, false, false], 517: [5, false, false], // Critical Damage
-  218: [81, false, false], 469: [81, false, false], // Berserker
+  218: [81, false, false], 469: [81, false, false], 470: [81, false, false], 472: [81, false, false], // Berserker
   217: [71, false, false], // Damage Reflection
   266: [129, true, false], // the Rage Fighter's party buffs
   267: [130, true, false], 573: [130, true, false],
