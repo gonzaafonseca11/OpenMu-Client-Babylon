@@ -33,6 +33,14 @@ const EDGE_MARGIN = 32;
 /** Screen pixels kept free around a window when fitting its scale to the viewport. */
 const FIT_MARGIN = 12;
 
+/** Screen pixels two windows must share on both axes before `keepApart` moves one, and the gap it leaves. */
+const OVERLAP_MIN = 24;
+const APART_GAP = 4;
+
+type Box = { left: number; right: number; top: number; bottom: number };
+const overlapX = (a: Box, b: Box) => Math.min(a.right, b.right) - Math.max(a.left, b.left);
+const overlapY = (a: Box, b: Box) => Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+
 /**
  * z-index of the bottom window. Every stacked window sits at base + its
  * position in `order`, so the windows always lie in `[WINDOW_Z_BASE,
@@ -61,6 +69,8 @@ export const MuWindows = new (class _MuWindows {
   /** Closers of the windows the hidden interface unmounted, for `closeAll` (top last). */
   private parked = new Map<string, WindowCloser>();
   private sizes = new Map<string, WindowSize>();
+  /** The open windows' roots, for `keepApart`. */
+  private elements = new Map<string, HTMLElement>();
   /** Observable mirror of the stage size, so scales re-fit on resize. */
   private viewport = getUiViewport();
 
@@ -134,9 +144,10 @@ export const MuWindows = new (class _MuWindows {
 
   // ---- the stack ----------------------------------------------------------
 
-  /** A window came on screen: it joins the stack on top. */
-  register(id: string, size?: WindowSize, onClose?: WindowCloser): void {
+  /** A window came on screen: it joins the stack on top. `el`, its root, lets `keepApart` see where it is. */
+  register(id: string, size?: WindowSize, onClose?: WindowCloser, el?: HTMLElement): void {
     if (size) this.sizes.set(id, size);
+    if (el) this.elements.set(id, el);
     if (onClose) this.closers.set(id, onClose);
     else this.closers.delete(id);
     this.parked.delete(id);
@@ -152,6 +163,7 @@ export const MuWindows = new (class _MuWindows {
     if (closer && AppState.hudHidden) this.parked.set(id, closer);
     this.closers.delete(id);
     this.sizes.delete(id);
+    this.elements.delete(id);
     runInAction(() => {
       if (this.order.includes(id)) this.order = this.order.filter(w => w !== id);
     });
@@ -219,6 +231,26 @@ export const MuWindows = new (class _MuWindows {
     });
 
     this.save();
+  }
+
+  /**
+   * Ours: a window opening over another open one (placements the player saved that way) moves beside it, to its
+   * left, or to its right when the left has no room. It is saved there. Once, as it opens.
+   */
+  keepApart(id: string): void {
+    const el = this.elements.get(id);
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const other = this.order
+      .filter(w => w !== id)
+      .reverse()
+      .map(w => this.elements.get(w)?.getBoundingClientRect())
+      .find(o => o && overlapX(r, o) > OVERLAP_MIN && overlapY(r, o) > OVERLAP_MIN);
+    if (!other) return;
+    const left = other.left - r.width - APART_GAP;
+    const right = other.right + APART_GAP;
+    const x = left >= 0 ? left : right + r.width <= this.viewport.width ? right : null;
+    if (x !== null) this.moveTo(id, x, r.top);
   }
 
   setScale(id: string, scale: number): void {

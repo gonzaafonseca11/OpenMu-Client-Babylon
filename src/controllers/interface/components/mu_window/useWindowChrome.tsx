@@ -67,7 +67,8 @@ export function useWindowChrome(
   const ref = useCallback(
     (el: HTMLElement | null) => {
       if (el) {
-        MuWindows.register(id, { width, height }, () => closerRef.current?.());
+        MuWindows.register(id, { width, height }, () => closerRef.current?.(), el);
+        MuWindows.keepApart(id);
       } else {
         MuWindows.unregister(id);
       }

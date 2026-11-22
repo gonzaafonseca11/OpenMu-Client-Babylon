@@ -60,3 +60,30 @@ describe('MuWindows.closeAll', () => {
     runInAction(() => (AppState.hudHidden = false));
   });
 });
+
+// Ours: a window the player left on top of another (a saved drag) opens beside it, not over it.
+describe('MuWindows.keepApart', () => {
+  const box = (left: number, top: number, width: number, height: number) =>
+    ({ getBoundingClientRect: () => ({ left, top, width, height, right: left + width, bottom: top + height }) }) as unknown as HTMLElement;
+
+  it('moves a window opened over another to its left, or to its right without room there', () => {
+    MuWindows.register('inventory_t', undefined, undefined, box(600, 100, 285, 640));
+    MuWindows.register('shop_t', undefined, undefined, box(560, 120, 285, 640));
+    MuWindows.keepApart('shop_t');
+    expect(MuWindows.placement('shop_t')).toMatchObject({ x: 600 - 285 - 4, y: 120 });
+
+    MuWindows.register('vault_t', undefined, undefined, box(40, 100, 100, 200));
+    MuWindows.register('left_t', undefined, undefined, box(0, 100, 100, 200));
+    MuWindows.keepApart('left_t');
+    expect(MuWindows.placement('left_t')).toMatchObject({ x: 40 + 100 + 4, y: 100 });
+    for (const id of ['inventory_t', 'shop_t', 'vault_t', 'left_t']) MuWindows.unregister(id);
+  });
+
+  it('leaves a window alone when it overlaps nothing, or barely', () => {
+    MuWindows.register('a_t', undefined, undefined, box(0, 0, 285, 640));
+    MuWindows.register('b_t', undefined, undefined, box(280, 0, 285, 640));
+    MuWindows.keepApart('b_t');
+    expect(MuWindows.placement('b_t').x).toBeNull();
+    for (const id of ['a_t', 'b_t']) MuWindows.unregister(id);
+  });
+});

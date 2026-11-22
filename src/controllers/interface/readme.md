@@ -21,6 +21,8 @@ windows themselves are content in `versions/shared/ui/` (see
   scale and z-order, Escape closes the top window, `closeAll()` is the original's `HideAll` (every
   open flag drops, then every stacked closer runs with the interface sounds off, `quietUiSounds`; the
   closers of the windows that hiding the interface unmounted are kept for it until the interface is back).
+  `keepApart(id)` (ours; the original's windows never move): a window opening over an open one, as a
+  player's saved drags can leave them, moves beside it (left, else right) and is saved there.
 - `components/`: shared widgets. Frames and text: `mu_window` (item window, table frame),
   `mu_frame`, `msg_box_frame` (`top` takes the NPC menus' title bar art, `MSGBOX_TOP_TITLEBAR_SPRITE`), `mu_text`, `mu_number`,
   `mu_button`, `mu_sprite`, `mu_logo`, `mu_flag`. Items: `item_icon`, `item_search` (the grid, the
@@ -140,7 +142,8 @@ windows themselves are content in `versions/shared/ui/` (see
 - `hudFormat.test.ts`: experience percent and grouping, durations, dashes before data.
 - `nameTags.test.ts`: hero state messages, self-defence parsing, PK colours, outlaw body light.
 - `screenPositionBus.test.ts`: the frame-end listener runs once per pass.
-- `windowManager.test.ts`: open state reacts, including the first open of an unseen id; `closeAll`.
+- `windowManager.test.ts`: open state reacts, including the first open of an unseen id; `closeAll`;
+  `keepApart` moves a window opened over another beside it.
 - `windows.test.ts`: a window dropped from the registry, and a slot reader that sees it come and go.
 - `components/module_window/index.test.tsx`: the module frame draws only while open; its hot key
   never takes a built-in action's key.
