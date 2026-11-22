@@ -81,6 +81,9 @@ export default {
   'fidelity.muHelperSaveReminder': 'Připomenutí uložení MU Helper',
   'fidelity.muHelperSaveReminder.hint':
     'X okna MU Helper, i to na rámu, ho zavře; s neuloženými změnami zůstane otevřené a požádá o Uložit. Klasické: tlačítko odchodu zavře a zahodí změny.',
+  'fidelity.mixLocksWalk': 'Chaos Machine zastaví postavu',
+  'fidelity.mixLocksWalk.hint':
+    'Postava nemůže chodit kliknutím ani klávesami, dokud je Chaos Machine otevřená. Klasické: postava chodí i s otevřenou.',
   'fidelity.statCommandNotice': 'Hlášení příkazů atributů',
   'fidelity.statCommandNotice.hint':
     'Po /addstr a dalších příkazech atributů napíše systémový záznam, kolik bodů šlo do kterého atributu. Klasické: jen odpověď serveru, jako v originálu.',

@@ -16,6 +16,7 @@ import { Commands } from '../../modules/chat/commands';
 import { teleportGate } from '../../modules/warp/teleportRules';
 import { teleportBusy } from './teleportSystem';
 import { isSliding } from './positionSlideSystem';
+import { walkLocked } from './walkLock';
 import { pickGround } from '../../controllers/terrain/terrainPick';
 import { isOn } from '../../controllers/fidelity';
 
@@ -86,7 +87,7 @@ export const PlayerControllerSystem: ISystemFactory = world => {
 
     // Dead until the server respawns us (Hero->Dead in the original): no
     // walking and no new path, or the corpse strolls off with HP 0.
-    if (playerEntity.dying) return;
+    if (playerEntity.dying || walkLocked()) return;
 
     // holdWalk: a left button held past HOLD_WALK_MS walks over whatever is under the cursor.
     const holdWalk = isOn('holdWalk') && world.pointerPressed && performance.now() - world.pointerPressedAt > HOLD_WALK_MS;
@@ -285,7 +286,7 @@ export const PlayerControllerSystem: ISystemFactory = world => {
 
       // `MoveHero` takes nothing while the server slides the hero in; held keys and buttons go on after.
       const held = isSliding(world.playerEntity);
-      const steering = !held && keyboardWalk(dt);
+      const steering = !held && !walkLocked() && keyboardWalk(dt);
 
       // A press that is still down repeats the walk on the throttle; a press
       // already released walks once. Either way the throttle holds - a tap

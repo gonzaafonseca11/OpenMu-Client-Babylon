@@ -81,6 +81,9 @@ export default {
   'fidelity.muHelperSaveReminder': 'Paalala sa pag-save ng MU Helper',
   'fidelity.muHelperSaveReminder.hint':
     'Ang X ng window ng MU Helper, pati ang sa frame, ay nagsasara nito; kapag may hindi naka-save na pagbabago, nananatiling bukas at hinihiling na pindutin ang I-save. Classic: isinasara ng exit button at itinatapon ang mga pagbabago.',
+  'fidelity.mixLocksWalk': 'Pinipigil ng Chaos Machine ang hero',
+  'fidelity.mixLocksWalk.hint':
+    'Hindi makalakad ang hero, sa click man o sa keys, habang bukas ang Chaos Machine. Classic: naglalakad ang hero kahit bukas ito.',
   'fidelity.statCommandNotice': 'Paunawa ng stat command',
   'fidelity.statCommandNotice.hint':
     'Pagkatapos ng /addstr at iba pang stat command, sinasabi ng log ng sistema kung ilang puntos ang napunta sa aling stat. Klasiko: ang sagot lamang ng server, gaya ng orihinal.',

@@ -81,6 +81,9 @@ export default {
   'fidelity.muHelperSaveReminder': 'تذكير الحفظ في MU Helper',
   'fidelity.muHelperSaveReminder.hint':
     'زر X في نافذة MU Helper، وزر الإطار أيضا، يغلقها؛ ومع تغييرات غير محفوظة تبقى مفتوحة وتطلب الضغط على حفظ. الكلاسيكي: زر الخروج يغلق ويتجاهل التغييرات.',
+  'fidelity.mixLocksWalk': 'آلة الفوضى توقف الشخصية',
+  'fidelity.mixLocksWalk.hint':
+    'لا تستطيع الشخصية المشي بالنقر أو بالمفاتيح ما دامت آلة الفوضى مفتوحة. الكلاسيكي: تمشي الشخصية وهي مفتوحة.',
   'fidelity.statCommandNotice': 'إشعار أوامر الخصائص',
   'fidelity.statCommandNotice.hint':
     'بعد الأمر /addstr وأوامر الخصائص الأخرى، يذكر سجل النظام عدد النقاط التي أضيفت وإلى أي خاصية. «كلاسيكي»: رد الخادم وحده، كما في الأصل.',

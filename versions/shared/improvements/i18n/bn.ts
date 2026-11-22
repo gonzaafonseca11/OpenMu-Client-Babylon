@@ -80,6 +80,9 @@ export default {
   'fidelity.muHelperSaveReminder': 'MU Helper সংরক্ষণ অনুস্মারক',
   'fidelity.muHelperSaveReminder.hint':
     'MU Helper উইন্ডোর X, ফ্রেমেরটিও, এটি বন্ধ করে; অসংরক্ষিত পরিবর্তন থাকলে খোলা থাকে এবং সংরক্ষণ চাপতে বলে। ক্লাসিক: প্রস্থান বোতাম বন্ধ করে ও পরিবর্তন বাদ দেয়।',
+  'fidelity.mixLocksWalk': 'Chaos Machine চরিত্র থামায়',
+  'fidelity.mixLocksWalk.hint':
+    'Chaos Machine খোলা থাকলে চরিত্র ক্লিক বা কী দিয়ে হাঁটতে পারে না। ক্লাসিক: খোলা থাকলেও হাঁটে।',
   'fidelity.statCommandNotice': 'স্ট্যাট কমান্ডের বার্তা',
   'fidelity.statCommandNotice.hint':
     '/addstr ও অন্যান্য স্ট্যাট কমান্ডের পর সিস্টেম লগ জানায় কোন স্ট্যাটে কত পয়েন্ট গেল। ক্লাসিক: মূল গেমের মতো শুধু সার্ভারের উত্তর।',

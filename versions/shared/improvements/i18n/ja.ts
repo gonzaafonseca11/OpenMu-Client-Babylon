@@ -80,6 +80,9 @@ export default {
   'fidelity.muHelperSaveReminder': 'MU Helper の保存リマインダー',
   'fidelity.muHelperSaveReminder.hint':
     'MU Helper ウィンドウの X（枠の X も）で閉じます。未保存の変更があると開いたままで、保存を押すよう求めます。クラシック: 終了ボタンで閉じ、変更は破棄されます。',
+  'fidelity.mixLocksWalk': 'カオスマシン中は移動不可',
+  'fidelity.mixLocksWalk.hint':
+    'カオスマシンを開いている間、キャラクターはクリックでもキーでも移動できません。クラシック: 開いたままでも移動できます。',
   'fidelity.statCommandNotice': 'ステータスコマンドの通知',
   'fidelity.statCommandNotice.hint':
     '/addstrなどのステータスコマンドの後、どのステータスに何ポイント入ったかをシステムログに表示します。クラシック: オリジナル通り、サーバーの応答のみ。',

@@ -82,6 +82,9 @@ export default {
   'fidelity.muHelperSaveReminder': 'Напоминание о сохранении MU Helper',
   'fidelity.muHelperSaveReminder.hint':
     'X окна MU Helper, и на рамке тоже, закрывает его; с несохранёнными изменениями окно остаётся открытым и просит нажать Сохранить. Классика: кнопка выхода закрывает и отменяет изменения.',
+  'fidelity.mixLocksWalk': 'Chaos Machine останавливает героя',
+  'fidelity.mixLocksWalk.hint':
+    'Герой не может ходить ни кликом, ни клавишами, пока открыта Chaos Machine. Классика: герой ходит и с открытой.',
   'fidelity.statCommandNotice': 'Сообщение о командах очков',
   'fidelity.statCommandNotice.hint':
     'После /addstr и других команд очков системный журнал сообщает, сколько очков ушло в какую характеристику. Классика: только ответ сервера, как в оригинале.',

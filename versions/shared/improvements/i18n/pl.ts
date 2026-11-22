@@ -82,6 +82,9 @@ export default {
   'fidelity.muHelperSaveReminder': 'Przypomnienie o zapisie MU Helper',
   'fidelity.muHelperSaveReminder.hint':
     'X okna MU Helper, także to na ramce, zamyka je; przy niezapisanych zmianach okno zostaje otwarte i prosi o Zapisz. Klasyczny: przycisk wyjścia zamyka i odrzuca zmiany.',
+  'fidelity.mixLocksWalk': 'Chaos Machine zatrzymuje postać',
+  'fidelity.mixLocksWalk.hint':
+    'Postać nie może chodzić, ani kliknięciem, ani klawiszami, gdy Chaos Machine jest otwarta. Klasyczny: postać chodzi przy otwartej.',
   'fidelity.statCommandNotice': 'Komunikat komend statystyk',
   'fidelity.statCommandNotice.hint':
     'Po /addstr i innych komendach statystyk dziennik systemowy podaje, ile punktów trafiło do której statystyki. Klasyczny: tylko odpowiedź serwera, jak w oryginale.',

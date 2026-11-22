@@ -82,6 +82,9 @@ export default {
   'fidelity.muHelperSaveReminder': 'การเตือนบันทึกของ MU Helper',
   'fidelity.muHelperSaveReminder.hint':
     'ปุ่ม X ของหน้าต่าง MU Helper รวมถึงที่กรอบ จะปิดหน้าต่าง หากมีการเปลี่ยนแปลงที่ยังไม่บันทึก หน้าต่างจะเปิดค้างและขอให้กดบันทึก คลาสสิก: ปุ่มออกจะปิดและทิ้งการเปลี่ยนแปลง',
+  'fidelity.mixLocksWalk': 'Chaos Machine หยุดตัวละคร',
+  'fidelity.mixLocksWalk.hint':
+    'ตัวละครเดินไม่ได้ทั้งคลิกและปุ่ม ขณะที่ Chaos Machine เปิดอยู่ คลาสสิก: เดินได้แม้เปิดอยู่',
   'fidelity.statCommandNotice': 'แจ้งเตือนคำสั่งเพิ่มค่าสถานะ',
   'fidelity.statCommandNotice.hint':
     'หลังใช้ /addstr และคำสั่งเพิ่มค่าสถานะอื่น บันทึกระบบจะบอกว่าแต้มเข้าไปที่ค่าใดกี่แต้ม คลาสสิก: มีเพียงคำตอบของเซิร์ฟเวอร์เหมือนต้นฉบับ',

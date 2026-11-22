@@ -81,6 +81,9 @@ export default {
   'fidelity.muHelperSaveReminder': 'MU Helper gordetzeko oroigarria',
   'fidelity.muHelperSaveReminder.hint':
     'MU Helper leihoaren X-ak, markoarenak ere, ixten du; gorde gabeko aldaketekin irekita geratzen da eta Gorde sakatzeko eskatzen du. Klasikoa: irteteko botoiak itxi eta aldaketak baztertzen ditu.',
+  'fidelity.mixLocksWalk': 'Chaos Machinek pertsonaia gelditzen du',
+  'fidelity.mixLocksWalk.hint':
+    'Pertsonaiak ezin du ibili, ez klikarekin ez teklekin, Chaos Machine irekita dagoen bitartean. Klasikoa: irekita egonda ere ibiltzen da.',
   'fidelity.statCommandNotice': 'Ezaugarri-komandoen oharra',
   'fidelity.statCommandNotice.hint':
     '/addstr eta gainerako ezaugarri-komandoen ondoren, sistema-erregistroak zenbat puntu zein ezaugarritara joan diren adierazten du. Klasikoa: zerbitzariaren erantzuna soilik, jatorrizkoan bezala.',

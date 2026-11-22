@@ -78,6 +78,9 @@ export default {
   'fidelity.muHelperSaveReminder': 'MU Helper 保存提醒',
   'fidelity.muHelperSaveReminder.hint':
     'MU Helper 窗口的 X（框上的 X 也是）会关闭它；有未保存的更改时保持打开并提醒按保存。经典：退出按钮会关闭并丢弃更改。',
+  'fidelity.mixLocksWalk': '混沌合成机开启时不能移动',
+  'fidelity.mixLocksWalk.hint':
+    '混沌合成机开启时，角色无法通过点击或按键移动。经典：开启时仍可移动。',
   'fidelity.statCommandNotice': '属性命令提示',
   'fidelity.statCommandNotice.hint': '使用/addstr等属性命令后，系统日志会说明多少点加到了哪项属性。经典：与原版相同，只有服务器的回应。',
   'fidelity.shortChatBubbles': '简短聊天气泡',

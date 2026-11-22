@@ -81,6 +81,9 @@ export default {
   'fidelity.muHelperSaveReminder': 'Podsetnik za čuvanje MU Helper',
   'fidelity.muHelperSaveReminder.hint':
     'X prozora MU Helper, i onaj na okviru, ga zatvara; sa nesačuvanim izmenama ostaje otvoren i traži Sačuvaj. Klasično: dugme za izlaz zatvara i odbacuje izmene.',
+  'fidelity.mixLocksWalk': 'Chaos Machine zaustavlja junaka',
+  'fidelity.mixLocksWalk.hint':
+    'Junak ne može da hoda, ni klikom ni tasterima, dok je Chaos Machine otvorena. Klasično: hoda i kad je otvorena.',
   'fidelity.statCommandNotice': 'Obaveštenje o komandama atributa',
   'fidelity.statCommandNotice.hint':
     'Posle /addstr i ostalih komandi atributa, sistemski dnevnik kaže koliko je poena otišlo u koji atribut. Klasično: samo odgovor servera, kao u originalu.',

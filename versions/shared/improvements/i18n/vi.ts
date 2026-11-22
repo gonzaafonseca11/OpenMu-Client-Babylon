@@ -82,6 +82,9 @@ export default {
   'fidelity.muHelperSaveReminder': 'Nhắc lưu của MU Helper',
   'fidelity.muHelperSaveReminder.hint':
     'Nút X của cửa sổ MU Helper, cả nút trên khung, sẽ đóng nó; khi có thay đổi chưa lưu, cửa sổ vẫn mở và nhắc nhấn Lưu. Cổ điển: nút thoát đóng và bỏ thay đổi.',
+  'fidelity.mixLocksWalk': 'Chaos Machine giữ nhân vật đứng yên',
+  'fidelity.mixLocksWalk.hint':
+    'Nhân vật không thể đi bằng chuột hay phím khi Chaos Machine đang mở. Cổ điển: vẫn đi được khi đang mở.',
   'fidelity.statCommandNotice': 'Thông báo lệnh cộng điểm',
   'fidelity.statCommandNotice.hint':
     'Sau /addstr và các lệnh cộng điểm khác, nhật ký hệ thống cho biết bao nhiêu điểm đã vào chỉ số nào. Cổ điển: chỉ có phản hồi của máy chủ, như bản gốc.',
