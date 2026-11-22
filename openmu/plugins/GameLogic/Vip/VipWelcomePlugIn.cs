@@ -14,7 +14,7 @@ using MUnique.OpenMU.Persistence;
 using MUnique.OpenMU.PlugIns;
 
 /// <summary>
-/// On entering the world, on any server, a VIP is told until when the VIP runs; the first time after
+/// On entering the world from the character list, on any server, a VIP is told until when the VIP runs; the first time after
 /// a paid VIP, the account also gets a Box of Kundun +4 (in the inventory, or at the feet when full).
 /// </summary>
 [PlugIn]
@@ -32,7 +32,9 @@ public class VipWelcomePlugIn : IPlayerStateChangedPlugIn
     /// <inheritdoc />
     public async ValueTask PlayerStateChangedAsync(Player player, State previousState, State currentState)
     {
+        // Only the entry from the character list: closing an NPC, a trade or a map change re-enter EnteredWorld too.
         if (currentState != PlayerState.EnteredWorld
+            || previousState != PlayerState.CharacterSelection
             || player.Account is not { } account
             || account is not IIdentifiable identifiable)
         {
