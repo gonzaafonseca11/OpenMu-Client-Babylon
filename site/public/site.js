@@ -262,7 +262,7 @@ function showVip() {
   if (me.vip && me.vipRenews) { text = `⭐ VIP activo. Se renueva solo el ${until} (${price}).`; cancel = true; }
   else if (me.vip) { text = `⭐ VIP activo hasta el ${until}. No se va a renovar.`; subscribe = 'Volver a activar la renovación'; }
   else if (me.vipRenews) { text = '⭐ Tu suscripción está activa: el VIP se enciende cuando Mercado Pago confirme el pago.'; cancel = true; }
-  else { text = `⭐ VIP: ${price} por mes. Experiencia x999, joyas al doble y reset en nivel 350.`; subscribe = 'Suscribirme'; }
+  else { text = `⭐ VIP: ${price} por mes. Experiencia x999, joyas al doble y reset en nivel 350 con 600 puntos por reset.`; subscribe = 'Suscribirme'; }
   if (!me.vipPay) subscribe = '';
   $('#vip-box').hidden = !me.vip && !me.vipRenews && !me.vipPay;
   $('#vip-status').textContent = text;
