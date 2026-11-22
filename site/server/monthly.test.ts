@@ -18,3 +18,12 @@ describe('monthly rankings', () => {
     expect(monthlyResets(now, snap).map(c => [c.name, c.resets])).toEqual([['Caro', 5], ['Ana', 2]]);
   });
 });
+
+describe('ranking sizes', () => {
+  it('lists the 25 best players, and the 5 best guilds', async () => {
+    const { RANKING_SIZE, GUILD_RANKING_SIZE } = await import('./queries');
+    const now = Array.from({ length: 30 }, (_, i) => ({ id: `c${i}`, name: `P${i}`, class: 'DW', level: 1, resets: 100 + i }));
+    expect(monthlyResets(now, new Map()).length).toBe(25);
+    expect([RANKING_SIZE, GUILD_RANKING_SIZE]).toEqual([25, 5]);
+  });
+});

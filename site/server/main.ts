@@ -3,8 +3,8 @@ import bcrypt from 'bcryptjs';
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
 import { BurstLimit, bucketFor, clientIp } from '../../src/core/rateLimit';
-import { accountCharacters, accountEmail, accountHash, characterNames, findAccount, pkRanking, resetRanking, resetsNow, type RankedCharacter } from './queries';
-import { openMonthly } from './monthly';
+import { accountCharacters, accountEmail, accountHash, characterNames, findAccount, guildRanking, pkRanking, resetRanking, resetsNow } from './queries';
+import { monthKey, monthStart, openMonthly } from './monthly';
 import { clearedCookie, cookieValue, fingerprint, issue, read, sessionCookie } from './session';
 import { openCommunity } from './community';
 import { chatBanned, chatMessage, chatTooFast, clean, isBanned, isModerator, newsPost, REPORT_STATUSES, REPORTS_PER_HOUR, reportPost } from './rules';
@@ -115,10 +115,10 @@ function json(body: unknown, status = 200, extra: Record<string, string> = {}): 
   });
 }
 
-const cache = new Map<string, { at: number; rows: RankedCharacter[] }>();
-async function cached(key: string, load: () => Promise<RankedCharacter[]>): Promise<RankedCharacter[]> {
+const cache = new Map<string, { at: number; rows: readonly unknown[] }>();
+async function cached<T>(key: string, load: () => Promise<T[]>): Promise<readonly T[]> {
   const hit = cache.get(key);
-  if (hit && Date.now() - hit.at < RANKING_TTL_MS) return hit.rows;
+  if (hit && Date.now() - hit.at < RANKING_TTL_MS) return hit.rows as readonly T[];
   const rows = await load();
   cache.set(key, { at: Date.now(), rows });
   return rows;
@@ -531,6 +531,8 @@ Sitemap: ${SITE_URL}/sitemap.xml
       if (req.method === 'GET' && path === '/api/ranking/resets') return json(await cached('resets', () => resetRanking(sql)));
       if (req.method === 'GET' && path === '/api/ranking/pk-month') return json(await cached('pk-month', () => monthly.pk()));
       if (req.method === 'GET' && path === '/api/ranking/resets-month') return json(await cached('resets-month', () => monthly.resets()));
+      if (req.method === 'GET' && path === '/api/ranking/guilds') return json(await cached('guilds', () => guildRanking(sql)));
+      if (req.method === 'GET' && path === '/api/ranking/guilds-month') return json(await cached('guilds-month', () => guildRanking(sql, monthStart(monthKey(Date.now())))));
       if (req.method === 'GET' && path === '/api/me') {
         const account = await sessionAccount(req);
         if (!account) return json({ error: 'No iniciaste sesión.' }, 401);

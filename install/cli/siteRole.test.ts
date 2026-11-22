@@ -28,6 +28,15 @@ describe('website', () => {
     expect(sqlText).toContain('GRANT UPDATE ("CurrentMapId", "PositionX", "PositionY") ON data."Character" TO mu_site;');
   });
 
+  it('reads the guilds, their members and the guild wars won, for the guild rankings', () => {
+    const sqlText = siteRoleSql(domain);
+    expect(sqlText).toContain('CREATE TABLE IF NOT EXISTS mu_plugins.guild_war (');
+    expect(sqlText).toContain('GRANT SELECT ON mu_plugins.guild_war TO mu_site;');
+    expect(sqlText).toContain('GRANT USAGE ON SCHEMA guild TO mu_site;');
+    expect(sqlText).toContain('GRANT SELECT ("Id", "Name") ON guild."Guild" TO mu_site;');
+    expect(sqlText).toContain('GRANT SELECT ON guild."GuildMember" TO mu_site;');
+  });
+
   it('refuses a secret that could break out of the quotes', () => {
     expect(() => siteRoleSql({ ...domain, siteDbSecret: "x'; DROP ROLE postgres; --" })).toThrow();
     expect(() => siteRoleSql({ ...domain, siteDbSecret: '' })).toThrow();

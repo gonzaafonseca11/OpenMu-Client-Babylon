@@ -7,7 +7,8 @@
  * Normal 0, Banned 1, GameMaster 32.
  */
 
-export const RANKING_SIZE = 50;
+export const RANKING_SIZE = 25;
+export const GUILD_RANKING_SIZE = 5;
 
 export type RankedCharacter = { name: string; class: string; level: number; resets: number; kills: number };
 
@@ -68,7 +69,36 @@ async function ranking(sql: Sql, by: 'kills' | 'resets', since = new Date(0), un
 export const pkRanking = (sql: Sql, since?: Date, until?: Date) => ranking(sql, 'kills', since, until);
 export const resetRanking = (sql: Sql) => ranking(sql, 'resets');
 
-export type ResetsNow = { id: string; name: string; class: string; level: number; resets: number };
+/** OpenMU's `GuildPosition` as stored in `GuildMember.Status`: NormalMember 1, GuildMaster 2, BattleMaster 3. */
+const GUILD_MASTER = 2;
+
+export type RankedGuild ={ name: string; master: string; members: number; wins: number; resets: number };
+
+/**
+ * The guilds by guild wars won since `since` (mu_plugins.guild_war, OpenMU's GuildWarLogPlugIn), then by
+ * their players' resets. The month's ranking (`since` its start) lists only guilds that won a war in it.
+ */
+export async function guildRanking(sql: Sql, since = new Date(0)): Promise<RankedGuild[]> {
+  const rows = await sql`
+    SELECT g."Name" AS name,
+           COALESCE((SELECT c."Name" FROM guild."GuildMember" gm JOIN data."Character" c ON c."Id" = gm."Id"
+                     WHERE gm."GuildId" = g."Id" AND gm."Status" = ${GUILD_MASTER} LIMIT 1), '') AS master,
+           (SELECT COUNT(*) FROM guild."GuildMember" gm WHERE gm."GuildId" = g."Id") AS members,
+           (SELECT COUNT(*) FROM mu_plugins.guild_war w WHERE w.winner_id = g."Id" AND w.at >= ${since}) AS wins,
+           (SELECT COALESCE(SUM(${stat(sql, 'Resets')}), 0) FROM guild."GuildMember" gm
+              JOIN data."Character" c ON c."Id" = gm."Id"
+              JOIN data."Account" a ON a."Id" = c."AccountId"
+             WHERE gm."GuildId" = g."Id" AND a."State" = 0 AND c."CharacterStatus" = 0) AS resets
+    FROM guild."Guild" g
+    ORDER BY wins DESC, resets DESC, name
+    LIMIT ${GUILD_RANKING_SIZE}
+  `;
+  return rows
+    .map(r => ({ name: String(r.name), master: String(r.master), members: Number(r.members), wins: Number(r.wins), resets: Math.round(Number(r.resets)) }))
+    .filter(g => since.getTime() === 0 || g.wins > 0);
+}
+
+export type ResetsNow ={ id: string; name: string; class: string; level: number; resets: number };
 
 /** Every ranked player's resets now: the month's resets ranking subtracts the month-start snapshot. */
 export async function resetsNow(sql: Sql): Promise<ResetsNow[]> {

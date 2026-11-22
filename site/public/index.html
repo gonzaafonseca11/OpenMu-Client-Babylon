@@ -172,7 +172,7 @@
 
     <section id="rankings" class="panel" hidden>
       <h1>Rankings</h1>
-      <p class="hint">Los 50 mejores de cada uno. Se actualizan cada minuto. En PK solo cuentan las kills entre personajes de 50 resets o más.</p>
+      <p class="hint">Los 25 mejores de cada uno y las 5 mejores guilds. Se actualizan cada minuto. En PK solo cuentan las kills entre personajes de 50 resets o más. Las guilds se ordenan por guerras de clanes ganadas y, si empatan, por los resets de sus jugadores.</p>
 
       <h2 class="rank-title">De siempre</h2>
       <div class="rankings">
@@ -183,6 +183,12 @@
         <div>
           <h2>PK</h2>
           <div class="table-wrap"><table class="ranking" data-ranking="pk" data-score="kills" data-score-label="Kills"></table></div>
+        </div>
+      </div>
+      <div class="rankings guild-rankings">
+        <div>
+          <h2>Guilds</h2>
+          <div class="table-wrap"><table class="ranking" data-ranking="guilds" data-score="wins" data-score-label="Guerras ganadas"></table></div>
         </div>
       </div>
 
@@ -196,6 +202,12 @@
         <div>
           <h2>PK del mes</h2>
           <div class="table-wrap"><table class="ranking" data-ranking="pk-month" data-score="kills" data-score-label="Kills"></table></div>
+        </div>
+      </div>
+      <div class="rankings guild-rankings">
+        <div>
+          <h2>Guilds del mes</h2>
+          <div class="table-wrap"><table class="ranking" data-ranking="guilds-month" data-score="wins" data-score-label="Guerras ganadas"></table></div>
         </div>
       </div>
     </section>

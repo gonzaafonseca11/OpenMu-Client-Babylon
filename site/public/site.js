@@ -44,6 +44,7 @@ async function loadRanking(table) {
     return;
   }
   loaded.add(key);
+  if (key.startsWith('guilds')) return showGuilds(table, body);
   const head = el('tr', {}, el('th', {}, '#'), el('th', {}, 'Personaje'), el('th', {}, 'Clase'), el('th', { class: 'num' }, table.dataset.scoreLabel), el('th', { class: 'num' }, key.startsWith('pk') ? 'Resets' : 'Nivel'));
   const rows = body.map((c, i) =>
     el('tr', { class: i < 3 ? `top${i + 1}` : '' },
@@ -56,6 +57,24 @@ async function loadRanking(table) {
   );
   table.replaceChildren(el('thead', {}, head), el('tbody', {}, ...rows));
   if (!rows.length) table.append(el('caption', {}, 'Todavía no hay nadie en este ranking. ¡Sé el primero!'));
+}
+
+/** The guilds: guild wars won, then their players' resets (site/server/queries.ts `guildRanking`). */
+function showGuilds(table, body) {
+  const head = el('tr', {}, el('th', {}, '#'), el('th', {}, 'Guild'), el('th', {}, 'Líder'), el('th', { class: 'num' }, 'Miembros'),
+    el('th', { class: 'num' }, 'Guerras ganadas'), el('th', { class: 'num' }, 'Resets'));
+  const rows = body.map((g, i) =>
+    el('tr', { class: i < 3 ? `top${i + 1}` : '' },
+      el('td', {}, String(i + 1)),
+      el('td', { class: 'name' }, g.name),
+      el('td', {}, g.master),
+      el('td', { class: 'num' }, fmt(g.members)),
+      el('td', { class: 'num' }, fmt(g.wins)),
+      el('td', { class: 'num' }, fmt(g.resets))
+    )
+  );
+  table.replaceChildren(el('thead', {}, head), el('tbody', {}, ...rows));
+  if (!rows.length) table.append(el('caption', {}, 'Ninguna guild ganó una guerra este mes todavía.'));
 }
 
 /* --------------------------------------------------------------- online */

@@ -150,6 +150,15 @@ when the gift began; 0 before). With 1 the client lifts both rules for learned s
 (`src/modules/skills/resetWaiver.ts`); switching the plugin off leaves the original rule. If the starter gift ends,
 `HasRealReset` needs its end date too.
 
+## Guild wars won
+
+OpenMU forgets a guild war (or Battle Soccer) once it ends. `GameLogic/GuildWars/GuildWarLogPlugIn` (a periodic
+task, every 5 s per game server) finds the wars through their players' `GuildWarContext`, listens to each war's
+score once, and when it ends with a winner writes a row to `mu_plugins.guild_war` (winner and loser guild ids and
+names, scores, soccer or not); a cancelled war has none. The website ranks guilds from it (site/readme.md); the
+installer creates the table too (`install/cli/siteRole.ts`) so the site may read it. The log line is "Guild war
+logged".
+
 ## Ghost players
 
 One account's character was on the server twice for over a day (the status API listed it twice): an offline

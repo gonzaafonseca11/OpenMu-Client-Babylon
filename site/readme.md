@@ -8,8 +8,11 @@ logged-in players (Game Masters delete lines).
 ## Files
 
 - `server/main.ts`: the Bun server. Serves `public/`, the logo (`public/ui/world_select/logo.webp`
-  of the client) and the JSON API: `GET /api/ranking/pk`, `GET /api/ranking/resets` (cached a
-  minute), `POST /api/login`, `POST /api/logout`, `GET /api/me`.
+  of the client) and the JSON API: `GET /api/ranking/pk`, `GET /api/ranking/resets` (the 25 best;
+  `-month` for this month), `GET /api/ranking/guilds` and `/api/ranking/guilds-month` (the 5 best
+  guilds by guild wars won, then by their players' resets; the month lists only guilds that won a war
+  in it; wars come from OpenMU's `GuildWarLogPlugIn`, `mu_plugins.guild_war`), all cached a minute,
+  `POST /api/login`, `POST /api/logout`, `GET /api/me`.
 - `server/queries.ts`: every read from OpenMU's database. Rankings leave out Game Masters,
   spectators, banned accounts or characters, bots and templates.
 - `server/community.ts`: chat and news in the site's own SQLite file (`SITE_DB_PATH`,

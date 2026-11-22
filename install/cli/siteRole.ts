@@ -53,6 +53,13 @@ export function siteRoleSql(c: Config): string {
     'CREATE TABLE IF NOT EXISTS mu_plugins.vip_payment (id text PRIMARY KEY, account_id uuid NOT NULL, at timestamptz NOT NULL DEFAULT now());',
     `GRANT SELECT, INSERT ON mu_plugins.vip_payment TO ${role};`,
     `GRANT SELECT ON mu_plugins.pvp_kill TO ${role};`,
+    // Guild rankings: the guilds, their members, and the wars OpenMU's GuildWarLogPlugIn logs (openmu/plugins/GameLogic/GuildWars).
+    'CREATE TABLE IF NOT EXISTS mu_plugins.guild_war (id bigserial PRIMARY KEY, winner_id uuid, loser_id uuid, winner_name text NOT NULL, loser_name text NOT NULL, winner_score int NOT NULL, loser_score int NOT NULL, soccer boolean NOT NULL, at timestamptz NOT NULL DEFAULT now());',
+    'CREATE INDEX IF NOT EXISTS guild_war_at ON mu_plugins.guild_war (at);',
+    `GRANT SELECT ON mu_plugins.guild_war TO ${role};`,
+    `GRANT USAGE ON SCHEMA guild TO ${role};`,
+    `GRANT SELECT ("Id", "Name") ON guild."Guild" TO ${role};`,
+    `GRANT SELECT ON guild."GuildMember" TO ${role};`,
     'CREATE TABLE IF NOT EXISTS mu_plugins.character_ban (character_id uuid PRIMARY KEY, character_name text NOT NULL, reason text NOT NULL, banned_at timestamptz NOT NULL DEFAULT now());',
     `GRANT SELECT, DELETE ON mu_plugins.character_ban TO ${role};`,
     '',
