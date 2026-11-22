@@ -128,6 +128,18 @@ Elf Soldier's Ancient Stick +4. `GameLogic/SaveGuard/SaveUnsavedDropPlugIn` save
 dropped for, as it lands; a player's own drop was saved before it fell, and a generated drop is a
 `TemporaryItem`, so neither is touched.
 
+## Login retries
+
+A login refused as "already connected" has loaded the account into the player's context already, and
+OpenMU's account load (`AccountRepository.GetByIdAsync`) returns what that context tracks instead of reading
+it again. With `retryLoginWhenConnected` the client retries on the same connection, so a quick reconnect
+whose first try met the old session still saving got the copy from before that save. Seen live: harrypoter
+used two Jewels of Life with the vault open (no periodic save in that state), the connection dropped, the
+resume got that copy, and using those jewels again failed every save of the session, trades included.
+`GameLogic/LoginRetry/FreshLoginPlugIn` empties the player's context as each login starts (OpenMU's
+`LoginAction` changes the state before it loads), and the token login calls it before its own loads. A retry
+that found something to forget logs "Fresh login: ... retried a login on the same connection".
+
 ## Ghost players
 
 One account's character was on the server twice for over a day (the status API listed it twice): an offline

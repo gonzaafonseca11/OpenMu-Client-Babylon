@@ -7,6 +7,7 @@ namespace MUnique.OpenMU.GameLogic.LoginTokens;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using MUnique.OpenMU.DataModel.Entities;
+using MUnique.OpenMU.GameLogic.LoginRetry;
 using MUnique.OpenMU.GameLogic.Views.Login;
 using MUnique.OpenMU.GameLogic.Views.LoginTokens;
 using MUnique.OpenMU.Persistence;
@@ -229,6 +230,7 @@ public class LoginTokenAction
                 // Reserved BEFORE the load, as LoginAction does: the old session of the account saves and only then
                 // logs off, so a quick reconnect (the client's resume) can't load a copy that is still being saved.
                 var reserved = await TryLoginAtLoginServerAsync(player, gameServerContext, username).ConfigureAwait(false);
+                FreshLoginPlugIn.Forget(player);
                 account = await player.PersistenceContext.GetAccountByLoginNameAsync(username).ConfigureAwait(false);
                 if (account is null)
                 {
@@ -250,7 +252,8 @@ public class LoginTokenAction
                 }
             }
 
-            if (account is null || !await player.PlayerState.TryAdvanceToAsync(PlayerState.Authenticated).ConfigureAwait(false))
+            if (account is null
+                || !await FreshLoginPlugIn.AdvanceAfterLoadAsync(player, () => player.PlayerState.TryAdvanceToAsync(PlayerState.Authenticated)).ConfigureAwait(false))
             {
                 await ReleaseLoginServerRegistrationAsync(player).ConfigureAwait(false);
 
@@ -282,6 +285,7 @@ public class LoginTokenAction
         try
         {
             await player.GameContext.OfflinePlayerManager.StopAsync(username).ConfigureAwait(false);
+            FreshLoginPlugIn.Forget(player);
             var account = await player.PersistenceContext.GetAccountByLoginNameAsync(username).ConfigureAwait(false);
             if (account is null)
             {
