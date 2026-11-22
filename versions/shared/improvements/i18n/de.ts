@@ -82,9 +82,6 @@ export default {
   'fidelity.muHelperSaveReminder': 'Speicher-Erinnerung des MU Helper',
   'fidelity.muHelperSaveReminder.hint':
     'Das X des MU-Helper-Fensters, auch das des Rahmens, schließt es; mit ungespeicherten Änderungen bleibt es offen und bittet um Speichern. Klassisch: der Beenden-Knopf schließt und verwirft die Änderungen.',
-  'fidelity.mixLocksWalk': 'Chaos Machine hält den Helden an',
-  'fidelity.mixLocksWalk.hint':
-    'Der Held kann weder per Klick noch per Tasten laufen, solange die Chaos Machine offen ist. Klassisch: der Held läuft auch bei offener Maschine.',
   'fidelity.statCommandNotice': 'Hinweis zu Wertebefehlen',
   'fidelity.statCommandNotice.hint':
     'Nach /addstr und den anderen Wertebefehlen meldet das Systemprotokoll, wie viele Punkte in welchen Wert gingen. Klassisch: nur die Antwort des Servers, wie im Original.',

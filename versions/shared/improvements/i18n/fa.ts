@@ -81,9 +81,6 @@ export default {
   'fidelity.muHelperSaveReminder': 'یادآور ذخیره MU Helper',
   'fidelity.muHelperSaveReminder.hint':
     'دکمه X پنجره MU Helper، و دکمه قاب، آن را می‌بندد؛ با تغییرات ذخیره‌نشده باز می‌ماند و می‌خواهد ذخیره را بزنید. کلاسیک: دکمه خروج می‌بندد و تغییرات را دور می‌ریزد.',
-  'fidelity.mixLocksWalk': 'Chaos Machine شخصیت را نگه می‌دارد',
-  'fidelity.mixLocksWalk.hint':
-    'تا وقتی Chaos Machine باز است، شخصیت نه با کلیک و نه با کلیدها راه نمی‌رود. کلاسیک: با باز بودن آن راه می‌رود.',
   'fidelity.statCommandNotice': 'اعلان فرمان‌های ویژگی',
   'fidelity.statCommandNotice.hint':
     'پس از فرمان /addstr و دیگر فرمان‌های ویژگی، گزارش سیستم می‌گوید چند امتیاز به کدام ویژگی رفت. کلاسیک: فقط پاسخ سرور، مانند نسخه اصلی.',

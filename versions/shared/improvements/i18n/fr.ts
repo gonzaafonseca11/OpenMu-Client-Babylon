@@ -82,9 +82,6 @@ export default {
   'fidelity.muHelperSaveReminder': 'Rappel d\'enregistrement du MU Helper',
   'fidelity.muHelperSaveReminder.hint':
     'Le X de la fenêtre du MU Helper, celui du cadre aussi, la ferme ; avec des changements non enregistrés elle reste ouverte et demande d\'appuyer sur Enregistrer. Classique : le bouton de sortie ferme et abandonne les changements.',
-  'fidelity.mixLocksWalk': 'La Chaos Machine immobilise le héros',
-  'fidelity.mixLocksWalk.hint':
-    'Le héros ne peut pas marcher, ni au clic ni au clavier, tant que la Chaos Machine est ouverte. Classique : le héros marche même ouverte.',
   'fidelity.statCommandNotice': 'Avis des commandes de points',
   'fidelity.statCommandNotice.hint':
     "Après /addstr et les autres commandes de points, le journal système indique combien de points sont allés dans quelle caractéristique. Classique : seule la réponse du serveur, comme dans l'original.",

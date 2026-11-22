@@ -82,9 +82,6 @@ export default {
   'fidelity.muHelperSaveReminder': 'Напомняне за запазване в MU Helper',
   'fidelity.muHelperSaveReminder.hint':
     'X на прозореца на MU Helper, и този на рамката, го затваря; при незапазени промени остава отворен и иска Запази. Класически: бутонът за изход затваря и отхвърля промените.',
-  'fidelity.mixLocksWalk': 'Chaos Machine спира героя',
-  'fidelity.mixLocksWalk.hint':
-    'Героят не може да върви, нито с щракване, нито с клавиши, докато Chaos Machine е отворена. Класически: героят върви и при отворена.',
   'fidelity.statCommandNotice': 'Известие за команди за точки',
   'fidelity.statCommandNotice.hint':
     'След /addstr и другите команди за точки системният дневник казва колко точки отидоха в коя характеристика. Класически: само отговорът на сървъра, както в оригинала.',

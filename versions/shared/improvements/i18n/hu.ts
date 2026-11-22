@@ -81,9 +81,6 @@ export default {
   'fidelity.muHelperSaveReminder': 'MU Helper mentési emlékeztető',
   'fidelity.muHelperSaveReminder.hint':
     'A MU Helper ablak X-e, a keret is, bezárja; mentetlen változásokkal nyitva marad és Mentést kér. Klasszikus: a kilépés gomb bezár és elveti a változásokat.',
-  'fidelity.mixLocksWalk': 'A Chaos Machine megállítja a hőst',
-  'fidelity.mixLocksWalk.hint':
-    'A hős sem kattintással, sem billentyűvel nem tud járni, amíg a Chaos Machine nyitva van. Klasszikus: nyitva is jár.',
   'fidelity.statCommandNotice': 'Értesítés a tulajdonságparancsokról',
   'fidelity.statCommandNotice.hint':
     'Az /addstr és a többi tulajdonságparancs után a rendszernapló kiírja, hány pont melyik tulajdonságba került. Klasszikus: csak a szerver válasza, mint az eredetiben.',

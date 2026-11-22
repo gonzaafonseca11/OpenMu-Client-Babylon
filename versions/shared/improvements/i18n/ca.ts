@@ -81,9 +81,6 @@ export default {
   'fidelity.muHelperSaveReminder': 'Recordatori de desar del MU Helper',
   'fidelity.muHelperSaveReminder.hint':
     'La X de la finestra del MU Helper, també la del marc, la tanca; amb canvis sense desar queda oberta i demana prémer Desa. Clàssic: el botó de sortida tanca i descarta els canvis.',
-  'fidelity.mixLocksWalk': 'La Chaos Machine atura el personatge',
-  'fidelity.mixLocksWalk.hint':
-    'El personatge no pot caminar, ni amb clic ni amb tecles, mentre la Chaos Machine és oberta. Clàssic: camina amb ella oberta.',
   'fidelity.statCommandNotice': 'Avís de les ordres d\'estadístiques',
   'fidelity.statCommandNotice.hint':
     'Després de /addstr i les altres ordres d\'estadístiques, el registre del sistema indica quants punts han anat a cada estadística. Clàssic: només la resposta del servidor, com a l\'original.',

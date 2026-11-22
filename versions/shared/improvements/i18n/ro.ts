@@ -82,9 +82,6 @@ export default {
   'fidelity.muHelperSaveReminder': 'Memento de salvare MU Helper',
   'fidelity.muHelperSaveReminder.hint':
     'X-ul ferestrei MU Helper, și cel al ramei, o închide; cu modificări nesalvate rămâne deschisă și cere Salvează. Clasic: butonul de ieșire închide și renunță la modificări.',
-  'fidelity.mixLocksWalk': 'Chaos Machine oprește eroul',
-  'fidelity.mixLocksWalk.hint':
-    'Eroul nu poate merge, nici cu clic, nici cu taste, cât timp Chaos Machine e deschisă. Clasic: eroul merge și cu ea deschisă.',
   'fidelity.statCommandNotice': 'Anunț pentru comenzile de puncte',
   'fidelity.statCommandNotice.hint':
     'După /addstr și celelalte comenzi de puncte, jurnalul de sistem spune câte puncte au mers în ce atribut. Clasic: doar răspunsul serverului, ca în original.',

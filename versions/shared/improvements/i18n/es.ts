@@ -82,9 +82,6 @@ export default {
   'fidelity.muHelperSaveReminder': 'Aviso de guardar del MU Helper',
   'fidelity.muHelperSaveReminder.hint':
     'La X de la ventana del MU Helper, también la del marco, la cierra; con cambios sin guardar queda abierta y pide presionar Guardar. Clásico: el botón de salida cierra y descarta los cambios.',
-  'fidelity.mixLocksWalk': 'La Chaos Machine frena al personaje',
-  'fidelity.mixLocksWalk.hint':
-    'El personaje no puede caminar, ni con clic ni con teclas, mientras la Chaos Machine está abierta. Clásico: camina aunque esté abierta.',
   'fidelity.statCommandNotice': 'Aviso de comandos de puntos',
   'fidelity.statCommandNotice.hint':
     'Tras /addstr y los demás comandos de puntos, el registro del sistema dice cuántos puntos fueron a cada estadística. Clásico: solo la respuesta del servidor, como en el original.',

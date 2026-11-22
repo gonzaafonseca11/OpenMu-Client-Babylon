@@ -9,15 +9,15 @@ const { walkLocked } = await import('./walkLock');
 const { Economy } = await import('@/modules/economy/economy');
 const { FIDELITY_CLASSIC, FIDELITY_DEFAULT, setFidelityChoice } = await import('@/controllers/fidelity');
 
-// Ours (`mixLocksWalk`): the hero stands still while the Chaos Machine is open; Classic walks.
+// Ours: the hero stands still while the Chaos Machine is open, Classic included.
 describe('walkLocked', () => {
-  it('holds the hero while the Chaos Machine is open, unless on Classic', () => {
+  it('holds the hero while the Chaos Machine is open, in every fidelity', () => {
     Economy.mixOpen = false;
     expect(walkLocked()).toBe(false);
     Economy.mixOpen = true;
     expect(walkLocked()).toBe(true);
     setFidelityChoice(FIDELITY_CLASSIC, {});
-    expect(walkLocked()).toBe(false);
+    expect(walkLocked()).toBe(true);
     setFidelityChoice(FIDELITY_DEFAULT, {});
     Economy.mixOpen = false;
   });

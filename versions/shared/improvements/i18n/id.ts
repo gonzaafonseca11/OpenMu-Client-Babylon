@@ -81,9 +81,6 @@ export default {
   'fidelity.muHelperSaveReminder': 'Pengingat simpan MU Helper',
   'fidelity.muHelperSaveReminder.hint':
     'X jendela MU Helper, juga yang di bingkai, menutupnya; dengan perubahan belum disimpan jendela tetap terbuka dan meminta menekan Simpan. Klasik: tombol keluar menutup dan membuang perubahan.',
-  'fidelity.mixLocksWalk': 'Chaos Machine menahan karakter',
-  'fidelity.mixLocksWalk.hint':
-    'Karakter tidak bisa berjalan, dengan klik maupun tombol, selama Chaos Machine terbuka. Klasik: karakter tetap berjalan saat terbuka.',
   'fidelity.statCommandNotice': 'Pemberitahuan perintah stat',
   'fidelity.statCommandNotice.hint':
     'Setelah /addstr dan perintah stat lainnya, log sistem menyebutkan berapa poin masuk ke stat mana. Klasik: hanya jawaban server, seperti aslinya.',

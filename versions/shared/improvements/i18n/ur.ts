@@ -81,9 +81,6 @@ export default {
   'fidelity.muHelperSaveReminder': 'MU Helper محفوظ کرنے کی یاددہانی',
   'fidelity.muHelperSaveReminder.hint':
     'MU Helper ونڈو کا X، فریم والا بھی، اسے بند کرتا ہے؛ غیر محفوظ تبدیلیوں پر یہ کھلی رہتی ہے اور محفوظ کریں دبانے کو کہتی ہے۔ کلاسک: باہر نکلنے کا بٹن بند کرتا ہے اور تبدیلیاں چھوڑ دیتا ہے۔',
-  'fidelity.mixLocksWalk': 'Chaos Machine کردار کو روکتی ہے',
-  'fidelity.mixLocksWalk.hint':
-    'جب تک Chaos Machine کھلی ہے، کردار نہ کلک سے چل سکتا ہے نہ کیز سے۔ کلاسک: کھلی ہونے پر بھی چلتا ہے۔',
   'fidelity.statCommandNotice': 'پوائنٹ کمانڈ کی اطلاع',
   'fidelity.statCommandNotice.hint':
     'کمانڈ /addstr اور دوسری پوائنٹ کمانڈز کے بعد سسٹم لاگ بتاتا ہے کہ کتنے پوائنٹس کس صفت میں گئے۔ کلاسیکی: صرف سرور کا جواب، جیسا اصل میں تھا۔',

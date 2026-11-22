@@ -81,9 +81,6 @@ export default {
   'fidelity.muHelperSaveReminder': 'MU Helper kaydetme hatırlatıcısı',
   'fidelity.muHelperSaveReminder.hint':
     'MU Helper penceresinin X’i, çerçevedeki de, onu kapatır; kaydedilmemiş değişiklik varsa açık kalır ve Kaydet’e basmanı ister. Klasik: çıkış düğmesi kapatır ve değişiklikleri atar.',
-  'fidelity.mixLocksWalk': 'Chaos Machine karakteri durdurur',
-  'fidelity.mixLocksWalk.hint':
-    'Chaos Machine açıkken karakter ne tıklamayla ne tuşlarla yürüyebilir. Klasik: açıkken de yürür.',
   'fidelity.statCommandNotice': 'Nitelik komutu bildirimi',
   'fidelity.statCommandNotice.hint':
     '/addstr ve diğer nitelik komutlarından sonra sistem kaydı hangi niteliğe kaç puan gittiğini söyler. Klasik: orijinaldeki gibi yalnızca sunucunun yanıtı.',

@@ -79,9 +79,6 @@ const en = {
   'fidelity.muHelperSaveReminder': 'MU Helper save reminder',
   'fidelity.muHelperSaveReminder.hint':
     'The MU Helper window\'s X, the frame\'s too, closes it; with unsaved changes it stays open and asks you to press Save. Classic: the exit button closes and drops the changes.',
-  'fidelity.mixLocksWalk': 'Chaos Machine holds the hero',
-  'fidelity.mixLocksWalk.hint':
-    'The hero cannot walk, by click or by keys, while the Chaos Machine is open. Classic: the hero walks with it open.',
   'fidelity.statCommandNotice': 'Stat command notice',
   'fidelity.statCommandNotice.hint':
     "After /addstr and the other stat commands, the system log says how many points went into which stat. Classic: the server's answer alone, as in the original.",
