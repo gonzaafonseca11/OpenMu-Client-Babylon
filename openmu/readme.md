@@ -141,6 +141,18 @@ like that, counted as online until a restart). It disposes them, which
 removes them from the game and drops their context: a ghost's stale copy is never saved over the real one.
 Each removal is logged as "Ghost player removed".
 
+## Offline sessions across servers
+
+`/offlevel` hands the character to an offline session on its game server and logs the account off at the login
+server. A login on that server stops the session first and loads what it saved; a login on another game server
+never looked (each server has its own `OfflinePlayerManager`), so the offline character kept playing there beside
+the logged-in one, both saving the same character (one player's levels and resets went up and down all day).
+`GameLogic/Offline/OfflineAcrossServersPlugIn` (`IPlayerStateChangingPlugIn`), when a login reaches the character
+list, ends the account's offline sessions on the other game servers without saving them: the login had already
+loaded the character, and OpenMU saves every minute, so at most that minute of offline play is lost. It takes the
+session out of the manager's private `_activePlayers` and stops its helper (`_intelligence`) by reflection, and
+logs an error if OpenMU renames them.
+
 ## Ghost sessions
 
 An account the login server holds while nobody of it is on any game server answers "already connected"
