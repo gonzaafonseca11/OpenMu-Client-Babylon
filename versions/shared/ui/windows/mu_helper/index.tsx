@@ -35,7 +35,10 @@ import {
   resetMuHelperDraft,
   saveMuHelperConfig,
   toggleMuHelperWindow,
+  tryCloseMuHelperWindow,
 } from '@/modules/mu_helper/state';
+import { Social } from '@/modules/social/social';
+import { isOn } from '@/controllers/fidelity';
 
 /**
  * `CNewUIMuHelper` (NewUIMuHelper.cpp): the S6 MU Helper settings dialog in
@@ -54,6 +57,8 @@ const CHECK_SPRITE = 'op2_ch.OZT';
 const CHECK_SIZE = 16;
 const EXIT_BUTTON = { x: 13, y: 392, width: 36, height: 29 };
 const EXIT_SPRITE = 'newui_exit_00.OZT';
+/** The X drawn on the frame's top (`newui_item_back04`): a button with `muHelperSaveReminder`. */
+const FRAME_CLOSE = { x: 165, y: 2, size: 22 };
 
 type Draft = MuHelperConfig;
 
@@ -684,7 +689,9 @@ export const MuHelperWindow = observer(() => {
 
   if (!open) return null;
 
-  const close = () => toggleMuHelperWindow(false);
+  const close = () => {
+    if (!tryCloseMuHelperWindow()) Social.errorMessage(t('muHelper.saveFirst'));
+  };
 
   return (
     <MuItemWindow
@@ -751,6 +758,17 @@ export const MuHelperWindow = observer(() => {
           onClick={close}
         />
       </div>
+
+      {isOn('muHelperSaveReminder') && (
+        <button
+          type="button"
+          data-no-drag="true"
+          aria-label={t('common.close')}
+          className="helper-frame-close"
+          style={{ left: FRAME_CLOSE.x, top: FRAME_CLOSE.y, width: FRAME_CLOSE.size, height: FRAME_CLOSE.size }}
+          onClick={uiClick(close)}
+        />
+      )}
     </MuItemWindow>
   );
 });

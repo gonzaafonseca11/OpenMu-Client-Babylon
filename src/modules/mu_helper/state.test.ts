@@ -61,3 +61,26 @@ describe('extra items past the 14 characters the blob keeps', () => {
     vi.unstubAllGlobals();
   });
 });
+
+describe('the X of the settings window', () => {
+  it('closes when nothing changed, stays open with an edit unsaved, and always closes on Classic', async () => {
+    const { MuHelperState, toggleMuHelperWindow, tryCloseMuHelperWindow } = await import('./state');
+    const { FIDELITY_CLASSIC, FIDELITY_DEFAULT, setFidelityChoice } = await import('@/controllers/fidelity');
+
+    toggleMuHelperWindow(true);
+    expect(tryCloseMuHelperWindow()).toBe(true);
+    expect(MuHelperState.windowOpen).toBe(false);
+
+    toggleMuHelperWindow(true);
+    runInAction(() => {
+      MuHelperState.draft.huntingRange = MuHelperState.config.huntingRange + 1;
+    });
+    expect(tryCloseMuHelperWindow()).toBe(false);
+    expect(MuHelperState.windowOpen).toBe(true);
+
+    setFidelityChoice(FIDELITY_CLASSIC, {});
+    expect(tryCloseMuHelperWindow()).toBe(true);
+    expect(MuHelperState.windowOpen).toBe(false);
+    setFidelityChoice(FIDELITY_DEFAULT, {});
+  });
+});

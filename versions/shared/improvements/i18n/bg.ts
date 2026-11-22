@@ -79,6 +79,9 @@ export default {
   'fidelity.muHelperButtons': 'Бутони за MU Helper',
   'fidelity.muHelperButtons.hint':
     'Бутони Старт / Стоп и Настройки за MU Helper под таймерите на събитията. Класически: само клавишите Home и End, както в оригинала.',
+  'fidelity.muHelperSaveReminder': 'Напомняне за запазване в MU Helper',
+  'fidelity.muHelperSaveReminder.hint':
+    'X на прозореца на MU Helper, и този на рамката, го затваря; при незапазени промени остава отворен и иска Запази. Класически: бутонът за изход затваря и отхвърля промените.',
   'fidelity.statCommandNotice': 'Известие за команди за точки',
   'fidelity.statCommandNotice.hint':
     'След /addstr и другите команди за точки системният дневник казва колко точки отидоха в коя характеристика. Класически: само отговорът на сървъра, както в оригинала.',

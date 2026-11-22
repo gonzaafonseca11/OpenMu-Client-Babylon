@@ -78,6 +78,9 @@ export default {
   'fidelity.muHelperButtons': 'أزرار MU Helper',
   'fidelity.muHelperButtons.hint':
     'أزرار التشغيل / الإيقاف والإعدادات لـ MU Helper تحت مؤقتات الأحداث. «كلاسيكي»: المفتاحان Home و End فقط، كما في الأصل.',
+  'fidelity.muHelperSaveReminder': 'تذكير الحفظ في MU Helper',
+  'fidelity.muHelperSaveReminder.hint':
+    'زر X في نافذة MU Helper، وزر الإطار أيضا، يغلقها؛ ومع تغييرات غير محفوظة تبقى مفتوحة وتطلب الضغط على حفظ. الكلاسيكي: زر الخروج يغلق ويتجاهل التغييرات.',
   'fidelity.statCommandNotice': 'إشعار أوامر الخصائص',
   'fidelity.statCommandNotice.hint':
     'بعد الأمر /addstr وأوامر الخصائص الأخرى، يذكر سجل النظام عدد النقاط التي أضيفت وإلى أي خاصية. «كلاسيكي»: رد الخادم وحده، كما في الأصل.',

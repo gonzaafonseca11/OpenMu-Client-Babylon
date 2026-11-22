@@ -75,6 +75,9 @@ export default {
   'fidelity.menuLabelFit.hint': 'Esc 菜单中过长的文字会缩小以适应按钮。经典：与原版相同，所有文字保持原有大小。',
   'fidelity.muHelperButtons': 'MU助手按钮',
   'fidelity.muHelperButtons.hint': '在活动计时下方显示MU助手的启动/停止和设置按钮。经典：与原版相同，只有Home和End键。',
+  'fidelity.muHelperSaveReminder': 'MU Helper 保存提醒',
+  'fidelity.muHelperSaveReminder.hint':
+    'MU Helper 窗口的 X（框上的 X 也是）会关闭它；有未保存的更改时保持打开并提醒按保存。经典：退出按钮会关闭并丢弃更改。',
   'fidelity.statCommandNotice': '属性命令提示',
   'fidelity.statCommandNotice.hint': '使用/addstr等属性命令后，系统日志会说明多少点加到了哪项属性。经典：与原版相同，只有服务器的回应。',
   'fidelity.shortChatBubbles': '简短聊天气泡',

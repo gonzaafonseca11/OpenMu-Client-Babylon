@@ -78,6 +78,9 @@ export default {
   'fidelity.muHelperButtons': 'دکمه‌های MU Helper',
   'fidelity.muHelperButtons.hint':
     'دکمه‌های شروع / توقف و تنظیمات برای MU Helper زیر زمان‌سنج رویدادها. کلاسیک: فقط کلیدهای Home و End، مانند نسخه اصلی.',
+  'fidelity.muHelperSaveReminder': 'یادآور ذخیره MU Helper',
+  'fidelity.muHelperSaveReminder.hint':
+    'دکمه X پنجره MU Helper، و دکمه قاب، آن را می‌بندد؛ با تغییرات ذخیره‌نشده باز می‌ماند و می‌خواهد ذخیره را بزنید. کلاسیک: دکمه خروج می‌بندد و تغییرات را دور می‌ریزد.',
   'fidelity.statCommandNotice': 'اعلان فرمان‌های ویژگی',
   'fidelity.statCommandNotice.hint':
     'پس از فرمان /addstr و دیگر فرمان‌های ویژگی، گزارش سیستم می‌گوید چند امتیاز به کدام ویژگی رفت. کلاسیک: فقط پاسخ سرور، مانند نسخه اصلی.',

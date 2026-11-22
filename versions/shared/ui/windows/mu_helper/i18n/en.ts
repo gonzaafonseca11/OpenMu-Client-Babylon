@@ -49,6 +49,7 @@ const en = {
   'muHelper.noSkills': 'No usable skills learned',
   'muHelper.none': 'None',
   'muHelper.save': 'Save',
+  'muHelper.saveFirst': 'Press Save to apply your changes.',
   'muHelper.init': 'Init',
 };
 

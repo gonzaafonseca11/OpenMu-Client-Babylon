@@ -51,5 +51,6 @@ export default {
   'muHelper.noSkills': '沒有學會可用的技能',
   'muHelper.none': '無',
   'muHelper.save': '儲存',
+  'muHelper.saveFirst': '請按儲存以套用變更。',
   'muHelper.init': '重設',
 } satisfies Partial<Record<keyof typeof en, string>>;

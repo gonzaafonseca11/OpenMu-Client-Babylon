@@ -78,6 +78,9 @@ export default {
   'fidelity.muHelperButtons': 'بٹن برائے MU Helper',
   'fidelity.muHelperButtons.hint':
     'ایونٹ ٹائمر کے نیچے MU Helper کے لیے شروع / روکیں اور ترتیبات کے بٹن۔ کلاسیکی: صرف Home اور End کیز، جیسا اصل میں تھا۔',
+  'fidelity.muHelperSaveReminder': 'MU Helper محفوظ کرنے کی یاددہانی',
+  'fidelity.muHelperSaveReminder.hint':
+    'MU Helper ونڈو کا X، فریم والا بھی، اسے بند کرتا ہے؛ غیر محفوظ تبدیلیوں پر یہ کھلی رہتی ہے اور محفوظ کریں دبانے کو کہتی ہے۔ کلاسک: باہر نکلنے کا بٹن بند کرتا ہے اور تبدیلیاں چھوڑ دیتا ہے۔',
   'fidelity.statCommandNotice': 'پوائنٹ کمانڈ کی اطلاع',
   'fidelity.statCommandNotice.hint':
     'کمانڈ /addstr اور دوسری پوائنٹ کمانڈز کے بعد سسٹم لاگ بتاتا ہے کہ کتنے پوائنٹس کس صفت میں گئے۔ کلاسیکی: صرف سرور کا جواب، جیسا اصل میں تھا۔',

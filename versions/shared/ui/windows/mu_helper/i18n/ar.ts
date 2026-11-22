@@ -48,6 +48,7 @@ export default {
   'muHelper.noSkills': 'لم تتعلم مهارات قابلة للاستخدام',
   'muHelper.none': 'لا شيء',
   'muHelper.save': 'حفظ',
+  'muHelper.saveFirst': 'اضغط حفظ لتطبيق التغييرات.',
   'muHelper.init': 'إعادة التعيين',
   'muHelper.itemFilters': 'المرشحات (+Luck +Opt 12)',
   'muHelper.itemFilters.hint':

@@ -78,6 +78,9 @@ export default {
   'fidelity.muHelperButtons': 'MU Helper बटन',
   'fidelity.muHelperButtons.hint':
     'इवेंट टाइमर के नीचे MU Helper के लिए शुरू / रोकें और सेटिंग बटन। क्लासिक: मूल की तरह, सिर्फ़ Home और End कुंजियां।',
+  'fidelity.muHelperSaveReminder': 'MU Helper सहेजने का अनुस्मारक',
+  'fidelity.muHelperSaveReminder.hint':
+    'MU Helper विंडो का X, फ्रेम वाला भी, इसे बंद करता है; बिना सहेजे बदलावों पर यह खुली रहती है और सहेजें दबाने को कहती है। क्लासिक: निकास बटन बंद करता है और बदलाव छोड़ देता है।',
   'fidelity.statCommandNotice': 'स्टैट कमांड सूचना',
   'fidelity.statCommandNotice.hint':
     '/addstr और दूसरी स्टैट कमांड के बाद सिस्टम लॉग बताता है कि कितने पॉइंट किस स्टैट में गए। क्लासिक: मूल की तरह, सिर्फ़ सर्वर का जवाब।',

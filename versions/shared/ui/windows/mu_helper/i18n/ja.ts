@@ -50,5 +50,6 @@ export default {
   'muHelper.noSkills': '使えるスキルを覚えていません',
   'muHelper.none': 'なし',
   'muHelper.save': '保存',
+  'muHelper.saveFirst': '変更を適用するには保存を押してください。',
   'muHelper.init': '初期化',
 } satisfies Partial<Record<keyof typeof en, string>>;

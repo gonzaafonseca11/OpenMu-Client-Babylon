@@ -48,6 +48,7 @@ export default {
   'muHelper.noSkills': 'Nincs megtanult, használható képesség',
   'muHelper.none': 'Nincs',
   'muHelper.save': 'Mentés',
+  'muHelper.saveFirst': 'Nyomd meg a Mentés gombot a változások alkalmazásához.',
   'muHelper.init': 'Alaphelyzet',
   'muHelper.itemFilters': 'Szűrők (+Luck +Opt 12)',
   'muHelper.itemFilters.hint':

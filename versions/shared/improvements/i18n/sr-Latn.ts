@@ -78,6 +78,9 @@ export default {
   'fidelity.muHelperButtons': 'Dugmad za MU Helper',
   'fidelity.muHelperButtons.hint':
     'Dugmad Pokreni / Zaustavi i Podešavanja za MU Helper ispod tajmera događaja. Klasično: samo tasteri Home i End, kao u originalu.',
+  'fidelity.muHelperSaveReminder': 'Podsetnik za čuvanje MU Helper',
+  'fidelity.muHelperSaveReminder.hint':
+    'X prozora MU Helper, i onaj na okviru, ga zatvara; sa nesačuvanim izmenama ostaje otvoren i traži Sačuvaj. Klasično: dugme za izlaz zatvara i odbacuje izmene.',
   'fidelity.statCommandNotice': 'Obaveštenje o komandama atributa',
   'fidelity.statCommandNotice.hint':
     'Posle /addstr i ostalih komandi atributa, sistemski dnevnik kaže koliko je poena otišlo u koji atribut. Klasično: samo odgovor servera, kao u originalu.',

@@ -77,6 +77,9 @@ export default {
   'fidelity.muHelperButtons': 'MU Helper বোতাম',
   'fidelity.muHelperButtons.hint':
     'ইভেন্ট টাইমারের নিচে MU Helper-এর জন্য চালু / বন্ধ ও সেটিংস বোতাম। ক্লাসিক: মূল গেমের মতো শুধু Home ও End কী।',
+  'fidelity.muHelperSaveReminder': 'MU Helper সংরক্ষণ অনুস্মারক',
+  'fidelity.muHelperSaveReminder.hint':
+    'MU Helper উইন্ডোর X, ফ্রেমেরটিও, এটি বন্ধ করে; অসংরক্ষিত পরিবর্তন থাকলে খোলা থাকে এবং সংরক্ষণ চাপতে বলে। ক্লাসিক: প্রস্থান বোতাম বন্ধ করে ও পরিবর্তন বাদ দেয়।',
   'fidelity.statCommandNotice': 'স্ট্যাট কমান্ডের বার্তা',
   'fidelity.statCommandNotice.hint':
     '/addstr ও অন্যান্য স্ট্যাট কমান্ডের পর সিস্টেম লগ জানায় কোন স্ট্যাটে কত পয়েন্ট গেল। ক্লাসিক: মূল গেমের মতো শুধু সার্ভারের উত্তর।',

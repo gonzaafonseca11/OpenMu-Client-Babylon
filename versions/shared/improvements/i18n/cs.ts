@@ -78,6 +78,9 @@ export default {
   'fidelity.muHelperButtons': 'Tlačítka MU Helper',
   'fidelity.muHelperButtons.hint':
     'Tlačítka Start / Stop a Nastavení pro MU Helper pod časovači událostí. Klasické: jen klávesy Home a End, jako v originálu.',
+  'fidelity.muHelperSaveReminder': 'Připomenutí uložení MU Helper',
+  'fidelity.muHelperSaveReminder.hint':
+    'X okna MU Helper, i to na rámu, ho zavře; s neuloženými změnami zůstane otevřené a požádá o Uložit. Klasické: tlačítko odchodu zavře a zahodí změny.',
   'fidelity.statCommandNotice': 'Hlášení příkazů atributů',
   'fidelity.statCommandNotice.hint':
     'Po /addstr a dalších příkazech atributů napíše systémový záznam, kolik bodů šlo do kterého atributu. Klasické: jen odpověď serveru, jako v originálu.',

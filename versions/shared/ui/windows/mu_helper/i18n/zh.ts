@@ -50,5 +50,6 @@ export default {
   'muHelper.noSkills': '没有学会可用的技能',
   'muHelper.none': '无',
   'muHelper.save': '保存',
+  'muHelper.saveFirst': '请按保存以应用更改。',
   'muHelper.init': '重置',
 } satisfies Partial<Record<keyof typeof en, string>>;

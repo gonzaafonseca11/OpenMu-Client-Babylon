@@ -50,5 +50,6 @@ export default {
   'muHelper.noSkills': 'Aucune compétence utilisable apprise',
   'muHelper.none': 'Aucune',
   'muHelper.save': 'Enregistrer',
+  'muHelper.saveFirst': 'Appuie sur Enregistrer pour appliquer les changements.',
   'muHelper.init': 'Réinitialiser',
 } satisfies Partial<Record<keyof typeof en, string>>;

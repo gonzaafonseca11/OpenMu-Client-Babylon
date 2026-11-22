@@ -48,6 +48,7 @@ export default {
   'muHelper.noSkills': 'ব্যবহারযোগ্য কোনো স্কিল শেখা হয়নি',
   'muHelper.none': 'নেই',
   'muHelper.save': 'সংরক্ষণ',
+  'muHelper.saveFirst': 'পরিবর্তন প্রয়োগ করতে সংরক্ষণ চাপুন।',
   'muHelper.init': 'রিসেট',
   'muHelper.itemFilters': 'ফিল্টার (+Luck +Opt 12)',
   'muHelper.itemFilters.hint':

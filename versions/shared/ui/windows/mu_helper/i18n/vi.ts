@@ -50,5 +50,6 @@ export default {
   'muHelper.noSkills': 'Chưa học kỹ năng nào dùng được',
   'muHelper.none': 'Không',
   'muHelper.save': 'Lưu',
+  'muHelper.saveFirst': 'Nhấn Lưu để áp dụng thay đổi.',
   'muHelper.init': 'Đặt lại',
 } satisfies Partial<Record<keyof typeof en, string>>;

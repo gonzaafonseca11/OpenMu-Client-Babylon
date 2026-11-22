@@ -78,6 +78,9 @@ export default {
   'fidelity.muHelperButtons': 'MU Helper botoiak',
   'fidelity.muHelperButtons.hint':
     'MU Helper abiarazteko, gelditzeko eta konfiguratzeko botoiak, ekitaldien tenporizadoreen azpian. Klasikoa: Home eta End teklak soilik, jatorrizkoan bezala.',
+  'fidelity.muHelperSaveReminder': 'MU Helper gordetzeko oroigarria',
+  'fidelity.muHelperSaveReminder.hint':
+    'MU Helper leihoaren X-ak, markoarenak ere, ixten du; gorde gabeko aldaketekin irekita geratzen da eta Gorde sakatzeko eskatzen du. Klasikoa: irteteko botoiak itxi eta aldaketak baztertzen ditu.',
   'fidelity.statCommandNotice': 'Ezaugarri-komandoen oharra',
   'fidelity.statCommandNotice.hint':
     '/addstr eta gainerako ezaugarri-komandoen ondoren, sistema-erregistroak zenbat puntu zein ezaugarritara joan diren adierazten du. Klasikoa: zerbitzariaren erantzuna soilik, jatorrizkoan bezala.',

@@ -76,6 +76,9 @@ const en = {
   'fidelity.muHelperButtons': 'MU Helper buttons',
   'fidelity.muHelperButtons.hint':
     'Start / Stop and Settings buttons for the MU Helper under the event timers. Classic: only the Home and End keys, as in the original.',
+  'fidelity.muHelperSaveReminder': 'MU Helper save reminder',
+  'fidelity.muHelperSaveReminder.hint':
+    'The MU Helper window\'s X, the frame\'s too, closes it; with unsaved changes it stays open and asks you to press Save. Classic: the exit button closes and drops the changes.',
   'fidelity.statCommandNotice': 'Stat command notice',
   'fidelity.statCommandNotice.hint':
     "After /addstr and the other stat commands, the system log says how many points went into which stat. Classic: the server's answer alone, as in the original.",

@@ -51,5 +51,6 @@ export default {
   'muHelper.noSkills': 'مهارت قابل استفاده‌ای آموخته نشده',
   'muHelper.none': 'هیچ',
   'muHelper.save': 'ذخیره',
+  'muHelper.saveFirst': 'برای اعمال تغییرات، ذخیره را بزنید.',
   'muHelper.init': 'بازنشانی',
 } satisfies Partial<Record<keyof typeof en, string>>;

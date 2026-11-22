@@ -79,6 +79,9 @@ export default {
   'fidelity.muHelperButtons': 'Pulsanti del MU Helper',
   'fidelity.muHelperButtons.hint':
     "Pulsanti Avvia / Ferma e Impostazioni del MU Helper sotto i timer degli eventi. Classico: solo i tasti Home e Fine, come nell'originale.",
+  'fidelity.muHelperSaveReminder': 'Promemoria di salvataggio del MU Helper',
+  'fidelity.muHelperSaveReminder.hint':
+    'La X della finestra del MU Helper, anche quella della cornice, la chiude; con modifiche non salvate resta aperta e chiede di premere Salva. Classico: il pulsante di uscita chiude e scarta le modifiche.',
   'fidelity.statCommandNotice': 'Avviso dei comandi punti',
   'fidelity.statCommandNotice.hint':
     "Dopo /addstr e gli altri comandi punti, il registro di sistema dice quanti punti sono andati in quale statistica. Classico: solo la risposta del server, come nell'originale.",

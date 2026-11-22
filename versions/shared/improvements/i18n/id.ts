@@ -78,6 +78,9 @@ export default {
   'fidelity.muHelperButtons': 'Tombol MU Helper',
   'fidelity.muHelperButtons.hint':
     'Tombol untuk memulai, menghentikan, dan mengatur MU Helper di bawah pengatur waktu event. Klasik: hanya tombol Home dan End, seperti aslinya.',
+  'fidelity.muHelperSaveReminder': 'Pengingat simpan MU Helper',
+  'fidelity.muHelperSaveReminder.hint':
+    'X jendela MU Helper, juga yang di bingkai, menutupnya; dengan perubahan belum disimpan jendela tetap terbuka dan meminta menekan Simpan. Klasik: tombol keluar menutup dan membuang perubahan.',
   'fidelity.statCommandNotice': 'Pemberitahuan perintah stat',
   'fidelity.statCommandNotice.hint':
     'Setelah /addstr dan perintah stat lainnya, log sistem menyebutkan berapa poin masuk ke stat mana. Klasik: hanya jawaban server, seperti aslinya.',

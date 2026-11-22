@@ -6,6 +6,7 @@ import { Session } from '../session';
 import { moduleOn } from '../module';
 import { Hero } from '../hero';
 import { GameOptions } from '@/controllers/settings';
+import { isOn } from '@/controllers/fidelity';
 import { LocalStorage } from '@/core/localStorage';
 import { restoreExtraItems } from './itemFilters';
 import {
@@ -191,6 +192,19 @@ export function toggleMuHelperWindow(open?: boolean): void {
     if (next) MuHelperState.draft = cloneConfig(MuHelperState.config);
     MuHelperState.windowOpen = next;
   });
+}
+
+/**
+ * The window's X. With `muHelperSaveReminder` (ours) an unsaved edit keeps it open (false: the caller says so);
+ * Classic closes and drops the draft.
+ */
+export function tryCloseMuHelperWindow(): boolean {
+  const same = JSON.stringify(cloneConfig(MuHelperState.draft)) === JSON.stringify(cloneConfig(MuHelperState.config));
+  if (isOn('muHelperSaveReminder') && !same) {
+    return false;
+  }
+  toggleMuHelperWindow(false);
+  return true;
 }
 
 /** The Init button (`CNewUIMuHelper::Reset` defaults). */

@@ -48,6 +48,7 @@ export default {
   'muHelper.noSkills': 'Belum ada skill yang bisa dipakai',
   'muHelper.none': 'Tidak ada',
   'muHelper.save': 'Simpan',
+  'muHelper.saveFirst': 'Tekan Simpan untuk menerapkan perubahan.',
   'muHelper.init': 'Reset',
   'muHelper.itemFilters': 'Filter (+Luck +Opt 12)',
   'muHelper.itemFilters.hint':

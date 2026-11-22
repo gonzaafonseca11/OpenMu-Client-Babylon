@@ -50,5 +50,6 @@ export default {
   'muHelper.noSkills': '사용할 수 있는 스킬을 배우지 않았습니다',
   'muHelper.none': '없음',
   'muHelper.save': '저장',
+  'muHelper.saveFirst': '변경 사항을 적용하려면 저장을 누르세요.',
   'muHelper.init': '초기화',
 } satisfies Partial<Record<keyof typeof en, string>>;

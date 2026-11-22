@@ -78,6 +78,9 @@ export default {
   'fidelity.muHelperButtons': 'MU Helper gombok',
   'fidelity.muHelperButtons.hint':
     'Indítás / Leállítás és Beállítások gombok a MU Helperhez az eseményidőzítők alatt. Klasszikus: csak a Home és End billentyűk, mint az eredetiben.',
+  'fidelity.muHelperSaveReminder': 'MU Helper mentési emlékeztető',
+  'fidelity.muHelperSaveReminder.hint':
+    'A MU Helper ablak X-e, a keret is, bezárja; mentetlen változásokkal nyitva marad és Mentést kér. Klasszikus: a kilépés gomb bezár és elveti a változásokat.',
   'fidelity.statCommandNotice': 'Értesítés a tulajdonságparancsokról',
   'fidelity.statCommandNotice.hint':
     'Az /addstr és a többi tulajdonságparancs után a rendszernapló kiírja, hány pont melyik tulajdonságba került. Klasszikus: csak a szerver válasza, mint az eredetiben.',

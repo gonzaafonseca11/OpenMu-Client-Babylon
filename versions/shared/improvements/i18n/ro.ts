@@ -79,6 +79,9 @@ export default {
   'fidelity.muHelperButtons': 'Butoane MU Helper',
   'fidelity.muHelperButtons.hint':
     'Butoane Pornește / Oprește și Setări pentru MU Helper sub cronometrele evenimentelor. Clasic: doar tastele Home și End, ca în original.',
+  'fidelity.muHelperSaveReminder': 'Memento de salvare MU Helper',
+  'fidelity.muHelperSaveReminder.hint':
+    'X-ul ferestrei MU Helper, și cel al ramei, o închide; cu modificări nesalvate rămâne deschisă și cere Salvează. Clasic: butonul de ieșire închide și renunță la modificări.',
   'fidelity.statCommandNotice': 'Anunț pentru comenzile de puncte',
   'fidelity.statCommandNotice.hint':
     'După /addstr și celelalte comenzi de puncte, jurnalul de sistem spune câte puncte au mers în ce atribut. Clasic: doar răspunsul serverului, ca în original.',

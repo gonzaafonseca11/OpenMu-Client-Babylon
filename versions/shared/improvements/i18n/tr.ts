@@ -78,6 +78,9 @@ export default {
   'fidelity.muHelperButtons': 'MU Helper düğmeleri',
   'fidelity.muHelperButtons.hint':
     'Etkinlik sayaçlarının altında MU Helper için Başlat / Durdur ve Ayarlar düğmeleri. Klasik: orijinaldeki gibi yalnızca Home ve End tuşları.',
+  'fidelity.muHelperSaveReminder': 'MU Helper kaydetme hatırlatıcısı',
+  'fidelity.muHelperSaveReminder.hint':
+    'MU Helper penceresinin X’i, çerçevedeki de, onu kapatır; kaydedilmemiş değişiklik varsa açık kalır ve Kaydet’e basmanı ister. Klasik: çıkış düğmesi kapatır ve değişiklikleri atar.',
   'fidelity.statCommandNotice': 'Nitelik komutu bildirimi',
   'fidelity.statCommandNotice.hint':
     '/addstr ve diğer nitelik komutlarından sonra sistem kaydı hangi niteliğe kaç puan gittiğini söyler. Klasik: orijinaldeki gibi yalnızca sunucunun yanıtı.',

@@ -50,5 +50,6 @@ export default {
   'muHelper.noSkills': 'Няма научени използваеми умения',
   'muHelper.none': 'Няма',
   'muHelper.save': 'Запази',
+  'muHelper.saveFirst': 'Натисни Запази, за да приложиш промените.',
   'muHelper.init': 'Нулирай',
 } satisfies Partial<Record<keyof typeof en, string>>;

@@ -48,6 +48,7 @@ export default {
   'muHelper.noSkills': 'Žádné použitelné naučené dovednosti',
   'muHelper.none': 'Žádná',
   'muHelper.save': 'Uložit',
+  'muHelper.saveFirst': 'Stiskni Uložit pro použití změn.',
   'muHelper.init': 'Obnovit',
   'muHelper.itemFilters': 'Filtry (+Luck +Opt 12)',
   'muHelper.itemFilters.hint':

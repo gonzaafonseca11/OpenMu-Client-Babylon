@@ -48,6 +48,7 @@ export default {
   'muHelper.noSkills': 'Δεν έχετε μάθει χρήσιμες δεξιότητες',
   'muHelper.none': 'Καμία',
   'muHelper.save': 'Αποθήκευση',
+  'muHelper.saveFirst': 'Πάτησε Αποθήκευση για να εφαρμοστούν οι αλλαγές.',
   'muHelper.init': 'Επαναφορά',
   'muHelper.itemFilters': 'Φίλτρα (+Luck +Opt 12)',
   'muHelper.itemFilters.hint':

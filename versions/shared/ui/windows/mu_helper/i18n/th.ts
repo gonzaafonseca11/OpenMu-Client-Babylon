@@ -50,5 +50,6 @@ export default {
   'muHelper.noSkills': 'ยังไม่ได้เรียนสกิลที่ใช้ได้',
   'muHelper.none': 'ไม่มี',
   'muHelper.save': 'บันทึก',
+  'muHelper.saveFirst': 'กดบันทึกเพื่อใช้การเปลี่ยนแปลง',
   'muHelper.init': 'ตั้งค่าใหม่',
 } satisfies Partial<Record<keyof typeof en, string>>;

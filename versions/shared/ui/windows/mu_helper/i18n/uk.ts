@@ -48,6 +48,7 @@ export default {
   'muHelper.noSkills': 'Немає вивчених навичок, які можна використати',
   'muHelper.none': 'Немає',
   'muHelper.save': 'Зберегти',
+  'muHelper.saveFirst': 'Натисни Зберегти, щоб застосувати зміни.',
   'muHelper.init': 'Скинути',
   'muHelper.itemFilters': 'Фільтри (+Luck +Opt 12)',
   'muHelper.itemFilters.hint':

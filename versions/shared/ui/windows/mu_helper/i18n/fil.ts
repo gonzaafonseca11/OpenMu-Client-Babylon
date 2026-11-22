@@ -51,5 +51,6 @@ export default {
   'muHelper.noSkills': 'Walang natutunang skill na magagamit',
   'muHelper.none': 'Wala',
   'muHelper.save': 'I-save',
+  'muHelper.saveFirst': 'Pindutin ang I-save para ilapat ang mga pagbabago.',
   'muHelper.init': 'I-reset',
 } satisfies Partial<Record<keyof typeof en, string>>;

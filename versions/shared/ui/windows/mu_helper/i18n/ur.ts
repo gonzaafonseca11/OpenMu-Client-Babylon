@@ -51,5 +51,6 @@ export default {
   'muHelper.noSkills': 'قابل استعمال کوئی سکل نہیں سیکھی',
   'muHelper.none': 'کوئی نہیں',
   'muHelper.save': 'محفوظ کریں',
+  'muHelper.saveFirst': 'تبدیلیاں لاگو کرنے کے لیے محفوظ کریں دبائیں۔',
   'muHelper.init': 'ری سیٹ',
 } satisfies Partial<Record<keyof typeof en, string>>;

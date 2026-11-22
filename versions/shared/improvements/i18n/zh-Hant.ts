@@ -59,6 +59,9 @@ export default {
   'fidelity.menuLabelFit.hint': 'Esc 選單中較長的文字會縮小以符合按鈕大小。經典：與原版相同，每個文字都保持原本大小。',
   'fidelity.muHelperButtons': 'MU Helper 按鈕',
   'fidelity.muHelperButtons.hint': '在活動計時器下方加入 MU Helper 的開始／停止與設定按鈕。經典：與原版相同，只能用 Home 和 End 鍵。',
+  'fidelity.muHelperSaveReminder': 'MU Helper 儲存提醒',
+  'fidelity.muHelperSaveReminder.hint':
+    'MU Helper 視窗的 X（框上的 X 也是）會關閉它；有未儲存的變更時保持開啟並提醒按儲存。經典：離開按鈕會關閉並捨棄變更。',
   'fidelity.statCommandNotice': '屬性指令通知',
   'fidelity.statCommandNotice.hint': '使用 /addstr 等屬性指令後，系統訊息會說明哪項屬性加了多少點。經典：與原版相同，只有伺服器的回覆。',
   'fidelity.shortChatBubbles': '簡短聊天氣泡',

@@ -77,6 +77,9 @@ export default {
   'fidelity.menuLabelFit.hint': 'Escメニューの長い表記をボタンに収まるよう縮小します。クラシック：オリジナルと同じく、表記は元の大きさのままです。',
   'fidelity.muHelperButtons': 'MUヘルパーのボタン',
   'fidelity.muHelperButtons.hint': 'イベントタイマーの下にMUヘルパーの開始/停止と設定のボタンを表示します。クラシック: オリジナル通り、HomeキーとEndキーのみ。',
+  'fidelity.muHelperSaveReminder': 'MU Helper の保存リマインダー',
+  'fidelity.muHelperSaveReminder.hint':
+    'MU Helper ウィンドウの X（枠の X も）で閉じます。未保存の変更があると開いたままで、保存を押すよう求めます。クラシック: 終了ボタンで閉じ、変更は破棄されます。',
   'fidelity.statCommandNotice': 'ステータスコマンドの通知',
   'fidelity.statCommandNotice.hint':
     '/addstrなどのステータスコマンドの後、どのステータスに何ポイント入ったかをシステムログに表示します。クラシック: オリジナル通り、サーバーの応答のみ。',

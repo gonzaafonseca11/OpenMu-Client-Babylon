@@ -48,6 +48,7 @@ export default {
   'muHelper.noSkills': 'No has après cap habilitat utilitzable',
   'muHelper.none': 'Cap',
   'muHelper.save': 'Desa',
+  'muHelper.saveFirst': 'Prem Desa per aplicar els canvis.',
   'muHelper.init': 'Restableix',
   'muHelper.itemFilters': 'Filtres (+Luck +Opt 12)',
   'muHelper.itemFilters.hint':

@@ -79,6 +79,9 @@ export default {
   'fidelity.muHelperButtons': 'Boutons du MU Helper',
   'fidelity.muHelperButtons.hint':
     "Boutons Lancer / Arrêter et Réglages du MU Helper sous les minuteurs d'événements. Classique : seulement les touches Début et Fin, comme dans l'original.",
+  'fidelity.muHelperSaveReminder': 'Rappel d\'enregistrement du MU Helper',
+  'fidelity.muHelperSaveReminder.hint':
+    'Le X de la fenêtre du MU Helper, celui du cadre aussi, la ferme ; avec des changements non enregistrés elle reste ouverte et demande d\'appuyer sur Enregistrer. Classique : le bouton de sortie ferme et abandonne les changements.',
   'fidelity.statCommandNotice': 'Avis des commandes de points',
   'fidelity.statCommandNotice.hint':
     "Après /addstr et les autres commandes de points, le journal système indique combien de points sont allés dans quelle caractéristique. Classique : seule la réponse du serveur, comme dans l'original.",

@@ -48,6 +48,7 @@ export default {
   'muHelper.noSkills': 'Kullanılabilir yetenek öğrenilmedi',
   'muHelper.none': 'Yok',
   'muHelper.save': 'Kaydet',
+  'muHelper.saveFirst': 'Değişiklikleri uygulamak için Kaydet’e bas.',
   'muHelper.init': 'Sıfırla',
   'muHelper.itemFilters': 'Filtreler (+Luck +Opt 12)',
   'muHelper.itemFilters.hint':

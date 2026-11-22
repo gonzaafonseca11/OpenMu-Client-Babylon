@@ -78,6 +78,9 @@ export default {
   'fidelity.muHelperButtons': 'Mga button ng MU Helper',
   'fidelity.muHelperButtons.hint':
     'Mga button para simulan, itigil at i-set up ang MU Helper sa ilalim ng mga timer ng event. Klasiko: ang mga key na Home at End lamang, gaya ng orihinal.',
+  'fidelity.muHelperSaveReminder': 'Paalala sa pag-save ng MU Helper',
+  'fidelity.muHelperSaveReminder.hint':
+    'Ang X ng window ng MU Helper, pati ang sa frame, ay nagsasara nito; kapag may hindi naka-save na pagbabago, nananatiling bukas at hinihiling na pindutin ang I-save. Classic: isinasara ng exit button at itinatapon ang mga pagbabago.',
   'fidelity.statCommandNotice': 'Paunawa ng stat command',
   'fidelity.statCommandNotice.hint':
     'Pagkatapos ng /addstr at iba pang stat command, sinasabi ng log ng sistema kung ilang puntos ang napunta sa aling stat. Klasiko: ang sagot lamang ng server, gaya ng orihinal.',

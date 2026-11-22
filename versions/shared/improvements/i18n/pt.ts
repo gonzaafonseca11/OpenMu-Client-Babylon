@@ -79,6 +79,9 @@ export default {
   'fidelity.muHelperButtons': 'Botões do MU Helper',
   'fidelity.muHelperButtons.hint':
     'Botões Iniciar / Parar e Ajustes do MU Helper abaixo dos temporizadores de eventos. Clássico: só as teclas Home e End, como no original.',
+  'fidelity.muHelperSaveReminder': 'Lembrete de salvar do MU Helper',
+  'fidelity.muHelperSaveReminder.hint':
+    'O X da janela do MU Helper, também o da moldura, fecha-a; com alterações não salvas ela fica aberta e pede para pressionar Salvar. Clássico: o botão de saída fecha e descarta as alterações.',
   'fidelity.statCommandNotice': 'Aviso dos comandos de pontos',
   'fidelity.statCommandNotice.hint':
     'Depois de /addstr e dos outros comandos de pontos, o registro do sistema diz quantos pontos foram para cada atributo. Clássico: só a resposta do servidor, como no original.',

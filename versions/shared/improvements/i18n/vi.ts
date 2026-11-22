@@ -79,6 +79,9 @@ export default {
   'fidelity.muHelperButtons': 'Nút MU Helper',
   'fidelity.muHelperButtons.hint':
     'Nút Bật / Tắt và Cài đặt MU Helper dưới đồng hồ sự kiện. Cổ điển: chỉ có phím Home và End, như bản gốc.',
+  'fidelity.muHelperSaveReminder': 'Nhắc lưu của MU Helper',
+  'fidelity.muHelperSaveReminder.hint':
+    'Nút X của cửa sổ MU Helper, cả nút trên khung, sẽ đóng nó; khi có thay đổi chưa lưu, cửa sổ vẫn mở và nhắc nhấn Lưu. Cổ điển: nút thoát đóng và bỏ thay đổi.',
   'fidelity.statCommandNotice': 'Thông báo lệnh cộng điểm',
   'fidelity.statCommandNotice.hint':
     'Sau /addstr và các lệnh cộng điểm khác, nhật ký hệ thống cho biết bao nhiêu điểm đã vào chỉ số nào. Cổ điển: chỉ có phản hồi của máy chủ, như bản gốc.',

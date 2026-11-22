@@ -48,6 +48,7 @@ export default {
   'muHelper.noSkills': 'Ez duzu trebetasun erabilgarririk ikasi',
   'muHelper.none': 'Bat ere ez',
   'muHelper.save': 'Gorde',
+  'muHelper.saveFirst': 'Sakatu Gorde aldaketak aplikatzeko.',
   'muHelper.init': 'Berrezarri',
   'muHelper.itemFilters': 'Iragazkiak (+Luck +Opt 12)',
   'muHelper.itemFilters.hint':

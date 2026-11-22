@@ -79,6 +79,9 @@ export default {
   'fidelity.muHelperButtons': 'ปุ่ม MU Helper',
   'fidelity.muHelperButtons.hint':
     'ปุ่มเริ่ม / หยุด และตั้งค่า MU Helper ใต้ตัวจับเวลากิจกรรม คลาสสิก: มีเพียงปุ่ม Home และ End เหมือนต้นฉบับ',
+  'fidelity.muHelperSaveReminder': 'การเตือนบันทึกของ MU Helper',
+  'fidelity.muHelperSaveReminder.hint':
+    'ปุ่ม X ของหน้าต่าง MU Helper รวมถึงที่กรอบ จะปิดหน้าต่าง หากมีการเปลี่ยนแปลงที่ยังไม่บันทึก หน้าต่างจะเปิดค้างและขอให้กดบันทึก คลาสสิก: ปุ่มออกจะปิดและทิ้งการเปลี่ยนแปลง',
   'fidelity.statCommandNotice': 'แจ้งเตือนคำสั่งเพิ่มค่าสถานะ',
   'fidelity.statCommandNotice.hint':
     'หลังใช้ /addstr และคำสั่งเพิ่มค่าสถานะอื่น บันทึกระบบจะบอกว่าแต้มเข้าไปที่ค่าใดกี่แต้ม คลาสสิก: มีเพียงคำตอบของเซิร์ฟเวอร์เหมือนต้นฉบับ',

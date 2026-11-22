@@ -48,6 +48,7 @@ export default {
   'muHelper.noSkills': 'Nema naučenih veština za upotrebu',
   'muHelper.none': 'Ništa',
   'muHelper.save': 'Sačuvaj',
+  'muHelper.saveFirst': 'Pritisni Sačuvaj da primeniš izmene.',
   'muHelper.init': 'Resetuj',
   'muHelper.itemFilters': 'Filteri (+Luck +Opt 12)',
   'muHelper.itemFilters.hint':

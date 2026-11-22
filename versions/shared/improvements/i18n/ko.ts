@@ -76,6 +76,9 @@ export default {
   'fidelity.menuLabelFit.hint': 'Esc 메뉴의 긴 글자를 버튼에 맞게 줄입니다. 클래식: 원작처럼 모든 글자가 원래 크기를 유지합니다.',
   'fidelity.muHelperButtons': 'MU 헬퍼 버튼',
   'fidelity.muHelperButtons.hint': '이벤트 타이머 아래에 MU 헬퍼 시작/중지 및 설정 버튼을 표시합니다. 클래식: 원작처럼 Home 키와 End 키만 사용합니다.',
+  'fidelity.muHelperSaveReminder': 'MU Helper 저장 알림',
+  'fidelity.muHelperSaveReminder.hint':
+    'MU Helper 창의 X(테두리의 X 포함)로 닫습니다. 저장하지 않은 변경이 있으면 열린 채로 저장을 누르라고 알립니다. 클래식: 나가기 버튼이 닫고 변경을 버립니다.',
   'fidelity.statCommandNotice': '스탯 명령 알림',
   'fidelity.statCommandNotice.hint':
     '/addstr 등 스탯 명령 후 어느 스탯에 몇 포인트가 들어갔는지 시스템 로그에 표시합니다. 클래식: 원작처럼 서버의 응답만 있습니다.',

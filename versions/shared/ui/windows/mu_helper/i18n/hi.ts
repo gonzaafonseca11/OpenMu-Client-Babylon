@@ -48,6 +48,7 @@ export default {
   'muHelper.noSkills': 'इस्तेमाल लायक कोई स्किल नहीं सीखी गई',
   'muHelper.none': 'कोई नहीं',
   'muHelper.save': 'सहेजें',
+  'muHelper.saveFirst': 'बदलाव लागू करने के लिए सहेजें दबाएँ।',
   'muHelper.init': 'रीसेट करें',
   'muHelper.itemFilters': 'फ़िल्टर (+Luck +Opt 12)',
   'muHelper.itemFilters.hint':

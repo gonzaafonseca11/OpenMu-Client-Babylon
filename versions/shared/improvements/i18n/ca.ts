@@ -78,6 +78,9 @@ export default {
   'fidelity.muHelperButtons': 'Botons del MU Helper',
   'fidelity.muHelperButtons.hint':
     'Botons per iniciar, aturar i configurar el MU Helper sota els temporitzadors d\'esdeveniments. Clàssic: només les tecles Home i End, com a l\'original.',
+  'fidelity.muHelperSaveReminder': 'Recordatori de desar del MU Helper',
+  'fidelity.muHelperSaveReminder.hint':
+    'La X de la finestra del MU Helper, també la del marc, la tanca; amb canvis sense desar queda oberta i demana prémer Desa. Clàssic: el botó de sortida tanca i descarta els canvis.',
   'fidelity.statCommandNotice': 'Avís de les ordres d\'estadístiques',
   'fidelity.statCommandNotice.hint':
     'Després de /addstr i les altres ordres d\'estadístiques, el registre del sistema indica quants punts han anat a cada estadística. Clàssic: només la resposta del servidor, com a l\'original.',

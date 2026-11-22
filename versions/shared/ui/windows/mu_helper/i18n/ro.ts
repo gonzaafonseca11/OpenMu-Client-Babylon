@@ -50,5 +50,6 @@ export default {
   'muHelper.noSkills': 'Nu ai învățat abilități utilizabile',
   'muHelper.none': 'Niciuna',
   'muHelper.save': 'Salvează',
+  'muHelper.saveFirst': 'Apasă Salvează pentru a aplica modificările.',
   'muHelper.init': 'Resetează',
 } satisfies Partial<Record<keyof typeof en, string>>;

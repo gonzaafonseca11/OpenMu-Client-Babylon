@@ -78,6 +78,9 @@ export default {
   'fidelity.muHelperButtons': 'Кнопки MU Helper',
   'fidelity.muHelperButtons.hint':
     'Кнопки Запуск / Стоп і Налаштування для MU Helper під таймерами подій. Класика: лише клавіші Home і End, як в оригіналі.',
+  'fidelity.muHelperSaveReminder': 'Нагадування про збереження MU Helper',
+  'fidelity.muHelperSaveReminder.hint':
+    'X вікна MU Helper, і на рамці теж, закриває його; з незбереженими змінами вікно лишається відкритим і просить натиснути Зберегти. Класика: кнопка виходу закриває й відкидає зміни.',
   'fidelity.statCommandNotice': 'Повідомлення команд характеристик',
   'fidelity.statCommandNotice.hint':
     'Після /addstr та інших команд характеристик системний журнал пише, скільки очок пішло в яку характеристику. Класика: лише відповідь сервера, як в оригіналі.',
