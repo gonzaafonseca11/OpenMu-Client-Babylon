@@ -50,3 +50,33 @@ describe('a master skill of a weapon skill', () => {
     expect(skillUsability(STRENGTHENER).blocks).not.toContain('weapon');
   });
 });
+
+// Ours: the server (openmu ResetSkillsPlugIn) waives level and energy once a character made a real reset.
+describe('a character past its first real reset', () => {
+  it('casts a learned skill whatever its level and energy, while the server says so', async () => {
+    const { skillDefinition } = await import('@versions/shared/skills/skillsDatabase');
+    const { onSkillsPacket } = await import('./resetWaiver');
+    const num = [...Array(600).keys()].find(n => {
+      const d = skillDefinition(n);
+      return !!d && d.level > 1 && d.energy > 100 && !isWeaponSkillOf(n);
+    }) ?? 0;
+    expect(num).toBeGreaterThan(0);
+    runInAction(() => {
+      Hero.level = 1;
+      Hero.eng = 20;
+    });
+    HeroSkills.setSkillList([{ index: 0, number: num, level: 0 }]);
+    expect(skillUsability(num).blocks).toEqual(expect.arrayContaining(['level', 'energy']));
+
+    onSkillsPacket(new Uint8Array([1]));
+    expect(skillUsability(num).blocks).not.toContain('level');
+    expect(skillUsability(num).blocks).not.toContain('energy');
+
+    onSkillsPacket(new Uint8Array([0]));
+    expect(skillUsability(num).blocks).toContain('level');
+  });
+});
+
+function isWeaponSkillOf(n: number): boolean {
+  return ItemsDatabase.all().some(i => i.Group <= 5 && i.Skill === n);
+}

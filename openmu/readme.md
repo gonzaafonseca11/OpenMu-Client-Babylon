@@ -140,6 +140,16 @@ resume got that copy, and using those jewels again failed every save of the sess
 `LoginAction` changes the state before it loads), and the token login calls it before its own loads. A retry
 that found something to forget logs "Fresh login: ... retried a login on the same connection".
 
+## Skills after a reset
+
+OpenMU checks no level or energy when a skill is cast, only mana and AG; the web client greys a skill out below
+the level and energy of its row (`CheckSkillUseCondition`). `GameLogic/ResetSkills/ResetSkillsPlugIn` tells the
+client's skills module, on each entry to the world from the character list (a reset logs out there), whether the
+character made a real reset: more resets than the starter gift gave it (10 for one made from 2026-11-09 23:14 UTC,
+when the gift began; 0 before). With 1 the client lifts both rules for learned skills
+(`src/modules/skills/resetWaiver.ts`); switching the plugin off leaves the original rule. If the starter gift ends,
+`HasRealReset` needs its end date too.
+
 ## Ghost players
 
 One account's character was on the server twice for over a day (the status API listed it twice): an offline

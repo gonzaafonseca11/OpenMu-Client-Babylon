@@ -138,3 +138,9 @@ starts empty, `registerSkills` fills it.
 MobX state: no `update`, no `reset`. The weapon rule (`weaponSkillEquipped`, also the master tree's
 equipment gate) is `IsNonWeaponSkillOrIsSkillEquipped`: it looks at the base skill at the end of a
 master chain (`masterRoot`), so Triple Shot Strengthener and Mastery both need the bow.
+
+### resetWaiver.ts (ours, server-driven)
+`ResetWaiver.on` lifts the level and energy rules for learned skills. Only the server sets it: the
+module's own packet (`api.onPacket`, id `skills`), one byte on each entry to the world, from the
+OpenMU plugin `ResetSkillsPlugIn` (1 past the character's first real reset). A server without that
+plugin never sends it, so the original rule holds ([openmu/readme.md](../../../openmu/readme.md)).
