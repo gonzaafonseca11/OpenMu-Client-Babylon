@@ -31,8 +31,6 @@ export default {
   'emote.lookAround': 'Осмотреться',
   'emote.cheers': 'Тост',
   'notify.pointNotAdded': 'Не удалось добавить очко',
-  'notify.levelUp': 'Уровень {level}',
-  'notify.masterLevelUp': 'Уровень мастера {level}',
   'notify.expGained': 'Получено опыта: {amount}',
   'notify.masterExpGained': 'Получено опыта мастера: {amount}',
   'notify.fruitAdd': '{stat} +{points} (фрукт)',

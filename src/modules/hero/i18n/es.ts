@@ -31,8 +31,6 @@ export default {
   'emote.lookAround': 'Mirar alrededor',
   'emote.cheers': 'Brindis',
   'notify.pointNotAdded': 'No se pudo añadir el punto',
-  'notify.levelUp': 'Nivel {level}',
-  'notify.masterLevelUp': 'Nivel de maestría {level}',
   'notify.expGained': 'Experiencia obtenida: {amount}',
   'notify.masterExpGained': 'Experiencia de maestría obtenida: {amount}',
   'notify.fruitAdd': '{stat} +{points} (fruta)',

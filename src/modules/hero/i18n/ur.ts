@@ -30,8 +30,6 @@ export default {
   'emote.lookAround': 'ادھر ادھر دیکھیں',
   'emote.cheers': 'جام صحت',
   'notify.pointNotAdded': 'پوائنٹ شامل نہ ہو سکا',
-  'notify.levelUp': 'لیول {level}',
-  'notify.masterLevelUp': 'ماسٹر لیول {level}',
   'notify.expGained': '{amount} EXP حاصل ہوا',
   'notify.masterExpGained': 'ماسٹر EXP حاصل: {amount}',
   'notify.fruitAdd': '{stat} +{points} (پھل)',

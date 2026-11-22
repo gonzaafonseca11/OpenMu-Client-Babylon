@@ -30,8 +30,6 @@ export default {
   'emote.lookAround': 'Mirar al voltant',
   'emote.cheers': 'Brindis',
   'notify.pointNotAdded': 'No s\'ha pogut afegir el punt',
-  'notify.levelUp': 'Nivell {level}',
-  'notify.masterLevelUp': 'Nivell mestre {level}',
   'notify.fruitAdd': '{stat} +{points} (fruit)',
   'notify.fruitRemove': '{stat} -{points} (fruit)',
   'notify.fruitNoEffect': 'El fruit no ha tingut cap efecte',

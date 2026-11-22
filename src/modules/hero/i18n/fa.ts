@@ -30,8 +30,6 @@ export default {
   'emote.lookAround': 'نگاه به اطراف',
   'emote.cheers': 'به سلامتی',
   'notify.pointNotAdded': 'افزودن امتیاز ممکن نشد',
-  'notify.levelUp': 'سطح {level}',
-  'notify.masterLevelUp': 'سطح استادی {level}',
   'notify.expGained': 'تجربه کسب‌شده: {amount}',
   'notify.masterExpGained': 'تجربه استادی کسب‌شده: {amount}',
   'notify.fruitAdd': '{stat} +{points} (میوه)',

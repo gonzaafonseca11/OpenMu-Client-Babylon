@@ -31,8 +31,6 @@ export default {
   'emote.lookAround': '둘러보기',
   'emote.cheers': '건배',
   'notify.pointNotAdded': '포인트를 올리지 못했습니다',
-  'notify.levelUp': '레벨 {level}',
-  'notify.masterLevelUp': '마스터 레벨 {level}',
   'notify.expGained': '경험치 {amount} 획득',
   'notify.masterExpGained': '마스터 경험치 {amount} 획득',
   'notify.fruitAdd': '{stat} +{points} (열매)',

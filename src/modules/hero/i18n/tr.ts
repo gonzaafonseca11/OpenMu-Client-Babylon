@@ -30,8 +30,6 @@ export default {
   'emote.lookAround': 'Etrafa bak',
   'emote.cheers': 'Şerefe',
   'notify.pointNotAdded': 'Puan eklenemedi',
-  'notify.levelUp': 'Seviye {level}',
-  'notify.masterLevelUp': 'Master seviyesi {level}',
   'notify.fruitAdd': '{stat} +{points} (meyve)',
   'notify.fruitRemove': '{stat} -{points} (meyve)',
   'notify.fruitNoEffect': 'Meyvenin etkisi olmadı',

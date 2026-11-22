@@ -31,8 +31,6 @@ export default {
   'emote.lookAround': 'Guardati intorno',
   'emote.cheers': 'Cin cin',
   'notify.pointNotAdded': 'Non è stato possibile assegnare il punto',
-  'notify.levelUp': 'Livello {level}',
-  'notify.masterLevelUp': 'Livello di maestria {level}',
   'notify.expGained': 'Esperienza ottenuta: {amount}',
   'notify.masterExpGained': 'Esperienza di maestria ottenuta: {amount}',
   'notify.fruitAdd': '{stat} +{points} (frutto)',

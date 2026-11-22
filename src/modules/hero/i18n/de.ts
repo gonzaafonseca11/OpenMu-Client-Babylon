@@ -31,8 +31,6 @@ export default {
   'emote.lookAround': 'Umsehen',
   'emote.cheers': 'Prost',
   'notify.pointNotAdded': 'Der Punkt konnte nicht vergeben werden',
-  'notify.levelUp': 'Level {level}',
-  'notify.masterLevelUp': 'Meisterlevel {level}',
   'notify.expGained': '{amount} Erfahrung erhalten',
   'notify.masterExpGained': '{amount} Meister-Erfahrung erhalten',
   'notify.fruitAdd': '{stat} +{points} (Frucht)',

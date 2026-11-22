@@ -30,8 +30,6 @@ export default {
   'emote.lookAround': 'Роззирнутися',
   'emote.cheers': 'Тост',
   'notify.pointNotAdded': 'Не вдалося додати очко',
-  'notify.levelUp': 'Рівень {level}',
-  'notify.masterLevelUp': 'Рівень майстра {level}',
   'notify.fruitAdd': '{stat} +{points} (плід)',
   'notify.fruitRemove': '{stat} -{points} (плід)',
   'notify.fruitNoEffect': 'Плід не подіяв',

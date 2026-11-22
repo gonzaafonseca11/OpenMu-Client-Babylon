@@ -31,8 +31,6 @@ export default {
   'emote.lookAround': 'Оглеждане',
   'emote.cheers': 'Наздраве',
   'notify.pointNotAdded': 'Точката не можа да бъде добавена',
-  'notify.levelUp': 'Ниво {level}',
-  'notify.masterLevelUp': 'Ниво на майстор {level}',
   'notify.expGained': 'Получен опит: {amount}',
   'notify.masterExpGained': 'Получен опит на майстор: {amount}',
   'notify.fruitAdd': '{stat} +{points} (плод)',

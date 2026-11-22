@@ -30,8 +30,6 @@ export default {
   'emote.lookAround': 'Lihat sekeliling',
   'emote.cheers': 'Bersulang',
   'notify.pointNotAdded': 'Poin tidak dapat ditambahkan',
-  'notify.levelUp': 'Level {level}',
-  'notify.masterLevelUp': 'Master Level {level}',
   'notify.fruitAdd': '{stat} +{points} (buah)',
   'notify.fruitRemove': '{stat} -{points} (buah)',
   'notify.fruitNoEffect': 'Buah itu tidak berpengaruh',

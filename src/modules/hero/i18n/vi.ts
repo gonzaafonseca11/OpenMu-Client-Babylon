@@ -30,8 +30,6 @@ export default {
   'emote.lookAround': 'Nhìn quanh',
   'emote.cheers': 'Nâng ly',
   'notify.pointNotAdded': 'Không thể cộng điểm',
-  'notify.levelUp': 'Cấp {level}',
-  'notify.masterLevelUp': 'Cấp Master {level}',
   'notify.expGained': 'Nhận được {amount} kinh nghiệm',
   'notify.masterExpGained': 'Nhận được {amount} kinh nghiệm Master',
   'notify.fruitAdd': '{stat} +{points} (quả)',

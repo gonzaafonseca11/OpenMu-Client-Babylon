@@ -30,8 +30,6 @@ export default {
   'emote.lookAround': 'Lumingon',
   'emote.cheers': 'Tagay',
   'notify.pointNotAdded': 'Hindi maidagdag ang puntos',
-  'notify.levelUp': 'Level {level}',
-  'notify.masterLevelUp': 'Master Level {level}',
   'notify.expGained': 'Nakakuha ng {amount} Exp',
   'notify.masterExpGained': 'Nakakuha ng {amount} Master EXP',
   'notify.fruitAdd': '{stat} +{points} (prutas)',

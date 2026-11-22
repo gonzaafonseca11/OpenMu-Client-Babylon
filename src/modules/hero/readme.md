@@ -107,9 +107,10 @@ the hero is a walk the client failed to stop; no walk at all means the server mo
   ignored), stops following, warps or moves the hero and clears its targets.
 - `PoisonDamage`: lowers HP, sets SD.
 - `CharacterStatIncreaseResponse(Extended)`: applies the point(s), emits `statPointAnswered`.
-- `CharacterLevelUpdate(Extended)`: level, points, maxima, fruit points; moves the exp bracket.
-- `MasterCharacterLevelUpdate(Extended)`: the level-up notice (and the maxima from `Extended`); the
-  master level and points are `skills/masterLevel.ts`'s, whose listener runs first.
+- `CharacterLevelUpdate(Extended)`: level, points, maxima, fruit points; moves the exp bracket. No system
+  line, as the original; OpenMU's "Congratulations, you are Level N now." is dropped too (`chat/serverLines.ts`).
+- `MasterCharacterLevelUpdateExtended`: the maxima; the master level and points are
+  `skills/masterLevel.ts`'s, whose listener runs first. No system line either.
 - `ExperienceGained(Extended)`: adds exp, prints "Obtained N Exp" (or the master line, GlobalText 486 / 1750,
   WSclient.cpp:5745) and emits `experienceGained`. A master's exp goes to
   `skills/masterLevel.ts` instead, whose listener runs first (skills installs before hero). OpenMU's

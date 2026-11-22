@@ -30,8 +30,6 @@ export default {
   'emote.lookAround': '環顧',
   'emote.cheers': '乾杯',
   'notify.pointNotAdded': '無法分配點數',
-  'notify.levelUp': '等級{level}',
-  'notify.masterLevelUp': '大師等級{level}',
   'notify.expGained': '獲得經驗值{amount}',
   'notify.masterExpGained': '獲得大師經驗值{amount}',
   'notify.fruitAdd': '{stat} +{points}（果實）',

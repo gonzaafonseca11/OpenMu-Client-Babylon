@@ -30,8 +30,6 @@ export default {
   'emote.lookAround': 'Rozhlížení',
   'emote.cheers': 'Na zdraví',
   'notify.pointNotAdded': 'Bod nelze přidat',
-  'notify.levelUp': 'Úroveň {level}',
-  'notify.masterLevelUp': 'Mistrovská úroveň {level}',
   'notify.fruitAdd': '{stat} +{points} (plod)',
   'notify.fruitRemove': '{stat} -{points} (plod)',
   'notify.fruitNoEffect': 'Plod neměl žádný účinek',

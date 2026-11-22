@@ -31,8 +31,6 @@ export default {
   'emote.lookAround': 'มองไปรอบ ๆ',
   'emote.cheers': 'ชนแก้ว',
   'notify.pointNotAdded': 'เพิ่มแต้มไม่สำเร็จ',
-  'notify.levelUp': 'เลเวล {level}',
-  'notify.masterLevelUp': 'เลเวลมาสเตอร์ {level}',
   'notify.expGained': 'ได้รับค่าประสบการณ์ {amount}',
   'notify.masterExpGained': 'ได้รับค่าประสบการณ์มาสเตอร์ {amount}',
   'notify.fruitAdd': '{stat} +{points} (ผลไม้)',

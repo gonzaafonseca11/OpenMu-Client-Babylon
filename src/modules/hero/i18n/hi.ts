@@ -30,8 +30,6 @@ export default {
   'emote.lookAround': 'चारों ओर देखना',
   'emote.cheers': 'चियर्स',
   'notify.pointNotAdded': 'पॉइंट जोड़ा नहीं जा सका',
-  'notify.levelUp': 'लेवल {level}',
-  'notify.masterLevelUp': 'मास्टर लेवल {level}',
   'notify.fruitAdd': '{stat} +{points} (फल)',
   'notify.fruitRemove': '{stat} -{points} (फल)',
   'notify.fruitNoEffect': 'फल का कोई असर नहीं हुआ',

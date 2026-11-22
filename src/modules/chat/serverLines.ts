@@ -14,6 +14,12 @@ export function noteServerLine(text: string, now = performance.now()): void {
 export const isLoginAttemptWarning = (text: string): boolean =>
   matchServerText(text)?.key === 'serverMessage.loginAttemptWarning';
 
+/** OpenMU's level and master level congratulations: the original prints no line on a level-up. */
+export function isLevelUpLine(text: string): boolean {
+  const key = matchServerText(text)?.key;
+  return key === 'serverMessage.levelUpCongrats' || key === 'serverMessage.masterLevelUpCongrats';
+}
+
 /**
  * OpenMU refuses an event entry with a bare `Failed`, which the original reads as a wrong ticket,
  * and says why in a system line just before (an item the event bars, a map requirement). That

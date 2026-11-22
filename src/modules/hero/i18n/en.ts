@@ -29,8 +29,6 @@ const en = {
   'emote.lookAround': 'Look around',
   'emote.cheers': 'Cheers',
   'notify.pointNotAdded': 'Could not add the point',
-  'notify.levelUp': 'Level {level}',
-  'notify.masterLevelUp': 'Master level {level}',
   'notify.expGained': 'Obtained {amount} Exp',
   'notify.masterExpGained': 'Master EXP achievement {amount}',
   'notify.fruitAdd': '{stat} +{points} (fruit)',

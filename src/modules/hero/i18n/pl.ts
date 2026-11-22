@@ -30,8 +30,6 @@ export default {
   'emote.lookAround': 'Rozglądanie',
   'emote.cheers': 'Na zdrowie',
   'notify.pointNotAdded': 'Nie udało się dodać punktu',
-  'notify.levelUp': 'Poziom {level}',
-  'notify.masterLevelUp': 'Master Level {level}',
   'notify.expGained': 'Zdobyto {amount} doświadczenia',
   'notify.masterExpGained': 'Zdobyto {amount} doświadczenia Master',
   'notify.fruitAdd': '{stat} +{points} (owoc)',

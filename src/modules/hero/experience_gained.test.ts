@@ -127,3 +127,22 @@ describe('a master level-up', () => {
     spawn.mockRestore();
   });
 });
+
+describe('a level-up', () => {
+  it('writes nothing in the system log, as the original', async () => {
+    const { Social } = await import('@/modules/social/social');
+    const notify = await import('@/modules/chat/notify');
+    const said = vi.spyOn(Social, 'systemMessage').mockImplementation(() => undefined);
+    const noted = vi.spyOn(notify, 'addNotification').mockImplementation(() => undefined);
+    const { CharacterLevelUpdatePacket, MasterCharacterLevelUpdatePacket } = await import('@versions/shared/packets/ServerToClientPackets');
+    const p = CharacterLevelUpdatePacket.createPacket();
+    p.Level = 247;
+    EventBus.emit('CharacterLevelUpdate', p.buffer);
+    const m = MasterCharacterLevelUpdatePacket.createPacket();
+    m.MasterLevel = 12;
+    EventBus.emit('MasterCharacterLevelUpdate', m.buffer);
+    expect([...said.mock.calls, ...noted.mock.calls].flat().filter(x => /247|12/.test(String(x)))).toEqual([]);
+    said.mockRestore();
+    noted.mockRestore();
+  });
+});

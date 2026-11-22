@@ -30,8 +30,6 @@ export default {
   'emote.lookAround': 'চারপাশে দেখা',
   'emote.cheers': 'চিয়ার্স',
   'notify.pointNotAdded': 'পয়েন্ট যোগ করা যায়নি',
-  'notify.levelUp': 'লেভেল {level}',
-  'notify.masterLevelUp': 'মাস্টার লেভেল {level}',
   'notify.fruitAdd': '{stat} +{points} (ফল)',
   'notify.fruitRemove': '{stat} -{points} (ফল)',
   'notify.fruitNoEffect': 'ফলের কোনো প্রভাব পড়েনি',

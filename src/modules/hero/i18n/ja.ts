@@ -31,8 +31,6 @@ export default {
   'emote.lookAround': '見回す',
   'emote.cheers': '乾杯',
   'notify.pointNotAdded': 'ポイントを振り分けられませんでした',
-  'notify.levelUp': 'レベル {level}',
-  'notify.masterLevelUp': 'マスターレベル {level}',
   'notify.expGained': '経験値 {amount} を獲得',
   'notify.masterExpGained': 'マスター経験値 {amount} を獲得',
   'notify.fruitAdd': '{stat} +{points}（果実）',

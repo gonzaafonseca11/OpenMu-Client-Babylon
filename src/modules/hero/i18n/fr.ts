@@ -31,8 +31,6 @@ export default {
   'emote.lookAround': 'Regarder autour',
   'emote.cheers': 'Santé',
   'notify.pointNotAdded': 'Le point n’a pas pu être ajouté',
-  'notify.levelUp': 'Niveau {level}',
-  'notify.masterLevelUp': 'Niveau de maîtrise {level}',
   'notify.expGained': 'Expérience obtenue : {amount}',
   'notify.masterExpGained': 'Expérience de maîtrise obtenue : {amount}',
   'notify.fruitAdd': '{stat} +{points} (fruit)',

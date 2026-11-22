@@ -30,8 +30,6 @@ export default {
   'emote.lookAround': 'تلفّت',
   'emote.cheers': 'نخب',
   'notify.pointNotAdded': 'تعذرت إضافة النقطة',
-  'notify.levelUp': 'المستوى {level}',
-  'notify.masterLevelUp': 'مستوى الإتقان {level}',
   'notify.fruitAdd': '{stat} +{points} (ثمرة)',
   'notify.fruitRemove': '{stat} -{points} (ثمرة)',
   'notify.fruitNoEffect': 'لم يكن للثمرة أي تأثير',

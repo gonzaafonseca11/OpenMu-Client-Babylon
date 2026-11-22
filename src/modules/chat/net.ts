@@ -17,7 +17,7 @@ import { playUiSound } from '@/controllers/sound/sfx';
 import { runInAction } from 'mobx';
 import { startEmojiBubble } from '@/ecs/systems/emojiBubbleSystem';
 import { translateServerText } from '@/i18n/serverText';
-import { noteServerLine } from './serverLines';
+import { isLevelUpLine, noteServerLine } from './serverLines';
 
 /**
  * Play an inbound emoji bubble over the player with this name.
@@ -164,7 +164,7 @@ export function installNet(): void {
         Social.trackSelfDefense(text);
         // An event entry refused right after explains itself from it (serverLines.ts).
         noteServerLine(text);
-        Social.systemMessage(translateServerText(text));
+        if (!isLevelUpLine(text)) Social.systemMessage(translateServerText(text));
         break;
       case 2:
         Notices.createGuildNotice(text);

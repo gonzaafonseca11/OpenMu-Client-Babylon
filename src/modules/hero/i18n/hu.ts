@@ -30,8 +30,6 @@ export default {
   'emote.lookAround': 'Körülnézés',
   'emote.cheers': 'Egészségedre',
   'notify.pointNotAdded': 'Nem sikerült kiosztani a pontot',
-  'notify.levelUp': '{level}. szint',
-  'notify.masterLevelUp': '{level}. mesterszint',
   'notify.fruitAdd': '{stat} +{points} (gyümölcs)',
   'notify.fruitRemove': '{stat} -{points} (gyümölcs)',
   'notify.fruitNoEffect': 'A gyümölcsnek nem volt hatása',

@@ -12,3 +12,13 @@ describe('isLoginAttemptWarning', () => {
     expect(isLoginAttemptWarning('Another user')).toBe(false);
   });
 });
+
+// The original prints no line on a level-up; OpenMU's congratulation and our "Level N" are left out.
+describe('isLevelUpLine', () => {
+  it('knows OpenMU level and master level congratulations', async () => {
+    const { isLevelUpLine } = await import('./serverLines');
+    expect(isLevelUpLine('Congratulations, you are Level 247 now.')).toBe(true);
+    expect(isLevelUpLine('Congratulations, you are Master Level 12 now.')).toBe(true);
+    expect(isLevelUpLine('mati entered the game.')).toBe(false);
+  });
+});

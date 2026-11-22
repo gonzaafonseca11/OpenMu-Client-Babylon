@@ -30,8 +30,6 @@ export default {
   'emote.lookAround': 'Ματιά γύρω',
   'emote.cheers': 'Εις υγείαν',
   'notify.pointNotAdded': 'Δεν ήταν δυνατή η προσθήκη του πόντου',
-  'notify.levelUp': 'Επίπεδο {level}',
-  'notify.masterLevelUp': 'Επίπεδο Master {level}',
   'notify.fruitAdd': '{stat} +{points} (φρούτο)',
   'notify.fruitRemove': '{stat} -{points} (φρούτο)',
   'notify.fruitNoEffect': 'Το φρούτο δεν είχε αποτέλεσμα',

@@ -30,8 +30,6 @@ export default {
   'emote.lookAround': 'Osvrtanje',
   'emote.cheers': 'Živeli',
   'notify.pointNotAdded': 'Poen ne može da se doda',
-  'notify.levelUp': 'Nivo {level}',
-  'notify.masterLevelUp': 'Master nivo {level}',
   'notify.fruitAdd': '{stat} +{points} (plod)',
   'notify.fruitRemove': '{stat} -{points} (plod)',
   'notify.fruitNoEffect': 'Plod nema efekta',

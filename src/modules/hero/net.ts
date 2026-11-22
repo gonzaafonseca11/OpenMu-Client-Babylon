@@ -1,4 +1,4 @@
-import { BaseStatsExtendedPacket, CharacterInformationExtendedPacket, CharacterInformationPacket, CharacterLevelUpdateExtendedPacket, CharacterLevelUpdatePacket, CharacterStatIncreaseResponseExtendedPacket, CharacterStatIncreaseResponsePacket, CurrentHealthAndShieldPacket, CurrentManaAndAbilityPacket, CurrentStatsExtendedPacket, ExperienceGainedExtendedPacket, ExperienceGainedPacket, FruitConsumptionResponseFruitConsumptionResultEnum, FruitConsumptionResponseFruitStatTypeEnum, FruitConsumptionResponsePacket, HeroStateChangedPacket, MasterCharacterLevelUpdateExtendedPacket, MasterCharacterLevelUpdatePacket, MaximumHealthAndShieldPacket, MaximumManaAndAbilityPacket, MaximumStatsExtendedPacket, PoisonDamagePacket, RespawnAfterDeath075Packet, RespawnAfterDeath095Packet, RespawnAfterDeathExtendedPacket, RespawnAfterDeathPacket } from '@versions/shared/packets/ServerToClientPackets';
+import { BaseStatsExtendedPacket, CharacterInformationExtendedPacket, CharacterInformationPacket, CharacterLevelUpdateExtendedPacket, CharacterLevelUpdatePacket, CharacterStatIncreaseResponseExtendedPacket, CharacterStatIncreaseResponsePacket, CurrentHealthAndShieldPacket, CurrentManaAndAbilityPacket, CurrentStatsExtendedPacket, ExperienceGainedExtendedPacket, ExperienceGainedPacket, FruitConsumptionResponseFruitConsumptionResultEnum, FruitConsumptionResponseFruitStatTypeEnum, FruitConsumptionResponsePacket, HeroStateChangedPacket, MasterCharacterLevelUpdateExtendedPacket, MaximumHealthAndShieldPacket, MaximumManaAndAbilityPacket, MaximumStatsExtendedPacket, PoisonDamagePacket, RespawnAfterDeath075Packet, RespawnAfterDeath095Packet, RespawnAfterDeathExtendedPacket, RespawnAfterDeathPacket } from '@versions/shared/packets/ServerToClientPackets';
 import { Commands } from '../chat/commands';
 import { Economy } from '../economy/economy';
 import { EventBus } from '@/core/eventBus';
@@ -270,8 +270,7 @@ function applyLevelUpdate(p: LevelUpdateView) {
       playerData.exp = playerData.currentLvlExp;
     }
   });
-
-  addNotification(t('notify.levelUp', { level: p.Level }));
+  // No system line: the original prints none on a level-up (OpenMU's own congratulation is dropped, chat/serverLines.ts).
 }
 
 /** A kill's experience still arriving: OpenMU splits it into packets of at most 65535 (readme.md). */
@@ -511,11 +510,6 @@ export function installNet(): void {
     applyLevelUpdate(new CharacterLevelUpdateExtendedPacket(packet))
   );
 
-  EventBus.on('MasterCharacterLevelUpdate', packet => {
-    const p = new MasterCharacterLevelUpdatePacket(packet);
-    addNotification(t('notify.masterLevelUp', { level: p.MasterLevel }));
-  });
-
   EventBus.on('ExperienceGained', packet =>
     applyExperienceGained(new ExperienceGainedPacket(packet))
   );
@@ -587,7 +581,6 @@ export function installNet(): void {
       Hero.maxSD = p.MaximumShield;
       Hero.maxAG = p.MaximumAbility;
     });
-    addNotification(t('notify.masterLevelUp', { level: p.MasterLevel }));
   });
 
   /**

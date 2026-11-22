@@ -30,8 +30,6 @@ export default {
   'emote.lookAround': 'Ingurura begiratu',
   'emote.cheers': 'Topa',
   'notify.pointNotAdded': 'Ezin izan da puntua gehitu',
-  'notify.levelUp': 'Maila {level}',
-  'notify.masterLevelUp': 'Maisu-maila {level}',
   'notify.fruitAdd': '{stat} +{points} (fruitua)',
   'notify.fruitRemove': '{stat} -{points} (fruitua)',
   'notify.fruitNoEffect': 'Fruituak ez du eraginik izan',
