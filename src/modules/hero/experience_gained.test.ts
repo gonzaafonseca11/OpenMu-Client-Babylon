@@ -17,9 +17,10 @@ import './net';
 // ReceiveDieExp (WSclient.cpp:5719-5743): a kill feeds master experience OR normal
 // experience, never both.
 
-function gain(amount: number) {
+function gain(amount: number, killed = 0) {
   const p = ExperienceGainedPacket.createPacket();
   p.AddedExperience = amount;
+  p.KilledObjectId = killed;
   EventBus.emit('ExperienceGained', p.buffer);
 }
 
@@ -77,6 +78,30 @@ describe('the kill share line', () => {
     gain(70);
     expect(said).toHaveBeenCalledWith('Master EXP achievement 70');
     said.mockRestore();
+  });
+
+  // OpenMU's AddExperiencePlugIn splits a kill's experience into packets of at most 65535.
+  it('says a kill split into packets of 65535 once, with its whole experience', async () => {
+    vi.useFakeTimers();
+    const { Social } = await import('@/modules/social/social');
+    const said = vi.spyOn(Social, 'systemMessage').mockImplementation(() => undefined);
+    runInAction(() => {
+      Hero.charClass = CharacterClassNumber.BladeKnight;
+      Hero.level = 200;
+      Hero.exp = 0;
+    });
+    gain(65535, 0x8005);
+    gain(53708, 0x8005);
+    expect(said.mock.calls).toEqual([['Obtained 119243 Exp']]);
+    expect(Hero.exp).toBe(119243);
+
+    said.mockClear();
+    gain(65535, 0x8006);
+    expect(said).not.toHaveBeenCalled();
+    vi.runAllTimers();
+    expect(said.mock.calls).toEqual([['Obtained 65535 Exp']]);
+    said.mockRestore();
+    vi.useRealTimers();
   });
 });
 

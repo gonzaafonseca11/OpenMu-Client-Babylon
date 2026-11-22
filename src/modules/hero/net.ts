@@ -274,6 +274,30 @@ function applyLevelUpdate(p: LevelUpdateView) {
   addNotification(t('notify.levelUp', { level: p.Level }));
 }
 
+/** A kill's experience still arriving: OpenMU splits it into packets of at most 65535 (readme.md). */
+let splitExp: { killed: number; amount: number; master: boolean; timer: ReturnType<typeof setTimeout> } | null = null;
+
+/** GlobalText 486 / 1750 in the system log (WSclient.cpp:5745-5754), once per kill. */
+function sayExpGained(added: number, killed: number, master: boolean) {
+  const prev = splitExp?.killed === killed ? splitExp : null;
+  if (splitExp) {
+    clearTimeout(splitExp.timer);
+    if (!prev) flushExp(splitExp);
+  }
+  const amount = added + (prev?.amount ?? 0);
+  splitExp = null;
+  if (added === 0xffff) {
+    splitExp = { killed, amount, master, timer: setTimeout(() => splitExp && flushExp(splitExp), 100) };
+    return;
+  }
+  flushExp({ amount, master });
+}
+
+function flushExp(e: { amount: number; master: boolean }) {
+  if (e === splitExp) splitExp = null;
+  Social.systemMessage(t(e.master ? 'notify.masterExpGained' : 'notify.expGained', { amount: e.amount }));
+}
+
 // C3 16 - sent for every kill share. Without this handler the exp bar only
 // moved on relog (CharacterInformation).
 function applyExperienceGained(p: { AddedExperience: number; KilledObjectId: number }) {
@@ -284,8 +308,7 @@ function applyExperienceGained(p: { AddedExperience: number; KilledObjectId: num
   const pd = Hero;
   const master = masterExperienceActive(pd.charClass, pd.level);
   if (!master) runInAction(() => (pd.exp += added));
-  // GlobalText 486 / 1750 in the system log (WSclient.cpp:5745-5754).
-  Social.systemMessage(t(master ? 'notify.masterExpGained' : 'notify.expGained', { amount: added }));
+  sayExpGained(added, p.KilledObjectId, master);
 
   EventBus.emit('experienceGained', {
     added,

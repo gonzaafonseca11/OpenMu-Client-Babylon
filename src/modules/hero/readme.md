@@ -112,7 +112,9 @@ the hero is a walk the client failed to stop; no walk at all means the server mo
   master level and points are `skills/masterLevel.ts`'s, whose listener runs first.
 - `ExperienceGained(Extended)`: adds exp, prints "Obtained N Exp" (or the master line, GlobalText 486 / 1750,
   WSclient.cpp:5745) and emits `experienceGained`. A master's exp goes to
-  `skills/masterLevel.ts` instead, whose listener runs first (skills installs before hero).
+  `skills/masterLevel.ts` instead, whose listener runs first (skills installs before hero). OpenMU's
+  `AddExperiencePlugIn` splits a kill's experience into packets of at most 65535 (the field is 16 bits);
+  a full 65535 waits up to 100 ms for the rest of the same kill, so the line shows the kill's whole experience once.
 - `FruitConsumptionResponse`: the fruit result (`ReceiveUseStateItem`). `BaseStatsExtended`: base stats.
 
 ## Depends on / used by
