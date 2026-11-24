@@ -58,6 +58,9 @@ the two server packets, with its running state and the raw config blob (`MuHelpe
   client, so it looks for an automatic-hits area skill's targets (Twisting Slash, range 2) around another tile and
   every swing hits nothing. After `STUCK_SECONDS` (4) of attacking with no hit on any monster answered
   (`objectDamaged`, a miss too, net.ts `noteMonsterHit`), the loop walks to its target's tile, which resyncs both.
+  Stuck a second time on the same target, it cannot be reached (a wall, a refused walk): the approach walk kept the
+  helper's cast request alive and the loop waits on any request, so DK / BK / BM stood still until a click. The loop
+  drops its own request, leaves that monster alone for `SKIP_SECONDS` (10) and hunts the next one.
 
 ## Packets
 - `MuHelperStatusUpdate` (BF 51): starts or pauses the helper; reports the zen it cost.

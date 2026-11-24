@@ -202,4 +202,36 @@ describe('a helper that hits nothing', () => {
   it('stands and swings while the server keeps confirming hits', () => {
     expect(attackFor(10, 1).walked).toBe(false);
   });
+
+  // DK / BK / BM stood still: the approach walk to a monster it could not reach kept its cast request
+  // forever, and the helper waits on any request. A second stuck spell drops it and hunts another.
+  function stuckOn(seconds: number) {
+    on.module = true;
+    on.state.config = { ...defaultMuHelperConfig(), skills: [41, 0, 0] };
+    HeroSkills.setSkillList([{ index: 0, number: 41, level: 0 }]);
+    const walledOff = { netId: 1, npcType: 455, transform: { pos: { x: 180, z: 187 } } };
+    const reachable = { netId: 2, npcType: 455, transform: { pos: { x: 185, z: 187 } } };
+    const moveTo = { point: { x: 0, y: 0 }, handled: true, sendToServer: false };
+    const hero = { transform: { pos: { x: 182, z: 187 } }, attributeSystem: { isAboveZero: () => false }, playerMoveTo: moveTo };
+    const world = {
+      playerEntity: hero,
+      mapIndex: 0,
+      castRequest: null as { target: unknown } | null,
+      pickupTarget: null,
+      netObjsQuery: { entities: [walledOff, reachable] },
+      playersQuery: { entities: [] },
+      getTerrainFlag: () => 0,
+    };
+    on.helper.active = true;
+    for (let t = 0; t < seconds; t += 0.25) updateMuHelperLoop(world as unknown as World, 0.25);
+    const target = world.castRequest?.target;
+    on.helper.active = false;
+    updateMuHelperLoop(world as unknown as World, 0.25);
+    return target === walledOff ? 'walled off' : target === reachable ? 'reachable' : 'none';
+  }
+
+  it('drops a cast it cannot land and turns to another monster', () => {
+    expect(stuckOn(6)).toBe('walled off');
+    expect(stuckOn(10)).toBe('reachable');
+  });
 });

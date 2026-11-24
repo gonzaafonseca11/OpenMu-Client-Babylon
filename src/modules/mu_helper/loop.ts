@@ -94,14 +94,24 @@ let lastMonsterHit = 0;
 
 /** Seconds of swinging with no hit answered before the helper steps to its target (ours, see readme). */
 const STUCK_SECONDS = 4;
+/** Seconds a monster the helper gave up on is left alone. */
+const SKIP_SECONDS = 10;
+/** Stuck spells on the current target, the cast request the helper made, and the monsters it gave up on. */
+let stuckSteps = 0;
+let ownCast: World['castRequest'] = null;
+const skipped = new Map<Entity, number>();
 
 /** A hit on a monster came back from the server (`objectDamaged`, net.ts). */
 export function noteMonsterHit(): void {
   lastMonsterHit = clock;
+  stuckSteps = 0;
 }
 
 function resetRuntime(): void {
   lastMonsterHit = clock;
+  stuckSteps = 0;
+  ownCast = null;
+  skipped.clear();
   lastHeroTile = null;
   tickAccum = 0;
   loopCounter = 0;
@@ -164,7 +174,7 @@ function castSkill(world: World, num: number, target: Entity): boolean {
   if (HeroSkills.currentSkill !== num) HeroSkills.selectSkill(num);
   if (HeroSkills.currentSkill !== num) return false;
   const pos = target.transform!.pos;
-  world.castRequest = { target, point: { x: pos.x, y: pos.z } };
+  world.castRequest = ownCast = { target, point: { x: pos.x, y: pos.z } };
   return true;
 }
 
@@ -272,7 +282,7 @@ function nearestTarget(world: World, hero: Entity, maxDistance: number): Entity 
   let best: Entity | null = null;
   let bestDist = maxDistance + 1;
   for (const e of world.netObjsQuery.entities) {
-    if (!isAttackableEntity(world, e)) continue;
+    if (!isAttackableEntity(world, e) || (skipped.get(e) ?? -1) > clock) continue;
     const dist = tileDistance(from, entityTile(e));
     if (dist < bestDist) {
       bestDist = dist;
@@ -456,6 +466,7 @@ function attack(world: World, hero: Entity, config: MuHelperConfig): void {
   if (!currentTarget) {
     currentTarget = nearestTarget(world, hero, huntDistance);
     lastMonsterHit = clock;
+    stuckSteps = 0;
   }
   if (!currentTarget) {
     comboState = 0;
@@ -463,10 +474,19 @@ function attack(world: World, hero: Entity, config: MuHelperConfig): void {
   }
 
   // The server can keep a walk the client stopped and look for targets around another tile: every
-  // swing then hits nothing. A step to the target puts both on the same tile again.
+  // swing then hits nothing. A step to the target puts both on the same tile again. Stuck once more,
+  // the target cannot be reached: its cast request is dropped and the monster left alone a while.
   if (clock - lastMonsterHit >= STUCK_SECONDS) {
     lastMonsterHit = clock;
-    walkTo(hero, entityTile(currentTarget));
+    if (++stuckSteps < 2) {
+      walkTo(hero, entityTile(currentTarget));
+      return;
+    }
+    if (world.castRequest && world.castRequest === ownCast) world.castRequest = null;
+    for (const [e, until] of skipped) if (until <= clock) skipped.delete(e);
+    skipped.set(currentTarget, clock + SKIP_SECONDS);
+    currentTarget = null;
+    stuckSteps = 0;
     return;
   }
 
