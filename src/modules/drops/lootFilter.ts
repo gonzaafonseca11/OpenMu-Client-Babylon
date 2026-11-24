@@ -18,9 +18,10 @@ import type { Entity } from '../../ecs/world';
 
 type Drop = NonNullable<Entity['droppedItem']>;
 
-/** Zen slider step -> the smallest pile that still gets a name. */
+/** Zen slider step -> the smallest pile that still gets a name. Appended only: a saved step keeps its pile. */
 export const LOOT_ZEN_STEPS = [
   0, 100, 500, 1_000, 5_000, 10_000, 50_000, 100_000, 500_000, 1_000_000,
+  2_000_000, 5_000_000, 10_000_000, 15_000_000,
 ] as const;
 
 export const LOOT_ZEN_MAX = LOOT_ZEN_STEPS.length - 1;
