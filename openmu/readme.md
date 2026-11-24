@@ -142,8 +142,10 @@ that found something to forget logs "Fresh login: ... retried a login on the sam
 
 ## Skills after a reset
 
-OpenMU checks no level or energy when a skill is cast, only mana and AG; the web client greys a skill out below
-the level and energy of its row (`CheckSkillUseCondition`). `GameLogic/ResetSkills/ResetSkillsPlugIn` tells the
+OpenMU refuses a cast below the skill's `Requirements` (`Player.TryConsumeForSkillAsync`), so their Level and Total
+Energy rows were deleted from the database on 2026-11-24 (backup and the deleted rows in `/root/backups/`,
+`skill-reqs-quitados-*.csv`); the server now checks only mana, AG and leadership. The web client still greys a
+skill out below the level and energy of its row (`CheckSkillUseCondition`). `GameLogic/ResetSkills/ResetSkillsPlugIn` tells the
 client's skills module, on each entry to the world from the character list (a reset logs out there), whether the
 character made a real reset: more resets than the starter gift gave it (10 for one made from 2026-11-09 23:14 UTC,
 when the gift began; 0 before). With 1 the client lifts both rules for learned skills

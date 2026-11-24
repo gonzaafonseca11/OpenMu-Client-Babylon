@@ -14,8 +14,8 @@ using MUnique.OpenMU.PlugIns;
 
 /// <summary>
 /// Past a character's first real reset (the starter gift's are not), the web client lets it cast every learned
-/// skill whatever the level and energy the skill asks for. OpenMU checks neither when a skill is cast (only mana
-/// and AG); the client greys them out, so this tells it, on each entry to the world, through the skills module's
+/// skill whatever the level and energy the skill asks for. The server's level and energy rows were deleted from the
+/// database; the client greys them out, so this tells it, on each entry to the world, through the skills module's
 /// packet. Switching it off leaves the original rule. See ../../../readme.md (Skills after a reset).
 /// </summary>
 [PlugIn]
