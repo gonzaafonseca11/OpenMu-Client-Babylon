@@ -140,9 +140,13 @@ the hero is a walk the client failed to stop; no walk at all means the server mo
 - `stateWarnings.test.ts`: the no healing potions warning counts healing potions only.
 - `state.test.ts`: `Hero` keeps no tile of its own.
 - `wideStats.test.ts`: the 16-bit pool fields count until the 32-bit pools arrive, then not.
+- `widePoints.test.ts`: the server's real level-up points, and a wrapped level-up kept next to them.
 - `characterStats.test.ts`: the pet and transformation ring bonuses on damage, wizardry, curse and defense.
 - `experience_gained.test.ts`: a kill share feeds normal or master experience and says so in the system log;
   a master level-up swirls the twenty flare joints.
+
+### widePoints.ts (ours, server-driven)
+- Level-up points are 16-bit too (66000 showed as 464). The module's own packet (`api.onPacket`, id `hero`) carries the real count from the OpenMU plugin `WidePointsPlugIn` on each entry to the world; `unwrapPoints` keeps a 16-bit level-up next to it. Without the plugin nothing changes ([openmu/readme.md](../../../openmu/readme.md)).
 
 ### widePools.ts
 - The S6 pool packets are 16-bit, so a pool past 65535 arrives wrapped. `poolFloors` gives the least each maximum can be from the class formulas (OpenMU `AttributeRelationship`, 85% margin), `unwrapMaximum` lifts a wrapped maximum by whole turns of 65536 to that floor, `unwrapCurrent` puts a current value next to the last one under the maximum. Below 65536 nothing changes; 32-bit packets are never touched.

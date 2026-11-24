@@ -150,6 +150,13 @@ when the gift began; 0 before). With 1 the client lifts both rules for learned s
 (`src/modules/skills/resetWaiver.ts`); switching the plugin off leaves the original rule. If the starter gift ends,
 `HasRealReset` needs its end date too.
 
+## Level-up points past 65535
+
+The character packets carry level-up points in 16 bits, so a character with 66000 saw 464.
+`GameLogic/WidePoints/WidePointsPlugIn` sends the real count (uint32, little-endian) to the client's hero module on
+every entry to the world; a level-up after it wraps next to that count (`src/modules/hero/widePoints.ts`). Every
+entry, since OpenMU resends the 16-bit stats when several points are added at once.
+
 ## Guild wars won
 
 OpenMU forgets a guild war (or Battle Soccer) once it ends. `GameLogic/GuildWars/GuildWarLogPlugIn` (a periodic

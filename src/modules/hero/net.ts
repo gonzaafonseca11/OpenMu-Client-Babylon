@@ -16,6 +16,7 @@ import { Ecs } from '@/ecs/current';
 import { convertDirectionToAngle } from '@/core/turnAngle';
 import { experienceForLevel } from './experience';
 import { poolFloors, unwrapCurrent, unwrapMaximum } from './widePools';
+import { unwrapPoints } from './widePoints';
 import { heroStateMessage } from '@/controllers/interface/nameTags';
 import { runInAction } from 'mobx';
 import { t } from '@/i18n';
@@ -247,7 +248,7 @@ function applyLevelUpdate(p: LevelUpdateView) {
 
   runInAction(() => {
     playerData.level = p.Level;
-    playerData.points = p.LevelUpPoints;
+    playerData.points = p instanceof CharacterLevelUpdateExtendedPacket ? p.LevelUpPoints : unwrapPoints(p.LevelUpPoints, playerData.points);
     if (p instanceof CharacterLevelUpdateExtendedPacket) {
       playerData.maxHP = p.MaximumHealth;
       playerData.maxMP = p.MaximumMana;
