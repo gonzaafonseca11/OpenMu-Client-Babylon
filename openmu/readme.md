@@ -217,6 +217,13 @@ in 200 kills (OpenMU never makes one). `plugins/GameLogic/SocketCount`: every so
 before the drop lands (`IMonsterItemDropPlugIn`), so the floor shows the bag's count (as the drop was added it was too late: the floor kept the first roll), and leaves items players drop alone (those
 are no `TemporaryItem`). Turn it off in the admin panel: "Socket count by chance".
 
+## Skill items on every map
+
+OpenMU drops a random item only from monsters between its drop level and 11 levels above, so the level-100 scrolls
+(Wizardry Enhance, Multi-Shot, Recovery) never fell on the maps players hunt. A database drop group (no plugin), made
+on 2026-11-24, holds all 58 skill items (groups 12 and 15 with a skill): "Skill items on every map (ours)", chance
+0.5%, monsters of level 80 or more, linked to every map. Backup before it in `/root/backups/`.
+
 ## VIP Blood Castle experience
 OpenMU gives a mini game's experience reward as configured (`MiniGameRewardService`), past every
 experience rate, so the VIP server's x2 never reached it. `plugins/GameLogic/Vip/VipBloodCastleExperiencePlugIn.cs`
